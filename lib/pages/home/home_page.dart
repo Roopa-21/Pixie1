@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/widgets/navbar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,10 +14,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255,211,196,242),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -39,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Image.asset("assets/images/star.png"),
                   ShaderMask(
-                      shaderCallback: (bounds) => LinearGradient(
+                      shaderCallback: (bounds) => const LinearGradient(
                             colors: [
                               AppColors.textColor1,
                               AppColors.textColor2
@@ -50,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                             Rect.fromLTWH(
                                 0.0, 0.0, bounds.width, bounds.height),
                           ),
-                      child: Text('Good \n Morning',
+                      child: const Text('Good \n Morning',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 40,
@@ -63,6 +65,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+     bottomNavigationBar:  const NavBar(),
     );
   }
 }
