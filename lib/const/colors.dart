@@ -7,4 +7,13 @@ class AppColors {
   static const secondaryColor = Color(0xffCEBEFB);
   static const kwhiteColor = Colors.white;
   static const secondaryBackgroundColor = Color.fromRGBO(255, 255, 255, 0.74);
+  static const iconColor = Color(0xff612ACE);
+  static const kgreyColor = Color(0xff838383);
+  static const buttonColor1 = Color(0xff5923C4);
+  static const buttonColor2 = Color(0xffAF52DE);
+  static const outerButtonColor1 = Color(0xffAC8BEC);
+  static const outerButtonColor2 = Color(0xff00FFF0);
+  static const cardColor = Color(0xffECECEC);
+  static const cardColorRetell = Color(0xffFFFEE733);
+  static const audioPlayColor = Color(0xffF3ACFF);
 }

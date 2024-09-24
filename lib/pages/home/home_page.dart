@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255,211,196,242),
+      backgroundColor: const Color.fromARGB(255, 211, 196, 242),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -52,16 +52,18 @@ class _HomePageState extends State<HomePage> {
                             Rect.fromLTWH(
                                 0.0, 0.0, bounds.width, bounds.height),
                           ),
-                      child:  Text('Good \n Morning',
+                      child: Text('Good \n Morning',
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.headlineLarge))
+                          style: theme.textTheme.displayLarge!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800)))
                 ],
               ),
             ),
           ],
         ),
       ),
-     bottomNavigationBar:  const NavBar(),
+      bottomNavigationBar: const NavBar(),
     );
   }
 }
