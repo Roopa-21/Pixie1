@@ -5,4 +5,6 @@ class AppColors {
   static const textColor2 = Color(0xffFC7C1F);
   static const primaryColor = Color(0xffFFFCB1);
   static const secondaryColor = Color(0xffCEBEFB);
+  static const kwhiteColor = Colors.white;
+  static const secondaryBackgroundColor = Color.fromRGBO(255, 255, 255, 0.74);
 }
