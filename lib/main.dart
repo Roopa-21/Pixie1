@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pixieapp/firebase_options.dart';
+import 'package:pixieapp/pages/audioPlay/audioPlay_page.dart';
+import 'package:pixieapp/pages/createStory/createStory_page.dart';
 import 'package:pixieapp/pages/home/home_page.dart';
 
 void main() async {
@@ -16,14 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pixie',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-       
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  const HomePage(),
+      home: const HomePage(),
     );
   }
 }

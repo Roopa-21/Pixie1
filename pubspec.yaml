@@ -80,7 +80,7 @@ flutter:
       fonts:
         - asset: assets/fonts/SF-Pro-Rounded-Medium.ttf
         - asset: assets/fonts/SF-Pro-Rounded-Medium.ttf
-          weight: 700
+        
   # fonts:
   #   - family: Schyler
   #     fonts:
