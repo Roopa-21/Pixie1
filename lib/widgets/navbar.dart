@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 
 
 class NavBar extends StatefulWidget {
@@ -30,7 +31,9 @@ class _NavBarState extends State<NavBar> {
               height: 40,
               // color: Colors.white,  // Optional: to apply color filter to the SVG
             ),),
-            IconButton(onPressed: (){}, icon: SvgPicture.asset(
+            IconButton(onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddCharacter(),));
+            }, icon: SvgPicture.asset(
               'assets/images/navbar_icon2.svg',
               width: 51,  // Icon size
               height: 51,

@@ -38,6 +38,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.10+1
+  percent_indicator: ^4.2.3
+  chips_choice: ^3.0.1
 
 dev_dependencies:
 
