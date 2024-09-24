@@ -52,13 +52,9 @@ class _HomePageState extends State<HomePage> {
                             Rect.fromLTWH(
                                 0.0, 0.0, bounds.width, bounds.height),
                           ),
-                      child: const Text('Good \n Morning',
+                      child:  Text('Good \n Morning',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          )))
+                          style: theme.textTheme.headlineLarge))
                 ],
               ),
             ),
