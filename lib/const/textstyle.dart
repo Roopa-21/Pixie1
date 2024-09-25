@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/modules/scaler_module.dart';
 
-TextStyle getTextStyle(
-    {required ScalerModule scaler,
-    required double fontSize,
-    required FontWeight weight,
-    required Color color,
-    //FontWeight weight = FontWeight.w800,
-    //Color color = AppColors.textColor1,
-    double? letterSpacing}) {
+// Custom TextStyle method
+TextStyle getTextStyle({
+  required ScalerModule scaler,
+  required double fontSize,
+  required FontWeight weight,
+  required Color color,
+  double? letterSpacing,
+}) {
   return TextStyle(
     fontSize: scaler.scaleFontSize(fontSize),
     fontWeight: weight,
@@ -19,6 +19,7 @@ TextStyle getTextStyle(
   );
 }
 
+// App Theme
 ThemeData appTheme(BuildContext context) {
   final ScalerModule scaler = ScalerModule(context);
   return ThemeData(
@@ -28,49 +29,49 @@ ThemeData appTheme(BuildContext context) {
     textTheme: TextTheme(
       displayLarge: getTextStyle(
           scaler: scaler,
-          fontSize: 57,
+          fontSize: 80,
           weight: FontWeight.w800,
-          color: AppColors.textColor1),
+          color: const Color.fromARGB(255, 6, 39, 202)),
       displayMedium: getTextStyle(
           scaler: scaler,
           fontSize: 45,
           weight: FontWeight.w600,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       displaySmall: getTextStyle(
           scaler: scaler,
           fontSize: 36,
           weight: FontWeight.w400,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       headlineLarge: getTextStyle(
           scaler: scaler,
           fontSize: 32,
           weight: FontWeight.w800,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       headlineMedium: getTextStyle(
           scaler: scaler,
           fontSize: 28,
           weight: FontWeight.w600,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       headlineSmall: getTextStyle(
           scaler: scaler,
           fontSize: 24,
           weight: FontWeight.w400,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       titleLarge: getTextStyle(
           scaler: scaler,
           fontSize: 22,
           weight: FontWeight.w600,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       titleMedium: getTextStyle(
           scaler: scaler,
           fontSize: 16,
           letterSpacing: 0.15,
           weight: FontWeight.w500,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       titleSmall: getTextStyle(
           scaler: scaler,
           fontSize: 14,
-          color: AppColors.textColor1,
+          color: AppColors.textColorblack,
           letterSpacing: 0.1,
           weight: FontWeight.w500),
       bodyLarge: getTextStyle(
@@ -78,62 +79,68 @@ ThemeData appTheme(BuildContext context) {
           fontSize: 16,
           letterSpacing: 0.15,
           weight: FontWeight.w800,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       bodyMedium: getTextStyle(
           scaler: scaler,
           fontSize: 14,
           letterSpacing: 0.25,
           weight: FontWeight.w800,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       bodySmall: getTextStyle(
           scaler: scaler,
           fontSize: 12,
           letterSpacing: 0.4,
           weight: FontWeight.w300,
-          color: AppColors.textColor1),
+          color: AppColors.textColorblack),
       labelLarge: getTextStyle(
           scaler: scaler,
           fontSize: 14,
           letterSpacing: 0.1,
-          color: AppColors.textColor1,
+          color: AppColors.textColorblack,
           weight: FontWeight.w500),
       labelMedium: getTextStyle(
           scaler: scaler,
           fontSize: 12,
-          color: AppColors.textColor1,
+          color: AppColors.textColorblack,
           letterSpacing: 0.5,
           weight: FontWeight.w500),
       labelSmall: getTextStyle(
           scaler: scaler,
-          color: AppColors.textColor1,
+          color: AppColors.textColorblack,
           fontSize: 11,
           letterSpacing: 0.5,
           weight: FontWeight.w500),
     ),
-
     appBarTheme: AppBarTheme(
-        color: AppColors.secondaryBackgroundColor,
-        titleTextStyle: TextStyle(
-          color: AppColors.textColor1,
-          fontSize: scaler.scaleFontSize(20.0),
-        )),
+      color: AppColors.secondaryBackgroundColor,
+      titleTextStyle: TextStyle(
+        color: AppColors.textColorblack,
+        fontSize: scaler.scaleFontSize(20.0),
+      ),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryColor,
-      foregroundColor: AppColors.textColor1,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5))),
-    )),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryColor,
+        foregroundColor: AppColors.textColorblack,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+      ),
+    ),
     textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-      foregroundColor: AppColors.primaryColor,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5))),
-    )),
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.primaryColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+      ),
+    ),
     iconButtonTheme: IconButtonThemeData(
-        style: IconButton.styleFrom(
-            backgroundColor: AppColors.primaryColor,
-            foregroundColor: AppColors.textColor1)),
+      style: IconButton.styleFrom(
+        // backgroundColor: AppColors.textColorWhite,
+        foregroundColor: AppColors.textColorblack,
+      ),
+    ),
     cardColor: AppColors.secondaryColor,
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -149,22 +156,23 @@ ThemeData appTheme(BuildContext context) {
             const BorderSide(color: AppColors.secondaryColor, width: 2.5),
       ),
     ),
-    iconTheme: const IconThemeData(color: AppColors.textColor1),
-    // colorScheme: ColorScheme(brightness: brightness, primary: primary, onPrimary: onPrimary, secondary: secondary, onSecondary: onSecondary, error: error, onError: onError, surface: surface, onSurface: onSurface),
+    iconTheme: const IconThemeData(color: AppColors.textColorblack),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: AppColors.primaryColor,
-        foregroundColor: AppColors.textColor1),
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: AppColors.textColorblack,
+    ),
     colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
-        primary: AppColors.primaryColor,
-        onPrimary: AppColors.textColor1,
-        secondary: AppColors.secondaryBackgroundColor,
-        onSecondary: AppColors.secondaryBackgroundColor,
-        error: Color(0xFFE57373),
-        onError: Color(0xFFE53935),
-        surface: AppColors.secondaryBackgroundColor,
-        onSurface: AppColors.textColor1),
-    // progressIndicatorTheme:
-    // const ProgressIndicatorThemeData(color: AppColors.primary)
+      brightness: Brightness.dark,
+      primary: AppColors.primaryColor,
+      onPrimary: AppColors.textColorblack,
+      secondary: AppColors.secondaryColor,
+      onSecondary: AppColors.textColorblack,
+      error: Color(0xFFE57373),
+      onError: Color(0xFFE53935),
+      background: AppColors.secondaryBackgroundColor,
+      onBackground: AppColors.textColorblack,
+      surface: AppColors.secondaryBackgroundColor,
+      onSurface: AppColors.textColorblack,
+    ),
   );
 }

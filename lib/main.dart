@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pixieapp/const/textstyle.dart';
 import 'package:pixieapp/firebase_options.dart';
 import 'package:pixieapp/pages/audioPlay/audioPlay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
@@ -21,10 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Pixie',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: appTheme(context),
       routerConfig: router,
     );
   }
