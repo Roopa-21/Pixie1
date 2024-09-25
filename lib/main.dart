@@ -4,6 +4,7 @@ import 'package:pixieapp/firebase_options.dart';
 import 'package:pixieapp/pages/audioPlay/audioPlay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
 import 'package:pixieapp/pages/home/home_page.dart';
+import 'package:pixieapp/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,14 +18,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Pixie',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      routerConfig: router,
     );
   }
 }

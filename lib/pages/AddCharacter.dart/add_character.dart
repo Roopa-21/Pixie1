@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/routes/routes.dart';
 import 'package:pixieapp/widgets/choicechip.dart';
 
 class AddCharacter extends StatefulWidget {
@@ -84,18 +86,18 @@ class _AddCharacterState extends State<AddCharacter> {
               ],
             ),
           ),
-          child: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(
-                          0.0, 0.0, 0.0, 40.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
+                        20.0, 10.0, 20.0, 10.0),
+                    child: SafeArea(
                       child: PageView(
                         controller: pageViewController ??=
                             PageController(initialPage: 0),
@@ -103,50 +105,50 @@ class _AddCharacterState extends State<AddCharacter> {
                         children: [
                           Column(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFFE8DEF8), // Background color
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                            0xFFE8DEF8), // Background color
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          context.pop();
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.sliderColor,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: LinearPercentIndicator(
-                                          percent: 0.166,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.72,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor: AppColors.sliderColor,
-                                          backgroundColor:
-                                              AppColors.sliderBackground,
-                                          barRadius:
-                                              const Radius.circular(20.0),
-                                          padding: EdgeInsets.zero,
-                                        ),
+                                      )),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 0.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: 0.166,
+                                        // width:
+                                        //     MediaQuery.sizeOf(context).width *
+                                        //         0.70,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor: AppColors.sliderColor,
+                                        backgroundColor:
+                                            AppColors.sliderBackground,
+                                        barRadius: const Radius.circular(20.0),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -157,200 +159,202 @@ class _AddCharacterState extends State<AddCharacter> {
                                 ),
                               ),
                               const SizedBox(height: 25),
-                              Expanded(
-                                child: ChoiceChips(
-                                  options: const [
-                                    ChipData('Elephant',
-                                        Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Name', Icons.star_purple500_rounded),
-                                    ChipData('Hippopotamus',
-                                        Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Person', Icons.star_rate_outlined),
-                                    ChipData(
-                                        'Friend', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Name', Icons.star_purple500_rounded)
-                                  ],
-                                  onChanged: (val) => choiceChipsValues1 = val,
-                                  selectedChipStyle: ChipStyle(
-                                    backgroundColor: AppColors.sliderColor,
-                                    textStyle: theme.textTheme.bodyMedium,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 18.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  unselectedChipStyle: ChipStyle(
-                                    backgroundColor:
-                                        AppColors.choicechipUnSelected,
-                                    textStyle: theme.textTheme.bodySmall,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 16.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  chipSpacing: 10.0,
-                                  rowSpacing: 10.0,
-                                  multiselect: true,
-                                  alignment: WrapAlignment.start,
-                                  controller: choiceChipsValueController1 ??=
-                                      FormFieldController<List<String>>(
-                                    [],
-                                  ),
-                                  wrapped: true,
+                              ChoiceChips(
+                                options: const [
+                                  ChipData(
+                                      'Elephant', Icons.star_purple500_rounded),
+                                  ChipData(
+                                      'Name', Icons.star_purple500_rounded),
+                                  ChipData('Hippopotamus',
+                                      Icons.star_purple500_rounded),
+                                  ChipData('Person', Icons.star_rate_outlined),
+                                  ChipData(
+                                      'Friend', Icons.star_purple500_rounded),
+                                  ChipData('Dog', Icons.star_purple500_rounded)
+                                ],
+                                onChanged: (val) => choiceChipsValues1 = val,
+                                selectedChipStyle: ChipStyle(
+                                  backgroundColor: AppColors.sliderColor,
+                                  textStyle: theme.textTheme.bodyMedium,
+                                  iconColor: AppColors.sliderColor,
+                                  iconSize: 18.0,
+                                  elevation: 0.0,
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
+                                unselectedChipStyle: ChipStyle(
+                                  backgroundColor:
+                                      AppColors.choicechipUnSelected,
+                                  textStyle: theme.textTheme.bodySmall,
+                                  iconColor: AppColors.sliderColor,
+                                  iconSize: 16.0,
+                                  elevation: 0.0,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                chipSpacing: 10.0,
+                                rowSpacing: 10.0,
+                                multiselect: true,
+                                alignment: WrapAlignment.start,
+                                controller: choiceChipsValueController1 ??=
+                                    FormFieldController<List<String>>(
+                                  [],
+                                ),
+                                wrapped: true,
                               ),
+                              addbutton(
+                                  title: "Add a character",
+                                  width: 180,
+                                  onTap: () {})
                             ],
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFFE8DEF8), // Background color
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                            0xFFE8DEF8), // Background color
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await pageViewController
+                                              ?.previousPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.sliderColor,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: LinearPercentIndicator(
-                                          percent: 0.332,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.72,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor: AppColors.sliderColor,
-                                          backgroundColor:
-                                              AppColors.sliderBackground,
-                                          barRadius:
-                                              const Radius.circular(20.0),
-                                          padding: EdgeInsets.zero,
-                                        ),
+                                      )),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 0.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: 0.332,
+                                        // width:
+                                        //     MediaQuery.sizeOf(context).width *
+                                        //         0.70,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor: AppColors.sliderColor,
+                                        backgroundColor:
+                                            AppColors.sliderBackground,
+                                        barRadius: const Radius.circular(20.0),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 30.0, 15.0, 0.0),
-                                child: Text('Add loved ones in...',
-                                    style: theme.textTheme.headlineLarge),
-                              ),
+                              const SizedBox(height: 30),
+                              Text('Add loved ones in...',
+                                  style: theme.textTheme.headlineLarge),
                               const SizedBox(height: 25),
-                              Expanded(
-                                child: ChoiceChips(
-                                  options: const [
-                                    ChipData(
-                                        'Mom', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Dad', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Nidhi', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Mishka', Icons.star_rate_outlined),
-                                    ChipData(
-                                        'Friend', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Name', Icons.star_purple500_rounded)
-                                  ],
-                                  onChanged: (val) => choiceChipsValues2 = val,
-                                  selectedChipStyle: ChipStyle(
-                                    backgroundColor: AppColors.sliderColor,
-                                    textStyle: theme.textTheme.bodyMedium,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 18.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  unselectedChipStyle: ChipStyle(
-                                    backgroundColor:
-                                        AppColors.choicechipUnSelected,
-                                    textStyle: theme.textTheme.bodySmall,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 16.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  chipSpacing: 10.0,
-                                  rowSpacing: 10.0,
-                                  multiselect: true,
-                                  alignment: WrapAlignment.start,
-                                  controller: choiceChipsValueController2 ??=
-                                      FormFieldController<List<String>>(
-                                    [],
-                                  ),
-                                  wrapped: true,
+                              ChoiceChips(
+                                options: const [
+                                  ChipData('Mom', Icons.star_purple500_rounded),
+                                  ChipData('Dad', Icons.star_purple500_rounded),
+                                  ChipData(
+                                      'Nidhi', Icons.star_purple500_rounded),
+                                  ChipData('Mishka', Icons.star_rate_outlined),
+                                  ChipData(
+                                      'Friend', Icons.star_purple500_rounded),
+                                  ChipData('Name', Icons.star_purple500_rounded)
+                                ],
+                                onChanged: (val) => choiceChipsValues2 = val,
+                                selectedChipStyle: ChipStyle(
+                                  backgroundColor: AppColors.sliderColor,
+                                  textStyle: theme.textTheme.bodyMedium,
+                                  iconColor: AppColors.sliderColor,
+                                  iconSize: 18.0,
+                                  elevation: 0.0,
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
+                                unselectedChipStyle: ChipStyle(
+                                  backgroundColor:
+                                      AppColors.choicechipUnSelected,
+                                  textStyle: theme.textTheme.bodySmall,
+                                  iconColor: AppColors.sliderColor,
+                                  iconSize: 16.0,
+                                  elevation: 0.0,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                chipSpacing: 10.0,
+                                rowSpacing: 10.0,
+                                multiselect: true,
+                                alignment: WrapAlignment.start,
+                                controller: choiceChipsValueController2 ??=
+                                    FormFieldController<List<String>>(
+                                  [],
+                                ),
+                                wrapped: true,
                               ),
+                              addbutton(title: "Add", width: 100, onTap: () {})
                             ],
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFFE8DEF8), // Background color
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                            0xFFE8DEF8), // Background color
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await pageViewController
+                                              ?.previousPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.sliderColor,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: LinearPercentIndicator(
-                                          percent: 0.498,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.72,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor: AppColors.sliderColor,
-                                          backgroundColor:
-                                              AppColors.sliderBackground,
-                                          barRadius:
-                                              const Radius.circular(20.0),
-                                          padding: EdgeInsets.zero,
-                                        ),
+                                      )),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 0.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: 0.498,
+                                        // width:
+                                        //     MediaQuery.sizeOf(context).width *
+                                        //         0.70,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor: AppColors.sliderColor,
+                                        backgroundColor:
+                                            AppColors.sliderBackground,
+                                        barRadius: const Radius.circular(20.0),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
@@ -359,309 +363,295 @@ class _AddCharacterState extends State<AddCharacter> {
                                     style: theme.textTheme.headlineLarge),
                               ),
                               const SizedBox(height: 25),
-                              addoccasion(theme, "Bead time"),
-                              addoccasion(theme, "Play time"),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Bead time",
+                                  selected: true,
+                                  ontap: () {}),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Play time",
+                                  selected: false,
+                                  ontap: () {}),
+                              addbutton(
+                                  title: "Add occasion",
+                                  width: MediaQuery.of(context).size.width * .9,
+                                  height: 55,
+                                  onTap: () {})
                             ],
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFFE8DEF8), // Background color
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                            0xFFE8DEF8), // Background color
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await pageViewController
+                                              ?.previousPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.sliderColor,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: LinearPercentIndicator(
-                                          percent: 0.664,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.72,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor: AppColors.sliderColor,
-                                          backgroundColor:
-                                              AppColors.sliderBackground,
-                                          barRadius:
-                                              const Radius.circular(20.0),
-                                          padding: EdgeInsets.zero,
-                                        ),
+                                      )),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 0.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: 0.664,
+                                        // width:
+                                        //     MediaQuery.sizeOf(context).width *
+                                        //         0.70,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor: AppColors.sliderColor,
+                                        backgroundColor:
+                                            AppColors.sliderBackground,
+                                        barRadius: const Radius.circular(20.0),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Text('Language of the story',
-                                    style: theme.textTheme.headlineLarge),
-                              ),
-                              Expanded(
-                                child: ChoiceChips(
-                                  options: const [
-                                    ChipData(
-                                        'Mom', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Dad', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Nidhi', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Mishka', Icons.star_rate_outlined),
-                                    ChipData(
-                                        'Friend', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Name', Icons.star_purple500_rounded)
-                                  ],
-                                  onChanged: (val) =>
-                                      choiceChipsValue4 = val?.firstOrNull,
-                                  selectedChipStyle: ChipStyle(
-                                    backgroundColor: AppColors.sliderColor,
-                                    textStyle: theme.textTheme.bodyMedium,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 18.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  unselectedChipStyle: ChipStyle(
-                                    backgroundColor:
-                                        AppColors.choicechipUnSelected,
-                                    textStyle: theme.textTheme.bodySmall,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 16.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  chipSpacing: 10.0,
-                                  rowSpacing: 10.0,
-                                  multiselect: true,
-                                  alignment: WrapAlignment.start,
-                                  controller: choiceChipsValueController4 ??=
-                                      FormFieldController<List<String>>(
-                                    [],
-                                  ),
-                                  wrapped: true,
-                                ),
+                                ],
                               ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Text('Language of the story',
+                                  style: theme.textTheme.headlineLarge),
+                              const SizedBox(height: 25),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "English",
+                                  selected: true,
+                                  ontap: () {}),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Hindi",
+                                  selected: false,
+                                  ontap: () {}),
+                              addbutton(
+                                  title: "Add language",
+                                  width: MediaQuery.of(context).size.width * .9,
+                                  height: 55,
+                                  onTap: () {})
                             ],
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFFE8DEF8), // Background color
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                            0xFFE8DEF8), // Background color
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await pageViewController
+                                              ?.previousPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.sliderColor,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: LinearPercentIndicator(
-                                          percent: 0.83,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.72,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor: AppColors.sliderColor,
-                                          backgroundColor:
-                                              AppColors.sliderBackground,
-                                          barRadius:
-                                              const Radius.circular(20.0),
-                                          padding: EdgeInsets.zero,
-                                        ),
+                                      )),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 0.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: 0.83,
+                                        // width:
+                                        //     MediaQuery.sizeOf(context).width *
+                                        //         0.65,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor: AppColors.sliderColor,
+                                        backgroundColor:
+                                            AppColors.sliderBackground,
+                                        barRadius: const Radius.circular(20.0),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                  ],
+                                  ),
+                                  const SizedBox(width: 10),
+                                  TextButton(
+                                      onPressed: () async {
+                                        await pageViewController?.nextPage(
+                                          duration:
+                                              const Duration(milliseconds: 300),
+                                          curve: Curves.ease,
+                                        );
+                                      },
+                                      child: const Text("Skip"))
+                                ],
+                              ),
+                              const SizedBox(height: 30),
+                              Text('Add a lesson',
+                                  style: theme.textTheme.headlineLarge),
+                              const SizedBox(height: 25),
+                              ChoiceChips(
+                                options: const [
+                                  ChipData('Mom', Icons.star_purple500_rounded),
+                                  ChipData('Dad', Icons.star_purple500_rounded),
+                                  ChipData(
+                                      'Nidhi', Icons.star_purple500_rounded),
+                                  ChipData('Mishka', Icons.star_rate_outlined),
+                                  ChipData(
+                                      'Friend', Icons.star_purple500_rounded),
+                                  ChipData('Name', Icons.star_purple500_rounded)
+                                ],
+                                onChanged: (val) => choiceChipsValues5 = val,
+                                selectedChipStyle: ChipStyle(
+                                  backgroundColor: AppColors.sliderColor,
+                                  textStyle: theme.textTheme.bodyMedium,
+                                  iconColor: AppColors.sliderColor,
+                                  iconSize: 18.0,
+                                  elevation: 0.0,
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Text('Add a lesson',
-                                    style: theme.textTheme.headlineLarge),
-                              ),
-                              Expanded(
-                                child: ChoiceChips(
-                                  options: const [
-                                    ChipData(
-                                        'Mom', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Dad', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Nidhi', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Mishka', Icons.star_rate_outlined),
-                                    ChipData(
-                                        'Friend', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Name', Icons.star_purple500_rounded)
-                                  ],
-                                  onChanged: (val) => choiceChipsValues5 = val,
-                                  selectedChipStyle: ChipStyle(
-                                    backgroundColor: AppColors.sliderColor,
-                                    textStyle: theme.textTheme.bodyMedium,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 18.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  unselectedChipStyle: ChipStyle(
-                                    backgroundColor:
-                                        AppColors.choicechipUnSelected,
-                                    textStyle: theme.textTheme.bodySmall,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 16.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  chipSpacing: 10.0,
-                                  rowSpacing: 10.0,
-                                  multiselect: true,
-                                  alignment: WrapAlignment.start,
-                                  controller: choiceChipsValueController5 ??=
-                                      FormFieldController<List<String>>(
-                                    [],
-                                  ),
-                                  wrapped: true,
+                                unselectedChipStyle: ChipStyle(
+                                  backgroundColor:
+                                      AppColors.choicechipUnSelected,
+                                  textStyle: theme.textTheme.bodySmall,
+                                  iconColor: AppColors.sliderColor,
+                                  iconSize: 16.0,
+                                  elevation: 0.0,
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
+                                chipSpacing: 10.0,
+                                rowSpacing: 10.0,
+                                multiselect: true,
+                                alignment: WrapAlignment.start,
+                                controller: choiceChipsValueController5 ??=
+                                    FormFieldController<List<String>>(
+                                  [],
+                                ),
+                                wrapped: true,
                               ),
+                              addbutton(
+                                  title: "Add a character",
+                                  width: 170,
+                                  onTap: () {})
                             ],
                           ),
                           Column(
                             mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xFFE8DEF8), // Background color
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(
+                                            0xFFE8DEF8), // Background color
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          await pageViewController
+                                              ?.previousPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
                                         ),
-                                        child: IconButton(
-                                          onPressed: () {},
-                                          icon: const Icon(
-                                            Icons.arrow_back,
-                                            color: AppColors.sliderColor,
-                                          ),
-                                        )),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 0.0, 0.0, 0.0),
-                                        child: LinearPercentIndicator(
-                                          percent: 1,
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  0.72,
-                                          lineHeight: 12.0,
-                                          animation: true,
-                                          animateFromLastPercent: true,
-                                          progressColor: AppColors.sliderColor,
-                                          backgroundColor:
-                                              AppColors.sliderBackground,
-                                          barRadius:
-                                              const Radius.circular(20.0),
-                                          padding: EdgeInsets.zero,
-                                        ),
+                                      )),
+                                  Expanded(
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsetsDirectional.fromSTEB(
+                                              15.0, 0.0, 0.0, 0.0),
+                                      child: LinearPercentIndicator(
+                                        percent: 1,
+                                        // width:
+                                        //     MediaQuery.sizeOf(context).width *
+                                        //         0.70,
+                                        lineHeight: 12.0,
+                                        animation: true,
+                                        animateFromLastPercent: true,
+                                        progressColor: AppColors.sliderColor,
+                                        backgroundColor:
+                                            AppColors.sliderBackground,
+                                        barRadius: const Radius.circular(20.0),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 0.0, 15.0, 0.0),
-                                child: Text('Genre of the story',
-                                    style: theme.textTheme.headlineLarge),
-                              ),
-                              Expanded(
-                                child: ChoiceChips(
-                                  options: const [
-                                    ChipData(
-                                        'Mom', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Dad', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Nidhi', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Mishka', Icons.star_rate_outlined),
-                                    ChipData(
-                                        'Friend', Icons.star_purple500_rounded),
-                                    ChipData(
-                                        'Name', Icons.star_purple500_rounded)
-                                  ],
-                                  onChanged: (val) => choiceChipsValues6 = val,
-                                  selectedChipStyle: ChipStyle(
-                                    backgroundColor: AppColors.sliderColor,
-                                    textStyle: theme.textTheme.bodyMedium,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 18.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
-                                  unselectedChipStyle: ChipStyle(
-                                    backgroundColor:
-                                        AppColors.choicechipUnSelected,
-                                    textStyle: theme.textTheme.bodySmall,
-                                    iconColor: AppColors.sliderColor,
-                                    iconSize: 16.0,
-                                    elevation: 0.0,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  chipSpacing: 10.0,
-                                  rowSpacing: 10.0,
-                                  multiselect: true,
-                                  alignment: WrapAlignment.start,
-                                  controller: choiceChipsValueController6 ??=
-                                      FormFieldController<List<String>>(
-                                    [],
-                                  ),
-                                  wrapped: true,
-                                ),
+                                  const SizedBox(width: 10),
+                                  TextButton(
+                                      onPressed: () {
+                                        context.push('/CreateStoryPage');
+                                      },
+                                      child: const Text("Skip"))
+                                ],
                               ),
+                              const SizedBox(height: 30),
+                              Text('Genre of the story',
+                                  style: theme.textTheme.headlineLarge),
+                              const SizedBox(height: 25),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Surprise me",
+                                  ontap: () {},
+                                  selected: true),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Funny",
+                                  ontap: () {},
+                                  selected: false),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Scifi",
+                                  ontap: () {},
+                                  selected: false),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Scifi",
+                                  ontap: () {},
+                                  selected: false),
+                              addbutton(
+                                  title: "Add a theme",
+                                  width: MediaQuery.of(context).size.width * .9,
+                                  onTap: () {})
                             ],
                           ),
                         ],
@@ -669,25 +659,39 @@ class _AddCharacterState extends State<AddCharacter> {
                     ),
                   ),
                 ),
-                Container(
-                  width: MediaQuery.sizeOf(context).width * 1.0,
-                  height: 100.0,
-                  decoration: const BoxDecoration(
-                      // color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
+              ),
+              Container(
+                width: MediaQuery.sizeOf(context).width * 1.0,
+                height: 140.0,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12)),
+                    border: Border(
+                        top: BorderSide(
+                            color: Color.fromARGB(255, 255, 213, 213),
+                            strokeAlign: 1)),
+                    color: Color.fromARGB(145, 255, 255, 255)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 28),
+                      child: SizedBox(
                         width: MediaQuery.sizeOf(context).width * 0.85,
                         height: 60,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await pageViewController?.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.ease,
-                            );
+                            if (pageViewCurrentIndex == 5) {
+                              context.push('/CreateStoryPage');
+                            } else {
+                              await pageViewController?.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.ease,
+                              );
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -701,22 +705,27 @@ class _AddCharacterState extends State<AddCharacter> {
                               style: theme.textTheme.bodyLarge!
                                   .copyWith(color: AppColors.textColorblue)),
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget addoccasion(ThemeData theme, String title) => Padding(
+  Widget choicechipbutton(
+          {required ThemeData theme,
+          required String title,
+          required VoidCallback ontap,
+          required bool selected}) =>
+      Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: SizedBox(
-          width: MediaQuery.sizeOf(context).width * 0.85,
+          width: MediaQuery.sizeOf(context).width * 0.9,
           height: 60,
           child: ElevatedButton(
             onPressed: () async {},
@@ -724,14 +733,56 @@ class _AddCharacterState extends State<AddCharacter> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),
-              foregroundColor: AppColors.sliderColor,
-              backgroundColor: AppColors.sliderColor, // Text (foreground) color
+              foregroundColor: selected == true
+                  ? AppColors.buttonblue
+                  : AppColors.buttonwhite,
+              backgroundColor: selected == true
+                  ? AppColors.buttonblue
+                  : AppColors.buttonwhite, // Text (foreground) color
             ),
             child: Text(title,
-                style: const TextStyle(color: AppColors.textColorWhite)),
+                style: TextStyle(
+                  color: selected == true
+                      ? AppColors.textColorWhite
+                      : AppColors.textColorblack,
+                )),
           ),
         ),
       );
+  Widget addbutton(
+      {required String title,
+      required double width,
+      required VoidCallback onTap,
+      double height = 47}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Container(
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+                border:
+                    Border.all(color: const Color.fromARGB(255, 178, 178, 178)),
+                borderRadius: BorderRadius.circular(40)),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.add,
+                    color: AppColors.textColorblack,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    title,
+                    style: const TextStyle(color: AppColors.textColorblack),
+                  ),
+                ])),
+      ),
+    );
+  }
 }
 
 class FormFieldController<T> extends ValueNotifier<T?> {

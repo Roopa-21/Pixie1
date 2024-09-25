@@ -6,6 +6,8 @@ class AppColors {
   static const textColorblue = Color(0xFF612ACE);
   static const textColorWhite = Color.fromARGB(255, 255, 255, 255);
   static const textColorblack = Color.fromARGB(255, 0, 0, 0);
+  static const buttonwhite = Color.fromARGB(255, 255, 255, 255);
+  static const buttonblue = Color(0xFF612ACE);
   static const primaryColor = Color(0xffFFFCB1);
   static const secondaryColor = Color(0xffCEBEFB);
   static const kwhiteColor = Colors.white;
