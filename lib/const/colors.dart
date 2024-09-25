@@ -25,5 +25,9 @@ class AppColors {
   static const cardColor = Color(0xffECECEC);
   static const cardColorRetell = Color(0xffFFFEE733);
   static const audioPlayColor = Color(0xffF3ACFF);
+
+  static const bottomSheetBackground = Color.fromARGB(255, 242, 242, 247);
+
   static const likeButtonColor = Color(0xffF47C25);
+
 }

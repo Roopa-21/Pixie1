@@ -1,8 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/routes/routes.dart';
+import 'package:pixieapp/widgets/add_new_character.dart';
+import 'package:pixieapp/widgets/bottomsheet.dart';
 import 'package:pixieapp/widgets/choicechip.dart';
 
 class AddCharacter extends StatefulWidget {
@@ -155,7 +159,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                     15.0, 30.0, 15.0, 0.0),
                                 child: Text(
                                   'Let’s add in some characters...',
-                                  style: theme.textTheme.headlineLarge,
+                                  style: theme.textTheme.displaySmall!.copyWith(
+                                      color: AppColors.textColorblue,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                               const SizedBox(height: 25),
@@ -203,7 +209,27 @@ class _AddCharacterState extends State<AddCharacter> {
                               addbutton(
                                   title: "Add a character",
                                   width: 180,
-                                  onTap: () {})
+                                  onTap: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () =>
+                                              FocusScope.of(context).unfocus(),
+                                          child: Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child: AddNewCharacter(
+                                              text: "Name a\ncharacter",
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  })
                             ],
                           ),
                           Column(
@@ -259,8 +285,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                 ],
                               ),
                               const SizedBox(height: 30),
-                              Text('Add loved ones in...',
-                                  style: theme.textTheme.headlineLarge),
+                              Text(
+                                'Add loved ones in...',
+                                style: theme.textTheme.displaySmall!.copyWith(
+                                    color: AppColors.textColorblue,
+                                    fontWeight: FontWeight.w600),
+                              ),
                               const SizedBox(height: 25),
                               ChoiceChips(
                                 options: const [
@@ -301,7 +331,30 @@ class _AddCharacterState extends State<AddCharacter> {
                                 ),
                                 wrapped: true,
                               ),
-                              addbutton(title: "Add", width: 100, onTap: () {})
+                              addbutton(
+                                  title: "Add",
+                                  width: 100,
+                                  onTap: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () =>
+                                              FocusScope.of(context).unfocus(),
+                                          child: Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child: AddNewCharacter(
+                                              text: "Name a\ncharacter",
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  })
                             ],
                           ),
                           Column(
@@ -359,8 +412,12 @@ class _AddCharacterState extends State<AddCharacter> {
                               Padding(
                                 padding: const EdgeInsetsDirectional.fromSTEB(
                                     15.0, 30.0, 15.0, 0.0),
-                                child: Text('What’s the occasion',
-                                    style: theme.textTheme.headlineLarge),
+                                child: Text(
+                                  'What’s the occasion',
+                                  style: theme.textTheme.displaySmall!.copyWith(
+                                      color: AppColors.textColorblue,
+                                      fontWeight: FontWeight.w600),
+                                ),
                               ),
                               const SizedBox(height: 25),
                               choicechipbutton(
@@ -435,8 +492,12 @@ class _AddCharacterState extends State<AddCharacter> {
                               const SizedBox(
                                 height: 30,
                               ),
-                              Text('Language of the story',
-                                  style: theme.textTheme.headlineLarge),
+                              Text(
+                                'Language of the story',
+                                style: theme.textTheme.displaySmall!.copyWith(
+                                    color: AppColors.textColorblue,
+                                    fontWeight: FontWeight.w600),
+                              ),
                               const SizedBox(height: 25),
                               choicechipbutton(
                                   theme: theme,
@@ -514,12 +575,20 @@ class _AddCharacterState extends State<AddCharacter> {
                                           curve: Curves.ease,
                                         );
                                       },
-                                      child: const Text("Skip"))
+                                      child: const Text(
+                                        "Skip",
+                                        style: TextStyle(
+                                            color: AppColors.textColorblue),
+                                      ))
                                 ],
                               ),
                               const SizedBox(height: 30),
-                              Text('Add a lesson',
-                                  style: theme.textTheme.headlineLarge),
+                              Text(
+                                'Add a lesson',
+                                style: theme.textTheme.displaySmall!.copyWith(
+                                    color: AppColors.textColorblue,
+                                    fontWeight: FontWeight.w600),
+                              ),
                               const SizedBox(height: 25),
                               ChoiceChips(
                                 options: const [
@@ -563,7 +632,27 @@ class _AddCharacterState extends State<AddCharacter> {
                               addbutton(
                                   title: "Add a character",
                                   width: 170,
-                                  onTap: () {})
+                                  onTap: () async {
+                                    await showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      enableDrag: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return GestureDetector(
+                                          onTap: () =>
+                                              FocusScope.of(context).unfocus(),
+                                          child: Padding(
+                                            padding: MediaQuery.viewInsetsOf(
+                                                context),
+                                            child: AddNewCharacter(
+                                              text: "Name a\ncharacter",
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  })
                             ],
                           ),
                           Column(
@@ -621,12 +710,18 @@ class _AddCharacterState extends State<AddCharacter> {
                                       onPressed: () {
                                         context.push('/CreateStoryPage');
                                       },
-                                      child: const Text("Skip"))
+                                      child: const Text("Skip",
+                                          style: TextStyle(
+                                              color: AppColors.textColorblue)))
                                 ],
                               ),
                               const SizedBox(height: 30),
-                              Text('Genre of the story',
-                                  style: theme.textTheme.headlineLarge),
+                              Text(
+                                'Genre of the story',
+                                style: theme.textTheme.displaySmall!.copyWith(
+                                    color: AppColors.textColorblue,
+                                    fontWeight: FontWeight.w600),
+                              ),
                               const SizedBox(height: 25),
                               choicechipbutton(
                                   theme: theme,
@@ -636,11 +731,6 @@ class _AddCharacterState extends State<AddCharacter> {
                               choicechipbutton(
                                   theme: theme,
                                   title: "Funny",
-                                  ontap: () {},
-                                  selected: false),
-                              choicechipbutton(
-                                  theme: theme,
-                                  title: "Scifi",
                                   ontap: () {},
                                   selected: false),
                               choicechipbutton(

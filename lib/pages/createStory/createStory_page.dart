@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
+import 'package:pixieapp/widgets/bottomsheet.dart';
 import 'package:pixieapp/widgets/pixie_button.dart';
 
 class CreateStoryPage extends StatefulWidget {
@@ -17,72 +18,80 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
     final theme = Theme.of(context);
     final devicewidth = MediaQuery.of(context).size.width;
     final deviceheight = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.primaryColor,
-        body: Container(
-          height: deviceheight,
-          width: devicewidth,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColors.secondaryColor,
-                AppColors.primaryColor,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+    return Scaffold(
+      backgroundColor: AppColors.primaryColor,
+      body: Container(
+        height: deviceheight,
+        width: devicewidth,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 231, 201, 249),
+              Color.fromARGB(255, 248, 244, 187)
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          child: Column(children: [
-            Expanded(
+        ),
+        child: Column(children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
-                      Positioned(
-                        child: Image.asset(
-                          'assets/images/Ellipse 13 (2).png',
-                          width: 300,
-                          height: 250,
-                          fit: BoxFit.cover,
+                      Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            'assets/images/Ellipse 13 (2).png',
+                            width: 450,
+                            height: 450,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                      Center(
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              'assets/images/star.png',
-                              width: devicewidth * 0.1388,
-                              height: devicewidth * 0.1388,
-                            ),
-                            ShaderMask(
-                                shaderCallback: (bounds) =>
-                                    const LinearGradient(
-                                      colors: [
-                                        AppColors.textColor1,
-                                        AppColors.iconColor
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ).createShader(
-                                      Rect.fromLTWH(0.0, 0.0, bounds.width,
-                                          bounds.height),
-                                    ),
-                                child: Text('Create \n Story',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.displayLarge!
-                                        .copyWith(color: Colors.white)))
-                          ],
+                      SafeArea(
+                        child: Center(
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                'assets/images/star.png',
+                                width: devicewidth * 0.1388,
+                                height: devicewidth * 0.1388,
+                              ),
+                              ShaderMask(
+                                  shaderCallback: (bounds) =>
+                                      const LinearGradient(
+                                        colors: [
+                                          AppColors.textColor1,
+                                          AppColors.iconColor
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ).createShader(
+                                        Rect.fromLTWH(0.0, 0.0, bounds.width,
+                                            bounds.height),
+                                      ),
+                                  child: Text('Create \n Story',
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.displayLarge!
+                                          .copyWith(color: Colors.white)))
+                            ],
+                          ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back,
-                            color: AppColors.iconColor),
-                        onPressed: () {
-                          context.pop();
-                        },
+                      SafeArea(
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back,
+                              color: AppColors.iconColor),
+                          onPressed: () {
+                            context.pop();
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -103,15 +112,15 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 ],
               ),
             ),
-            PixieButton(
-              text: 'Create Your Story',
-              onPressed: () {},
-              color1: AppColors.buttonColor1,
-              color2: AppColors.buttonColor2,
-              //  color:
-            )
-          ]),
-        ),
+          ),
+          PixieButton(
+            text: 'Create Your Story',
+            onPressed: () {},
+            color1: AppColors.buttonColor1,
+            color2: AppColors.buttonColor2,
+            //  color:
+          )
+        ]),
       ),
     );
   }
@@ -154,7 +163,25 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
           ),
           IconButton(
             icon: const Icon(Icons.edit, color: AppColors.iconColor),
-            onPressed: () {},
+            onPressed: () async {
+              await showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                enableDrag: false,
+                context: context,
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: Padding(
+                      padding: MediaQuery.viewInsetsOf(context),
+                      child: const BottomSheetWidget(
+                        text: "Select your\nloved ones",
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),

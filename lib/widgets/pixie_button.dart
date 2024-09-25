@@ -22,37 +22,52 @@ class PixieButton extends StatelessWidget {
     print(deviceheight);
     print(devicewidth);
     return Container(
-      height: deviceheight * 0.14749,
+      height: 140,
       width: devicewidth,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.outerButtonColor1.withOpacity(0.092),
-            AppColors.textColor2.withOpacity(0.3664),
-            AppColors.outerButtonColor2.withOpacity(0.4),
-            AppColors.textColor2.withOpacity(0.4)
+            // AppColors.outerButtonColor1.withOpacity(0.092),
+            // AppColors.textColor2.withOpacity(0.3664),
+            Color.fromARGB(255, 246, 244, 234),
+            Color.fromARGB(255, 205, 244, 229),
+            Color.fromARGB(255, 174, 229, 202),
+            Color.fromARGB(255, 174, 229, 202),
+            Color.fromARGB(255, 235, 199, 175),
+            Color.fromARGB(255, 235, 199, 175)
           ],
-          begin: const Alignment(-0.919, -0.394),
-          end: const Alignment(0.919, 0.394),
+          stops: [0.01, 0.3, 0.5, 0.7, 0.8, 1],
+          begin: Alignment.topLeft, // Start from the top-left corner
+          end: Alignment.bottomRight,
         ),
       ),
       child: GestureDetector(
         onTap: onPressed,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: LinearGradient(
-              colors: [color1, color2],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 28),
+              child: Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width * .9,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  gradient: LinearGradient(
+                    colors: [color1, color2],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Center(
+                  child: Text(text,
+                      style: theme.textTheme.bodyMedium!
+                          .copyWith(color: Colors.white)),
+                ),
+              ),
             ),
-          ),
-          child: Center(
-            child: Text(text,
-                style:
-                    theme.textTheme.bodyMedium!.copyWith(color: Colors.white)),
-          ),
+          ],
         ),
       ),
     );
