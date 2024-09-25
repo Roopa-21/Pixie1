@@ -96,7 +96,7 @@ class _AudioplayPageState extends State<AudioplayPage> {
             ),
             Container(
               color: Colors.transparent,
-              child: Stack(children: [
+              child: Stack(clipBehavior: Clip.none, children: [
                 Positioned.fill(
                   child: Align(
                     alignment: Alignment.center,
@@ -108,15 +108,10 @@ class _AudioplayPageState extends State<AudioplayPage> {
                     ),
                   ),
                 ),
-                FloatingActionButton(
-                  onPressed: () {},
-                  backgroundColor: Colors.purpleAccent,
-                  child: const Icon(Icons.pause, color: Colors.white),
-                ),
                 ShaderMask(
                     shaderCallback: (bounds) {
                       return const LinearGradient(
-                        colors: <Color>[
+                        colors: [
                           AppColors.audioPlayColor,
                           AppColors.likeButtonColor
                         ],
