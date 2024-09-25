@@ -125,6 +125,7 @@ class _ChoiceChipsState extends State<ChoiceChips> {
               style: style.textStyle,
             ),
             labelPadding: style.labelPadding,
+            padding: const EdgeInsets.all(16),
             // avatar: const Icon(Icons.star_border_purple500_rounded),
             elevation: style.elevation,
             disabledColor: widget.disabledColor,
@@ -154,7 +155,7 @@ class _ChoiceChipsState extends State<ChoiceChips> {
         children: children,
       );
     } else {
-      return SingleChildScrollView(
+      return const SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         clipBehavior: Clip.none,
         child: Row(

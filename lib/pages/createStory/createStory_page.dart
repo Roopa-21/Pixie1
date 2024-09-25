@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/widgets/pixie_button.dart';
 
 class CreateStoryPage extends StatefulWidget {
@@ -39,13 +41,6 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 children: [
                   Stack(
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back,
-                            color: AppColors.iconColor),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
                       Positioned(
                         child: Image.asset(
                           'assets/images/Ellipse 13 (2).png',
@@ -81,6 +76,13 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                         .copyWith(color: Colors.white)))
                           ],
                         ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back,
+                            color: AppColors.iconColor),
+                        onPressed: () {
+                          context.pop();
+                        },
                       ),
                     ],
                   ),
