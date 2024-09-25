@@ -78,8 +78,26 @@ flutter:
   fonts:
     - family: SF-Pro-Rounded
       fonts:
+        - asset: assets/fonts/SF-Pro-Rounded-Black.ttf
+          weight: 800
+        - asset: assets/fonts/SF-Pro-Rounded-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/SF-Pro-Rounded-Heavy.ttf
+          weight: 600
         - asset: assets/fonts/SF-Pro-Rounded-Medium.ttf
-        - asset: assets/fonts/SF-Pro-Rounded-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/SF-Pro-Rounded-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Rounded-Semibold.ttf
+          weight: 400
+        - asset: assets/fonts/SF-Pro-Rounded-Thin.ttf
+          weight: 400
+
+    - family: Jellee-Roman
+      fonts:
+        - asset: assets/fonts/Jellee-Roman.ttf
+        # - asset: assets/fonts/SF-Pro-Rounded-Medium.ttf    
+        
         
   # fonts:
   #   - family: Schyler

@@ -19,28 +19,14 @@ class PixieButton extends StatelessWidget {
 
     final devicewidth = MediaQuery.of(context).size.width;
     final deviceheight = MediaQuery.of(context).size.height;
-    print(deviceheight);
-    print(devicewidth);
+
     return Container(
-      height: 140,
+      height: 170,
       width: devicewidth,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            // AppColors.outerButtonColor1.withOpacity(0.092),
-            // AppColors.textColor2.withOpacity(0.3664),
-            Color.fromARGB(255, 246, 244, 234),
-            Color.fromARGB(255, 205, 244, 229),
-            Color.fromARGB(255, 174, 229, 202),
-            Color.fromARGB(255, 174, 229, 202),
-            Color.fromARGB(255, 235, 199, 175),
-            Color.fromARGB(255, 235, 199, 175)
-          ],
-          stops: [0.01, 0.3, 0.5, 0.7, 0.8, 1],
-          begin: Alignment.topLeft, // Start from the top-left corner
-          end: Alignment.bottomRight,
-        ),
-      ),
+          image: DecorationImage(
+              image: AssetImage("assets/images/Frame 1261154616.png"),
+              fit: BoxFit.fill)),
       child: GestureDetector(
         onTap: onPressed,
         child: Row(
@@ -48,7 +34,7 @@ class PixieButton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 28),
+              padding: const EdgeInsets.only(top: 75),
               child: Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width * .9,

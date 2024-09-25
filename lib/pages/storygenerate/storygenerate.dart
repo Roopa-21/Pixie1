@@ -11,6 +11,7 @@ class StoryGeneratePage extends StatelessWidget {
     final deviceheight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
     return Scaffold(
+        backgroundColor: Colors.white,
         body: CustomScrollView(
           slivers: [
             SliverAppBar(

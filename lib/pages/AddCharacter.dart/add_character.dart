@@ -209,6 +209,7 @@ class _AddCharacterState extends State<AddCharacter> {
                               addbutton(
                                   title: "Add a character",
                                   width: 180,
+                                  theme: theme,
                                   onTap: () async {
                                     await showModalBottomSheet(
                                       isScrollControlled: true,
@@ -334,6 +335,7 @@ class _AddCharacterState extends State<AddCharacter> {
                               addbutton(
                                   title: "Add",
                                   width: 100,
+                                  theme: theme,
                                   onTap: () async {
                                     await showModalBottomSheet(
                                       isScrollControlled: true,
@@ -434,6 +436,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                   title: "Add occasion",
                                   width: MediaQuery.of(context).size.width * .9,
                                   height: 55,
+                                  theme: theme,
                                   onTap: () {})
                             ],
                           ),
@@ -513,6 +516,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                   title: "Add language",
                                   width: MediaQuery.of(context).size.width * .9,
                                   height: 55,
+                                  theme: theme,
                                   onTap: () {})
                             ],
                           ),
@@ -632,6 +636,7 @@ class _AddCharacterState extends State<AddCharacter> {
                               addbutton(
                                   title: "Add a character",
                                   width: 170,
+                                  theme: theme,
                                   onTap: () async {
                                     await showModalBottomSheet(
                                       isScrollControlled: true,
@@ -741,6 +746,7 @@ class _AddCharacterState extends State<AddCharacter> {
                               addbutton(
                                   title: "Add a theme",
                                   width: MediaQuery.of(context).size.width * .9,
+                                  theme: theme,
                                   onTap: () {})
                             ],
                           ),
@@ -792,8 +798,10 @@ class _AddCharacterState extends State<AddCharacter> {
                                 Colors.white, // Text (foreground) color
                           ),
                           child: Text("Continue",
-                              style: theme.textTheme.bodyLarge!
-                                  .copyWith(color: AppColors.textColorblue)),
+                              style: theme.textTheme.bodyLarge!.copyWith(
+                                  color: AppColors.textColorblue,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400)),
                         ),
                       ),
                     )
@@ -831,16 +839,17 @@ class _AddCharacterState extends State<AddCharacter> {
                   : AppColors.buttonwhite, // Text (foreground) color
             ),
             child: Text(title,
-                style: TextStyle(
-                  color: selected == true
-                      ? AppColors.textColorWhite
-                      : AppColors.textColorblack,
-                )),
+                style: theme.textTheme.bodyLarge!.copyWith(
+                    color: selected == true
+                        ? AppColors.textColorWhite
+                        : AppColors.textColorblack,
+                    fontWeight: FontWeight.w500)),
           ),
         ),
       );
   Widget addbutton(
-      {required String title,
+      {required ThemeData theme,
+      required String title,
       required double width,
       required VoidCallback onTap,
       double height = 47}) {
@@ -865,10 +874,9 @@ class _AddCharacterState extends State<AddCharacter> {
                     size: 20,
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    title,
-                    style: const TextStyle(color: AppColors.textColorblack),
-                  ),
+                  Text(title,
+                      style: theme.textTheme.bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w500)),
                 ])),
       ),
     );

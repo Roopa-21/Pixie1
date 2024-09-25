@@ -19,7 +19,7 @@ class _NavBarState extends State<NavBar> {
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 211, 196, 242),
+            // color: Color.fromARGB(255, 211, 196, 242),
             image: DecorationImage(
                 image: AssetImage("assets/images/navbar.png"),
                 fit: BoxFit.fill)),

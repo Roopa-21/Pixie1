@@ -92,6 +92,7 @@ class _ChoiceChipsState extends State<ChoiceChips> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final children = widget.options.map<Widget>(
       (option) {
         final selected = selectedValues.contains(option.label);
@@ -120,10 +121,9 @@ class _ChoiceChipsState extends State<ChoiceChips> {
                     widget.onChanged!(choiceChipValues);
                   }
                 : null,
-            label: Text(
-              option.label,
-              style: style.textStyle,
-            ),
+            label: Text(option.label,
+                style: theme.textTheme.bodyLarge!
+                    .copyWith(fontWeight: FontWeight.w500)),
             labelPadding: style.labelPadding,
             padding: const EdgeInsets.all(16),
             // avatar: const Icon(Icons.star_border_purple500_rounded),
