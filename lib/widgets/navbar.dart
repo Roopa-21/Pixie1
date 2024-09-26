@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/routes/routes.dart';
 
 class NavBar extends StatefulWidget {
@@ -34,7 +32,7 @@ class _NavBarState extends State<NavBar> {
               IconButton(
                 onPressed: () => router.go('/HomePage'),
                 icon: SvgPicture.asset(
-                  'assets/images/home.svg',
+                  'assets/images/home-02.svg',
                   width: 40,
                   height: 40,
                 ),
@@ -42,7 +40,7 @@ class _NavBarState extends State<NavBar> {
               IconButton(
                 onPressed: () => router.go('/MyStories'),
                 icon: SvgPicture.asset(
-                  'assets/images/Frame 4262.svg',
+                  'assets/images/home.svg',
                   width: 40,
                   height: 40,
                 ),
