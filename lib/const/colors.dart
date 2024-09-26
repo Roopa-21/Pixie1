@@ -8,7 +8,8 @@ class AppColors {
   static const textColorWhite = Color.fromARGB(255, 255, 255, 255);
   static const textColorblack = Color.fromARGB(255, 0, 0, 0);
   static const textColorGrey = Color(0xff6F6F6F);
-
+  static const dotColorSelected = Colors.black;
+  static const dotColorUnSelected = Color(0xff6F6F6F);
   static const buttonwhite = Color.fromARGB(255, 255, 255, 255);
   static const buttonblue = Color(0xFF612ACE);
   static const buttongrey = Color(0x78788033);
@@ -18,13 +19,15 @@ class AppColors {
   static const primaryColor = Color(0xffFFFCB1);
   static const secondaryColor = Color(0xffCEBEFB);
   static const kwhiteColor = Colors.white;
+  static const kblackColor=Colors.black;
+  static const kgreyColor = Color(0xff838383);
   static const secondaryBackgroundColor = Color.fromRGBO(255, 255, 255, 0.74);
   static const choicechipSelected = Color(0xFF612ACE);
   static const choicechipUnSelected = Color.fromARGB(255, 255, 255, 255);
   static const sliderColor = Color(0xFF612ACE);
   static const sliderBackground = Color.fromARGB(255, 255, 255, 255);
   static const iconColor = Color(0xff612ACE);
-  static const kgreyColor = Color(0xff838383);
+
   static const buttonColor1 = Color(0xff5923C4);
   static const buttonColor2 = Color(0xffAF52DE);
   static const outerButtonColor1 = Color(0xffAC8BEC);
