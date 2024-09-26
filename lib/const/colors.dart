@@ -18,8 +18,9 @@ class AppColors {
 
   static const primaryColor = Color(0xffFFFCB1);
   static const secondaryColor = Color(0xffCEBEFB);
+  static const tertiarycolor = Color(0xff612ACE);
   static const kwhiteColor = Colors.white;
-  static const kblackColor=Colors.black;
+  static const kblackColor = Colors.black;
   static const kgreyColor = Color(0xff838383);
   static const secondaryBackgroundColor = Color.fromRGBO(255, 255, 255, 0.74);
   static const choicechipSelected = Color(0xFF612ACE);
