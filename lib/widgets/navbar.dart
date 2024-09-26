@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/routes/routes.dart';
 
@@ -19,42 +20,47 @@ class _NavBarState extends State<NavBar> {
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
-            // color: Color.fromARGB(255, 211, 196, 242),
-            image: DecorationImage(
-                image: AssetImage("assets/images/navbar.png"),
-                fit: BoxFit.fill)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+          color: AppColors.kwhiteColor,
+        ),
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 20),
+              const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () => router.go('/HomePage'),
                 icon: SvgPicture.asset(
-                  'assets/images/navbar_icon1.svg',
-                  width: 40, // Icon size
+                  'assets/images/home.svg',
+                  width: 40,
                   height: 40,
-                  // color: Colors.white,  // Optional: to apply color filter to the SVG
+                ),
+              ),
+              IconButton(
+                onPressed: () => router.go('/MyStories'),
+                icon: SvgPicture.asset(
+                  'assets/images/Frame 4262.svg',
+                  width: 40,
+                  height: 40,
                 ),
               ),
               IconButton(
                 onPressed: () => router.push('/AddCharacter'),
                 icon: SvgPicture.asset(
-                  'assets/images/navbar_icon2.svg',
-                  width: 51, // Icon size
-                  height: 51,
-                  // color: Colors.white,  // Optional: to apply color filter to the SVG
+                  'assets/images/story.svg',
+                  width: 40,
+                  height: 40,
                 ),
               ),
               IconButton(
                 onPressed: () {},
                 icon: SvgPicture.asset(
                   'assets/images/navbar_icon3.svg',
-                  width: 40, // Icon size
+                  width: 40,
                   height: 40,
-                  // color: Colors.white,  // Optional: to apply color filter to the SVG
                 ),
               )
             ],

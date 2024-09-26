@@ -31,7 +31,7 @@ ThemeData appTheme(BuildContext context) {
           scaler: scaler,
           fontSize: 80,
           weight: FontWeight.w800,
-          color: const Color.fromARGB(255, 6, 39, 202)),
+          color: const Color(0xFF612ACE)),
       displayMedium: getTextStyle(
           scaler: scaler,
           fontSize: 45,
@@ -51,7 +51,7 @@ ThemeData appTheme(BuildContext context) {
           scaler: scaler,
           fontSize: 28,
           weight: FontWeight.w600,
-          color: AppColors.textColorblack),
+          color: const Color(0xFF612ACE)),
       headlineSmall: getTextStyle(
           scaler: scaler,
           fontSize: 24,
@@ -82,9 +82,9 @@ ThemeData appTheme(BuildContext context) {
           color: AppColors.textColorblack),
       bodyMedium: getTextStyle(
           scaler: scaler,
-          fontSize: 14,
+          fontSize: 20,
           letterSpacing: 0.25,
-          weight: FontWeight.w800,
+          weight: FontWeight.w400,
           color: AppColors.textColorblack),
       bodySmall: getTextStyle(
           scaler: scaler,
@@ -120,7 +120,7 @@ ThemeData appTheme(BuildContext context) {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: Colors.transparent,
         foregroundColor: AppColors.textColorblack,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5)),

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/routes/routes.dart';
 import 'package:pixieapp/widgets/add_new_character.dart';
-import 'package:pixieapp/widgets/bottomsheet.dart';
 import 'package:pixieapp/widgets/choicechip.dart';
 
 class AddCharacter extends StatefulWidget {
@@ -131,27 +129,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              15.0, 0.0, 0.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: 0.166,
-                                        // width:
-                                        //     MediaQuery.sizeOf(context).width *
-                                        //         0.70,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor: AppColors.sliderColor,
-                                        backgroundColor:
-                                            AppColors.sliderBackground,
-                                        barRadius: const Radius.circular(20.0),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
-                                  ),
+                                  SizedBox(width: 5),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
                                 ],
                               ),
                               Padding(
@@ -262,27 +246,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              15.0, 0.0, 0.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: 0.332,
-                                        // width:
-                                        //     MediaQuery.sizeOf(context).width *
-                                        //         0.70,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor: AppColors.sliderColor,
-                                        backgroundColor:
-                                            AppColors.sliderBackground,
-                                        barRadius: const Radius.circular(20.0),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
-                                  ),
+                                  SizedBox(width: 5),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
                                 ],
                               ),
                               const SizedBox(height: 30),
@@ -388,27 +358,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              15.0, 0.0, 0.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: 0.498,
-                                        // width:
-                                        //     MediaQuery.sizeOf(context).width *
-                                        //         0.70,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor: AppColors.sliderColor,
-                                        backgroundColor:
-                                            AppColors.sliderBackground,
-                                        barRadius: const Radius.circular(20.0),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
-                                  ),
+                                  SizedBox(width: 5),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
                                 ],
                               ),
                               Padding(
@@ -469,27 +425,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              15.0, 0.0, 0.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: 0.664,
-                                        // width:
-                                        //     MediaQuery.sizeOf(context).width *
-                                        //         0.70,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor: AppColors.sliderColor,
-                                        backgroundColor:
-                                            AppColors.sliderBackground,
-                                        barRadius: const Radius.circular(20.0),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
-                                  ),
+                                  SizedBox(width: 5),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
                                 ],
                               ),
                               const SizedBox(
@@ -549,41 +491,27 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              15.0, 0.0, 0.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: 0.83,
-                                        // width:
-                                        //     MediaQuery.sizeOf(context).width *
-                                        //         0.65,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor: AppColors.sliderColor,
-                                        backgroundColor:
-                                            AppColors.sliderBackground,
-                                        barRadius: const Radius.circular(20.0),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  TextButton(
-                                      onPressed: () async {
-                                        await pageViewController?.nextPage(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          curve: Curves.ease,
-                                        );
-                                      },
-                                      child: const Text(
-                                        "Skip",
-                                        style: TextStyle(
-                                            color: AppColors.textColorblue),
-                                      ))
+                                  SizedBox(width: 5),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 0),
+                                  // const SizedBox(width: 5),
+                                  // TextButton(
+                                  //     onPressed: () async {
+                                  //       await pageViewController?.nextPage(
+                                  //         duration:
+                                  //             const Duration(milliseconds: 300),
+                                  //         curve: Curves.ease,
+                                  //       );
+                                  //     },
+                                  //     child: const Text(
+                                  //       "Skip",
+                                  //       style: TextStyle(
+                                  //           color: AppColors.textColorblue),
+                                  //     ))
                                 ],
                               ),
                               const SizedBox(height: 30),
@@ -689,27 +617,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  Expanded(
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsetsDirectional.fromSTEB(
-                                              15.0, 0.0, 0.0, 0.0),
-                                      child: LinearPercentIndicator(
-                                        percent: 1,
-                                        // width:
-                                        //     MediaQuery.sizeOf(context).width *
-                                        //         0.70,
-                                        lineHeight: 12.0,
-                                        animation: true,
-                                        animateFromLastPercent: true,
-                                        progressColor: AppColors.sliderColor,
-                                        backgroundColor:
-                                            AppColors.sliderBackground,
-                                        barRadius: const Radius.circular(20.0),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
-                                  ),
+                                  SizedBox(width: 5),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 1),
                                   const SizedBox(width: 10),
                                   TextButton(
                                       onPressed: () {
@@ -847,6 +761,24 @@ class _AddCharacterState extends State<AddCharacter> {
           ),
         ),
       );
+  Widget customSlider({required double percent}) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(5.0, 0.0, 0.0, 0.0),
+        child: LinearPercentIndicator(
+          percent: percent,
+          lineHeight: 9.0,
+          animation: true,
+          animateFromLastPercent: true,
+          progressColor: AppColors.sliderColor,
+          backgroundColor: AppColors.sliderBackground,
+          barRadius: const Radius.circular(20.0),
+          padding: EdgeInsets.zero,
+        ),
+      ),
+    );
+  }
+
   Widget addbutton(
       {required ThemeData theme,
       required String title,

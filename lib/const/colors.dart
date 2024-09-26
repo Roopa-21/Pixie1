@@ -4,12 +4,17 @@ class AppColors {
   static const textColor1 = Color(0xffA7B5FF);
   static const textColor2 = Color(0xffFC7C1F);
   static const textColorblue = Color(0xFF612ACE);
+  static const textpurplelite = Color(0xffCBB4F7);
   static const textColorWhite = Color.fromARGB(255, 255, 255, 255);
   static const textColorblack = Color.fromARGB(255, 0, 0, 0);
   static const textColorGrey = Color(0xff6F6F6F);
 
   static const buttonwhite = Color.fromARGB(255, 255, 255, 255);
   static const buttonblue = Color(0xFF612ACE);
+  static const buttongrey = Color(0x78788033);
+
+  static const backgroundpurple = Color(0xff995CDD);
+
   static const primaryColor = Color(0xffFFFCB1);
   static const secondaryColor = Color(0xffCEBEFB);
   static const kwhiteColor = Colors.white;
@@ -31,5 +36,4 @@ class AppColors {
   static const bottomSheetBackground = Color.fromARGB(255, 242, 242, 247);
 
   static const likeButtonColor = Color(0xffF47C25);
-
 }
