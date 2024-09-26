@@ -13,7 +13,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const CreateAccount(),
+      builder: (context, state) => const StoryGeneratePage(),
     ),
     GoRoute(
       path: '/CreateStoryPage',
