@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -40,7 +42,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       body: Column(
         children: [
           Expanded(
-            flex: 8,
+            flex: 10,
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (int page) {
@@ -58,7 +60,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: Column(
               children: [
                 Row(
@@ -72,7 +74,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () => context.go('/CreateAccount'),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonblue,
                         minimumSize: Size(devicewidth, 50),
@@ -85,11 +87,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             fontWeight: FontWeight.w400)),
                   ),
                 ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
+                        elevation: 5,
                         backgroundColor: AppColors.kwhiteColor,
                         minimumSize: Size(devicewidth, 50),
                         shape: RoundedRectangleBorder(
@@ -143,7 +147,7 @@ class OnboardContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 300,
           ),
           Text(
