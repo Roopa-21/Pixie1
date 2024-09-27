@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
+import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
 import 'package:pixieapp/pages/MyStories/mystories.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
 import 'package:pixieapp/pages/SetPeofileLanding/set_profile_landing.dart';
@@ -24,7 +25,12 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/AddCharacter',
-      builder: (context, state) => const AddCharacter(),
+      // builder: (context, state) => const AddCharacter(),
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(
+          child: AddCharacter(),
+        );
+      },
     ),
     GoRoute(
       path: '/AudioplayPage',
@@ -35,13 +41,21 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const StoryGeneratePage(),
     ),
     GoRoute(
-      path: '/HomePage',
-      builder: (context, state) => const HomePage(),
-    ),
+        path: '/HomePage',
+        // builder: (context, state) => const HomePage(),
+        pageBuilder: (context, state) {
+          return const NoTransitionPage(
+            child: HomePage(),
+          );
+        }),
     GoRoute(
-      path: '/MyStories',
-      builder: (context, state) => const MyStories(),
-    ),
+        path: '/MyStories',
+        // builder: (context, state) => const MyStories(),
+        pageBuilder: (context, state) {
+          return const NoTransitionPage(
+            child: MyStories(),
+          );
+        }),
     GoRoute(
       path: '/AllStories',
       builder: (context, state) => const AllStories(),
@@ -57,6 +71,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/SetProfileLanding',
       builder: (context, state) => const SetProfileLanding(),
+    ),
+    GoRoute(
+      path: '/CreateAccountWithEmail',
+      builder: (context, state) => const CreateAccountWithEmail(),
     ),
   ],
   errorBuilder: (context, state) => const ErrorPage(),

@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/add_new_character.dart';
 import 'package:pixieapp/widgets/choicechip.dart';
+import 'package:pixieapp/widgets/navbar.dart';
 
 class AddCharacter extends StatefulWidget {
   const AddCharacter({super.key});
@@ -129,7 +128,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   customSlider(percent: 1),
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),

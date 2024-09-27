@@ -15,6 +15,7 @@ class AppColors {
   static const buttongrey = Color(0x78788033);
 
   static const backgroundpurple = Color(0xff995CDD);
+  static const backgrountdarkpurple = Color(0xff612ACE);
 
   static const primaryColor = Color(0xffFFFCB1);
   static const secondaryColor = Color(0xffCEBEFB);

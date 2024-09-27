@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerification extends StatefulWidget {
   const OtpVerification({super.key});
@@ -9,7 +10,28 @@ class OtpVerification extends StatefulWidget {
   State<OtpVerification> createState() => _OtpVerificationState();
 }
 
-class _OtpVerificationState extends State<OtpVerification> {
+class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
+  String _otpCode = '';
+
+  @override
+  void initState() {
+    super.initState();
+    listenForCode();
+  }
+
+  @override
+  void codeUpdated() {
+    setState(() {
+      _otpCode = code!;
+    });
+  }
+
+  @override
+  void dispose() {
+    cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -41,38 +63,32 @@ class _OtpVerificationState extends State<OtpVerification> {
                   style: theme.textTheme.bodyMedium!.copyWith(),
                 ),
                 const SizedBox(height: 30),
-                const TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    hintText: " Enter otp",
-                    hintStyle: TextStyle(
-                        color: AppColors.textColorblue,
-                        fontWeight: FontWeight.w400),
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        strokeAlign: 5,
-                        color: AppColors.textpurplelite,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColors.textpurplelite,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: AppColors.textpurplelite,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
+
+                // Updated TextField with PinFieldAutoFill for OTP
+                PinFieldAutoFill(
+                  codeLength: 6,
+                  currentCode: _otpCode,
+                  decoration: UnderlineDecoration(
+                    textStyle: const TextStyle(
+                        fontSize: 20, color: AppColors.textColorblack),
+                    colorBuilder:
+                        const FixedColorBuilder(AppColors.textpurplelite),
                   ),
-                  style: TextStyle(color: Colors.black),
+                  onCodeSubmitted: (code) {
+                    setState(() {
+                      _otpCode = code;
+                    });
+                  },
+                  onCodeChanged: (code) {
+                    if (code!.length == 6) {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    }
+                    setState(() {
+                      _otpCode = code;
+                    });
+                  },
                 ),
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -88,7 +104,6 @@ class _OtpVerificationState extends State<OtpVerification> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      // foregroundColor: const Color.fromARGB(20, 120, 128, 51),
                       backgroundColor:
                           AppColors.buttonblue, // Text (foreground) color
                     ),
