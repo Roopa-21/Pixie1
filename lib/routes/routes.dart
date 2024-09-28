@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
-import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
+import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/MyStories/mystories.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
 import 'package:pixieapp/pages/SetPeofileLanding/set_profile_landing.dart';
+import 'package:pixieapp/pages/SplashScreen/splash_screen.dart';
+import 'package:pixieapp/pages/SplashScreen/story_confirmtion_page.dart';
 import 'package:pixieapp/pages/error%20page/error_page.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
@@ -11,13 +13,14 @@ import 'package:pixieapp/pages/audioPlay/audioplay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
 import 'package:pixieapp/pages/home/home_page.dart';
 import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
+import 'package:pixieapp/pages/questions_intro_page.dart';
 import 'package:pixieapp/pages/storygenerate/storygenerate.dart';
 
 final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const OnboardingPage(),
+      builder: (context, state) => const IntroductionPage(),
     ),
     GoRoute(
       path: '/CreateStoryPage',
@@ -61,20 +64,20 @@ final GoRouter router = GoRouter(
       builder: (context, state) => const AllStories(),
     ),
     GoRoute(
-      path: '/CreateAccount',
-      builder: (context, state) => const CreateAccount(),
+      path: '/questionIntroPage',
+      builder: (context, state) => const QuestionsIntroPage(),
     ),
     GoRoute(
-      path: '/OtpVerification',
-      builder: (context, state) => const OtpVerification(),
+      path: '/introductionPages',
+      builder: (context, state) => const IntroductionPage(),
     ),
-    GoRoute(
-      path: '/SetProfileLanding',
-      builder: (context, state) => const SetProfileLanding(),
+      GoRoute(
+      path: '/splashScreen',
+      builder: (context, state) => const SplashScreen(),
     ),
-    GoRoute(
-      path: '/CreateAccountWithEmail',
-      builder: (context, state) => const CreateAccountWithEmail(),
+      GoRoute(
+      path: '/storyconfirmationstory',
+      builder: (context, state) => const StoryConfirmationPage(),
     ),
   ],
   errorBuilder: (context, state) => const ErrorPage(),
