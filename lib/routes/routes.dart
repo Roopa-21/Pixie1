@@ -1,7 +1,12 @@
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
+
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/MyStories/mystories.dart';
+
+import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
+import 'package:pixieapp/pages/Library/Library.dart';
+
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
 import 'package:pixieapp/pages/SetPeofileLanding/set_profile_landing.dart';
 import 'package:pixieapp/pages/SplashScreen/splash_screen.dart';
@@ -52,11 +57,11 @@ final GoRouter router = GoRouter(
           );
         }),
     GoRoute(
-        path: '/MyStories',
+        path: '/Library',
         // builder: (context, state) => const MyStories(),
         pageBuilder: (context, state) {
           return const NoTransitionPage(
-            child: MyStories(),
+            child: Library(),
           );
         }),
     GoRoute(
