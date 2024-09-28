@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -14,46 +16,49 @@ class AddCharacter extends StatefulWidget {
 }
 
 class _AddCharacterState extends State<AddCharacter> {
-  // State field(s) for PageView widget.
   PageController? pageViewController;
-
+  int currentpage_index = 0;
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
           pageViewController!.page != null
       ? pageViewController!.page!.round()
       : 0;
-  // State field(s) for ChoiceChips widget.
+
   FormFieldController<List<String>>? choiceChipsValueController1;
-  List<String>? get choiceChipsValues1 => choiceChipsValueController1?.value;
-  set choiceChipsValues1(List<String>? val) =>
-      choiceChipsValueController1?.value = val;
-  // State field(s) for ChoiceChips widget.
+  String? get choiceChipsValue1 =>
+      choiceChipsValueController1?.value?.firstOrNull;
+  set choiceChipsValue1(String? val) =>
+      choiceChipsValueController1?.value = val != null ? [val] : [];
+
   FormFieldController<List<String>>? choiceChipsValueController2;
-  List<String>? get choiceChipsValues2 => choiceChipsValueController2?.value;
-  set choiceChipsValues2(List<String>? val) =>
-      choiceChipsValueController2?.value = val;
-  // State field(s) for ChoiceChips widget.
+  String? get choiceChipsValue2 =>
+      choiceChipsValueController2?.value?.firstOrNull;
+  set choiceChipsValue2(String? val) =>
+      choiceChipsValueController2?.value = val != null ? [val] : [];
+
   FormFieldController<List<String>>? choiceChipsValueController3;
   String? get choiceChipsValue3 =>
       choiceChipsValueController3?.value?.firstOrNull;
   set choiceChipsValue3(String? val) =>
       choiceChipsValueController3?.value = val != null ? [val] : [];
-  // State field(s) for ChoiceChips widget.
+
   FormFieldController<List<String>>? choiceChipsValueController4;
   String? get choiceChipsValue4 =>
       choiceChipsValueController4?.value?.firstOrNull;
   set choiceChipsValue4(String? val) =>
       choiceChipsValueController4?.value = val != null ? [val] : [];
-  // State field(s) for ChoiceChips widget.
+
   FormFieldController<List<String>>? choiceChipsValueController5;
-  List<String>? get choiceChipsValues5 => choiceChipsValueController5?.value;
-  set choiceChipsValues5(List<String>? val) =>
-      choiceChipsValueController5?.value = val;
-  // State field(s) for ChoiceChips widget.
+  String? get choiceChipsValue5 =>
+      choiceChipsValueController5?.value?.firstOrNull;
+  set choiceChipsValue5(String? val) =>
+      choiceChipsValueController5?.value = val != null ? [val] : [];
+
   FormFieldController<List<String>>? choiceChipsValueController6;
-  List<String>? get choiceChipsValues6 => choiceChipsValueController6?.value;
-  set choiceChipsValues6(List<String>? val) =>
-      choiceChipsValueController6?.value = val;
+  String? get choiceChipsValue6 =>
+      choiceChipsValueController6?.value?.firstOrNull;
+  set choiceChipsValue6(String? val) =>
+      choiceChipsValueController6?.value = val != null ? [val] : [];
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -87,19 +92,27 @@ class _AddCharacterState extends State<AddCharacter> {
               ],
             ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(
-                        20.0, 10.0, 20.0, 10.0),
-                    child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: Platform.isIOS ? 44.0 : 24.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
+                          20.0, 10.0, 20.0, 10.0),
                       child: PageView(
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentpage_index = index;
+                          });
+                        },
                         controller: pageViewController ??=
                             PageController(initialPage: 0),
                         scrollDirection: Axis.horizontal,
@@ -112,14 +125,15 @@ class _AddCharacterState extends State<AddCharacter> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Container(
+                                      width: 40,
+                                      height: 40,
                                       decoration: BoxDecoration(
-                                        color: const Color(
-                                            0xFFE8DEF8), // Background color
+                                        color: const Color(0xFFE8DEF8),
                                         borderRadius:
                                             BorderRadius.circular(40.0),
                                       ),
                                       child: IconButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           context.pop();
                                         },
                                         icon: const Icon(
@@ -134,86 +148,54 @@ class _AddCharacterState extends State<AddCharacter> {
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),
-                                  customSlider(percent: 0),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 30.0, 15.0, 0.0),
-                                child: Text(
-                                  'Let’s add in some characters...',
-                                  style: theme.textTheme.displaySmall!.copyWith(
-                                      color: AppColors.textColorblue,
-                                      fontWeight: FontWeight.w600),
+                              SingleChildScrollView(
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 25),
+                                    Text(
+                                      'Music and speed of the story suitable for',
+                                      style: theme.textTheme.displaySmall!
+                                          .copyWith(
+                                              color: AppColors.textColorblue,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 34),
+                                    ),
+                                    const SizedBox(height: 25),
+                                    choicechipbutton(
+                                        theme: theme,
+                                        title: "Bedtime",
+                                        selected: true,
+                                        ontap: () {}),
+                                    choicechipbutton(
+                                        theme: theme,
+                                        title: "Playtime",
+                                        selected: false,
+                                        ontap: () {}),
+                                    const SizedBox(height: 40),
+                                    Text(
+                                      'Language of the story',
+                                      style: theme.textTheme.displaySmall!
+                                          .copyWith(
+                                              color: AppColors.textColorblue,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 34),
+                                    ),
+                                    const SizedBox(height: 25),
+                                    choicechipbutton(
+                                        theme: theme,
+                                        title: "English",
+                                        selected: true,
+                                        ontap: () {}),
+                                    choicechipbutton(
+                                        theme: theme,
+                                        title: "Hindi",
+                                        selected: false,
+                                        ontap: () {}),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(height: 25),
-                              ChoiceChips(
-                                options: const [
-                                  ChipData(
-                                      'Elephant', Icons.star_purple500_rounded),
-                                  ChipData(
-                                      'Name', Icons.star_purple500_rounded),
-                                  ChipData('Hippopotamus',
-                                      Icons.star_purple500_rounded),
-                                  ChipData('Person', Icons.star_rate_outlined),
-                                  ChipData(
-                                      'Friend', Icons.star_purple500_rounded),
-                                  ChipData('Dog', Icons.star_purple500_rounded)
-                                ],
-                                onChanged: (val) => choiceChipsValues1 = val,
-                                selectedChipStyle: ChipStyle(
-                                  backgroundColor: AppColors.sliderColor,
-                                  textStyle: theme.textTheme.bodyMedium,
-                                  iconColor: AppColors.sliderColor,
-                                  iconSize: 18.0,
-                                  elevation: 0.0,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                unselectedChipStyle: ChipStyle(
-                                  backgroundColor:
-                                      AppColors.choicechipUnSelected,
-                                  textStyle: theme.textTheme.bodySmall,
-                                  iconColor: AppColors.sliderColor,
-                                  iconSize: 16.0,
-                                  elevation: 0.0,
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                                chipSpacing: 10.0,
-                                rowSpacing: 10.0,
-                                multiselect: true,
-                                alignment: WrapAlignment.start,
-                                controller: choiceChipsValueController1 ??=
-                                    FormFieldController<List<String>>(
-                                  [],
-                                ),
-                                wrapped: true,
-                              ),
-                              addbutton(
-                                  title: "Add a character",
-                                  width: 180,
-                                  theme: theme,
-                                  onTap: () async {
-                                    await showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      enableDrag: false,
-                                      context: context,
-                                      builder: (context) {
-                                        return GestureDetector(
-                                          onTap: () =>
-                                              FocusScope.of(context).unfocus(),
-                                          child: Padding(
-                                            padding: MediaQuery.viewInsetsOf(
-                                                context),
-                                            child: AddNewCharacter(
-                                              text: "Name a\ncharacter",
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  })
                             ],
                           ),
                           Column(
@@ -224,20 +206,22 @@ class _AddCharacterState extends State<AddCharacter> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Container(
+                                      width: 40,
+                                      height: 40,
                                       decoration: BoxDecoration(
-                                        color: const Color(
-                                            0xFFE8DEF8), // Background color
+                                        color: const Color(0xFFE8DEF8),
                                         borderRadius:
                                             BorderRadius.circular(40.0),
                                       ),
                                       child: IconButton(
-                                        onPressed: () async {
-                                          await pageViewController
-                                              ?.previousPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
+                                        onPressed: () {
+                                          setState(() {
+                                            pageViewController?.previousPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          });
                                         },
                                         icon: const Icon(
                                           Icons.arrow_back,
@@ -245,21 +229,263 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  SizedBox(width: 5),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
+                                  const SizedBox(width: 5),
                                   customSlider(percent: 0),
+                                  customSlider(percent: 1),
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),
                                 ],
                               ),
+                              Expanded(
+                                child: SingleChildScrollView(
+                                  primary: true,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(15.0, 25, 15.0, 0.0),
+                                        child: Text(
+                                          'Add a character to the story...',
+                                          style: theme.textTheme.displaySmall!
+                                              .copyWith(
+                                                  color:
+                                                      AppColors.textColorblue,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 34),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(15.0, 10.0, 15.0, 0.0),
+                                        child: Text(
+                                          'Select one',
+                                          style: theme.textTheme.displaySmall!
+                                              .copyWith(
+                                                  color: AppColors.kgreyColor,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 20),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 25),
+                                      ChoiceChips(
+                                        options: const [
+                                          ChipData('Elephant',
+                                              Icons.star_purple500_rounded),
+                                          ChipData('Name',
+                                              Icons.star_purple500_rounded),
+                                          ChipData('Hippopotamus',
+                                              Icons.star_purple500_rounded),
+                                          ChipData('Person',
+                                              Icons.star_rate_outlined),
+                                          ChipData('Friend',
+                                              Icons.star_purple500_rounded),
+                                          ChipData('Dog',
+                                              Icons.star_purple500_rounded)
+                                        ],
+                                        onChanged: (val) => choiceChipsValue1 =
+                                            val?.firstOrNull,
+                                        selectedChipStyle: ChipStyle(
+                                          backgroundColor:
+                                              AppColors.sliderColor,
+                                          textStyle: theme.textTheme.bodyMedium,
+                                          iconColor: AppColors.sliderColor,
+                                          iconSize: 18.0,
+                                          elevation: 0.0,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        unselectedChipStyle: ChipStyle(
+                                          backgroundColor:
+                                              AppColors.choicechipUnSelected,
+                                          textStyle: theme.textTheme.bodySmall,
+                                          iconColor: AppColors.sliderColor,
+                                          iconSize: 16.0,
+                                          elevation: 0.0,
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                        chipSpacing: 10.0,
+                                        rowSpacing: 10.0,
+                                        multiselect: true,
+                                        alignment: WrapAlignment.start,
+                                        controller:
+                                            choiceChipsValueController1 ??=
+                                                FormFieldController<
+                                                    List<String>>(
+                                          [],
+                                        ),
+                                        wrapped: true,
+                                      ),
+                                      addbutton(
+                                          title: "Add a character",
+                                          width: 180,
+                                          theme: theme,
+                                          onTap: () async {
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return GestureDetector(
+                                                  onTap: () =>
+                                                      FocusScope.of(context)
+                                                          .unfocus(),
+                                                  child: Padding(
+                                                    padding:
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
+                                                    child:
+                                                        const AddNewCharacter(
+                                                      text: "Name a\ncharacter",
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }),
+                                      const SizedBox(height: 40),
+                                      Container(
+                                        width: double.infinity,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .175,
+                                        decoration: BoxDecoration(
+                                            color: AppColors.koffwhiteColor,
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            )),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(14.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Pro Tip',
+                                                style: theme
+                                                    .textTheme.displaySmall!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .kgreyColor,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 16),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                'Ask your little one:\nWhat should we name this character?',
+                                                style: theme
+                                                    .textTheme.displaySmall!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .textColorblue,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 16),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              const TextField(
+                                                decoration: InputDecoration(
+                                                    hintText:
+                                                        'Enter character name',
+                                                    hintStyle: TextStyle(
+                                                        color: AppColors
+                                                            .kgreyColor),
+                                                    border:
+                                                        UnderlineInputBorder(),
+                                                    focusedBorder:
+                                                        UnderlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: AppColors
+                                                                    .kpurple)),
+                                                    enabledBorder:
+                                                        UnderlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: AppColors
+                                                                    .kgreyColor)),
+                                                    fillColor:
+                                                        Colors.transparent),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFE8DEF8),
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () async {
+                                          setState(() {
+                                            pageViewController?.previousPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.arrow_back,
+                                          color: AppColors.sliderColor,
+                                          size: 23,
+                                        ),
+                                      )),
+                                  const SizedBox(width: 5),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 1),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  TextButton(
+                                      onPressed: () {
+                                        pageViewController!.jumpToPage(4);
+                                      },
+                                      child: const Text("Skip to end",
+                                          style: TextStyle(
+                                              color: AppColors.textColorblue)))
+                                ],
+                              ),
                               const SizedBox(height: 30),
                               Text(
-                                'Add loved ones in...',
+                                'Add a loved one to the story..',
                                 style: theme.textTheme.displaySmall!.copyWith(
                                     color: AppColors.textColorblue,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    15.0, 10.0, 15.0, 0.0),
+                                child: Text(
+                                  'Select one',
+                                  style: theme.textTheme.displaySmall!.copyWith(
+                                      color: AppColors.kgreyColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20),
+                                ),
                               ),
                               const SizedBox(height: 25),
                               ChoiceChips(
@@ -273,7 +499,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                       'Friend', Icons.star_purple500_rounded),
                                   ChipData('Name', Icons.star_purple500_rounded)
                                 ],
-                                onChanged: (val) => choiceChipsValues2 = val,
+                                onChanged: (val) =>
+                                    choiceChipsValue2 = val?.firstOrNull,
                                 selectedChipStyle: ChipStyle(
                                   backgroundColor: AppColors.sliderColor,
                                   textStyle: theme.textTheme.bodyMedium,
@@ -302,8 +529,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                 wrapped: true,
                               ),
                               addbutton(
-                                  title: "Add",
-                                  width: 100,
+                                  title: "Add a loved one",
+                                  width: 200,
                                   theme: theme,
                                   onTap: () async {
                                     await showModalBottomSheet(
@@ -318,7 +545,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
-                                            child: AddNewCharacter(
+                                            child: const AddNewCharacter(
                                               text: "Name a\ncharacter",
                                             ),
                                           ),
@@ -336,20 +563,22 @@ class _AddCharacterState extends State<AddCharacter> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Container(
+                                      width: 40,
+                                      height: 40,
                                       decoration: BoxDecoration(
-                                        color: const Color(
-                                            0xFFE8DEF8), // Background color
+                                        color: const Color(0xFFE8DEF8),
                                         borderRadius:
                                             BorderRadius.circular(40.0),
                                       ),
                                       child: IconButton(
                                         onPressed: () async {
-                                          await pageViewController
-                                              ?.previousPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
+                                          setState(() {
+                                            pageViewController?.previousPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          });
                                         },
                                         icon: const Icon(
                                           Icons.arrow_back,
@@ -357,182 +586,62 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  SizedBox(width: 5),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
+                                  const SizedBox(width: 5),
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),
                                   customSlider(percent: 0),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsetsDirectional.fromSTEB(
-                                    15.0, 30.0, 15.0, 0.0),
-                                child: Text(
-                                  'What’s the occasion',
-                                  style: theme.textTheme.displaySmall!.copyWith(
-                                      color: AppColors.textColorblue,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              const SizedBox(height: 25),
-                              choicechipbutton(
-                                  theme: theme,
-                                  title: "Bead time",
-                                  selected: true,
-                                  ontap: () {}),
-                              choicechipbutton(
-                                  theme: theme,
-                                  title: "Play time",
-                                  selected: false,
-                                  ontap: () {}),
-                              addbutton(
-                                  title: "Add occasion",
-                                  width: MediaQuery.of(context).size.width * .9,
-                                  height: 55,
-                                  theme: theme,
-                                  onTap: () {})
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color(
-                                            0xFFE8DEF8), // Background color
-                                        borderRadius:
-                                            BorderRadius.circular(40.0),
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () async {
-                                          await pageViewController
-                                              ?.previousPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_back,
-                                          color: AppColors.sliderColor,
-                                          size: 23,
-                                        ),
-                                      )),
-                                  SizedBox(width: 5),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
                                   customSlider(percent: 1),
                                   customSlider(percent: 0),
-                                  customSlider(percent: 0),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                'Language of the story',
-                                style: theme.textTheme.displaySmall!.copyWith(
-                                    color: AppColors.textColorblue,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 25),
-                              choicechipbutton(
-                                  theme: theme,
-                                  title: "English",
-                                  selected: true,
-                                  ontap: () {}),
-                              choicechipbutton(
-                                  theme: theme,
-                                  title: "Hindi",
-                                  selected: false,
-                                  ontap: () {}),
-                              addbutton(
-                                  title: "Add language",
-                                  width: MediaQuery.of(context).size.width * .9,
-                                  height: 55,
-                                  theme: theme,
-                                  onTap: () {})
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color(
-                                            0xFFE8DEF8), // Background color
-                                        borderRadius:
-                                            BorderRadius.circular(40.0),
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () async {
-                                          await pageViewController
-                                              ?.previousPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
-                                        },
-                                        icon: const Icon(
-                                          Icons.arrow_back,
-                                          color: AppColors.sliderColor,
-                                          size: 23,
-                                        ),
-                                      )),
-                                  SizedBox(width: 5),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 0),
-                                  // const SizedBox(width: 5),
-                                  // TextButton(
-                                  //     onPressed: () async {
-                                  //       await pageViewController?.nextPage(
-                                  //         duration:
-                                  //             const Duration(milliseconds: 300),
-                                  //         curve: Curves.ease,
-                                  //       );
-                                  //     },
-                                  //     child: const Text(
-                                  //       "Skip",
-                                  //       style: TextStyle(
-                                  //           color: AppColors.textColorblue),
-                                  //     ))
+                                  TextButton(
+                                      onPressed: () {
+                                        pageViewController!.jumpToPage(4);
+                                      },
+                                      child: const Text("Skip to end",
+                                          style: TextStyle(
+                                              color: AppColors.textColorblue)))
                                 ],
                               ),
                               const SizedBox(height: 30),
                               Text(
-                                'Add a lesson',
+                                'Add a lesson to the story..',
                                 style: theme.textTheme.displaySmall!.copyWith(
                                     color: AppColors.textColorblue,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    15.0, 10.0, 15.0, 0.0),
+                                child: Text(
+                                  'Select one',
+                                  style: theme.textTheme.displaySmall!.copyWith(
+                                      color: AppColors.kgreyColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20),
+                                ),
                               ),
                               const SizedBox(height: 25),
                               ChoiceChips(
                                 options: const [
-                                  ChipData('Mom', Icons.star_purple500_rounded),
-                                  ChipData('Dad', Icons.star_purple500_rounded),
+                                  ChipData('Gratitude',
+                                      Icons.star_purple500_rounded),
+                                  ChipData('Respect everyone',
+                                      Icons.star_purple500_rounded),
+                                  ChipData('Being Honest',
+                                      Icons.star_purple500_rounded),
                                   ChipData(
-                                      'Nidhi', Icons.star_purple500_rounded),
-                                  ChipData('Mishka', Icons.star_rate_outlined),
+                                      'Help others', Icons.star_rate_outlined),
+                                  ChipData('Wait for your turn',
+                                      Icons.star_purple500_rounded),
+                                  ChipData('Eat Veggies',
+                                      Icons.star_purple500_rounded),
+                                  ChipData('Ask before you take',
+                                      Icons.star_purple500_rounded),
                                   ChipData(
-                                      'Friend', Icons.star_purple500_rounded),
-                                  ChipData('Name', Icons.star_purple500_rounded)
+                                      'Frienship', Icons.star_purple500_rounded)
                                 ],
-                                onChanged: (val) => choiceChipsValues5 = val,
+                                onChanged: (val) =>
+                                    choiceChipsValue5 = val?.firstOrNull,
                                 selectedChipStyle: ChipStyle(
                                   backgroundColor: AppColors.sliderColor,
                                   textStyle: theme.textTheme.bodyMedium,
@@ -577,7 +686,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                           child: Padding(
                                             padding: MediaQuery.viewInsetsOf(
                                                 context),
-                                            child: AddNewCharacter(
+                                            child: const AddNewCharacter(
                                               text: "Name a\ncharacter",
                                             ),
                                           ),
@@ -595,20 +704,22 @@ class _AddCharacterState extends State<AddCharacter> {
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Container(
+                                      width: 40,
+                                      height: 40,
                                       decoration: BoxDecoration(
-                                        color: const Color(
-                                            0xFFE8DEF8), // Background color
+                                        color: const Color(0xFFE8DEF8),
                                         borderRadius:
                                             BorderRadius.circular(40.0),
                                       ),
                                       child: IconButton(
                                         onPressed: () async {
-                                          await pageViewController
-                                              ?.previousPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
+                                          setState(() {
+                                            pageViewController?.previousPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          });
                                         },
                                         icon: const Icon(
                                           Icons.arrow_back,
@@ -616,21 +727,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                           size: 23,
                                         ),
                                       )),
-                                  SizedBox(width: 5),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
-                                  customSlider(percent: 1),
+                                  const SizedBox(width: 5),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
+                                  customSlider(percent: 0),
                                   customSlider(percent: 1),
                                   const SizedBox(width: 10),
-                                  TextButton(
-                                      onPressed: () {
-                                        context.push('/CreateStoryPage');
-                                      },
-                                      child: const Text("Skip",
-                                          style: TextStyle(
-                                              color: AppColors.textColorblue)))
                                 ],
                               ),
                               const SizedBox(height: 30),
@@ -640,27 +743,53 @@ class _AddCharacterState extends State<AddCharacter> {
                                     color: AppColors.textColorblue,
                                     fontWeight: FontWeight.w600),
                               ),
+                              Padding(
+                                padding: const EdgeInsetsDirectional.fromSTEB(
+                                    15.0, 10.0, 15.0, 0.0),
+                                child: Text(
+                                  'Select one',
+                                  style: theme.textTheme.displaySmall!.copyWith(
+                                      color: AppColors.kgreyColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20),
+                                ),
+                              ),
                               const SizedBox(height: 25),
-                              choicechipbutton(
-                                  theme: theme,
-                                  title: "Surprise me",
-                                  ontap: () {},
-                                  selected: true),
                               choicechipbutton(
                                   theme: theme,
                                   title: "Funny",
                                   ontap: () {},
+                                  selected: true),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Horror",
+                                  ontap: () {},
                                   selected: false),
                               choicechipbutton(
                                   theme: theme,
-                                  title: "Scifi",
+                                  title: "Adventure",
                                   ontap: () {},
                                   selected: false),
-                              addbutton(
-                                  title: "Add a theme",
-                                  width: MediaQuery.of(context).size.width * .9,
+                              choicechipbutton(
                                   theme: theme,
-                                  onTap: () {})
+                                  title: "Action",
+                                  ontap: () {},
+                                  selected: false),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Sci-fi",
+                                  ontap: () {},
+                                  selected: false),
+                              choicechipbutton(
+                                  theme: theme,
+                                  title: "Mystery",
+                                  ontap: () {},
+                                  selected: false),
+                              // addbutton(
+                              //     title: "Add a theme",
+                              //     width: MediaQuery.of(context).size.width * .9,
+                              //     theme: theme,
+                              //     onTap: () {})
                             ],
                           ),
                         ],
@@ -668,60 +797,108 @@ class _AddCharacterState extends State<AddCharacter> {
                     ),
                   ),
                 ),
-              ),
-              Container(
-                width: MediaQuery.sizeOf(context).width * 1.0,
-                height: 140.0,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12)),
-                    border: Border(
-                        top: BorderSide(
-                            color: Color.fromARGB(255, 255, 213, 213),
-                            strokeAlign: 1)),
-                    color: Color.fromARGB(145, 255, 255, 255)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 28),
-                      child: SizedBox(
-                        width: MediaQuery.sizeOf(context).width * 0.85,
-                        height: 60,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            if (pageViewCurrentIndex == 5) {
-                              context.push('/CreateStoryPage');
-                            } else {
-                              await pageViewController?.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.ease,
-                              );
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                Container(
+                  width: MediaQuery.sizeOf(context).width * 1.0,
+                  height: 140.0,
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12)),
+                      border: Border(
+                          top: BorderSide(
+                              color: Color.fromARGB(255, 255, 213, 213),
+                              strokeAlign: 1)),
+                      color: Color.fromARGB(145, 255, 255, 255)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .85,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            currentpage_index == 2 || currentpage_index == 3
+                                ? Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          pageViewController?.nextPage(
+                                            duration: const Duration(
+                                                milliseconds: 300),
+                                            curve: Curves.ease,
+                                          );
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        minimumSize: Size(
+                                            MediaQuery.of(context).size.width,
+                                            50),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        foregroundColor: Colors.white,
+                                        backgroundColor: Colors.white,
+                                      ),
+                                      child: Text(
+                                        "Skip",
+                                        style:
+                                            theme.textTheme.bodyLarge!.copyWith(
+                                          color: AppColors.textColorblue,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  print(pageViewCurrentIndex);
+                                  if (currentpage_index == 4) {
+                                    context.push('/CreateStoryPage');
+                                  } else {
+                                    setState(() {
+                                      pageViewController?.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.ease,
+                                      );
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: Size(
+                                      MediaQuery.of(context).size.width, 50),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                ),
+                                child: Text(
+                                  "Continue",
+                                  style: theme.textTheme.bodyLarge!.copyWith(
+                                    color: AppColors.textColorblue,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
                             ),
-                            foregroundColor: Colors.white,
-                            backgroundColor:
-                                Colors.white, // Text (foreground) color
-                          ),
-                          child: Text("Continue",
-                              style: theme.textTheme.bodyLarge!.copyWith(
-                                  color: AppColors.textColorblue,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400)),
+                          ],
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -737,7 +914,7 @@ class _AddCharacterState extends State<AddCharacter> {
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: SizedBox(
           width: MediaQuery.sizeOf(context).width * 0.9,
-          height: 60,
+          height: 48,
           child: ElevatedButton(
             onPressed: () async {},
             style: ElevatedButton.styleFrom(
@@ -749,7 +926,7 @@ class _AddCharacterState extends State<AddCharacter> {
                   : AppColors.buttonwhite,
               backgroundColor: selected == true
                   ? AppColors.buttonblue
-                  : AppColors.buttonwhite, // Text (foreground) color
+                  : AppColors.buttonwhite,
             ),
             child: Text(title,
                 style: theme.textTheme.bodyLarge!.copyWith(
