@@ -98,7 +98,7 @@ class _NavBarState extends State<NavBar> {
                         library = true;
                         settings = false;
                       });
-                      router.go('/MyStories');
+                      router.go('/Library');
                     },
                     icon: SvgPicture.asset(
                       library == true
