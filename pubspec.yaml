@@ -71,7 +71,7 @@ flutter:
   assets:
     - assets/fonts/
     - assets/images/
-    - assets/audio/
+    #- assets/audio/
     - assets/images/22731953_twinkle-twinkle-little-star_by_audiopuppy_preview.mp3
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
