@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 
@@ -42,33 +43,38 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * .7,
-                          height: 68,
-                          decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xffAF52DE),
-                                    Color(0xff5600FF),
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter),
-                              borderRadius: BorderRadius.circular(109)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/plus_icon.svg',
-                                width: 40,
-                                height: 40,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                "Create Story",
-                                style: theme.textTheme.headlineLarge!.copyWith(
-                                    fontSize: 24, color: AppColors.kwhiteColor),
-                              )
-                            ],
+                        child: InkWell(
+                          onTap: () => context.push('/AddCharacter'),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * .7,
+                            height: 68,
+                            decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xffAF52DE),
+                                      Color(0xff5600FF),
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter),
+                                borderRadius: BorderRadius.circular(109)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/plus_icon.svg',
+                                  width: 40,
+                                  height: 40,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  "Create Story",
+                                  style: theme.textTheme.headlineLarge!
+                                      .copyWith(
+                                          fontSize: 24,
+                                          color: AppColors.kwhiteColor),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

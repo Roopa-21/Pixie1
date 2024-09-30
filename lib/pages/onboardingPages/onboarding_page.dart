@@ -69,6 +69,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     (index) => buildDot(index),
                   ),
                 ),
+                const SizedBox(height: 20),
                 SizedBox(
                   height: deviceheight * 0.029, // 20
                 ),
