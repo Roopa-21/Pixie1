@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
 import 'package:pixieapp/routes/routes.dart';
 
 class NavBar extends StatefulWidget {
@@ -124,6 +126,7 @@ class _NavBarState extends State<NavBar> {
                         library = false;
                         settings = true;
                       });
+                      context.go('/SettingsPage');
                     },
                     icon: SvgPicture.asset(
                       settings == true
