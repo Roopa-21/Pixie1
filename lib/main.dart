@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pixieapp/blocs/Navbar_Bloc/NavBarBloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/const/textstyle.dart';
 import 'package:pixieapp/firebase_options.dart';
 import 'package:pixieapp/pages/audioPlay/audioPlay_page.dart';
