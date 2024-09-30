@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pixieapp/blocs/Navbar_Bloc/NavBarBloc/navbar_bloc.dart';
-import 'package:pixieapp/blocs/Navbar_Bloc/NavBarEvent/navbar_event.dart';
-import 'package:pixieapp/blocs/Navbar_Bloc/NavBarState/navbar_state.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:go_router/go_router.dart';
 
