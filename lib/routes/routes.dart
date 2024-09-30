@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
 
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
-import 'package:pixieapp/pages/MyStories/mystories.dart';
 
 import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
 import 'package:pixieapp/pages/Library/Library.dart';
@@ -25,7 +24,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const IntroductionPage(),
+      builder: (context, state) => const SplashScreen(),
     ),
     GoRoute(
       path: '/CreateStoryPage',
@@ -76,12 +75,12 @@ final GoRouter router = GoRouter(
       path: '/introductionPages',
       builder: (context, state) => const IntroductionPage(),
     ),
-      GoRoute(
+    GoRoute(
       path: '/splashScreen',
       builder: (context, state) => const SplashScreen(),
     ),
-      GoRoute(
-      path: '/storyconfirmationstory',
+    GoRoute(
+      path: '/g',
       builder: (context, state) => const StoryConfirmationPage(),
     ),
   ],

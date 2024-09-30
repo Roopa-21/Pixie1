@@ -34,8 +34,8 @@ class QuestionsIntroPage extends StatelessWidget {
                   top: deviceheight * 0.0442,
                   left: deviceheight * 0.0147,
                   right: deviceheight * 0.0147,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
                       'Just 3 steps before we can create stories together',
                       textAlign: TextAlign.center,
@@ -59,7 +59,7 @@ class QuestionsIntroPage extends StatelessWidget {
                         color: AppColors.textColorblack,
                         fontWeight: FontWeight.w400),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 60,
                   ),
                   SizedBox(
