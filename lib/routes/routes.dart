@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
+import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 
 import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
@@ -21,7 +22,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => const OnboardingPage(),
     ),
     GoRoute(
       path: '/CreateStoryPage',
@@ -39,6 +40,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/AudioplayPage',
       builder: (context, state) => const AudioplayPage(),
+    ),
+       GoRoute(
+      path: '/CreateAccount',
+      builder: (context, state) => const CreateAccount(),
     ),
     GoRoute(
       path: '/StoryGeneratePage',

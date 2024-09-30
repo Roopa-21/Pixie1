@@ -36,24 +36,22 @@ class _IntroductionPageState extends State<IntroductionPage> {
   final TextEditingController nameController = TextEditingController();
 
   final List<String> pronouns = ['He', 'She', 'Prefer not to say'];
-
+  int currentpage_index = 0;
   String name = '';
   DateTime selectedDate = DateTime.now();
 
-  Widget _buildPronounButton(int index, String text) {
+  Widget _buildPronounButton(int index, String text, double width) {
     final theme = Theme.of(context);
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final deviceWidth = MediaQuery.of(context).size.width;
     return Container(
       height: 50,
-      width: 152,
+      width: width,
       decoration: BoxDecoration(
         color: AppColors.kwhiteColor,
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: ToggleButtons(
         constraints: BoxConstraints(
-          minWidth: 150 / 1,
+          minWidth: width - 2,
           minHeight: 50,
         ),
         isSelected: [_selectedPronounIndex == index],
@@ -126,8 +124,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
             children: [
               Expanded(
                 child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
+                  width: deviceWidth,
+                  height: deviceHeight,
                   child: Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(
                         20.0, 10.0, 20.0, 10.0),
@@ -135,6 +133,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       child: PageView(
                         controller: pageViewController ??=
                             PageController(initialPage: 0),
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentpage_index = index;
+                          });
+                        },
                         scrollDirection: Axis.horizontal,
                         children: [
                           Column(
@@ -175,7 +178,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                 ],
                               ),
                               SizedBox(
-                                height: 400,
+                                height: deviceHeight * 0.5899,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     crossAxisAlignment:
@@ -244,24 +247,16 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                             MainAxisAlignment.start,
                                         children: [
                                           _buildPronounButton(
-                                              0, pronouns[0]), // He
-                                          SizedBox(width: 10),
+                                              0, pronouns[0], 148), // He
+                                          const SizedBox(width: 10),
                                           _buildPronounButton(
-                                              1, pronouns[1]), // She
+                                              1, pronouns[1], 152), // She
                                         ],
                                       ),
-                                      SizedBox(height: 10),
-
-                                      // Row for "Prefer not to say"
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          _buildPronounButton(2,
-                                              pronouns[2]), // Prefer not to say
-                                        ],
-                                      ),
-                                      SizedBox(height: 20),
+                                      const SizedBox(height: 10),
+                                      _buildPronounButton(
+                                          2, pronouns[2], deviceWidth),
+                                      const SizedBox(height: 20),
                                       const SizedBox(height: 20),
                                       const Text("Date of Birth",
                                           style: TextStyle(fontSize: 18)),
@@ -328,14 +323,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Text(
-                                  'Let’s add in some characters...',
-                                  style: theme.textTheme.displaySmall!.copyWith(
-                                      color: AppColors.textColorblue,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                              Text(
+                                '''What are [name]'s favorite things?''',
+                                style: theme.textTheme.displaySmall!.copyWith(
+                                    color: AppColors.textColorblue,
+                                    fontWeight: FontWeight.w600),
                               ),
                               const SizedBox(height: 25),
                               // ChoiceChips(
@@ -447,7 +439,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                 ],
                               ),
                               SizedBox(
-                                height: 400,
+                                height: deviceHeight * 0.5899,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     crossAxisAlignment:
@@ -484,25 +476,25 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           Relations(
                                               theme: theme,
                                               relationName: 'Mother'),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           Relations(
                                               theme: theme,
                                               relationName: 'Father'),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           Relations(
                                               theme: theme,
                                               relationName: 'GrandMother'),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           Relations(
                                               theme: theme,
                                               relationName: 'GrandFather'),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 20,
                                           ),
                                           Relations(
@@ -547,14 +539,14 @@ class _IntroductionPageState extends State<IntroductionPage> {
                         height: 60,
                         child: ElevatedButton(
                             onPressed: () async {
-                              //  if (pageViewCurrentIndex == 3) {
-                              context.push('/splashScreen');
-                              // } else {
-                              // await pageViewController?.nextPage(
-                              //   duration: const Duration(milliseconds: 300),
-                              //   curve: Curves.ease,
-                              // );
-                              //  }
+                              if (currentpage_index == 2) {
+                                context.push('/splashScreen');
+                              } else {
+                                await pageViewController?.nextPage(
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.ease,
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -564,7 +556,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                               backgroundColor:
                                   Colors.white, // Text (foreground) color
                             ),
-                            child: (pageViewCurrentIndex == 3)
+                            child: (currentpage_index == 2)
                                 ? Text("Done",
                                     style: theme.textTheme.bodyLarge!.copyWith(
                                         color: AppColors.textColorblue,
@@ -685,6 +677,8 @@ class Relations extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -695,7 +689,7 @@ class Relations extends StatelessWidget {
               color: AppColors.textColorblack, fontWeight: FontWeight.w400),
         ),
         Container(
-          width: 250,
+          width: deviceWidth * 0.5555,
           height: 48,
           child: TextField(
             cursorColor: AppColors.textColorblue,

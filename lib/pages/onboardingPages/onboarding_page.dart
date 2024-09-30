@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -42,7 +41,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       body: Column(
         children: [
           Expanded(
-            flex: 7,
+            flex: 6,
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (int page) {
@@ -60,7 +59,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 2,
             child: Column(
               children: [
                 Row(
@@ -71,7 +70,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: deviceheight * 0.029, // 20
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -89,16 +88,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             fontWeight: FontWeight.w400)),
                   ),
                 ),
-                const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 20.0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: deviceheight * 0.029,
+                      vertical: deviceheight * 0.029),
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                         elevation: 5,
                         backgroundColor: AppColors.kwhiteColor,
-                        minimumSize: Size(devicewidth, 50),
+                        minimumSize: Size(devicewidth, deviceheight * 0.0737),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12))),
                     child: Text("Already have an account",
@@ -108,7 +107,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             fontWeight: FontWeight.w400)),
                   ),
                 ),
-                const Spacer(),
               ],
             ),
           )
@@ -148,12 +146,12 @@ class OnboardContent extends StatelessWidget {
     final deviceheight = MediaQuery.of(context).size.height;
     print(deviceheight);
     return Padding(
-      padding: const EdgeInsets.all(40.0),
+      padding: EdgeInsets.all(deviceheight * 0.0589), //40
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            height: deviceheight * 0.4845,
+            height: deviceheight * 0.35,
           ),
           Text(
             title,
