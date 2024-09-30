@@ -4,6 +4,7 @@ import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.d
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
 import 'package:pixieapp/pages/SetPeofileLanding/set_profile_landing.dart';
+import 'package:pixieapp/pages/SettingsPage/settings_page.dart';
 import 'package:pixieapp/pages/error%20page/error_page.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
@@ -17,7 +18,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const OnboardingPage(),
+      builder: (context, state) => const SettingsPage(),
     ),
     GoRoute(
       path: '/CreateStoryPage',
@@ -76,6 +77,14 @@ final GoRouter router = GoRouter(
       path: '/CreateAccountWithEmail',
       builder: (context, state) => const CreateAccountWithEmail(),
     ),
+    GoRoute(
+        path: '/SettingsPage',
+        // builder: (context, state) => const SettingsPage(),
+        pageBuilder: (context, state) {
+          return const NoTransitionPage(
+            child: SettingsPage(),
+          );
+        }),
   ],
   errorBuilder: (context, state) => const ErrorPage(),
 );

@@ -17,7 +17,7 @@ class _LibraryState extends State<Library> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 211, 196, 242),
+      backgroundColor: const Color(0xfff9f3cd),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -81,8 +81,8 @@ class _LibraryState extends State<Library> {
                   itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 15, vertical: 10),
-                    child: StorylistCard(
-                      title: 'asd',
+                    child: storylistCard(
+                      title: 'Title of the story',
                       storytype: 'bedtime',
                       theme: theme,
                       ontap: () {},
@@ -119,13 +119,15 @@ class _LibraryState extends State<Library> {
       ),
       child: Text(
         title,
-        style: theme.textTheme.bodySmall!
-            .copyWith(color: AppColors.kblackColor, fontSize: 14),
+        style: theme.textTheme.bodySmall!.copyWith(
+            color: AppColors.kblackColor,
+            fontSize: 13,
+            fontWeight: FontWeight.w400),
       ),
     );
   }
 
-  Widget StorylistCard(
+  Widget storylistCard(
       {required ThemeData theme,
       required String title,
       required String storytype,
@@ -156,7 +158,14 @@ class _LibraryState extends State<Library> {
               children: [
                 Text(title),
                 Row(
-                  children: [Text(storytype), Text(duration)],
+                  children: [
+                    Text(storytype),
+                    const Text(
+                      ' - ',
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
+                    Text(duration)
+                  ],
                 )
               ],
             ),
