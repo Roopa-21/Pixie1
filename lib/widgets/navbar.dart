@@ -1,23 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/NavBarBloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/NavBarEvent/navbar_event.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/NavBarState/navbar_state.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
-import 'package:pixieapp/routes/routes.dart';
+import 'package:go_router/go_router.dart';
 
-class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+class NavBar extends StatelessWidget {
+  const NavBar({Key? key}) : super(key: key);
 
-  @override
-  State<NavBar> createState() => _NavBarState();
-}
-
-bool home = true;
-bool create = false;
-bool library = false;
-bool settings = false;
-
-class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -33,118 +25,93 @@ class _NavBarState extends State<NavBar> {
         child: Padding(
           padding:
               const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
+          child: BlocBuilder<NavBarBloc, NavBarState>(
+            builder: (context, state) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        home = true;
-                        create = false;
-                        library = false;
-                        settings = false;
-                      });
-                      router.go('/HomePage');
-                    },
-                    icon: SvgPicture.asset(
-                      home == true
-                          ? 'assets/images/home_selected.svg'
-                          : 'assets/images/home-02.svg',
-                      width: 40,
-                      height: 40,
-                    ),
+                  _buildNavItem(
+                    context: context,
+                    index: 0,
+                    label: 'Home',
+                    iconSelected: 'assets/images/home_selected.svg',
+                    iconUnselected: 'assets/images/home-02.svg',
+                    isSelected: state.selectedIndex == 0,
+                    route: '/HomePage',
                   ),
-                  Text('Home',
-                      style: theme.textTheme.bodyMedium!
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 13))
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        home = false;
-                        create = true;
-                        library = false;
-                        settings = false;
-                      });
-                      router.push('/AddCharacter');
-                    },
-                    icon: SvgPicture.asset(
-                      create == true
-                          ? 'assets/images/create_selected.svg'
-                          : 'assets/images/story.svg',
-                      width: 40,
-                      height: 40,
-                    ),
+                  _buildNavItem(
+                    context: context,
+                    index: 1,
+                    label: 'Create',
+                    iconSelected: 'assets/images/create_selected.svg',
+                    iconUnselected: 'assets/images/story.svg',
+                    isSelected: state.selectedIndex == 1,
+                    route: '/AddCharacter',
                   ),
-                  Text('Create',
-                      style: theme.textTheme.bodyMedium!
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 13))
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        home = false;
-                        create = false;
-                        library = true;
-                        settings = false;
-                      });
-                      router.go('/Library');
-                    },
-                    icon: SvgPicture.asset(
-                      library == true
-                          ? 'assets/images/Library_selected.svg'
-                          : 'assets/images/Library.svg',
-                      width: 40,
-                      height: 40,
-                    ),
+                  _buildNavItem(
+                    context: context,
+                    index: 2,
+                    label: 'Library',
+                    iconSelected: 'assets/images/Library_selected.svg',
+                    iconUnselected: 'assets/images/Library.svg',
+                    isSelected: state.selectedIndex == 2,
+                    route: '/Library',
                   ),
-                  Text('Library',
-                      style: theme.textTheme.bodyMedium!
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 13))
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        home = false;
-                        create = false;
-                        library = false;
-                        settings = true;
-                      });
-                      context.go('/SettingsPage');
-                    },
-                    icon: SvgPicture.asset(
-                      settings == true
-                          ? 'assets/images/settings_selected.svg'
-                          : 'assets/images/navbar_icon3.svg',
-                      width: 40,
-                      height: 40,
-                    ),
+                  _buildNavItem(
+                    context: context,
+                    index: 3,
+                    label: 'Settings',
+                    iconSelected: 'assets/images/settings_selected.svg',
+                    iconUnselected: 'assets/images/navbar_icon3.svg',
+                    isSelected: state.selectedIndex == 3,
+                    route: '/SettingsPage',
                   ),
-                  Text('Settings',
-                      style: theme.textTheme.bodyMedium!
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 13))
                 ],
-              )
-            ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required BuildContext context,
+    required int index,
+    required String label,
+    required String iconSelected,
+    required String iconUnselected,
+    required bool isSelected,
+    required String route,
+  }) {
+    final theme = Theme.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          onPressed: () {
+            context.read<NavBarBloc>().add(NavBarItemTapped(index));
+            if (index == 1) {
+              context.push(route);
+            } else {
+              context.go(route);
+            }
+          },
+          icon: SvgPicture.asset(
+            isSelected ? iconSelected : iconUnselected,
+            width: 40,
+            height: 40,
+          ),
+        ),
+        Text(
+          label,
+          style: theme.textTheme.bodyMedium!.copyWith(
+            fontWeight: FontWeight.w700,
+            fontSize: 13,
+          ),
+        ),
+      ],
     );
   }
 }

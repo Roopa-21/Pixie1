@@ -14,6 +14,7 @@ import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/pages/audioPlay/audioplay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
 import 'package:pixieapp/pages/home/home_page.dart';
+import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
 import 'package:pixieapp/pages/questions_intro_page.dart';
 import 'package:pixieapp/pages/storygenerate/storygenerate.dart';
 
@@ -21,7 +22,9 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const SplashScreen(),
+
+      builder: (context, state) => const HomePage(),
+
     ),
     GoRoute(
       path: '/CreateStoryPage',
@@ -46,7 +49,6 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
         path: '/HomePage',
-        // builder: (context, state) => const HomePage(),
         pageBuilder: (context, state) {
           return const NoTransitionPage(
             child: HomePage(),
@@ -54,7 +56,6 @@ final GoRouter router = GoRouter(
         }),
     GoRoute(
         path: '/Library',
-        // builder: (context, state) => const MyStories(),
         pageBuilder: (context, state) {
           return const NoTransitionPage(
             child: Library(),
@@ -86,7 +87,6 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
         path: '/SettingsPage',
-        // builder: (context, state) => const SettingsPage(),
         pageBuilder: (context, state) {
           return const NoTransitionPage(
             child: SettingsPage(),
