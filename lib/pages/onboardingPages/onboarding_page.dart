@@ -69,13 +69,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     (index) => buildDot(index),
                   ),
                 ),
-<<<<<<< HEAD
-                const SizedBox(
-                  height: 20,
-=======
+                const SizedBox(height: 20),
                 SizedBox(
                   height: deviceheight * 0.029, // 20
->>>>>>> 9df25336d20883d75fda7833ca62b53975db9f95
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),

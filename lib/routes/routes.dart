@@ -24,17 +24,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) => const OnboardingPage(),
-<<<<<<< HEAD
-    ),
-    GoRoute(
-      path: '/CreateAccount',
-      builder: (context, state) => const CreateAccount(),
     ),
     GoRoute(
       path: '/OtpVerification',
       builder: (context, state) => const OtpVerification(),
-=======
->>>>>>> 9df25336d20883d75fda7833ca62b53975db9f95
     ),
     GoRoute(
       path: '/CreateStoryPage',
@@ -53,7 +46,7 @@ final GoRouter router = GoRouter(
       path: '/AudioplayPage',
       builder: (context, state) => const AudioplayPage(),
     ),
-       GoRoute(
+    GoRoute(
       path: '/CreateAccount',
       builder: (context, state) => const CreateAccount(),
     ),
