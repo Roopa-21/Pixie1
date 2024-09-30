@@ -31,10 +31,48 @@ class _IntroductionPageState extends State<IntroductionPage> {
   // State field(s) for ChoiceChips widget.
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  int _selectedPronounIndex = -1;
 
-  String selectedPronoun = 'He';
+  final TextEditingController nameController = TextEditingController();
+
+  final List<String> pronouns = ['He', 'She', 'Prefer not to say'];
+
   String name = '';
   DateTime selectedDate = DateTime.now();
+
+  Widget _buildPronounButton(int index, String text) {
+    final theme = Theme.of(context);
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
+    return Container(
+      height: 50,
+      width: 152,
+      decoration: BoxDecoration(
+        color: AppColors.kwhiteColor,
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: ToggleButtons(
+        constraints: BoxConstraints(
+          minWidth: 150 / 1,
+          minHeight: 50,
+        ),
+        isSelected: [_selectedPronounIndex == index],
+        onPressed: (int selectedIndex) {
+          setState(() {
+            _selectedPronounIndex = index;
+          });
+        },
+        borderRadius: BorderRadius.circular(12.0),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(text),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -61,6 +99,9 @@ class _IntroductionPageState extends State<IntroductionPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -133,110 +174,116 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                   )
                                 ],
                               ),
-                              Text(
-                                "Whom are you creating stories for?",
-                                style: theme.textTheme.displaySmall!.copyWith(
-                                    color: AppColors.textColorblue,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "This helps Pixie personalise the stories",
-                                style: theme.textTheme.headlineSmall!.copyWith(
-                                    color: AppColors.textColorblack,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "First Name",
-                                style: theme.textTheme.headlineSmall!.copyWith(
-                                    color: AppColors.textColorblack,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              TextField(
-                                cursorColor: AppColors.textColorblue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    name = value;
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  hintText: '''Your child's name''',
-                                  hintStyle: theme.textTheme.bodyMedium
-                                      ?.copyWith(
-                                          color: AppColors.textColorGrey,
-                                          fontWeight: FontWeight.w400),
-                                  focusColor: AppColors.textColorblue,
-                                  focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: AppColors.textColorblue)),
-                                  border: const OutlineInputBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Pronoun",
-                                style: theme.textTheme.headlineSmall!.copyWith(
-                                    color: AppColors.textColorblack,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                              SizedBox(
+                                height: 400,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      ChoiceChip(
-                                        label: const Text("He"),
-                                        selected: selectedPronoun == 'He',
-                                        onSelected: (bool selected) {
+                                      Text(
+                                        "Whom are you creating stories for?",
+                                        style: theme.textTheme.displaySmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblue,
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        "This helps Pixie personalise the stories",
+                                        style: theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblack,
+                                                fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        "First Name",
+                                        style: theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblack,
+                                                fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      TextField(
+                                        controller: nameController,
+                                        cursorColor: AppColors.textColorblue,
+                                        onChanged: (value) {
                                           setState(() {
-                                            selectedPronoun = 'He';
+                                            name = value;
                                           });
                                         },
+                                        decoration: InputDecoration(
+                                          hintText: '''Your child's name''',
+                                          hintStyle: theme.textTheme.bodyMedium
+                                              ?.copyWith(
+                                                  color:
+                                                      AppColors.textColorGrey,
+                                                  fontWeight: FontWeight.w400),
+                                          focusColor: AppColors.textColorblue,
+                                          focusedBorder:
+                                              const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: AppColors
+                                                          .textColorblue)),
+                                          border: const OutlineInputBorder(),
+                                        ),
                                       ),
-                                      ChoiceChip(
-                                        label: const Text("She"),
-                                        selected: selectedPronoun == 'She',
-                                        onSelected: (bool selected) {
-                                          setState(() {
-                                            selectedPronoun = 'She';
-                                          });
-                                        },
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        "Pronoun",
+                                        style: theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblack,
+                                                fontWeight: FontWeight.w400),
                                       ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          _buildPronounButton(
+                                              0, pronouns[0]), // He
+                                          SizedBox(width: 10),
+                                          _buildPronounButton(
+                                              1, pronouns[1]), // She
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+
+                                      // Row for "Prefer not to say"
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          _buildPronounButton(2,
+                                              pronouns[2]), // Prefer not to say
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
+                                      const SizedBox(height: 20),
+                                      const Text("Date of Birth",
+                                          style: TextStyle(fontSize: 18)),
+                                      GestureDetector(
+                                        //   onTap: () => _selectDate(context),
+                                        child: InputDecorator(
+                                          decoration: const InputDecoration(
+                                            border: OutlineInputBorder(),
+                                          ),
+                                          child: Text(
+                                            "${selectedDate.toLocal()}"
+                                                .split(' ')[0],
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 20),
                                     ],
                                   ),
-                                  ChoiceChip(
-                                    label: const Text("Prefer not to say"),
-                                    selected:
-                                        selectedPronoun == 'Prefer not to say',
-                                    onSelected: (bool selected) {
-                                      setState(() {
-                                        selectedPronoun = 'Prefer not to say';
-                                      });
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              const Text("Date of Birth",
-                                  style: TextStyle(fontSize: 18)),
-                              GestureDetector(
-                                //   onTap: () => _selectDate(context),
-                                child: InputDecorator(
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  child: Text(
-                                    "${selectedDate.toLocal()}".split(' ')[0],
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
+                              )
                             ],
                           ),
 
@@ -399,58 +446,75 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                   )
                                 ],
                               ),
-                              Text(
-                                "Who are [Name]’s loved ones?",
-                                style: theme.textTheme.displaySmall!.copyWith(
-                                    color: AppColors.textColorblue,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "We can feature them in stories",
-                                style: theme.textTheme.headlineSmall!.copyWith(
-                                    color: AppColors.textColorblack,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                "Answer atleast one",
-                                style: theme.textTheme.headlineSmall!.copyWith(
-                                    color: AppColors.textColorGrey,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Column(
-                                children: [
-                                  Relations(
-                                      theme: theme, relationName: 'Mother'),
-                                  SizedBox(
-                                    height: 20,
+                              SizedBox(
+                                height: 400,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Who are [Name]’s loved ones?",
+                                        style: theme.textTheme.displaySmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblue,
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        "We can feature them in stories",
+                                        style: theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblack,
+                                                fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      Text(
+                                        "Answer atleast one",
+                                        style: theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: AppColors.textColorGrey,
+                                                fontWeight: FontWeight.w400),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Column(
+                                        children: [
+                                          Relations(
+                                              theme: theme,
+                                              relationName: 'Mother'),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Relations(
+                                              theme: theme,
+                                              relationName: 'Father'),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Relations(
+                                              theme: theme,
+                                              relationName: 'GrandMother'),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Relations(
+                                              theme: theme,
+                                              relationName: 'GrandFather'),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Relations(
+                                              theme: theme,
+                                              relationName: 'Pet Dog'),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 20),
+                                    ],
                                   ),
-                                  Relations(
-                                      theme: theme, relationName: 'Father'),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Relations(
-                                      theme: theme,
-                                      relationName: 'GrandMother'),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Relations(
-                                      theme: theme,
-                                      relationName: 'GrandFather'),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Relations(
-                                      theme: theme, relationName: 'Pet Dog'),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
+                                ),
+                              )
                             ],
                           ),
                         ],
