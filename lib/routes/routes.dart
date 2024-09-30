@@ -3,7 +3,6 @@ import 'package:pixieapp/pages/AllStories/all_stories.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 
-import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
 
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/SettingsPage/settings_page.dart';
