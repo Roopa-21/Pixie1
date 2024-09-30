@@ -7,21 +7,11 @@ abstract class AddCharacterEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class PageChanged extends AddCharacterEvent {
-  final int pageIndex;
+class Pagechange extends AddCharacterEvent {
+  final int currentpageindex;
 
-  const PageChanged(this.pageIndex);
-
-  @override
-  List<Object?> get props => [pageIndex];
-}
-
-class ChipSelected extends AddCharacterEvent {
-  final String chipCategory;
-  final String selectedChip;
-
-  const ChipSelected(this.chipCategory, this.selectedChip);
+  const Pagechange(this.currentpageindex);
 
   @override
-  List<Object?> get props => [chipCategory, selectedChip];
+  List<Object?> get props => [currentpageindex];
 }
