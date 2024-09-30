@@ -1,10 +1,12 @@
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
+import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 
 import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
 
 import 'package:pixieapp/pages/Library/Library.dart';
+import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
 import 'package:pixieapp/pages/SettingsPage/settings_page.dart';
 import 'package:pixieapp/pages/SplashScreen/splash_screen.dart';
 import 'package:pixieapp/pages/SplashScreen/story_confirmtion_page.dart';
@@ -21,7 +23,15 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => const OnboardingPage(),
+    ),
+    GoRoute(
+      path: '/CreateAccount',
+      builder: (context, state) => const CreateAccount(),
+    ),
+    GoRoute(
+      path: '/OtpVerification',
+      builder: (context, state) => const OtpVerification(),
     ),
     GoRoute(
       path: '/CreateStoryPage',

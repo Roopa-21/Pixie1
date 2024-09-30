@@ -70,7 +70,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     (index) => buildDot(index),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Padding(
