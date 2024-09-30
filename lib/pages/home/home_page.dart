@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * .16,
+                  height: 145,
                   child: Stack(
                     children: [
                       Align(
@@ -183,6 +183,8 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.all(15),
               child: Text(
                 title,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
                 style: theme.textTheme.headlineMedium!.copyWith(
                     color: AppColors.textColorblue,
                     fontSize: 21,
