@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
-import 'package:pixieapp/widgets/choicechip.dart';
 
 class AddNewCharacter extends StatefulWidget {
   const AddNewCharacter({super.key, required this.text});
