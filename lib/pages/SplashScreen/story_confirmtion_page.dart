@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
 
 class StoryConfirmationPage extends StatefulWidget {
@@ -106,7 +107,9 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('/AddCharacter');
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 2,
                     backgroundColor: AppColors.kwhiteColor,
