@@ -24,7 +24,7 @@ class NavBar extends StatelessWidget {
         ),
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 20),
+              const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
           child: BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, state) {
               return Row(
@@ -100,8 +100,8 @@ class NavBar extends StatelessWidget {
           },
           icon: SvgPicture.asset(
             isSelected ? iconSelected : iconUnselected,
-            width: 40,
-            height: 40,
+            width: MediaQuery.of(context).size.width * .1,
+            // height: 40,
           ),
         ),
         Text(

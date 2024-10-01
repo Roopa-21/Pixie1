@@ -14,12 +14,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: const Color(0xfff9f3cd),
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: height,
+        width: width,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                         child: InkWell(
                           onTap: () => context.push('/AddCharacter'),
                           child: Container(
-                            width: MediaQuery.of(context).size.width * .7,
+                            width: width * .7,
                             height: 68,
                             decoration: BoxDecoration(
                                 gradient: const LinearGradient(
@@ -103,8 +105,8 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * .21,
-                    width: MediaQuery.of(context).size.width,
+                    height: height * .21,
+                    width: width,
                     child: ListView.builder(
                       itemBuilder: (context, index) => storyCard(
                         theme: theme,
@@ -129,8 +131,8 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height * .21,
-                    width: MediaQuery.of(context).size.width,
+                    height: height * .21,
+                    width: width,
                     child: ListView.builder(
                       itemBuilder: (context, index) => storyCard(
                         theme: theme,
@@ -187,14 +189,15 @@ class _HomePageState extends State<HomePage> {
                 maxLines: 3,
                 style: theme.textTheme.headlineMedium!.copyWith(
                     color: AppColors.textColorblue,
-                    fontSize: 21,
+                    fontSize: MediaQuery.of(context).size.width * .04,
                     fontWeight: FontWeight.w500),
               ),
             ),
             Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * .03),
                   child: SvgPicture.asset(
                     'assets/images/play_story.svg',
                     width: 26,
