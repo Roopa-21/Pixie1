@@ -54,12 +54,15 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
               ),
             ]),
             Container(
+              height: 150,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: AppColors.kwhiteColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ShaderMask(
                     shaderCallback: (bounds) => const LinearGradient(
@@ -72,11 +75,14 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
                     ).createShader(
                       Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
                     ),
-                    child: Text(
-                      'Welcome to new adventures!',
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          color: AppColors.kwhiteColor,
-                          fontWeight: FontWeight.w700),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Text(
+                        'Welcome to new adventures!',
+                        style: theme.textTheme.bodyLarge!.copyWith(
+                            color: AppColors.kwhiteColor,
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -111,6 +117,7 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
                     context.push('/AddCharacter');
                   },
                   style: ElevatedButton.styleFrom(
+                    minimumSize: (Size(150, 50)),
                     elevation: 2,
                     backgroundColor: AppColors.kwhiteColor,
                     shape: RoundedRectangleBorder(
@@ -124,8 +131,11 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push('/HomePage');
+                  },
                   style: ElevatedButton.styleFrom(
+                    minimumSize: (Size(150, 50)),
                     elevation: 2,
                     backgroundColor: AppColors.kwhiteColor,
                     shape: RoundedRectangleBorder(
