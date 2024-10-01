@@ -500,6 +500,60 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           Relations(
                                               theme: theme,
                                               relationName: 'Pet Dog'),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return const AddLovedOnesBottomSheet();
+                                                  });
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 10.0),
+                                              child: Container(
+                                                  width: deviceWidth,
+                                                  height: 47,
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                          color: const Color
+                                                              .fromARGB(255,
+                                                              178, 178, 178)),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40)),
+                                                  child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons.add,
+                                                          color: AppColors
+                                                              .textColorblack,
+                                                          size: 20,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 10),
+                                                        Text('Add a loved one',
+                                                            style: theme
+                                                                .textTheme
+                                                                .bodyLarge!
+                                                                .copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500)),
+                                                      ])),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       const SizedBox(height: 20),

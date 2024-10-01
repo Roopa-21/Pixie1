@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
@@ -55,7 +56,7 @@ class StoryGeneratePage extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
-                    Navigator.pop(context);
+                    context.go('/');
                   },
                 ),
               ],

@@ -44,29 +44,33 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
           child: Padding(
             padding: MediaQuery.of(context).viewInsets,
             child: Container(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.only(
+                top: 10,
+                left: 20,
+                right: 20,
+              ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Add a loved one',
-                        style: theme.textTheme.displayMedium?.copyWith(
-                          color: AppColors.textColorblue,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  Text(
+                    'Add a loved one',
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: AppColors.textColorblue,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -74,6 +78,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                       });
                     },
                     child: Container(
+                      height: 43,
                       padding: const EdgeInsets.symmetric(
                           vertical: 12, horizontal: 16),
                       decoration: BoxDecoration(
@@ -100,24 +105,26 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   TextField(
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textColorblue,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.none,
+                    ),
                     cursorColor: AppColors.textColorblue,
                     decoration: InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
                       hintText: 'Type name',
                       hintStyle: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textColorGrey,
                           fontWeight: FontWeight.w400),
-                      focusColor: AppColors.textColorblue,
-                      focusedBorder: const OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: AppColors.textColorblue)),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.buttonblue),
-                      ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(top: 28),
                     child: SizedBox(
@@ -129,7 +136,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          foregroundColor: Colors.white,
+                          foregroundColor: AppColors.kwhiteColor,
                           backgroundColor:
                               AppColors.buttonblue, // Text (foreground) color
                         ),
@@ -148,7 +155,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
         ),
         if (isExpanded)
           Positioned(
-            top: deviceHeight * 0.2,
+            top: deviceHeight * 0.25,
             left: 16,
             right: 16,
             child: Material(
@@ -170,7 +177,6 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                     child: Container(
                       color: AppColors.kwhiteColor,
                       height: 50,
-                      margin: const EdgeInsets.symmetric(vertical: 4),
                       padding: const EdgeInsets.symmetric(
                           vertical: 12, horizontal: 16),
                       child: Text(
