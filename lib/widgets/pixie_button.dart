@@ -26,7 +26,7 @@ class PixieButton extends StatelessWidget {
       decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("assets/images/Frame 1261154616.png"),
-              fit: BoxFit.fill)),
+              fit: BoxFit.cover)),
       child: GestureDetector(
         onTap: onPressed,
         child: Row(
