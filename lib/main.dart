@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/const/textstyle.dart';
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AddCharacterBloc>(
           create: (_) => AddCharacterBloc(),
+        ),
+        BlocProvider<AuthBloc>(
+          create: (_) => AuthBloc(FirebaseAuth.instance),
         ),
       ],
       child: MaterialApp.router(

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth/auth_event.dart';
+import 'package:pixieapp/blocs/Auth/auth_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerification extends StatefulWidget {
-  const OtpVerification({super.key});
+  final String
+      verificationId; // Pass the verificationId from the previous screen
+
+  const OtpVerification({super.key, required this.verificationId});
 
   @override
   State<OtpVerification> createState() => _OtpVerificationState();
@@ -37,110 +44,156 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
     final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        width: width,
-        height: height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(
-                'assets/images/createaccountbackground.png',
-              )),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/images/createaccountsmily.png',
-                    width: width * .25,
-                  ),
-                  Text(
-                    'Verify your Mobile\nnumber',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.displayLarge!
-                        .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Check your SMS for a code we’ve sent you. It should be there. Else resend.',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium!.copyWith(),
-                  ),
-                  const SizedBox(height: 30),
 
-                  // Updated TextField with PinFieldAutoFill for OTP
-                  PinFieldAutoFill(
-                    codeLength: 6,
-                    currentCode: _otpCode,
-                    decoration: UnderlineDecoration(
-                      textStyle: const TextStyle(
-                          fontSize: 20, color: AppColors.textColorblack),
-                      colorBuilder:
-                          const FixedColorBuilder(AppColors.textpurplelite),
-                    ),
-                    onCodeSubmitted: (code) {
-                      setState(() {
-                        _otpCode = code;
-                      });
-                    },
-                    onCodeChanged: (code) {
-                      if (code!.length == 6) {
-                        FocusScope.of(context).requestFocus(FocusNode());
-                      }
-                      setState(() {
-                        _otpCode = code;
-                      });
-                    },
-                  ),
-
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * .9,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        context.push('/HomePage');
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        backgroundColor:
-                            AppColors.buttonblue, // Text (foreground) color
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthAuthenticated) {
+          // Navigate to the HomePage when the OTP verification is successful
+          context.go('/HomePage');
+        } else if (state is AuthError) {
+          // Show error message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            width: width,
+            height: height,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/images/createaccountbackground.png',
+                  )),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Image.asset(
+                        'assets/images/createaccountsmily.png',
+                        width: width * .25,
                       ),
-                      child: Text("Verify",
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                              color: AppColors.textColorWhite,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400)),
-                    ),
+                      Text(
+                        'Verify your Mobile\nnumber',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.displayLarge!.copyWith(
+                            fontSize: 34, fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Check your SMS for a code we’ve sent you. It should be there. Else resend.',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium!.copyWith(),
+                      ),
+                      const SizedBox(height: 30),
+
+                      // Updated TextField with PinFieldAutoFill for OTP
+                      PinFieldAutoFill(
+                        codeLength: 6,
+                        currentCode: _otpCode,
+                        decoration: UnderlineDecoration(
+                          textStyle: const TextStyle(
+                              fontSize: 20, color: AppColors.textColorblack),
+                          colorBuilder:
+                              const FixedColorBuilder(AppColors.textpurplelite),
+                        ),
+                        onCodeSubmitted: (code) {
+                          setState(() {
+                            _otpCode = code;
+                          });
+                        },
+                        onCodeChanged: (code) {
+                          if (code!.length == 6) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          }
+                          setState(() {
+                            _otpCode = code;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .9,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: state is! AuthLoading
+                              ? () {
+                                  if (_otpCode.isEmpty || _otpCode.length < 6) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              'Please enter a valid OTP code')),
+                                    );
+                                    return;
+                                  }
+
+                                  // Dispatch the event to verify the OTP
+                                  BlocProvider.of<AuthBloc>(context).add(
+                                    AuthPhoneSignInRequested(
+                                      phoneNumber:
+                                          '', // Leave empty as it's not needed now
+                                      otpCode: _otpCode, // Pass the entered OTP
+                                    ),
+                                  );
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            backgroundColor: AppColors.buttonblue,
+                          ),
+                          child: state is AuthLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text("Verify",
+                                  style: theme.textTheme.bodyMedium!.copyWith(
+                                      color: AppColors.textColorWhite,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400)),
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 3),
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: TextButton(
+                            onPressed: () {
+                              // Logic to resend OTP can be implemented here
+                            },
+                            child: Text(
+                              "Resend code",
+                              style: theme.textTheme.bodyMedium!.copyWith(
+                                  color: AppColors.textColorblue,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Text("Resend code",
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                              color: AppColors.textColorblue,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w400)),
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
