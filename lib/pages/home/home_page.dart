@@ -64,15 +64,15 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 SvgPicture.asset(
                                   'assets/images/plus_icon.svg',
-                                  width: 40,
-                                  height: 40,
+                                  width: 35,
+                                  height: 35,
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
                                   "Create Story",
                                   style: theme.textTheme.headlineLarge!
                                       .copyWith(
-                                          fontSize: 24,
+                                          fontSize: width * .06,
                                           color: AppColors.kwhiteColor),
                                 )
                               ],
