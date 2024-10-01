@@ -23,8 +23,11 @@ class NavBar extends StatelessWidget {
           color: AppColors.kwhiteColor,
         ),
         child: Padding(
-          padding:
-              const EdgeInsets.only(left: 30, right: 30, top: 5, bottom: 20),
+          padding: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: 15,
+          ),
           child: BlocBuilder<NavBarBloc, NavBarState>(
             builder: (context, state) {
               return Row(
@@ -89,25 +92,26 @@ class NavBar extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        IconButton(
-          onPressed: () {
-            context.read<NavBarBloc>().add(NavBarItemTapped(index));
-            if (index == 1) {
-              context.push(route);
-            } else {
-              context.go(route);
-            }
-          },
-          icon: SvgPicture.asset(
-            isSelected ? iconSelected : iconUnselected,
-            width: 40,
-            height: 40,
+        Container(
+          child: IconButton(
+            onPressed: () {
+              context.read<NavBarBloc>().add(NavBarItemTapped(index));
+              if (index == 1) {
+                context.push(route);
+              } else {
+                context.go(route);
+              }
+            },
+            icon: SvgPicture.asset(
+              isSelected ? iconSelected : iconUnselected,
+              width: MediaQuery.of(context).size.width * .1,
+            ),
           ),
         ),
         Text(
           label,
           style: theme.textTheme.bodyMedium!.copyWith(
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             fontSize: 13,
           ),
         ),

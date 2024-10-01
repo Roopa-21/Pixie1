@@ -35,97 +35,108 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
+        width: width,
+        height: height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage('assets/images/createaccountbackground.png')),
+              fit: BoxFit.cover,
+              image: AssetImage(
+                'assets/images/createaccountbackground.png',
+              )),
         ),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset('assets/images/createaccountsmily.png'),
-                Text(
-                  'Verify your Mobile\nnumber',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.displayLarge!
-                      .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Check your SMS for a code we’ve sent you. It should be there. Else resend.',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyMedium!.copyWith(),
-                ),
-                const SizedBox(height: 30),
-
-                // Updated TextField with PinFieldAutoFill for OTP
-                PinFieldAutoFill(
-                  codeLength: 6,
-                  currentCode: _otpCode,
-                  decoration: UnderlineDecoration(
-                    textStyle: const TextStyle(
-                        fontSize: 20, color: AppColors.textColorblack),
-                    colorBuilder:
-                        const FixedColorBuilder(AppColors.textpurplelite),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    'assets/images/createaccountsmily.png',
+                    width: width * .25,
                   ),
-                  onCodeSubmitted: (code) {
-                    setState(() {
-                      _otpCode = code;
-                    });
-                  },
-                  onCodeChanged: (code) {
-                    if (code!.length == 6) {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    }
-                    setState(() {
-                      _otpCode = code;
-                    });
-                  },
-                ),
+                  Text(
+                    'Verify your Mobile\nnumber',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.displayLarge!
+                        .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Check your SMS for a code we’ve sent you. It should be there. Else resend.',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium!.copyWith(),
+                  ),
+                  const SizedBox(height: 30),
 
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * .9,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.push('/HomePage');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      backgroundColor:
-                          AppColors.buttonblue, // Text (foreground) color
+                  // Updated TextField with PinFieldAutoFill for OTP
+                  PinFieldAutoFill(
+                    codeLength: 6,
+                    currentCode: _otpCode,
+                    decoration: UnderlineDecoration(
+                      textStyle: const TextStyle(
+                          fontSize: 20, color: AppColors.textColorblack),
+                      colorBuilder:
+                          const FixedColorBuilder(AppColors.textpurplelite),
                     ),
-                    child: Text("Verify",
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                            color: AppColors.textColorWhite,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400)),
+                    onCodeSubmitted: (code) {
+                      setState(() {
+                        _otpCode = code;
+                      });
+                    },
+                    onCodeChanged: (code) {
+                      if (code!.length == 6) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      }
+                      setState(() {
+                        _otpCode = code;
+                      });
+                    },
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 3),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text("Resend code",
-                        style: theme.textTheme.bodyMedium!.copyWith(
-                            color: AppColors.textColorblue,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400)),
+
+                  const SizedBox(
+                    height: 20,
                   ),
-                )
-              ],
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * .9,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        context.push('/HomePage');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        backgroundColor:
+                            AppColors.buttonblue, // Text (foreground) color
+                      ),
+                      child: Text("Verify",
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              color: AppColors.textColorWhite,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 3),
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text("Resend code",
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              color: AppColors.textColorblue,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
