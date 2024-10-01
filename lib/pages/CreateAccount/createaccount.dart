@@ -245,11 +245,11 @@ class _CreateAccountState extends State<CreateAccount> {
 
                             BlocProvider.of<AuthBloc>(context).add(
                               AuthPhoneSignInRequested(
-                                phoneNumber: "+918547062699",
+                                phoneNumber: phoneNumber,
                                 otpCode: '',
                               ),
                             );
-                            context.push('/OtpVerification');
+                            // context.push('/OtpVerification');
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,

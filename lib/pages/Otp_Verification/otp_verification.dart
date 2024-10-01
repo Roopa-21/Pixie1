@@ -5,7 +5,6 @@ import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerification extends StatefulWidget {
   final String
@@ -17,25 +16,12 @@ class OtpVerification extends StatefulWidget {
   State<OtpVerification> createState() => _OtpVerificationState();
 }
 
-class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
-  String _otpCode = '';
-
-  @override
-  void initState() {
-    super.initState();
-    listenForCode();
-  }
-
-  @override
-  void codeUpdated() {
-    setState(() {
-      _otpCode = code!;
-    });
-  }
+class _OtpVerificationState extends State<OtpVerification> {
+  final TextEditingController _otpController = TextEditingController();
 
   @override
   void dispose() {
-    cancel();
+    _otpController.dispose();
     super.dispose();
   }
 
@@ -65,10 +51,11 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
             height: height,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(
-                    'assets/images/createaccountbackground.png',
-                  )),
+                fit: BoxFit.cover,
+                image: AssetImage(
+                  'assets/images/createaccountbackground.png',
+                ),
+              ),
             ),
             child: SafeArea(
               child: Padding(
@@ -85,7 +72,9 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
                         'Verify your Mobile\nnumber',
                         textAlign: TextAlign.center,
                         style: theme.textTheme.displayLarge!.copyWith(
-                            fontSize: 34, fontWeight: FontWeight.w700),
+                          fontSize: 34,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Text(
@@ -95,34 +84,25 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
                       ),
                       const SizedBox(height: 30),
 
-                      // Updated TextField with PinFieldAutoFill for OTP
-                      PinFieldAutoFill(
-                        codeLength: 6,
-                        currentCode: _otpCode,
-                        decoration: UnderlineDecoration(
-                          textStyle: const TextStyle(
-                              fontSize: 20, color: AppColors.textColorblack),
-                          colorBuilder:
-                              const FixedColorBuilder(AppColors.textpurplelite),
+                      // Updated TextField for OTP input
+                      TextField(
+                        controller: _otpController,
+                        decoration: const InputDecoration(
+                          disabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.kpurple)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.kpurple)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.kpurple)),
+                          labelText: 'Enter OTP',
+                          border: OutlineInputBorder(),
+                          hintText: '6-digit code',
                         ),
-                        onCodeSubmitted: (code) {
-                          setState(() {
-                            _otpCode = code;
-                          });
-                        },
-                        onCodeChanged: (code) {
-                          if (code!.length == 6) {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          }
-                          setState(() {
-                            _otpCode = code;
-                          });
-                        },
+                        keyboardType: TextInputType.number,
+                        maxLength: 6,
                       ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      const SizedBox(height: 20),
 
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .9,
@@ -130,11 +110,14 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
                         child: ElevatedButton(
                           onPressed: state is! AuthLoading
                               ? () {
-                                  if (_otpCode.isEmpty || _otpCode.length < 6) {
+                                  String otpCode = _otpController.text.trim();
+                                  if (otpCode.isEmpty || otpCode.length < 6) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
-                                          content: Text(
-                                              'Please enter a valid OTP code')),
+                                        content: Text(
+                                          'Please enter a valid OTP code',
+                                        ),
+                                      ),
                                     );
                                     return;
                                   }
@@ -144,7 +127,7 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
                                     AuthPhoneSignInRequested(
                                       phoneNumber:
                                           '', // Leave empty as it's not needed now
-                                      otpCode: _otpCode, // Pass the entered OTP
+                                      otpCode: otpCode, // Pass the entered OTP
                                     ),
                                   );
                                 }
@@ -160,11 +143,14 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
                               ? const CircularProgressIndicator(
                                   color: Colors.white,
                                 )
-                              : Text("Verify",
+                              : Text(
+                                  "Verify",
                                   style: theme.textTheme.bodyMedium!.copyWith(
-                                      color: AppColors.textColorWhite,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400)),
+                                    color: AppColors.textColorWhite,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
                         ),
                       ),
 
@@ -179,9 +165,10 @@ class _OtpVerificationState extends State<OtpVerification> with CodeAutoFill {
                             child: Text(
                               "Resend code",
                               style: theme.textTheme.bodyMedium!.copyWith(
-                                  color: AppColors.textColorblue,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400),
+                                color: AppColors.textColorblue,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                         ),
