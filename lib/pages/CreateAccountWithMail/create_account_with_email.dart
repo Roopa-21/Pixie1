@@ -13,18 +13,21 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
+        width: deviceWidth,
+        height: deviceHeight,
         decoration: const BoxDecoration(
           image: DecorationImage(
+            fit: BoxFit.cover,
             image: AssetImage('assets/images/createaccountbackground.png'),
           ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
