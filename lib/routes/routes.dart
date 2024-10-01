@@ -27,7 +27,9 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/OtpVerification',
-      builder: (context, state) => const OtpVerification(),
+      builder: (context, state) => const OtpVerification(
+        verificationId: "",
+      ),
     ),
     GoRoute(
       path: '/CreateStoryPage',
