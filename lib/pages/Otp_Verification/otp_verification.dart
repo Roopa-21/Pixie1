@@ -86,6 +86,7 @@ class _OtpVerificationState extends State<OtpVerification> {
 
                       // Updated TextField for OTP input
                       TextField(
+                        cursorColor: AppColors.kpurple,
                         controller: _otpController,
                         decoration: const InputDecoration(
                           disabledBorder: OutlineInputBorder(
@@ -123,13 +124,13 @@ class _OtpVerificationState extends State<OtpVerification> {
                                   }
 
                                   // Dispatch the event to verify the OTP
-                                  BlocProvider.of<AuthBloc>(context).add(
-                                    AuthPhoneSignInRequested(
-                                      phoneNumber:
-                                          '', // Leave empty as it's not needed now
-                                      otpCode: otpCode, // Pass the entered OTP
-                                    ),
-                                  );
+                                  // BlocProvider.of<AuthBloc>(context).add(
+                                  //   AuthPhoneSignInRequested(
+                                  //     phoneNumber:
+                                  //         '', // Leave empty as it's not needed now
+                                  //     otpCode: otpCode, // Pass the entered OTP
+                                  //   ),
+                                  // );
                                 }
                               : null,
                           style: ElevatedButton.styleFrom(

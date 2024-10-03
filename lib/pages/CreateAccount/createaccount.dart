@@ -100,6 +100,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             TypeAheadField<Country>(
                               builder: (context, controller, focusNode) {
                                 return TextField(
+                                  cursorColor: AppColors.kpurple,
                                   controller: controller,
                                   focusNode: focusNode,
                                   decoration: const InputDecoration(
@@ -194,9 +195,11 @@ class _CreateAccountState extends State<CreateAccount> {
                             ),
                             const Divider(
                                 color: Color.fromARGB(102, 152, 92, 221)),
-                            const TextField(
+                            TextField(
+                              cursorColor: AppColors.kpurple,
+                              controller: mobileNumberController,
                               autofocus: true,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 hintText: " Mobile number",
                                 hintStyle: TextStyle(
                                     color: Colors.grey,
@@ -229,7 +232,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                       bottomRight: Radius.circular(10)),
                                 ),
                               ),
-                              style: TextStyle(color: Colors.black),
+                              style: const TextStyle(color: Colors.black),
                             ),
                           ],
                         ),
@@ -245,11 +248,9 @@ class _CreateAccountState extends State<CreateAccount> {
 
                             BlocProvider.of<AuthBloc>(context).add(
                               AuthPhoneSignInRequested(
-                                phoneNumber: phoneNumber,
-                                otpCode: '',
+                                phoneNumber: "+918547062699",
                               ),
                             );
-                            // context.push('/OtpVerification');
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
