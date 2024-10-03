@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pixieapp/repositories/authModel.dart';
 import 'auth_event.dart';
@@ -126,33 +127,52 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  // Handle google signin
+// Handle google sign-in
   Future<void> _onGoogleSignInRequested(
       AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    emit(AuthLoading()); // Emit loading state
 
     try {
+      // Create GoogleSignIn instance
       final GoogleSignIn googleSignIn = GoogleSignIn();
+
+      // Try signing in
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
+      // If googleUser is null, sign-in was aborted
       if (googleUser == null) {
         emit(AuthError(message: 'Google sign-in aborted.'));
         return;
       }
 
+      // Obtain authentication details from the googleUser
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
+      // If accessToken or idToken is null, something went wrong
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        emit(
+            AuthError(message: 'Google authentication failed: missing token.'));
+        return;
+      }
+
+      // Create an AuthCredential from googleAuth
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
+      // Sign in with the credential to Firebase
       UserCredential userCredential =
           await _firebaseAuth.signInWithCredential(credential);
 
+      // Emit the Authenticated state with the user's UID
       emit(AuthAuthenticated(userId: userCredential.user!.uid));
+    } on PlatformException catch (e) {
+      print(e);
+      emit(AuthError(message: 'PlatformException: ${e.message}'));
     } catch (e) {
+      // General error handling
       emit(AuthError(message: 'Google Sign-In Failed: ${e.toString()}'));
     }
   }

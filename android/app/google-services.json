@@ -12,7 +12,12 @@
           "package_name": "com.digi9.pixie"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA"
@@ -20,7 +25,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pixieapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245008050907:android:5b0d7367645228687abafe",
+        "android_client_info": {
+          "package_name": "com.example.pixie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pixieapp"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +84,20 @@
           "package_name": "com.example.pixieapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "245008050907-tq6l147ip6blcahrgq7a2nbag3jgasb5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pixieapp",
+            "certificate_hash": "454fa9710b0ad4734896fdce5598a3cc9eed5e21"
+          }
+        },
+        {
+          "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA"
@@ -39,7 +105,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pixieapp"
+              }
+            }
+          ]
         }
       }
     }
