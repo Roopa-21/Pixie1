@@ -1,43 +1,66 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth/auth_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:go_router/go_router.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateAfterDelay();
+  }
+
+  // Navigate after a delay
+  Future<void> _navigateAfterDelay() async {
+    await Future.delayed(const Duration(seconds: 3)); // Splash screen delay
+
+    // Check if the user is authenticated
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthAuthenticated) {
+      context.go('/HomePage'); // Navigate to Home if authenticated
+    } else {
+      context.go(
+          '/storyconfirmationstory'); // Navigate to other screen if not authenticated
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final deviceheight = MediaQuery.of(context).size.height;
-    // print(deviceheight);
-    final devicewidth = MediaQuery.of(context).size.width;
-
-    Timer(Duration(seconds: 3), () {
-      context.push('/storyconfirmationstory');
-    });
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Stack(children: [
-        Container(
-          height: deviceheight,
-          width: devicewidth,
-          child: Image.asset(
-            'assets/images/background.png',
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Container(
+            height: deviceHeight,
+            width: deviceWidth,
+            child: Image.asset(
+              'assets/images/background.png',
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        Positioned(
-            bottom: deviceheight * 0.35,
-            left: deviceheight * 0.18,
+          Positioned(
+            bottom: deviceHeight * 0.35,
+            left: deviceWidth * 0.18,
             child: Transform.rotate(
               angle: -0.1,
               child: Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(50),
-                  gradient: LinearGradient(
+                  gradient: const LinearGradient(
                     colors: [Color(0xffb0b3f8), Color(0xffe3aeff)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
@@ -49,14 +72,17 @@ class SplashScreen extends StatelessWidget {
                   child: Text(
                     '''Hi! I'm Pixie''',
                     style: theme.textTheme.bodyLarge!.copyWith(
-                        color: AppColors.textColorWhite,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700),
+                      color: AppColors.textColorWhite,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-            ))
-      ]),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

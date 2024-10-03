@@ -100,6 +100,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             TypeAheadField<Country>(
                               builder: (context, controller, focusNode) {
                                 return TextField(
+                                  cursorColor: AppColors.kpurple,
                                   controller: controller,
                                   focusNode: focusNode,
                                   decoration: const InputDecoration(
@@ -194,8 +195,14 @@ class _CreateAccountState extends State<CreateAccount> {
                             ),
                             const Divider(
                                 color: Color.fromARGB(102, 152, 92, 221)),
+
                              TextField(
                               controller:mobileNumberController,
+
+                            TextField(
+                              cursorColor: AppColors.kpurple,
+                              controller: mobileNumberController,
+
                               autofocus: true,
                               decoration: const InputDecoration(
                                 hintText: " Mobile number",
@@ -246,11 +253,14 @@ class _CreateAccountState extends State<CreateAccount> {
                             print('.........$phoneNumber');
                             BlocProvider.of<AuthBloc>(context).add(
                               AuthPhoneSignInRequested(
+
                                 phoneNumber: '+919880449032',
                                 otpCode: '',
+
+                                phoneNumber: "+918547062699",
+
                               ),
                             );
-                            // context.push('/OtpVerification');
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
