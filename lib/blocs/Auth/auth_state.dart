@@ -1,3 +1,4 @@
+
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -18,14 +19,26 @@ class AuthError extends AuthState {
   AuthError({required this.message});
 }
 
-class AuthPhoneVerificationCodeSentState extends AuthState {
+class LoginScreenLoadingState extends AuthState {}
+
+class LoginScreenInitialState extends AuthState {}
+
+class LoginScreenLoadedState extends AuthState {}
+
+class LoginScreenErrorState extends AuthState {
+  String error;
+  LoginScreenErrorState({
+    required this.error,
+  });
+}
+
+class PhoneAuthCodeSentSuccess extends AuthState {
   final String verificationId;
 
-  AuthPhoneVerificationCodeSentState({required this.verificationId});
+  PhoneAuthCodeSentSuccess({required this.verificationId});
 }
 
-class AuthPhoneVerificationCompleted extends AuthState {
-  final String userId;
-
-  AuthPhoneVerificationCompleted({required this.userId});
+class SignUpScreenOtpSuccessState extends AuthState{
+  
 }
+

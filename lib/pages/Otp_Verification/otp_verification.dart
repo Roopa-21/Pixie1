@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +8,7 @@ import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/pages/home/home_page.dart';
 
 class OtpVerification extends StatefulWidget {
   final String
@@ -86,7 +90,6 @@ class _OtpVerificationState extends State<OtpVerification> {
 
                       // Updated TextField for OTP input
                       TextField(
-                        cursorColor: AppColors.kpurple,
                         controller: _otpController,
                         decoration: const InputDecoration(
                           disabledBorder: OutlineInputBorder(
@@ -109,30 +112,44 @@ class _OtpVerificationState extends State<OtpVerification> {
                         width: MediaQuery.of(context).size.width * .9,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: state is! AuthLoading
-                              ? () {
-                                  String otpCode = _otpController.text.trim();
-                                  if (otpCode.isEmpty || otpCode.length < 6) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'Please enter a valid OTP code',
-                                        ),
-                                      ),
-                                    );
-                                    return;
-                                  }
+                          onPressed: () async {
+                            try {
+                              final cred = PhoneAuthProvider.credential(
+                                  verificationId: widget.verificationId,
+                                  smsCode: _otpController.text);
 
-                                  // Dispatch the event to verify the OTP
-                                  // BlocProvider.of<AuthBloc>(context).add(
-                                  //   AuthPhoneSignInRequested(
-                                  //     phoneNumber:
-                                  //         '', // Leave empty as it's not needed now
-                                  //     otpCode: otpCode, // Pass the entered OTP
-                                  //   ),
-                                  // );
-                                }
-                              : null,
+                              await FirebaseAuth.instance
+                                  .signInWithCredential(cred);
+                              context.go('/HomePage');
+                            } catch (e) {
+                              log(e.toString());
+                            }
+                          },
+
+                          // state is! AuthLoading
+                          //     ? () {
+                          //         String otpCode = _otpController.text.trim();
+                          //         if (otpCode.isEmpty || otpCode.length < 6) {
+                          //           ScaffoldMessenger.of(context).showSnackBar(
+                          //             const SnackBar(
+                          //               content: Text(
+                          //                 'Please enter a valid OTP code',
+                          //               ),
+                          //             ),
+                          //           );
+                          //           return;
+                          //         }
+
+                          //         // Dispatch the event to verify the OTP
+                          //         BlocProvider.of<AuthBloc>(context).add(
+                          //           AuthPhoneSignInRequested(
+                          //             phoneNumber:
+                          //                 '', // Leave empty as it's not needed now
+                          //             otpCode: otpCode, // Pass the entered OTP
+                          //           ),
+                          //         );
+                          //       }
+                          //     : null,
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -140,18 +157,20 @@ class _OtpVerificationState extends State<OtpVerification> {
                             ),
                             backgroundColor: AppColors.buttonblue,
                           ),
-                          child: state is AuthLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  "Verify",
-                                  style: theme.textTheme.bodyMedium!.copyWith(
-                                    color: AppColors.textColorWhite,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
+                          child:
+                              // state is AuthLoading
+                              //     ? const CircularProgressIndicator(
+                              //         color: Colors.white,
+                              //       )
+                              // :
+                              Text(
+                            "Verify",
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              color: AppColors.textColorWhite,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
                       ),
 

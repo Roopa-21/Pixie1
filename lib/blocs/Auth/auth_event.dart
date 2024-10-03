@@ -1,20 +1,60 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
+
 abstract class AuthEvent {}
 
-class AuthPhoneSignInRequested extends AuthEvent {
+
+
+
+class SendOtpToPhoneEvent extends AuthEvent {
   final String phoneNumber;
 
-  AuthPhoneSignInRequested({required this.phoneNumber});
+  SendOtpToPhoneEvent({required this.phoneNumber});
 }
 
-class AuthPhoneVerificationRequested extends AuthEvent {
+class OnPhoneOtpSend extends AuthEvent {
   final String verificationId;
-  final String otpCode;
+  final int token;
 
-  AuthPhoneVerificationRequested({
-    required this.verificationId,
-    required this.otpCode,
-  });
+  OnPhoneOtpSend({required this.verificationId, required this.token});
 }
+
+class VerifySentOtp extends AuthEvent {
+  final String otpCode;
+  final String verificationId;
+
+  VerifySentOtp({required this.otpCode, required this.verificationId});
+}
+
+class OnPhoneAuthErrorEvent extends AuthEvent {
+  final String error;
+
+  OnPhoneAuthErrorEvent({required this.error});
+}
+
+class OnPhoneAuthVerificationCompletedEvent extends AuthEvent {
+  final AuthCredential credential;
+
+  OnPhoneAuthVerificationCompletedEvent({required this.credential});
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class AuthEmailSignInRequested extends AuthEvent {
   final String email;

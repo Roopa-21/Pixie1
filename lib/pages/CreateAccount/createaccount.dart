@@ -28,19 +28,19 @@ class _CreateAccountState extends State<CreateAccount> {
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthPhoneVerificationCodeSentState) {
-          // Navigate to OTP verification screen when verification code is sent
-          context.push('/OtpVerification', extra: state.verificationId);
-        } else if (state is AuthError) {
-          // Show error message
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(state.message)));
-        } else if (state is AuthLoading) {
-          // Show loading state
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Sending verification code...')),
-          );
-        }
+        // if (state is AuthPhoneVerificationCodeSentState) {
+        //   // Navigate to OTP verification screen when verification code is sent
+        //   context.push('/OtpVerification', extra: state.verificationId);
+        // } else if (state is AuthError) {
+        //   // Show error message
+        //   ScaffoldMessenger.of(context)
+        //       .showSnackBar(SnackBar(content: Text(state.message)));
+        // } else if (state is AuthLoading) {
+        //   // Show loading state
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text('Sending verification code...')),
+        //   );
+        // }
       },
       builder: (context, state) {
         return Scaffold(
@@ -195,9 +195,13 @@ class _CreateAccountState extends State<CreateAccount> {
                             ),
                             const Divider(
                                 color: Color.fromARGB(102, 152, 92, 221)),
+
+
+
                             TextField(
                               cursorColor: AppColors.kpurple,
                               controller: mobileNumberController,
+
                               autofocus: true,
                               decoration: const InputDecoration(
                                 hintText: " Mobile number",
@@ -245,12 +249,17 @@ class _CreateAccountState extends State<CreateAccount> {
                           onPressed: () {
                             final phoneNumber =
                                 mobileNumberController.text.trim();
+                            print('.........$phoneNumber');
+                          //  BlocProvider.of<AuthBloc>(context).add(
+                              // AuthPhoneSignInRequested(
 
-                            BlocProvider.of<AuthBloc>(context).add(
-                              AuthPhoneSignInRequested(
-                                phoneNumber: "+918547062699",
-                              ),
-                            );
+                              //   phoneNumber: '+919880449032',
+                              //   otpCode: '',
+
+                              //   phoneNumber: "+918547062699",
+
+                              // ),
+                           // );
                           },
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
