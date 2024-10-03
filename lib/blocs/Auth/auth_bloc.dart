@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:pixieapp/repositories/authModel.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -13,10 +14,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(this._firebaseAuth) : super(AuthInitial()) {
     on<AuthEmailSignInRequested>(_onEmailSignInRequested);
     on<AuthEmailSignUpRequested>(_onEmailSignUpRequested);
+    on<AuthGoogleSignInRequested>(_onGoogleSignInRequested);
     on<AuthLogOutRequested>(_onLogOutRequested);
     on<AuthCheckStatus>(_onCheckStatus);
     on<AuthCheckAuthState>(_onCheckAuthState);
-
+    // Handle phone number sign-in
     on<SendOtpToPhoneEvent>((event, emit) async {
       emit(LoginScreenLoadingState());
 
@@ -77,8 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       // Listening to Firebase auth state changes
       _firebaseAuth.authStateChanges().listen((User? user) {
-        if (emit.isDone) return; // Check if the emit is done before proceeding
-
+        if (emit.isDone) return;
         if (user != null) {
           emit(AuthAuthenticated(userId: user.uid));
         } else {
@@ -92,10 +93,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     }
   }
-
-  // Handle phone number sign-in (sending OTP)
-
-  // Handle OTP verification after the code is sent
 
   // Handle email sign-in
   Future<void> _onEmailSignInRequested(
@@ -126,6 +123,37 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(userId: userCredential.user!.uid));
     } catch (e) {
       emit(AuthError(message: e.toString()));
+    }
+  }
+
+  // Handle google signin
+  Future<void> _onGoogleSignInRequested(
+      AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      if (googleUser == null) {
+        emit(AuthError(message: 'Google sign-in aborted.'));
+        return;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential userCredential =
+          await _firebaseAuth.signInWithCredential(credential);
+
+      emit(AuthAuthenticated(userId: userCredential.user!.uid));
+    } catch (e) {
+      emit(AuthError(message: 'Google Sign-In Failed: ${e.toString()}'));
     }
   }
 
