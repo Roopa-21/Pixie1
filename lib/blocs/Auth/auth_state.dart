@@ -1,8 +1,23 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
+class AuthLoading extends AuthState {}
+
+class AuthAuthenticated extends AuthState {
+  final String userId;
+
+  AuthAuthenticated({required this.userId});
+}
+
+class AuthUnauthenticated extends AuthState {}
+
+class AuthError extends AuthState {
+  final String message;
+
+  AuthError({required this.message});
+}
 
 class LoginScreenLoadingState extends AuthState {}
 
@@ -26,3 +41,4 @@ class PhoneAuthCodeSentSuccess extends AuthState {
 class SignUpScreenOtpSuccessState extends AuthState{
   
 }
+
