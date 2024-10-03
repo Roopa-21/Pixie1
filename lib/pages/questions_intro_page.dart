@@ -12,7 +12,7 @@ class QuestionsIntroPage extends StatelessWidget {
     final devicewidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Stack(children: [
-        Container(
+        SizedBox(
           width: devicewidth,
           height: deviceheight,
           child: Image.asset(
@@ -66,9 +66,7 @@ class QuestionsIntroPage extends StatelessWidget {
                     width: MediaQuery.sizeOf(context).width * 0.85,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {
-                       
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
