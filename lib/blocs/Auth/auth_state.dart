@@ -1,31 +1,28 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
 
-class AuthLoading extends AuthState {}
 
-class AuthAuthenticated extends AuthState {
-  final String userId;
+class LoginScreenLoadingState extends AuthState {}
 
-  AuthAuthenticated({required this.userId});
+class LoginScreenInitialState extends AuthState {}
+
+class LoginScreenLoadedState extends AuthState {}
+
+class LoginScreenErrorState extends AuthState {
+  String error;
+  LoginScreenErrorState({
+    required this.error,
+  });
 }
 
-class AuthUnauthenticated extends AuthState {}
-
-class AuthError extends AuthState {
-  final String message;
-
-  AuthError({required this.message});
-}
-
-class AuthPhoneVerificationCodeSentState extends AuthState {
+class PhoneAuthCodeSentSuccess extends AuthState {
   final String verificationId;
 
-  AuthPhoneVerificationCodeSentState({required this.verificationId});
+  PhoneAuthCodeSentSuccess({required this.verificationId});
 }
 
-class AuthPhoneVerificationCompleted extends AuthState {
-  final String userId;
-
-  AuthPhoneVerificationCompleted({required this.userId});
+class SignUpScreenOtpSuccessState extends AuthState{
+  
 }
