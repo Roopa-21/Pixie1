@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -117,12 +118,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthEmailSignUpRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
+      // Create user with Firebase Authentication
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: event.email,
         password: event.password,
       );
-      emit(AuthAuthenticated(userId: userCredential.user!.uid));
+
+      // Get user id
+      String userId = userCredential.user!.uid;
+      print(userId);
+
+      // Create user collection in Firestore
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'email': event.email,
+        'createdAt': DateTime.now(),
+        'userId': userId,
+      });
+      print('creted');
+      // Emit authenticated state after successful sign-up and Firestore operation
+      emit(AuthAuthenticated(userId: userId));
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -167,8 +182,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       UserCredential userCredential =
           await _firebaseAuth.signInWithCredential(credential);
 
+      // Get the user ID and other user details
+      String userId = userCredential.user!.uid;
+      String? email = userCredential.user!.email;
+      String? displayName = userCredential.user!.displayName;
+      String? photoURL = userCredential.user!.photoURL;
+
+      // Check if the user already exists in Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      // If the user doesn't exist, create a new document
+      if (!userDoc.exists) {
+        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+          'email': email,
+          'displayName': displayName,
+          'photoURL': photoURL,
+          'createdAt': Timestamp.now(),
+          'userId': userId,
+        });
+      }
+
       // Emit the Authenticated state with the user's UID
-      emit(AuthAuthenticated(userId: userCredential.user!.uid));
+      emit(AuthAuthenticated(userId: userId));
     } on PlatformException catch (e) {
       print(e);
       emit(AuthError(message: 'PlatformException: ${e.message}'));
