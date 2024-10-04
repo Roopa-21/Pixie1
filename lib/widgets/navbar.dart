@@ -40,7 +40,8 @@ class NavBar extends StatelessWidget {
                     label: 'Home',
                     iconSelected: 'assets/images/home_selected.svg',
                     iconUnselected: 'assets/images/home-02.svg',
-                    isSelected: state.selectedIndex == 0,
+                    isSelected:
+                        state.selectedIndex == 0 || state.selectedIndex == 1,
                     route: '/HomePage',
                   ),
                   _buildNavItem(
@@ -49,7 +50,7 @@ class NavBar extends StatelessWidget {
                     label: 'Create',
                     iconSelected: 'assets/images/create_selected.svg',
                     iconUnselected: 'assets/images/story.svg',
-                    isSelected: state.selectedIndex == 1,
+                    isSelected: state.selectedIndex == 5,
                     route: '/AddCharacter',
                   ),
                   _buildNavItem(
