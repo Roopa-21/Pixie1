@@ -1,4 +1,3 @@
-
 abstract class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -38,7 +37,10 @@ class PhoneAuthCodeSentSuccess extends AuthState {
   PhoneAuthCodeSentSuccess({required this.verificationId});
 }
 
-class SignUpScreenOtpSuccessState extends AuthState{
-  
-}
+class SignUpScreenOtpSuccessState extends AuthState {}
 
+class PasswordVisibilityState extends AuthState {
+  final bool isPasswordVisible;
+
+  PasswordVisibilityState(this.isPasswordVisible);
+}

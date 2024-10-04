@@ -110,7 +110,7 @@ class _LibraryState extends State<Library> {
       style: ElevatedButton.styleFrom(
         elevation: 2,
         minimumSize: const Size(50, 32),
-        maximumSize: const Size(100, 32),
+        maximumSize: const Size(200, 32),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),

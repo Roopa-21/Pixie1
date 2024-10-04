@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -64,19 +66,29 @@ class _SettingsPageState extends State<SettingsPage> {
                     children: [
                       profilelistCard(
                         title: 'Profile',
-                        ontap: () {
-                          // Add navigation to profile page here
-                        },
-                        icon_path: 'assets/images/Heart_filled.svg',
+                        ontap: () {},
+                        icon_path: 'assets/images/profile.svg',
+                        theme: theme,
+                      ),
+                      profilelistCard(
+                        title: 'Feedback',
+                        ontap: () {},
+                        icon_path: 'assets/images/feedbacak.svg',
+                        theme: theme,
+                      ),
+                      profilelistCard(
+                        title: 'About',
+                        ontap: () {},
+                        icon_path: 'assets/images/about.svg',
                         theme: theme,
                       ),
                       profilelistCard(
                         title: 'Logout',
                         ontap: () {
-                          // Dispatch the logout event
                           context.read<AuthBloc>().add(AuthLogOutRequested());
+                          context.read<AddCharacterBloc>().add(Pagechange(0));
                         },
-                        icon_path: 'assets/images/Heart_filled.svg',
+                        icon_path: 'assets/images/logout.svg',
                         theme: theme,
                       ),
                     ],
@@ -99,21 +111,24 @@ class _SettingsPageState extends State<SettingsPage> {
   }) {
     return GestureDetector(
       onTap: ontap,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        color: Colors.transparent,
-        child: Row(
-          children: [
-            SvgPicture.asset(
-              icon_path,
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
-            ),
-            const SizedBox(width: 10),
-          ],
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          color: Colors.transparent,
+          child: Row(
+            children: [
+              SvgPicture.asset(
+                icon_path,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                title,
+                style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
+              ),
+              const SizedBox(width: 10),
+            ],
+          ),
         ),
       ),
     );
