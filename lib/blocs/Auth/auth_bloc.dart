@@ -22,10 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<TogglePasswordVisibilityEvent>(_onAuthShowPassword);
     // Handle phone number sign-in
     on<SendOtpToPhoneEvent>((event, emit) async {
-      emit(LoginScreenLoadingState());
+      // emit(LoginScreenLoadingState());
 
       try {
-        await authModel.loginWithPhone(
+        await FirebaseAuth.instance.verifyPhoneNumber(
             phoneNumber: event.phoneNumber,
             verificationCompleted: (PhoneAuthCredential credential) {
               add(OnPhoneAuthVerificationCompletedEvent(
@@ -54,6 +54,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           PhoneAuthCredential credential = PhoneAuthProvider.credential(
               verificationId: event.verificationId, smsCode: event.otpCode);
           add(OnPhoneAuthVerificationCompletedEvent(credential: credential));
+        
         } catch (e) {
           emit(LoginScreenErrorState(error: e.toString()));
         }
@@ -67,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         await authModel.authentication.signInWithCredential(event.credential);
         emit(SignUpScreenOtpSuccessState());
-        emit(LoginScreenLoadedState());
+        // emit(LoginScreenLoadedState());
       } catch (e) {
         emit(LoginScreenErrorState(error: e.toString()));
       }
