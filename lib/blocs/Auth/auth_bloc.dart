@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<TogglePasswordVisibilityEvent>(_onAuthShowPassword);
     // Handle phone number sign-in
     on<SendOtpToPhoneEvent>((event, emit) async {
-      // emit(LoginScreenLoadingState());
+      emit(AuthLoading());
 
       try {
         await FirebaseAuth.instance.verifyPhoneNumber(
@@ -55,7 +55,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           PhoneAuthCredential credential = PhoneAuthProvider.credential(
               verificationId: event.verificationId, smsCode: event.otpCode);
           add(OnPhoneAuthVerificationCompletedEvent(credential: credential));
-        
         } catch (e) {
           emit(LoginScreenErrorState(error: e.toString()));
         }
@@ -144,7 +143,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-// Handle google sign-in
   Future<void> _onGoogleSignInRequested(
       AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading()); // Emit loading state
@@ -159,7 +157,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // If googleUser is null, sign-in was aborted
       if (googleUser == null) {
         emit(AuthError(message: 'Google sign-in aborted.'));
-        return;
+        return; // Stop execution here
       }
 
       // Obtain authentication details from the googleUser
@@ -170,7 +168,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (googleAuth.accessToken == null || googleAuth.idToken == null) {
         emit(
             AuthError(message: 'Google authentication failed: missing token.'));
-        return;
+        return; // Stop execution here
       }
 
       // Create an AuthCredential from googleAuth
@@ -210,6 +208,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAuthenticated(userId: userId));
     } on PlatformException catch (e) {
       print(e);
+      // Emit AuthError to stop loading and show the error
       emit(AuthError(message: 'PlatformException: ${e.message}'));
     } catch (e) {
       // General error handling
