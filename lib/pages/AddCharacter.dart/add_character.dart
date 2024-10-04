@@ -138,7 +138,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                         ),
                                         child: IconButton(
                                           onPressed: () async {
-                                            context.pop();
+                                            context.go('/HomePage');
                                           },
                                           icon: const Icon(
                                             Icons.arrow_back,
