@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,7 +6,7 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
-import 'package:pixieapp/const/loading_widget.dart';
+import 'package:pixieapp/widgets/loading_widget.dart';
 
 class Loginpage extends StatefulWidget {
   const Loginpage({super.key});
@@ -119,44 +120,58 @@ class _LoginpageState extends State<Loginpage> {
                     style: const TextStyle(color: Colors.black),
                   ),
                   const SizedBox(height: 10),
-                  TextField(
-                    cursorColor: AppColors.kpurple,
-                    controller: _passwordController,
-                    decoration: const InputDecoration(
-                      hintText: " Enter your password",
-                      hintStyle: TextStyle(
-                          color: AppColors.textColorblue,
-                          fontWeight: FontWeight.w400),
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          strokeAlign: 5,
-                          color: Color.fromARGB(130, 152, 92, 221),
+                  BlocProvider(
+                    create: (context) => AuthBloc(FirebaseAuth.instance),
+                    child: BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                      return TextField(
+                        cursorColor: AppColors.kpurple,
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                BlocProvider.of<AuthBloc>(context)
+                                    .add(TogglePasswordVisibilityEvent());
+                              },
+                              icon: const Icon(Icons.remove_red_eye_outlined)),
+                          hintText: " Enter your password",
+                          hintStyle: const TextStyle(
+                              color: AppColors.textColorblue,
+                              fontWeight: FontWeight.w400),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              strokeAlign: 5,
+                              color: Color.fromARGB(130, 152, 92, 221),
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(130, 152, 92, 221),
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(130, 152, 92, 221),
+                                width: 1.0),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color.fromARGB(130, 152, 92, 221),
-                        ),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Color.fromARGB(130, 152, 92, 221),
-                            width: 1.0),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                    ),
-                    obscureText: true,
-                    style: const TextStyle(color: Colors.black),
+                        obscureText: state is PasswordVisibilityState
+                            ? state.isPasswordVisible
+                            : false,
+                        style: const TextStyle(color: Colors.black),
+                      );
+                    }),
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
