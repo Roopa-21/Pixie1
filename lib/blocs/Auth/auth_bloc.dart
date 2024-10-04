@@ -66,7 +66,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
     on<OnPhoneAuthVerificationCompletedEvent>((event, emit) async {
       try {
-        await authModel.authentication.signInWithCredential(event.credential);
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(event.credential);
+
+        String userId = userCredential.user!.uid;
+        String? phone = userCredential.user!.phoneNumber;
+        String? displayName = userCredential.user!.displayName;
+        String? photoURL = userCredential.user!.photoURL;
+        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+          'phone': phone,
+          'createdAt': DateTime.now(),
+          'userId': userId,
+          'displayName': displayName,
+          'photoURL': photoURL,
+          'newUser': true
+        });
         emit(SignUpScreenOtpSuccessState());
         // emit(LoginScreenLoadedState());
       } catch (e) {
@@ -130,7 +144,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print(userId);
 
       // Create user collection in Firestore
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+
+      await FirebaseFirestore.instance.collection('users').doc('userId').set({
         'email': event.email,
         'createdAt': DateTime.now(),
         'userId': userId,
@@ -188,21 +203,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String? photoURL = userCredential.user!.photoURL;
 
       // Check if the user already exists in Firestore
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
+      // DocumentSnapshot userDoc = await FirebaseFirestore.instance
+      //     .collection('users')
+      //     .doc(userId)
+      //     .get();
 
       // If the user doesn't exist, create a new document
-      if (!userDoc.exists) {
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
-          'email': email,
-          'displayName': displayName,
-          'photoURL': photoURL,
-          'createdAt': Timestamp.now(),
-          'userId': userId,
-        });
-      }
+      // if (!userDoc.exists) {
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
+        'email': 'email',
+        'displayName': 'displayName',
+        'photoURL': 'photoURL',
+        'createdAt': 'Timestamp.now',
+        'userId': 'userId',
+      });
+      // }
 
       // Emit the Authenticated state with the user's UID
       emit(AuthAuthenticated(userId: userId));
