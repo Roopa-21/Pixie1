@@ -42,7 +42,8 @@ final GoRouter router = GoRouter(
 
         if (authState is AuthInitial) {
           return const SplashScreen(); // Show splash screen while checking auth state
-        } else if (authState is AuthAuthenticated) {
+        } else if (authState is AuthAuthenticated ||
+            authState is SignUpScreenOtpSuccessState) {
           return const HomePage(); // Redirect to home page if authenticated
         } else {
           return const OnboardingPage(); // Redirect to onboarding if not authenticated
@@ -50,10 +51,11 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/OtpVerification',
-      builder: (context, state) => const OtpVerification(
-        verificationId: "",
-      ),
+      path: '/OtpVerification/:verificationId',
+      builder: (BuildContext context, GoRouterState state) {
+        final verificationId = state.pathParameters['verificationId']!;
+        return OtpVerification(verificationId: verificationId);
+      },
     ),
     GoRoute(
       path: '/CreateStoryPage',

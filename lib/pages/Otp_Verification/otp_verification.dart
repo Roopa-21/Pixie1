@@ -34,16 +34,14 @@ class _OtpVerificationState extends State<OtpVerification> {
     final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
+    print('...................${widget.verificationId}');
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthAuthenticated) {
-          // Navigate to the HomePage when the OTP verification is successful
+        if (state is SignUpScreenOtpSuccessState) {
           context.go('/HomePage');
-        } else if (state is AuthError) {
-          // Show error message
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
+            SnackBar(content: Text('Error')),
           );
         }
       },
@@ -113,17 +111,34 @@ class _OtpVerificationState extends State<OtpVerification> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () async {
-                            try {
-                              final cred = PhoneAuthProvider.credential(
-                                  verificationId: widget.verificationId,
-                                  smsCode: _otpController.text);
-
-                              await FirebaseAuth.instance
-                                  .signInWithCredential(cred);
-                              context.go('/HomePage');
-                            } catch (e) {
-                              log(e.toString());
+                            String otpCode = _otpController.text.trim();
+                            if (otpCode.isEmpty || otpCode.length < 6) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('Please enter a valid OTP code'),
+                                ),
+                              );
+                              return;
                             }
+
+                            BlocProvider.of<AuthBloc>(context).add(
+                              VerifySentOtp(
+                                otpCode: '123456',
+                                verificationId: widget.verificationId,
+                              ),
+                            );
+                            // try {
+                            //   final cred = PhoneAuthProvider.credential(
+                            //       verificationId: widget.verificationId,
+                            //       smsCode: _otpController.text);
+
+                            //   await FirebaseAuth.instance
+                            //       .signInWithCredential(cred);
+                            //   context.go('/HomePage');
+                            // } catch (e) {
+                            //   log(e.toString());
+                            // }
                           },
 
                           // state is! AuthLoading
