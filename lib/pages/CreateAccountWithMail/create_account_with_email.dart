@@ -6,7 +6,7 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
-import 'package:pixieapp/const/loading_widget.dart';
+import 'package:pixieapp/widgets/loading_widget.dart';
 
 class CreateAccountWithEmail extends StatefulWidget {
   const CreateAccountWithEmail({super.key});

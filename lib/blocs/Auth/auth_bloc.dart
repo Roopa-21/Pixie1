@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogOutRequested>(_onLogOutRequested);
     on<AuthCheckStatus>(_onCheckStatus);
     on<AuthCheckAuthState>(_onCheckAuthState);
+    on<TogglePasswordVisibilityEvent>(_onAuthShowPassword);
     // Handle phone number sign-in
     on<SendOtpToPhoneEvent>((event, emit) async {
       emit(LoginScreenLoadingState());
@@ -193,5 +194,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       emit(AuthUnauthenticated());
     }
+  }
+
+  Future<void> _onAuthShowPassword(
+      TogglePasswordVisibilityEvent event, Emitter<AuthState> emit) async {
+    final currentVisibility = state is PasswordVisibilityState
+        ? (state as PasswordVisibilityState).isPasswordVisible
+        : false;
+    emit(PasswordVisibilityState(!currentVisibility));
   }
 }

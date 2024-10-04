@@ -54,5 +54,6 @@ class AuthLogOutRequested extends AuthEvent {}
 
 class AuthCheckStatus extends AuthEvent {}
 
-class AuthCheckAuthState
-    extends AuthEvent {}  // New event to check auth state on app start
+class AuthCheckAuthState extends AuthEvent {}
+
+class TogglePasswordVisibilityEvent extends AuthEvent {}
