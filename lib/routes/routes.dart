@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
@@ -21,6 +22,7 @@ import 'package:pixieapp/pages/login_page/login_page.dart';
 import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
 import 'package:pixieapp/pages/questions_intro_page.dart';
 import 'package:pixieapp/pages/storygenerate/storygenerate.dart';
+import 'package:pixieapp/widgets/loading_widget.dart';
 
 bool isUserAuthenticated(BuildContext context) {
   final authState = context.read<AuthBloc>().state;
@@ -29,8 +31,21 @@ bool isUserAuthenticated(BuildContext context) {
 
 bool isAuthStateChecked(BuildContext context) {
   final authState = context.read<AuthBloc>().state;
-  return authState
-      is! AuthInitial; // Make sure auth state is not in initial state
+  return authState is! AuthInitial;
+}
+
+Future<bool> checkIfNewUser(String userId) async {
+  try {
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (userDoc.exists) {
+      var userData = userDoc.data() as Map<String, dynamic>;
+      return userData['newUser'] ?? false;
+    }
+  } catch (e) {
+    print('Error checking Firestore user: $e');
+  }
+  return false;
 }
 
 final GoRouter router = GoRouter(
@@ -41,12 +56,27 @@ final GoRouter router = GoRouter(
         final authState = context.watch<AuthBloc>().state;
 
         if (authState is AuthInitial) {
-          return const SplashScreen(); // Show splash screen while checking auth state
-        } else if (authState is AuthAuthenticated ||
-            authState is SignUpScreenOtpSuccessState) {
-          return const HomePage(); // Redirect to home page if authenticated
+          return const SplashScreen();
+        } else if (authState is AuthAuthenticated) {
+          final userId = authState.userId;
+          return FutureBuilder<bool>(
+            future: checkIfNewUser(userId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const LoadingWidget();
+              } else if (snapshot.hasError) {
+                return const ErrorPage();
+              } else if (snapshot.hasData && snapshot.data == true) {
+                return const QuestionsIntroPage();
+              } else {
+                return const HomePage();
+              }
+            },
+          );
+        } else if (authState is SignUpScreenOtpSuccessState) {
+          return const HomePage();
         } else {
-          return const OnboardingPage(); // Redirect to onboarding if not authenticated
+          return const OnboardingPage();
         }
       },
     ),
@@ -137,9 +167,8 @@ final GoRouter router = GoRouter(
   redirect: (context, state) {
     final authState = context.read<AuthBloc>().state;
 
-    // Wait until auth state is checked before redirecting
     if (authState is AuthInitial) {
-      return '/'; // Stay on the splash screen until auth is checked
+      return '/';
     }
 
     final loggedIn = authState is AuthAuthenticated;
@@ -147,7 +176,7 @@ final GoRouter router = GoRouter(
         state.uri.toString() == '/' || state.uri.toString() == '/Loginpage';
 
     if (loggedIn && loggingIn) {
-      return '/HomePage'; // Redirect to home if logged in and accessing login pages
+      return '/HomePage';
     }
 
     final protectedRoutes = [
@@ -157,9 +186,9 @@ final GoRouter router = GoRouter(
     ];
 
     if (!loggedIn && protectedRoutes.contains(state.uri.toString())) {
-      return '/'; // Redirect to login if trying to access protected routes without being logged in
+      return '/';
     }
 
-    return null; // Proceed with navigation if no redirect is needed
+    return null;
   },
 );

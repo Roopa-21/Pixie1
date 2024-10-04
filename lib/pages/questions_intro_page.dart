@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/pages/home/home_page.dart';
 import 'package:pixieapp/widgets/name_character_bottomsheet.dart';
 
 class QuestionsIntroPage extends StatelessWidget {
@@ -24,11 +26,9 @@ class QuestionsIntroPage extends StatelessWidget {
             left: deviceheight * 0.1179,
             top: deviceheight * 0.2064,
             child: Stack(children: [
-              Container(
-                child: Image.asset(
-                  'assets/images/tooltip.png',
-                  fit: BoxFit.cover,
-                ),
+              Image.asset(
+                'assets/images/tooltip.png',
+                fit: BoxFit.cover,
               ),
               Positioned.fill(
                   top: deviceheight * 0.0442,
@@ -66,7 +66,9 @@ class QuestionsIntroPage extends StatelessWidget {
                     width: MediaQuery.sizeOf(context).width * 0.85,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/introductionPages');
+                      },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -81,6 +83,9 @@ class QuestionsIntroPage extends StatelessWidget {
                               fontSize: 20,
                               fontWeight: FontWeight.w400)),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               ),

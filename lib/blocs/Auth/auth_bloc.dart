@@ -127,15 +127,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       // Get user id
       String userId = userCredential.user!.uid;
-      print(userId);
 
       // Create user collection in Firestore
+
       await FirebaseFirestore.instance.collection('users').doc(userId).set({
         'email': event.email,
+        'phone': '',
         'createdAt': DateTime.now(),
         'userId': userId,
+        'displayName': "displayName",
+        'photoURL': "photoURL",
+        'newUser': true
       });
-      print('creted');
+
       // Emit authenticated state after successful sign-up and Firestore operation
       emit(AuthAuthenticated(userId: userId));
     } catch (e) {
@@ -197,10 +201,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (!userDoc.exists) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
           'email': email,
+          'phone': '',
           'displayName': displayName,
           'photoURL': photoURL,
           'createdAt': Timestamp.now(),
           'userId': userId,
+          'newUser': true
         });
       }
 
