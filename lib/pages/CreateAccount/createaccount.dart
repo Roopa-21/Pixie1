@@ -7,6 +7,7 @@ import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Auth/auth_state.dart';
 import 'package:pixieapp/const/Countries.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/widgets/loading_widget.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -28,10 +29,20 @@ class _CreateAccountState extends State<CreateAccount> {
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
+        if (state is AuthLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return const Center(child: LoadingWidget());
+            },
+          );
+        }
         if (state is PhoneAuthCodeSentSuccess) {
           print('...++....${state.verificationId}');
-        context.go('/OtpVerification/${state.verificationId}');
+          context.go('/OtpVerification/${state.verificationId}');
         } else if (state is AuthError) {
+          context.pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
           );
@@ -275,35 +286,34 @@ class _CreateAccountState extends State<CreateAccount> {
                       Material(
                         elevation: 5,
                         borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          width: MediaQuery.of(context).size.width * .8,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: SizedBox(
-                                    width: 40,
-                                    child:
-                                        Image.asset("assets/images/mail.png")),
-                              ),
-                              TextButton(
-                                onPressed: () =>
-                                    context.push('/CreateAccountWithEmail'),
-                                child: Text(
+                        child: InkWell(
+                          onTap: () => context.push('/CreateAccountWithEmail'),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: SizedBox(
+                                      width: 40,
+                                      child: Image.asset(
+                                          "assets/images/mail.png")),
+                                ),
+                                Text(
                                   "Sign Up with Email Address",
                                   style: theme.textTheme.bodyMedium!.copyWith(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.backgrountdarkpurple),
                                 ),
-                              ),
-                              const SizedBox()
-                            ],
+                                const SizedBox()
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -311,36 +321,36 @@ class _CreateAccountState extends State<CreateAccount> {
                       Material(
                         elevation: 5,
                         borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          width: MediaQuery.of(context).size.width * .8,
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: SizedBox(
-                                    width: 40,
-                                    child: Image.asset(
-                                        "assets/images/googleimg.png")),
-                              ),
-                              TextButton(
-                                onPressed: () => context
-                                    .read<AuthBloc>()
-                                    .add(AuthGoogleSignInRequested()),
-                                child: Text(
+                        child: InkWell(
+                          onTap: () => context
+                              .read<AuthBloc>()
+                              .add(AuthGoogleSignInRequested()),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            width: MediaQuery.of(context).size.width * .8,
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: SizedBox(
+                                      width: 40,
+                                      child: Image.asset(
+                                          "assets/images/googleimg.png")),
+                                ),
+                                Text(
                                   "Login with Google",
                                   style: theme.textTheme.bodyMedium!.copyWith(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w400,
                                       color: AppColors.backgrountdarkpurple),
                                 ),
-                              ),
-                              const SizedBox()
-                            ],
+                                const SizedBox()
+                              ],
+                            ),
                           ),
                         ),
                       ),

@@ -59,7 +59,7 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
             Navigator.of(context).pop();
             context.push('/HomePage');
           } else if (state is AuthError) {
-            Navigator.of(context).pop();
+            context.pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
