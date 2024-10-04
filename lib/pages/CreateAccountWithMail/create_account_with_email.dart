@@ -57,9 +57,9 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
             );
           } else if (state is AuthAuthenticated) {
             Navigator.of(context).pop();
-            context.push('/HomePage');
+            context.push('/questionIntroPage');
           } else if (state is AuthError) {
-            context.pop();
+            Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );

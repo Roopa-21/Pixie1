@@ -22,15 +22,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Navigate after a delay
   Future<void> _navigateAfterDelay() async {
-    await Future.delayed(const Duration(seconds: 3)); // Splash screen delay
+    await Future.delayed(const Duration(seconds: 3));
 
     // Check if the user is authenticated
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthAuthenticated) {
-      context.go('/HomePage'); // Navigate to Home if authenticated
+      context.go('/HomePage');
     } else {
-      context.go(
-          '/storyconfirmationstory'); // Navigate to other screen if not authenticated
+      context.go('/storyconfirmationstory');
     }
   }
 
