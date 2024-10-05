@@ -37,11 +37,11 @@ class _OtpVerificationState extends State<OtpVerification> {
     print('...................${widget.verificationId}');
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is SignUpScreenOtpSuccessState) {
+        if (state is AuthAuthenticated) {
           context.go('/HomePage');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error')),
+            const SnackBar(content: Text('Error')),
           );
         }
       },
@@ -124,7 +124,7 @@ class _OtpVerificationState extends State<OtpVerification> {
 
                             BlocProvider.of<AuthBloc>(context).add(
                               VerifySentOtp(
-                                otpCode: '123456',
+                                otpCode: _otpController.text,
                                 verificationId: widget.verificationId,
                               ),
                             );

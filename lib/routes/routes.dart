@@ -58,7 +58,11 @@ final GoRouter router = GoRouter(
         if (authState is AuthInitial) {
           return const SplashScreen();
         } else if (authState is AuthAuthenticated) {
-          final userId = authState.userId;
+          
+       
+ final userId = authState.userId;
+    
+        
           return FutureBuilder<bool>(
             future: checkIfNewUser(userId),
             builder: (context, snapshot) {
@@ -73,16 +77,19 @@ final GoRouter router = GoRouter(
               }
             },
           );
-        } else if (authState is SignUpScreenOtpSuccessState) {
-          return const HomePage();
-        } else {
+        } 
+        
+        // else if (authState is SignUpScreenOtpSuccessState) {
+        //   return const HomePage();
+        // }
+         else {
           return const OnboardingPage();
         }
       },
     ),
     GoRoute(
       path: '/OtpVerification/:verificationId',
-      builder: (BuildContext context, GoRouterState state) {
+      builder: ( context, state) {
         final verificationId = state.pathParameters['verificationId']!;
         return OtpVerification(verificationId: verificationId);
       },

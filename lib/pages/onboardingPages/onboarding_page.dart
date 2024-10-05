@@ -153,11 +153,14 @@ class OnboardContent extends StatelessWidget {
           SizedBox(
             height: deviceheight * 0.35,
           ),
-          Text(
-            title,
-            style: theme.textTheme.displaySmall!.copyWith(
-                color: AppColors.textColorblue, fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
+          FittedBox(
+            // fit: BoxFit.fitHeight,
+            child: Text(
+              title,
+              style: theme.textTheme.displaySmall!.copyWith(
+                  color: AppColors.textColorblue, fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
           ),
           SizedBox(height: deviceheight * 0.0242),
           Text(

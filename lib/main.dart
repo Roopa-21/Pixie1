@@ -5,6 +5,7 @@ import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth/auth_event.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
+import 'package:pixieapp/blocs/introduction/introduction_bloc.dart';
 import 'package:pixieapp/firebase_options.dart';
 import 'package:pixieapp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,7 +34,10 @@ class MyApp extends StatelessWidget {
         BlocProvider<AddCharacterBloc>(
           create: (_) => AddCharacterBloc(),
         ),
-      ],
+        BlocProvider(
+  create: (context) => TextBloc(),
+    ),
+    ],
       child: MaterialApp.router(
         routerConfig: router,
         debugShowCheckedModeBanner: false,
