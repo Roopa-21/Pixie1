@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -20,7 +19,6 @@ class CreateAccount extends StatefulWidget {
 TextEditingController countrycodetextEditingController =
     TextEditingController();
 TextEditingController mobileNumberController = TextEditingController();
- String countryCode = '';
 
 class _CreateAccountState extends State<CreateAccount> {
   @override
@@ -199,8 +197,6 @@ class _CreateAccountState extends State<CreateAccount> {
                               onSelected: (Country country) {
                                 countrycodetextEditingController.text =
                                     "${country.flag}  ${country.code}  -  ${country.name}";
-                                    
-                                    countryCode= country.code;
                               },
                             ),
                             const Divider(
@@ -255,10 +251,10 @@ class _CreateAccountState extends State<CreateAccount> {
                           onPressed: () {
                             final phoneNumber =
                                 mobileNumberController.text.trim();
-                            print('.........$countryCode$phoneNumber');
+                            print('.........$phoneNumber');
                             BlocProvider.of<AuthBloc>(context).add(
                               SendOtpToPhoneEvent(
-                                phoneNumber: '$countryCode$phoneNumber',
+                                phoneNumber: '+91$phoneNumber',
 
                                 //  phoneNumber: "+918547062699",
                               ),
@@ -346,7 +342,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                           "assets/images/googleimg.png")),
                                 ),
                                 Text(
-                                  "Sign Up with Google",
+                                  "Login with Google",
                                   style: theme.textTheme.bodyMedium!.copyWith(
                                       fontSize: 17,
                                       fontWeight: FontWeight.w400,
@@ -358,28 +354,6 @@ class _CreateAccountState extends State<CreateAccount> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      RichText(
-                          text: TextSpan(
-                              text: 'Already have an account?',
-                              style: theme.textTheme.bodyMedium!.copyWith(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.backgrountdarkpurple),
-                              children: [
-                            TextSpan(
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  context.pushReplacement('/Loginpage');
-                                },
-                              text: 'Sign In',
-                              style: theme.textTheme.bodyMedium!.copyWith(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w400,
-                                  decoration: TextDecoration.underline,
-                                  color: AppColors.backgrountdarkpurple),
-                            )
-                          ])),
                     ],
                   ),
                 ),

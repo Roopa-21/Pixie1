@@ -20,8 +20,9 @@ class AuthError extends AuthState {
 
 class LoginScreenLoadingState extends AuthState {}
 
+class LoginScreenInitialState extends AuthState {}
 
-//class LoginScreenLoadedState extends AuthState {}
+class LoginScreenLoadedState extends AuthState {}
 
 class LoginScreenErrorState extends AuthState {
   String error;
@@ -36,9 +37,7 @@ class PhoneAuthCodeSentSuccess extends AuthState {
   PhoneAuthCodeSentSuccess({required this.verificationId});
 }
 
-class SignUpScreenOtpSuccessState extends AuthState {
-
-}
+class SignUpScreenOtpSuccessState extends AuthState {}
 
 class PasswordVisibilityState extends AuthState {
   final bool isPasswordVisible;
