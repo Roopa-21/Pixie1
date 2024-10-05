@@ -55,57 +55,64 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
             ]),
             Container(
               height: 150,
-              padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.only(left: 40, right: 40),
               decoration: BoxDecoration(
                 color: AppColors.kwhiteColor,
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [
-                        AppColors.buttonColor1,
-                        Color(0xff7995B4),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ).createShader(
-                      Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Text(
-                        'Welcome to new adventures!',
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                            color: AppColors.kwhiteColor,
-                            fontWeight: FontWeight.w700),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [
+                          AppColors.buttonColor1,
+                          Color(0xff7995B4),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(
+                        Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 10,
+                        ),
+                        child: Text(
+                          'Welcome to new adventures!',
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                              color: AppColors.kwhiteColor,
+                              fontWeight: FontWeight.w700),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [
-                        AppColors.buttonColor1,
-                        Color(0xff7995B4),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ).createShader(
-                      Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                    const SizedBox(height: 10),
+                    ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [
+                          AppColors.buttonColor1,
+                          Color(0xff7995B4),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(
+                        Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                      ),
+                      child: Text(
+                        'Do you want to create your first story now?',
+                        maxLines: 2,
+                        style: theme.textTheme.bodyLarge!.copyWith(
+                            color: AppColors.kwhiteColor,
+                            fontWeight: FontWeight.w400),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    child: Text(
-                      'Do you want to create your first story now?',
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          color: AppColors.kwhiteColor,
-                          fontWeight: FontWeight.w400),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 30),
@@ -117,7 +124,10 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
                     context.push('/AddCharacter');
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: (Size(150, 50)),
+                    surfaceTintColor: AppColors.kpurple,
+                    foregroundColor: AppColors.kpurple,
+                    shadowColor: AppColors.kpurple,
+                    minimumSize: (const Size(150, 50)),
                     elevation: 2,
                     backgroundColor: AppColors.kwhiteColor,
                     shape: RoundedRectangleBorder(
@@ -135,7 +145,11 @@ class _StoryConfirmationPageState extends State<StoryConfirmationPage> {
                     context.push('/HomePage');
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: (Size(150, 50)),
+                    surfaceTintColor: AppColors.kpurple,
+                    foregroundColor: AppColors.kpurple,
+                    shadowColor: AppColors.kpurple,
+                    overlayColor: Colors.transparent,
+                    minimumSize: (const Size(150, 50)),
                     elevation: 2,
                     backgroundColor: AppColors.kwhiteColor,
                     shape: RoundedRectangleBorder(

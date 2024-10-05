@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Check if the user is authenticated
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthAuthenticated) {
-      context.go('/HomePage');
+      context.go('/storyconfirmationstory');
     } else {
       context.go('/storyconfirmationstory');
     }

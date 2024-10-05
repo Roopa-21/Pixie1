@@ -6,7 +6,6 @@ import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
-import 'package:pixieapp/blocs/introduction/introduction_bloc.dart';
 import 'package:pixieapp/firebase_options.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/routes/routes.dart';
@@ -36,10 +35,6 @@ class MyApp extends StatelessWidget {
         BlocProvider<AddCharacterBloc>(
           create: (_) => AddCharacterBloc(),
         ),
-        BlocProvider(
-  create: (context) => TextBloc(),
-    ),
-  
         BlocProvider<StoryBloc>(
           create: (_) => StoryBloc(storyRepository: StoryRepository()),
         ),
