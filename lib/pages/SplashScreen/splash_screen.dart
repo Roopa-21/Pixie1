@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Navigate after a delay
   Future<void> _navigateAfterDelay() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
 
     // Check if the user is authenticated
     final authState = context.read<AuthBloc>().state;
