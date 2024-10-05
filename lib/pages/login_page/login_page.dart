@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -69,10 +70,12 @@ class _LoginpageState extends State<Loginpage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset('assets/images/createaccountsmily.png'),
-                  Text(
-                    'Login to your account',
-                    style: theme.textTheme.displayLarge!
-                        .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
+                  FittedBox(
+                    child: Text(
+                      'Login to your account',
+                      style: theme.textTheme.displayLarge!
+                          .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -281,6 +284,28 @@ class _LoginpageState extends State<Loginpage> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 10),
+                  RichText(
+                      text: TextSpan(
+                          text: '''Don't have an account?''',
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.backgrountdarkpurple),
+                          children: [
+                            TextSpan(
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.pushReplacement('/CreateAccount');
+                                },
+                              text: 'Create One',
+                              style: theme.textTheme.bodyMedium!.copyWith(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
+                                  decoration: TextDecoration.underline,
+                                  color: AppColors.backgrountdarkpurple),
+                            )
+                          ])),
                 ],
               ),
             ),

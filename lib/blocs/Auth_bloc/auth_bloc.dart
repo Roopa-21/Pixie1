@@ -81,7 +81,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'photoURL': photoURL,
           'newUser': true
         });
-        emit(SignUpScreenOtpSuccessState());
+        
+        emit(AuthAuthenticated(userId: userId));
         // emit(LoginScreenLoadedState());
       } catch (e) {
         emit(LoginScreenErrorState(error: e.toString()));
@@ -205,11 +206,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String? displayName = userCredential.user!.displayName;
       String? photoURL = userCredential.user!.photoURL;
 
+     // Check if the user already exists in Firestore
       // Check if the user already exists in Firestore
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
+
+      // If the user doesn't exist, create a new document
 
       if (!userDoc.exists) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
