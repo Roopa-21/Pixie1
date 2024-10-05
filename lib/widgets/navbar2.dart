@@ -46,7 +46,7 @@ class _NavBar2State extends State<NavBar2> {
                 ),
               ),
               IconButton(
-                onPressed: () => router.go('/StoryGeneratePage'),
+                onPressed: () {},
                 icon: SvgPicture.asset(
                   'assets/images/pausebutton.svg',
                   width: 60,

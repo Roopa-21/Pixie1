@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -247,8 +248,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   name = value;
                                                 });
                                               },
-                                              textAlign: TextAlign.left,
                                               decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                        left: 15),
                                                 border: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
                                                 errorBorder: InputBorder.none,
@@ -259,8 +262,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 enabledBorder: InputBorder.none,
                                                 fillColor:
                                                     AppColors.kwhiteColor,
-                                                hintText:
-                                                    '''Your child's name''',
+                                                hintText: 'Your child\'s name',
                                                 hintStyle: theme
                                                     .textTheme.bodyMedium
                                                     ?.copyWith(
@@ -307,19 +309,24 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           const SizedBox(height: 20),
                                           const Text("Date of Birth",
                                               style: TextStyle(fontSize: 18)),
-                                          GestureDetector(
-                                            //   onTap: () => _selectDate(context),
-                                            child: InputDecorator(
-                                              decoration: const InputDecoration(
-                                                border: OutlineInputBorder(),
-                                              ),
-                                              child: Text(
-                                                "${selectedDate.toLocal()}"
-                                                    .split(' ')[0],
-                                                style: const TextStyle(
-                                                    fontSize: 16),
-                                              ),
+                                          SizedBox(
+                                            height: 200,
+                                            child: CupertinoDatePicker(
+                                              initialDateTime: selectedDate,
+                                              mode:
+                                                  CupertinoDatePickerMode.date,
+                                              onDateTimeChanged:
+                                                  (DateTime newDate) {
+                                                setState(() {
+                                                  selectedDate = newDate;
+                                                });
+                                              },
                                             ),
+                                          ),
+                                          CupertinoButton(
+                                            child: Text('Done'),
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
                                           ),
                                           const SizedBox(height: 20),
                                         ],
