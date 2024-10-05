@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
-import 'package:pixieapp/blocs/Auth/auth_state.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
@@ -124,7 +124,10 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/StoryGeneratePage',
-      builder: (context, state) => const StoryGeneratePage(),
+      builder: (context, state) {
+        final story = state.extra as String;
+        return StoryGeneratePage(story: story);
+      },
     ),
     GoRoute(
       path: '/HomePage',

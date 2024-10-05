@@ -145,10 +145,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       // Create user collection in Firestore
 
-
-
       await FirebaseFirestore.instance.collection('users').doc('userId').set({
-
         'email': event.email,
         'phone': '',
         'createdAt': DateTime.now(),
@@ -210,6 +207,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String? photoURL = userCredential.user!.photoURL;
 
      // Check if the user already exists in Firestore
+      // Check if the user already exists in Firestore
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -238,7 +236,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'userId': 'userId',
       });
       // }
-
 
       // Emit the Authenticated state with the user's UID
       emit(AuthAuthenticated(userId: userId));
