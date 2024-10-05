@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
-import 'package:pixieapp/blocs/Auth/auth_event.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/firebase_options.dart';
+import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -32,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AddCharacterBloc>(
           create: (_) => AddCharacterBloc(),
+        ),
+        BlocProvider<StoryBloc>(
+          create: (_) => StoryBloc(storyRepository: StoryRepository()),
         ),
       ],
       child: MaterialApp.router(

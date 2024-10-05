@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
-import 'package:pixieapp/blocs/Auth/auth_event.dart';
-import 'package:pixieapp/blocs/Auth/auth_state.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 
 class CreateAccountWithEmail extends StatefulWidget {

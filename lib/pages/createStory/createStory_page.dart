@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/bottomsheet.dart';
+import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/pixie_button.dart';
 
 class CreateStoryPage extends StatefulWidget {
@@ -20,151 +25,184 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
 
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: Container(
-        height: deviceheight,
-        width: devicewidth,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 231, 201, 249),
-              Color.fromARGB(255, 248, 244, 187),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Stack(
-          children: [
-            Column(
+      body: BlocConsumer<StoryBloc, StoryState>(
+        listener: (context, state) {
+          if (state is StorySuccess) {
+            context.push('/StoryGeneratePage', extra: state.story);
+          } else if (state is StoryFailure) {
+            // Show error message
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Container(
+            height: deviceheight,
+            width: devicewidth,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 231, 201, 249),
+                  Color.fromARGB(255, 248, 244, 187),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            child: Stack(
               children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * .388,
-                            child: Stack(
-                              children: [
-                                Positioned.fill(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Image.asset(
-                                      'assets/images/Ellipse 13 (2).png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                                SafeArea(
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        Image.asset(
-                                          'assets/images/star.png',
-                                          width: devicewidth * 0.1388,
-                                          height: devicewidth * 0.1388,
+                Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                height:
+                                    MediaQuery.of(context).size.height * .388,
+                                child: Stack(
+                                  children: [
+                                    Positioned.fill(
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Image.asset(
+                                          'assets/images/Ellipse 13 (2).png',
+                                          fit: BoxFit.cover,
                                         ),
-                                        ShaderMask(
-                                          shaderCallback: (bounds) =>
-                                              const LinearGradient(
-                                            colors: [
-                                              Color.fromARGB(90, 97, 42, 206),
-                                              Color.fromARGB(100, 97, 42, 206),
-                                              Color.fromARGB(90, 97, 42, 206),
-                                              Color.fromARGB(70, 97, 42, 206),
-                                              Color.fromARGB(80, 147, 117, 206),
-                                              Color.fromARGB(80, 147, 112, 206),
-                                              Color.fromARGB(
-                                                  110, 147, 152, 205),
-                                            ],
-                                            begin: Alignment.centerLeft,
-                                            end: Alignment.centerRight,
-                                          ).createShader(
-                                            Rect.fromLTWH(0.0, 0.0,
-                                                bounds.width, bounds.height),
-                                          ),
-                                          child: Transform.rotate(
-                                            angle: -.05,
-                                            child: Stack(
-                                              children: [
-                                                Text(
-                                                  'Create',
-                                                  textAlign: TextAlign.center,
-                                                  style: theme
-                                                      .textTheme.displayLarge!
-                                                      .copyWith(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 96),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 75.0),
-                                                  child: Text(
-                                                    '  Story',
-                                                    textAlign: TextAlign.center,
-                                                    style: theme
-                                                        .textTheme.displayLarge!
-                                                        .copyWith(
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 96),
-                                                  ),
-                                                ),
-                                              ],
+                                      ),
+                                    ),
+                                    SafeArea(
+                                      child: Center(
+                                        child: Column(
+                                          children: [
+                                            Image.asset(
+                                              'assets/images/star.png',
+                                              width: devicewidth * 0.1388,
+                                              height: devicewidth * 0.1388,
                                             ),
-                                          ),
+                                            ShaderMask(
+                                              shaderCallback: (bounds) =>
+                                                  const LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(
+                                                      90, 97, 42, 206),
+                                                  Color.fromARGB(
+                                                      100, 97, 42, 206),
+                                                  Color.fromARGB(
+                                                      90, 97, 42, 206),
+                                                  Color.fromARGB(
+                                                      70, 97, 42, 206),
+                                                  Color.fromARGB(
+                                                      80, 147, 117, 206),
+                                                  Color.fromARGB(
+                                                      80, 147, 112, 206),
+                                                  Color.fromARGB(
+                                                      110, 147, 152, 205),
+                                                ],
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                              ).createShader(
+                                                Rect.fromLTWH(
+                                                    0.0,
+                                                    0.0,
+                                                    bounds.width,
+                                                    bounds.height),
+                                              ),
+                                              child: Transform.rotate(
+                                                angle: -.05,
+                                                child: Stack(
+                                                  children: [
+                                                    Text(
+                                                      'Create',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: theme.textTheme
+                                                          .displayLarge!
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 96),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 75.0),
+                                                      child: Text(
+                                                        '  Story',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: theme.textTheme
+                                                            .displayLarge!
+                                                            .copyWith(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 96),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              cardForOptions(context, 'Loved ones', 'Dad'),
+                              cardForOptions(context, 'Characters',
+                                  'Elephant, Cat, Dog, Puppy'),
+                              cardForOptions(context, 'Theme', 'Bedtime Story'),
+                              cardForOptions(context, 'Vocation',
+                                  'Select up to five loved ones.'),
+                            ],
                           ),
-                          // const SizedBox(height: 20),
-                          cardForOptions(context, 'Loved ones', 'Dad'),
-                          cardForOptions(context, 'Characters',
-                              'Elephant, Cat, Dog, Puppy'),
-                          cardForOptions(context, 'Theme', 'Bedtime Story'),
-                          cardForOptions(context, 'Vocation',
-                              'Select up to five loved ones.'),
-                        ],
+                        ),
                       ),
+                    ),
+                    // Show loading spinner when API call is in progress
+                    if (state is StoryLoading)
+                      const Center(child: LoadingWidget())
+                    else
+                      PixieButton(
+                        text: 'Create Your Story',
+                        onPressed: () {
+                          _createStory(context);
+                        },
+                        color1: AppColors.buttonColor1,
+                        color2: AppColors.buttonColor2,
+                      ),
+                  ],
+                ),
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: SafeArea(
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back,
+                          color: AppColors.iconColor),
+                      onPressed: () {
+                        context.pop();
+                      },
                     ),
                   ),
                 ),
-                PixieButton(
-                  text: 'Create Your Story',
-                  onPressed: () {
-                    context.push('/StoryGeneratePage');
-                  },
-                  color1: AppColors.buttonColor1,
-                  color2: AppColors.buttonColor2,
-                ),
               ],
             ),
-            Positioned(
-              top: 10,
-              left: 10,
-              child: SafeArea(
-                child: IconButton(
-                  icon:
-                      const Icon(Icons.arrow_back, color: AppColors.iconColor),
-                  onPressed: () {
-                    context.pop();
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -231,5 +269,23 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
         ],
       ),
     );
+  }
+
+  // Function to dispatch GenerateStoryEvent when button is clicked
+  void _createStory(BuildContext context) {
+    // Dispatching the event to the Bloc to make the API call
+    context.read<StoryBloc>().add(const GenerateStoryEvent(
+          event: "Playtime",
+          age: "10",
+          topic: "Friendship",
+          childName: "Sam",
+          gender: "male",
+          relation: "dad",
+          relativeName: "jayan",
+          genre: "Funny",
+          lessons: "Friendship",
+          length: "5min",
+          language: "English",
+        ));
   }
 }
