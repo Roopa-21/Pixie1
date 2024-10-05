@@ -1,0 +1,52 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pixieapp/repositories/story_repository.dart';
+import 'story_event.dart';
+import 'story_state.dart';
+
+class StoryBloc extends Bloc<StoryEvent, StoryState> {
+  final StoryRepository storyRepository;
+
+  StoryBloc({required this.storyRepository}) : super(StoryInitial()) {
+    on<GenerateStoryEvent>(_onGenerateStoryEvent);
+    on<SpeechToTextEvent>(_onSpeechToTextEvent);
+  }
+
+  // Event handler for GenerateStoryEvent
+  Future<void> _onGenerateStoryEvent(
+      GenerateStoryEvent event, Emitter<StoryState> emit) async {
+    emit(StoryLoading());
+    try {
+      final story = await storyRepository.generateStory(
+        event: event.event,
+        age: event.age,
+        topic: event.topic,
+        child_name: event.childName,
+        gender: event.gender,
+        relation: event.relation,
+        relative_name: event.relativeName,
+        genre: event.genre,
+        lessons: event.lessons,
+        length: event.length,
+        language: event.language,
+      );
+      emit(StorySuccess(story: story));
+    } catch (error) {
+      emit(StoryFailure(error: error.toString()));
+    }
+  }
+
+  // Event handler for SpeechToTextEvent
+  Future<void> _onSpeechToTextEvent(
+      SpeechToTextEvent event, Emitter<StoryState> emit) async {
+    emit(StoryLoading());
+    try {
+      final audioFile = await storyRepository.speechToText(
+        text: event.text,
+        language: event.language,
+      );
+      emit(StoryAudioSuccess(audioFile: audioFile));
+    } catch (error) {
+      emit(StoryFailure(error: error.toString()));
+    }
+  }
+}

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:pixieapp/blocs/Auth/auth_bloc.dart';
-import 'package:pixieapp/blocs/Auth/auth_event.dart';
-import 'package:pixieapp/blocs/Auth/auth_state.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/widgets/navbar.dart';
