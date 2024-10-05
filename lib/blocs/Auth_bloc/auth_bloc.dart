@@ -81,7 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'photoURL': photoURL,
           'newUser': true
         });
-        emit(SignUpScreenOtpSuccessState());
+           emit(AuthAuthenticated(userId: userId));
         // emit(LoginScreenLoadedState());
       } catch (e) {
         emit(LoginScreenErrorState(error: e.toString()));
