@@ -4,6 +4,7 @@ import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pixieapp/models/story_model.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
@@ -88,9 +89,11 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/CreateStoryPage',
-      builder: (context, state) => const CreateStoryPage(),
-    ),
+        path: '/CreateStoryPage',
+        builder: (context, state) {
+          final storydata = state.extra as StoryModal;
+          return CreateStoryPage(storydata: storydata);
+        }),
     GoRoute(
       path: '/AddCharacter',
       pageBuilder: (context, state) {

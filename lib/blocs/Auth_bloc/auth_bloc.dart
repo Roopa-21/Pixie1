@@ -78,10 +78,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'createdAt': DateTime.now(),
           'userId': userId,
           'displayName': displayName,
+          'child_name': '',
+          'gender': '',
+          'fav_things': [],
+          'dob': DateTime.now(),
+          'loved_once': [],
           'photoURL': photoURL,
           'newUser': true
         });
-           emit(AuthAuthenticated(userId: userId));
+        emit(AuthAuthenticated(userId: userId));
         // emit(LoginScreenLoadedState());
       } catch (e) {
         emit(LoginScreenErrorState(error: e.toString()));
@@ -149,6 +154,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'phone': '',
         'createdAt': DateTime.now(),
         'userId': userId,
+        'child_name': '',
+        'gender': '',
+        'fav_things': [],
+        'dob': DateTime.now(),
+        'loved_once': [],
         'displayName': "displayName",
         'photoURL': "photoURL",
         'newUser': true
@@ -205,7 +215,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       String? displayName = userCredential.user!.displayName;
       String? photoURL = userCredential.user!.photoURL;
 
-     // Check if the user already exists in Firestore
+      // Check if the user already exists in Firestore
       // Check if the user already exists in Firestore
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
@@ -224,6 +234,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'email': email,
           'phone': '',
           'displayName': displayName,
+          'child_name': '',
+          'gender': '',
+          'fav_things': [],
+          'dob': DateTime.now(),
+          'loved_once': [],
           'photoURL': photoURL,
           'createdAt': Timestamp.now(),
           'userId': userId,
@@ -231,15 +246,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
       }
 
-      // if (!userDoc.exists) {
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
-        'email': 'email',
-        'displayName': 'displayName',
-        'photoURL': 'photoURL',
-        'createdAt': 'Timestamp.now',
-        'userId': 'userId',
-      });
-      // }
+      if (!userDoc.exists) {
+        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+          'email': email,
+          'displayName': 'displayName',
+          'photoURL': 'photoURL',
+          'createdAt': Timestamp.now,
+          'userId': userId,
+          'child_name': '',
+          'gender': '',
+          'fav_things': [],
+          'dob': DateTime.now(),
+          'loved_once': [],
+        });
+      }
 
       // Emit the Authenticated state with the user's UID
       emit(AuthAuthenticated(userId: userId));

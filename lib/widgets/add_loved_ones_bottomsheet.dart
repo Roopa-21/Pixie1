@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/widgets/pixie_button.dart';
 
 class AddLovedOnesBottomSheet extends StatefulWidget {
   const AddLovedOnesBottomSheet({super.key});
@@ -106,22 +105,40 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  TextField(
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textColorblue,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.none,
-                    ),
-                    cursorColor: AppColors.textColorblue,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      hintText: 'Type name',
-                      hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                          color: AppColors.textColorGrey,
-                          fontWeight: FontWeight.w400),
+                  Material(
+                    elevation: 2,
+                    borderRadius: BorderRadius.circular(10),
+                    child: TextField(
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textColorblue,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.none,
+                      ),
+                      cursorColor: AppColors.textColorblue,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppColors.kwhiteColor,
+                        border: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: AppColors.kwhiteColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: AppColors.kwhiteColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: AppColors.kwhiteColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        errorBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: AppColors.kwhiteColor),
+                            borderRadius: BorderRadius.circular(10)),
+                        hintText: 'Type name',
+                        hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                            color: AppColors.textColorGrey,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),

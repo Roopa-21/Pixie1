@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,10 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:pixieapp/blocs/introduction/introduction_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/models/Child_data_model.dart';
 import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
 import 'package:pixieapp/widgets/add_new_character.dart';
-import 'package:pixieapp/widgets/choicechip.dart';
-
 import '../../blocs/introduction/introduction_bloc.dart';
 
 class IntroductionPage extends StatefulWidget {
@@ -21,18 +22,18 @@ class IntroductionPage extends StatefulWidget {
 class _IntroductionPageState extends State<IntroductionPage> {
   // State field(s) for PageView widget.
   PageController? pageViewController;
-
+  ClildDataModel childdata = ClildDataModel(
+      name: "name",
+      gender: Gender.prefernottosay,
+      favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
+      dob: DateTime.now(),
+      lovedonce: []);
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
           pageViewController!.page != null
       ? pageViewController!.page!.round()
       : 0;
-  // State field(s) for ChoiceChips widget.
-  FormFieldController<List<String>>? choiceChipsValueControllerFavoriteThings;
-  List<String>? get choiceChipsValuesFavoriteThings =>
-      choiceChipsValueControllerFavoriteThings?.value;
-  set choiceChipsValuesFavoriteThings(List<String>? val) =>
-      choiceChipsValueControllerFavoriteThings?.value = val;
+
   // State field(s) for ChoiceChips widget.
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -40,39 +41,38 @@ class _IntroductionPageState extends State<IntroductionPage> {
 
   final TextEditingController nameController = TextEditingController();
 
+  final TextEditingController mother = TextEditingController();
+  final TextEditingController father = TextEditingController();
+  final TextEditingController GrandMother = TextEditingController();
+  final TextEditingController GrandFather = TextEditingController();
+  final TextEditingController pet = TextEditingController();
   final List<String> pronouns = ['He', 'She', 'Prefer not to say'];
   int currentpage_index = 0;
 
   DateTime selectedDate = DateTime.now();
 
-  Widget _buildPronounButton(int index, String text, double width) {
+  Widget _buildPronounButton(
+      {required String text,
+      required double width,
+      required bool selected,
+      required VoidCallback ontap}) {
     final theme = Theme.of(context);
-    return Container(
-      height: 50,
-      width: width,
-      decoration: BoxDecoration(
-        color: AppColors.kwhiteColor,
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: ToggleButtons(
-        constraints: BoxConstraints(
-          minWidth: width - 2,
-          minHeight: 50,
-        ),
-        isSelected: [_selectedPronounIndex == index],
-        onPressed: (int selectedIndex) {
-          // setState(() {
-          //   _selectedPronounIndex = index;
-          // });
-        },
-        borderRadius: BorderRadius.circular(12.0),
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: Text(text),
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+          height: 50,
+          width: width,
+          decoration: BoxDecoration(
+            color: selected ? AppColors.kpurple : AppColors.kwhiteColor,
+            borderRadius: BorderRadius.circular(12.0),
           ),
-        ],
-      ),
+          child: Center(
+              child: Text(
+            text,
+            style: TextStyle(
+                color:
+                    selected ? AppColors.kwhiteColor : AppColors.kblackColor),
+          ))),
     );
   }
 
@@ -245,7 +245,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   AppColors.textColorblue,
                                               onChanged: (value) {
                                                 setState(() {
-                                                  name = value;
+                                                  childdata.name = value;
                                                 });
                                               },
                                               decoration: InputDecoration(
@@ -291,20 +291,49 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               _buildPronounButton(
-                                                  0,
-                                                  pronouns[0],
-                                                  deviceWidth * 0.4305),
+                                                  text: "He",
+                                                  width: deviceWidth * 0.4305,
+                                                  ontap: () {
+                                                    setState(() {
+                                                      childdata.gender =
+                                                          Gender.male;
+                                                    });
+                                                  },
+                                                  selected: childdata.gender ==
+                                                          Gender.male
+                                                      ? true
+                                                      : false),
                                               SizedBox(
                                                   width: deviceWidth * 0.0277),
                                               _buildPronounButton(
-                                                  1,
-                                                  pronouns[1],
-                                                  deviceWidth * 0.4305),
+                                                  text: "She",
+                                                  width: deviceWidth * 0.4305,
+                                                  ontap: () {
+                                                    setState(() {
+                                                      childdata.gender =
+                                                          Gender.female;
+                                                    });
+                                                  },
+                                                  selected: childdata.gender ==
+                                                          Gender.female
+                                                      ? true
+                                                      : false),
                                             ],
                                           ),
                                           const SizedBox(height: 10),
-                                          _buildPronounButton(2, pronouns[2],
-                                              deviceWidth * 0.8888),
+                                          _buildPronounButton(
+                                              text: "Prefer not to say",
+                                              width: deviceWidth * 0.4305,
+                                              ontap: () {
+                                                setState(() {
+                                                  childdata.gender =
+                                                      Gender.prefernottosay;
+                                                });
+                                              },
+                                              selected: childdata.gender ==
+                                                      Gender.prefernottosay
+                                                  ? true
+                                                  : false),
                                           const SizedBox(height: 20),
                                           const SizedBox(height: 20),
                                           const Text("Date of Birth",
@@ -318,16 +347,16 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               onDateTimeChanged:
                                                   (DateTime newDate) {
                                                 setState(() {
-                                                  selectedDate = newDate;
+                                                  childdata.dob = newDate;
                                                 });
                                               },
                                             ),
                                           ),
-                                          CupertinoButton(
-                                            child: Text('Done'),
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                          ),
+                                          // CupertinoButton(
+                                          //   child: Text('Done'),
+                                          //   onPressed: () =>
+                                          //       Navigator.of(context).pop(),
+                                          // ),
                                           const SizedBox(height: 20),
                                         ],
                                       ),
@@ -385,47 +414,28 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                             fontWeight: FontWeight.w600),
                                   ),
                                   const SizedBox(height: 25),
-                                  // ChoiceChips(
-                                  //   options: const [
-                                  //     ChipData(
-                                  //         'Elephant', Icons.star_purple500_rounded),
-                                  //     ChipData(
-                                  //         'Name', Icons.star_purple500_rounded),
-                                  //     ChipData('Hippopotamus',
-                                  //         Icons.star_purple500_rounded),
-                                  //     ChipData('Person', Icons.star_rate_outlined),
-                                  //     ChipData(
-                                  //         'Friend', Icons.star_purple500_rounded),
-                                  //     ChipData('Dog', Icons.star_purple500_rounded)
-                                  //   ],
-                                  //   onChanged: (val) => choiceChipsValues1 = val,
-                                  //   selectedChipStyle: ChipStyle(
-                                  //     backgroundColor: AppColors.sliderColor,
-                                  //     textStyle: theme.textTheme.bodyMedium,
-                                  //     iconColor: AppColors.sliderColor,
-                                  //     iconSize: 18.0,
-                                  //     elevation: 0.0,
-                                  //     borderRadius: BorderRadius.circular(8.0),
-                                  //   ),
-                                  //   unselectedChipStyle: ChipStyle(
-                                  //     backgroundColor:
-                                  //         AppColors.choicechipUnSelected,
-                                  //     textStyle: theme.textTheme.bodySmall,
-                                  //     iconColor: AppColors.sliderColor,
-                                  //     iconSize: 16.0,
-                                  //     elevation: 0.0,
-                                  //     borderRadius: BorderRadius.circular(8.0),
-                                  //   ),
-                                  //   chipSpacing: 10.0,
-                                  //   rowSpacing: 10.0,
-                                  //   multiselect: true,
-                                  //   alignment: WrapAlignment.start,
-                                  //   // controller: choiceChipsValueControllerFavoriteThings??=
-                                  //   //     FormFieldController<List<String>>(
-                                  //   //   [],
-                                  //   // ),
-                                  //   wrapped: true,
-                                  // ),
+                                  Wrap(
+                                      children: List<Widget>.generate(
+                                          childdata.favthings.length,
+                                          (int index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: ChoiceChip(
+                                        elevation: 3,
+                                        label: Text(
+                                          childdata.favthings[index],
+                                          style: const TextStyle(
+                                              color: AppColors.kblackColor),
+                                        ),
+                                        selected: false,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                        padding: const EdgeInsets.all(16),
+                                      ),
+                                    );
+                                  })),
                                   addbutton(
                                       title: "Add a character",
                                       width: 180,
@@ -539,32 +549,87 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           Column(
                                             children: [
                                               Relations(
-                                                  theme: theme,
-                                                  relationName: 'Mother'),
+                                                theme: theme,
+                                                relationName: 'Mother',
+                                                controller: mother,
+                                                onChanged: (mom) {
+                                                  setState(() {
+                                                    childdata.lovedonce.add(
+                                                        Lovedonces(
+                                                            name: mom,
+                                                            relation:
+                                                                "Mother"));
+                                                  });
+                                                },
+                                              ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
                                               Relations(
-                                                  theme: theme,
-                                                  relationName: 'Father'),
+                                                theme: theme,
+                                                relationName: 'Father',
+                                                controller: father,
+                                                onChanged: (dad) {
+                                                  setState(() {
+                                                    childdata.lovedonce.add(
+                                                        Lovedonces(
+                                                            name: dad,
+                                                            relation:
+                                                                "Father"));
+                                                  });
+                                                },
+                                              ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
                                               Relations(
-                                                  theme: theme,
-                                                  relationName: 'GrandMother'),
+                                                theme: theme,
+                                                relationName: 'GrandMother',
+                                                controller: GrandMother,
+                                                onChanged: (GM) {
+                                                  setState(() {
+                                                    childdata.lovedonce.add(
+                                                        Lovedonces(
+                                                            name: GM,
+                                                            relation:
+                                                                "GrandMother"));
+                                                  });
+                                                },
+                                              ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
                                               Relations(
-                                                  theme: theme,
-                                                  relationName: 'GrandFather'),
+                                                theme: theme,
+                                                relationName: 'GrandFather',
+                                                controller: GrandFather,
+                                                onChanged: (GF) {
+                                                  setState(() {
+                                                    childdata.lovedonce.add(
+                                                        Lovedonces(
+                                                            name: GF,
+                                                            relation:
+                                                                "GrandFather"));
+                                                  });
+                                                },
+                                              ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
                                               Relations(
-                                                  theme: theme,
-                                                  relationName: 'Pet Dog'),
+                                                theme: theme,
+                                                relationName: 'Pet Dog',
+                                                controller: pet,
+                                                onChanged: (pet) {
+                                                  setState(() {
+                                                    childdata.lovedonce.add(
+                                                        Lovedonces(
+                                                            name: pet,
+                                                            relation:
+                                                                "Pet Dog"));
+                                                  });
+                                                },
+                                              ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
@@ -664,7 +729,59 @@ class _IntroductionPageState extends State<IntroductionPage> {
                             child: ElevatedButton(
                                 onPressed: () async {
                                   if (currentpage_index == 2) {
-                                    context.push('/splashScreen');
+                                    childdata.lovedonce.add(Lovedonces(
+                                        relation: "Mother", name: mother.text));
+                                    childdata.lovedonce.add(Lovedonces(
+                                        relation: "Father", name: father.text));
+                                    childdata.lovedonce.add(Lovedonces(
+                                        relation: "GrandMother",
+                                        name: GrandMother.text));
+                                    childdata.lovedonce.add(Lovedonces(
+                                        relation: "GrandFather",
+                                        name: GrandFather.text));
+                                    childdata.lovedonce.add(Lovedonces(
+                                        relation: "Pet Dog", name: pet.text));
+                                    List<Map<String, dynamic>> lovedOnceList =
+                                        childdata.lovedonce
+                                            .map((lovedonce) =>
+                                                lovedonce.toMap())
+                                            .toList();
+                                    try {
+                                      // Get the currently authenticated user
+                                      User? user =
+                                          FirebaseAuth.instance.currentUser;
+
+                                      if (user != null) {
+                                        String userId =
+                                            user.uid; // Get the user ID
+
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(userId)
+                                            .update({
+                                          'email': user.email,
+                                          'phone': '',
+
+                                          'child_name': childdata.name,
+                                          'gender': childdata.gender.name,
+                                          'fav_things': childdata.favthings,
+                                          'dob': childdata.dob,
+                                          'loved_once': lovedOnceList,
+                                          'displayName':
+                                              "displayName", // Update as needed
+                                          'photoURL':
+                                              "photoURL", // Update as needed
+                                          'newUser': false,
+                                        });
+                                        print("User data updated successfully");
+                                        context.push('/splashScreen');
+                                      } else {
+                                        print(
+                                            "No user is currently signed in.");
+                                      }
+                                    } catch (e) {
+                                      print("Error updating user data: $e");
+                                    }
                                   } else {
                                     await pageViewController?.nextPage(
                                       duration:
@@ -799,8 +916,11 @@ class Relations extends StatelessWidget {
     super.key,
     required this.theme,
     required this.relationName,
+    required this.controller,
+    required this.onChanged,
   });
-
+  final Function(String)? onChanged;
+  final TextEditingController controller;
   final ThemeData theme;
   final String relationName;
 

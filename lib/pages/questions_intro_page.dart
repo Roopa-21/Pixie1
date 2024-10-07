@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/pages/home/home_page.dart';
-import 'package:pixieapp/widgets/name_character_bottomsheet.dart';
 
 class QuestionsIntroPage extends StatelessWidget {
   const QuestionsIntroPage({super.key});
