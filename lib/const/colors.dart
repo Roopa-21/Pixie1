@@ -8,6 +8,7 @@ class AppColors {
   static const textColorWhite = Color.fromARGB(255, 255, 255, 255);
   static const textColorblack = Color.fromARGB(255, 0, 0, 0);
   static const textColorGrey = Color(0xff6F6F6F);
+  static const textColorSettings = Color(0xff5923C4);
   static const dotColorSelected = Colors.black;
   static const dotColorUnSelected = Color(0xff6F6F6F);
   static const buttonwhite = Color.fromARGB(255, 255, 255, 255);
