@@ -5,12 +5,14 @@ import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/models/story_model.dart';
 import 'package:pixieapp/widgets/bottomsheet.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/pixie_button.dart';
 
 class CreateStoryPage extends StatefulWidget {
-  const CreateStoryPage({super.key});
+  StoryModal storydata;
+  CreateStoryPage({super.key, required this.storydata});
 
   @override
   State<CreateStoryPage> createState() => _CreateStoryPageState();
@@ -179,7 +181,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                       PixieButton(
                         text: 'Create Your Story',
                         onPressed: () {
-                          _createStory(context);
+                          _createStory(context, widget.storydata);
                         },
                         color1: AppColors.buttonColor1,
                         color2: AppColors.buttonColor2,
@@ -272,20 +274,29 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
   }
 
   // Function to dispatch GenerateStoryEvent when button is clicked
-  void _createStory(BuildContext context) {
+  void _createStory(BuildContext context, StoryModal storydata) {
     // Dispatching the event to the Bloc to make the API call
-    context.read<StoryBloc>().add(const GenerateStoryEvent(
-          event: "Playtime",
-          age: "10",
-          topic: "Friendship",
-          childName: "Sam",
-          gender: "male",
-          relation: "dad",
-          relativeName: "jayan",
-          genre: "Funny",
-          lessons: "Friendship",
-          length: "5min",
-          language: "English",
+    print(storydata.event);
+    print(storydata.age);
+    print(storydata.topic);
+    print(storydata.child_name);
+    print(storydata.gender);
+    print(storydata.relation);
+    print(storydata.relative_name);
+    print(storydata.genre);
+    print(storydata.language.name);
+    context.read<StoryBloc>().add(GenerateStoryEvent(
+          event: storydata.event,
+          age: storydata.age,
+          topic: storydata.topic,
+          childName: storydata.child_name,
+          gender: storydata.gender,
+          relation: storydata.relation,
+          relativeName: storydata.relative_name,
+          genre: storydata.genre,
+          lessons: storydata.lessons,
+          length: storydata.length,
+          language: storydata.language.name,
         ));
   }
 }

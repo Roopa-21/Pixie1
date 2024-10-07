@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +9,9 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/models/Child_data_model.dart';
+import 'package:pixieapp/models/story_model.dart';
+import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
 import 'package:pixieapp/widgets/add_new_character.dart';
 import 'package:pixieapp/widgets/choicechip.dart';
 
@@ -19,7 +24,20 @@ class AddCharacter extends StatefulWidget {
 
 class _AddCharacterState extends State<AddCharacter> {
   PageController? pageViewController;
-  // int state. = 0;
+  List<Lovedonces> lovedOnceList = [];
+  int? selectedlovedone;
+  StoryModal storydata = StoryModal(
+      age: "age",
+      child_name: "Aju",
+      event: "Bedtime",
+      gender: "gender",
+      genre: "Funny",
+      language: Language.English,
+      length: "5min",
+      lessons: "lessons",
+      relation: "dad",
+      relative_name: "jayan",
+      topic: "Bedtime");
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
           pageViewController!.page != null
@@ -66,6 +84,11 @@ class _AddCharacterState extends State<AddCharacter> {
   @override
   void initState() {
     super.initState();
+    fetchLovedOnes().then((lovedOnes) {
+      setState(() {
+        lovedOnceList = lovedOnes;
+      });
+    });
   }
 
   @override
@@ -173,13 +196,31 @@ class _AddCharacterState extends State<AddCharacter> {
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Bedtime",
-                                            selected: true,
-                                            ontap: () {}),
+                                            selected:
+                                                storydata.event == 'Bedtime'
+                                                    ? true
+                                                    : false,
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.event = "Bedtime";
+                                                storydata.age = "10";
+                                              });
+                                              print(storydata.event);
+                                            }),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Playtime",
-                                            selected: false,
-                                            ontap: () {}),
+                                            selected:
+                                                storydata.event == 'Playtime'
+                                                    ? true
+                                                    : false,
+                                            ontap: () async {
+                                              setState(() {
+                                                storydata.event = "Playtime";
+                                                storydata.age = "10";
+                                              });
+                                              print(storydata.event);
+                                            }),
                                         const SizedBox(height: 40),
                                         Text(
                                           'Language of the story',
@@ -194,13 +235,31 @@ class _AddCharacterState extends State<AddCharacter> {
                                         choicechipbutton(
                                             theme: theme,
                                             title: "English",
-                                            selected: true,
-                                            ontap: () {}),
+                                            selected: storydata.language ==
+                                                    Language.English
+                                                ? true
+                                                : false,
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.language =
+                                                    Language.English;
+                                              });
+                                              print(storydata.language);
+                                            }),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Hindi",
-                                            selected: false,
-                                            ontap: () {}),
+                                            selected: storydata.language ==
+                                                    Language.Hindi
+                                                ? true
+                                                : false,
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.language =
+                                                    Language.Hindi;
+                                              });
+                                              print(storydata.language);
+                                            }),
                                       ],
                                     ),
                                   ),
@@ -517,58 +576,104 @@ class _AddCharacterState extends State<AddCharacter> {
                                           ),
                                         ),
                                         const SizedBox(height: 25),
-                                        ChoiceChips(
-                                          options: const [
-                                            ChipData('Mom',
-                                                Icons.star_purple500_rounded),
-                                            ChipData('Dad',
-                                                Icons.star_purple500_rounded),
-                                            ChipData('Nidhi',
-                                                Icons.star_purple500_rounded),
-                                            ChipData('Mishka',
-                                                Icons.star_rate_outlined),
-                                            ChipData('Friend',
-                                                Icons.star_purple500_rounded),
-                                            ChipData('Name',
-                                                Icons.star_purple500_rounded)
-                                          ],
-                                          onChanged: (val) =>
-                                              choiceChipsValue2 =
-                                                  val?.firstOrNull,
-                                          selectedChipStyle: ChipStyle(
-                                            backgroundColor:
-                                                AppColors.sliderColor,
-                                            textStyle:
-                                                theme.textTheme.bodyMedium,
-                                            iconColor: AppColors.sliderColor,
-                                            iconSize: 18.0,
-                                            elevation: 0.0,
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
-                                          unselectedChipStyle: ChipStyle(
-                                            backgroundColor:
-                                                AppColors.choicechipUnSelected,
-                                            textStyle:
-                                                theme.textTheme.bodySmall,
-                                            iconColor: AppColors.sliderColor,
-                                            iconSize: 16.0,
-                                            elevation: 0.0,
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                          ),
-                                          chipSpacing: 10.0,
-                                          rowSpacing: 10.0,
-                                          multiselect: true,
-                                          alignment: WrapAlignment.start,
-                                          controller:
-                                              choiceChipsValueController2 ??=
-                                                  FormFieldController<
-                                                      List<String>>(
-                                            [],
-                                          ),
-                                          wrapped: true,
-                                        ),
+                                        // ChoiceChips(
+                                        //   options: const [
+                                        //     ChipData('Mom',
+                                        //         Icons.star_purple500_rounded),
+                                        //     ChipData('Dad',
+                                        //         Icons.star_purple500_rounded),
+                                        //     ChipData('Nidhi',
+                                        //         Icons.star_purple500_rounded),
+                                        //     ChipData('Mishka',
+                                        //         Icons.star_rate_outlined),
+                                        //     ChipData('Friend',
+                                        //         Icons.star_purple500_rounded),
+                                        //     ChipData('Name',
+                                        //         Icons.star_purple500_rounded)
+                                        //   ],
+                                        //   onChanged: (val) =>
+                                        //       choiceChipsValue2 =
+                                        //           val?.firstOrNull,
+                                        //   selectedChipStyle: ChipStyle(
+                                        //     backgroundColor:
+                                        //         AppColors.sliderColor,
+                                        //     textStyle:
+                                        //         theme.textTheme.bodyMedium,
+                                        //     iconColor: AppColors.sliderColor,
+                                        //     iconSize: 18.0,
+                                        //     elevation: 0.0,
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(8.0),
+                                        //   ),
+                                        //   unselectedChipStyle: ChipStyle(
+                                        //     backgroundColor:
+                                        //         AppColors.choicechipUnSelected,
+                                        //     textStyle:
+                                        //         theme.textTheme.bodySmall,
+                                        //     iconColor: AppColors.sliderColor,
+                                        //     iconSize: 16.0,
+                                        //     elevation: 0.0,
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(8.0),
+                                        //   ),
+                                        //   chipSpacing: 10.0,
+                                        //   rowSpacing: 10.0,
+                                        //   multiselect: true,
+                                        //   alignment: WrapAlignment.start,
+                                        //   controller:
+                                        //       choiceChipsValueController2 ??=
+                                        //           FormFieldController<
+                                        //               List<String>>(
+                                        //     [],
+                                        //   ),
+                                        //   wrapped: true,
+                                        // ),
+                                        Wrap(
+                                            children: List<Widget>.generate(
+                                                lovedOnceList.length,
+                                                (int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: ChoiceChip(
+                                              onSelected: (value) {
+                                                setState(() {
+                                                  selectedlovedone = index;
+                                                  storydata.relative_name =
+                                                      lovedOnceList[index].name;
+                                                  storydata.relation =
+                                                      lovedOnceList[index]
+                                                          .relation;
+                                                });
+                                                print(
+                                                    lovedOnceList[index].name);
+                                                print(lovedOnceList[index]
+                                                    .relation);
+                                              },
+                                              selectedColor: AppColors.kpurple,
+                                              elevation: 3,
+                                              checkmarkColor:
+                                                  AppColors.kwhiteColor,
+                                              label: Text(
+                                                lovedOnceList[index].name,
+                                                style: TextStyle(
+                                                    color: selectedlovedone ==
+                                                            index
+                                                        ? AppColors.kwhiteColor
+                                                        : AppColors
+                                                            .kblackColor),
+                                              ),
+                                              selected:
+                                                  selectedlovedone == index
+                                                      ? true
+                                                      : false,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                              ),
+                                              padding: const EdgeInsets.all(16),
+                                            ),
+                                          );
+                                        })),
                                         addbutton(
                                             title: "Add a loved one",
                                             width: 200,
@@ -590,10 +695,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .viewInsetsOf(
                                                               context),
                                                       child:
-                                                          const AddNewCharacter(
-                                                        text:
-                                                            "Name a\ncharacter",
-                                                      ),
+                                                          const AddLovedOnesBottomSheet(),
                                                     ),
                                                   );
                                                 },
@@ -700,9 +802,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                             ChipData('Frienship',
                                                 Icons.star_purple500_rounded)
                                           ],
-                                          onChanged: (val) =>
-                                              choiceChipsValue5 =
-                                                  val?.firstOrNull,
+                                          onChanged: (val) {
+                                            choiceChipsValue5 =
+                                                val?.firstOrNull;
+                                            storydata.lessons = val!.first;
+                                            print(storydata.lessons);
+                                          },
                                           selectedChipStyle: ChipStyle(
                                             backgroundColor:
                                                 AppColors.sliderColor,
@@ -845,33 +950,74 @@ class _AddCharacterState extends State<AddCharacter> {
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Funny",
-                                            ontap: () {},
-                                            selected: true),
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.genre = "Funny";
+                                              });
+                                            },
+                                            selected: storydata.genre == "Funny"
+                                                ? true
+                                                : false),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Horror",
-                                            ontap: () {},
-                                            selected: false),
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.genre = "Horror";
+                                              });
+                                            },
+                                            selected:
+                                                storydata.genre == "Horror"
+                                                    ? true
+                                                    : false),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Adventure",
-                                            ontap: () {},
-                                            selected: false),
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.genre = "Adventure";
+                                              });
+                                            },
+                                            selected:
+                                                storydata.genre == "Adventure"
+                                                    ? true
+                                                    : false),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Action",
-                                            ontap: () {},
-                                            selected: false),
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.genre = "Action";
+                                              });
+                                            },
+                                            selected:
+                                                storydata.genre == "Action"
+                                                    ? true
+                                                    : false),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Sci-fi",
-                                            ontap: () {},
-                                            selected: false),
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.genre = "Sci-fi";
+                                              });
+                                            },
+                                            selected:
+                                                storydata.genre == "Sci-fi"
+                                                    ? true
+                                                    : false),
                                         choicechipbutton(
                                             theme: theme,
                                             title: "Mystery",
-                                            ontap: () {},
-                                            selected: false),
+                                            ontap: () {
+                                              setState(() {
+                                                storydata.genre = "Mystery";
+                                              });
+                                            },
+                                            selected:
+                                                storydata.genre == "Mystery"
+                                                    ? true
+                                                    : false),
                                         // addbutton(
                                         //     title: "Add a theme",
                                         //     width: MediaQuery.of(context).size.width * .9,
@@ -951,7 +1097,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                   onPressed: () async {
                                     print(pageViewCurrentIndex);
                                     if (state.currentpageindex == 4) {
-                                      context.push('/CreateStoryPage');
+                                      context.push('/CreateStoryPage',
+                                          extra: storydata);
                                     } else {
                                       pageViewController?.nextPage(
                                         duration:
@@ -1005,7 +1152,7 @@ class _AddCharacterState extends State<AddCharacter> {
           width: MediaQuery.sizeOf(context).width * 0.9,
           height: 48,
           child: ElevatedButton(
-            onPressed: () async {},
+            onPressed: ontap,
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
@@ -1097,4 +1244,16 @@ class FormListFieldController<T> extends FormFieldController<List<T>> {
 
   @override
   void reset() => value = List<T>.from(_initialListValue ?? []);
+}
+
+Future<List<Lovedonces>> fetchLovedOnes() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user == null) return [];
+
+  DocumentSnapshot doc =
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+  List<dynamic> lovedOnceData = doc['loved_once'] ?? [];
+
+  // Convert to a list of Lovedonces objects
+  return lovedOnceData.map((item) => Lovedonces.fromMap(item)).toList();
 }

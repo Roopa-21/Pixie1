@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
@@ -37,7 +38,6 @@ class StoryGeneratePage extends StatelessWidget {
             floating: false,
             flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-                // Get the current height of the SliverAppBar
                 var top = constraints.biggest.height;
                 bool isCollapsed = top <= kToolbarHeight + 30;
 
@@ -49,9 +49,7 @@ class StoryGeneratePage extends StatelessWidget {
                     style: theme.textTheme.titleMedium!.copyWith(
                       color: AppColors.textColorWhite,
                       fontWeight: FontWeight.bold,
-                      fontSize: isCollapsed
-                          ? 5
-                          : 20, // Adjust font size based on collapse
+                      fontSize: isCollapsed ? 5 : 20,
                     ),
                   ),
                   background: Image.asset(
@@ -80,11 +78,26 @@ class StoryGeneratePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Display the rest of the story as body text
-                  Text(body,
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          color: AppColors.textColorGrey,
-                          fontWeight: FontWeight.w400)),
+                  DefaultTextStyle(
+                    style: theme.textTheme.bodyLarge!.copyWith(
+                        color: AppColors.textColorGrey,
+                        fontWeight: FontWeight.w400),
+                    child: AnimatedTextKit(
+                      isRepeatingAnimation: false,
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          body,
+                        ),
+                      ],
+                      onTap: () {
+                        print("Tap Event");
+                      },
+                    ),
+                  ),
+                  // Text(body,
+                  //     style: theme.textTheme.bodyLarge!.copyWith(
+                  //         color: AppColors.textColorGrey,
+                  //         fontWeight: FontWeight.w400)),
                 ],
               ),
             ),
