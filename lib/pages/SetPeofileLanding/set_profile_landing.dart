@@ -93,6 +93,6 @@ class _SetProfileLandingState extends State<SetProfileLanding> {
         ),
       ),
     );
-    ;
+    
   }
 }

@@ -6,6 +6,7 @@ import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
+import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,8 +21,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: const Color(0xfff9f3cd),
@@ -53,46 +52,59 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    "Settings",
-                    style:
-                        theme.textTheme.headlineMedium!.copyWith(fontSize: 24),
+                  child: ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                      colors: [
+                        AppColors.textColorGrey,
+                        AppColors.textColorSettings
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(
+                      Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                    ),
+                    child: Text(
+                      "Settings",
+                      style: theme.textTheme.headlineMedium!.copyWith(
+                          fontSize: 24, color: AppColors.textColorWhite),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
-                    children: [
-                      profilelistCard(
-                        title: 'Profile',
-                        ontap: () {},
-                        icon_path: 'assets/images/profile.svg',
-                        theme: theme,
-                      ),
-                      profilelistCard(
-                        title: 'Feedback',
-                        ontap: () {},
-                        icon_path: 'assets/images/feedbacak.svg',
-                        theme: theme,
-                      ),
-                      profilelistCard(
-                        title: 'About',
-                        ontap: () {},
-                        icon_path: 'assets/images/about.svg',
-                        theme: theme,
-                      ),
-                      profilelistCard(
-                        title: 'Logout',
-                        ontap: () {
-                          context.read<AuthBloc>().add(AuthLogOutRequested());
-                          context.read<AddCharacterBloc>().add(Pagechange(0));
-                        },
-                        icon_path: 'assets/images/logout.svg',
-                        theme: theme,
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    profilelistCard(
+                      title: 'Profile',
+                      ontap: () {
+                        context.push('/profilePage');
+                      },
+                      icon_path: 'assets/images/profile.svg',
+                      theme: theme,
+                    ),
+                    profilelistCard(
+                      title: 'Feedback',
+                      ontap: () {
+                        context.push('/feedbackPage');
+                      },
+                      icon_path: 'assets/images/feedbacak.svg',
+                      theme: theme,
+                    ),
+                    profilelistCard(
+                      title: 'About',
+                      ontap: () {},
+                      icon_path: 'assets/images/about.svg',
+                      theme: theme,
+                    ),
+                    profilelistCard(
+                      title: 'Logout',
+                      ontap: () {
+                        context.read<AuthBloc>().add(AuthLogOutRequested());
+                        context.read<AddCharacterBloc>().add(Pagechange(0));
+                      },
+                      icon_path: 'assets/images/logout.svg',
+                      theme: theme,
+                    ),
+                  ],
                 )
               ],
             ),
@@ -112,22 +124,27 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: ontap,
       child: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
         child: Container(
+          height: 56,
           width: MediaQuery.of(context).size.width,
-          color: Colors.transparent,
-          child: Row(
-            children: [
-              SvgPicture.asset(
-                icon_path,
-              ),
-              const SizedBox(width: 10),
-              Text(
-                title,
-                style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
-              ),
-              const SizedBox(width: 10),
-            ],
+          color: Color(0xffe9d6eb),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  icon_path,
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  title,
+                  style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
+                ),
+                const Spacer(),
+                const Icon(Icons.arrow_forward_ios)
+              ],
+            ),
           ),
         ),
       ),

@@ -12,6 +12,8 @@ import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.d
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
+import 'package:pixieapp/pages/SettingsPage/feedback.dart';
+import 'package:pixieapp/pages/SettingsPage/profile_page.dart';
 import 'package:pixieapp/pages/SettingsPage/settings_page.dart';
 import 'package:pixieapp/pages/SplashScreen/splash_screen.dart';
 import 'package:pixieapp/pages/SplashScreen/story_confirmtion_page.dart';
@@ -160,6 +162,14 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/storyconfirmationstory',
       builder: (context, state) => const StoryConfirmationPage(),
+    ),
+    GoRoute(
+      path: '/profilePage',
+      builder: (context, state) => const ProfilePage(),
+    ),
+    GoRoute(
+      path: '/feedbackPage',
+      builder: (context, state) => const FeedbackPage(),
     ),
     GoRoute(
       path: '/SettingsPage',
