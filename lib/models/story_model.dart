@@ -29,3 +29,16 @@ enum Language {
   English,
   Hindi,
 }
+
+StoryModal finalstorydatas = StoryModal(
+    age: "age",
+    child_name: "Aju",
+    event: "Bedtime",
+    gender: "gender",
+    genre: "Funny",
+    language: Language.English,
+    length: "5min",
+    lessons: "",
+    relation: "dad",
+    relative_name: "jayan",
+    topic: "Bedtime");

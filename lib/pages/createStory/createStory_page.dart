@@ -168,13 +168,13 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                               cardForOptions(
                                   context, 'Characters', 'Cat, Dog, Puppy'),
                               cardForOptions(context, 'Loved ones',
-                                  widget.storydata.relation),
-                              // cardForOptions(
-                              //     context, 'Theme', widget.storydata.event),
-                              // cardForOptions(context, 'Vocation',
-                              //     'Select up to five loved ones.'),
+                                  widget.storydata.relation ?? "Not added"),
                               cardForOptions(
-                                  context, 'Lesson', widget.storydata.lessons),
+                                  context,
+                                  'Lesson',
+                                  widget.storydata.lessons != ''
+                                      ? widget.storydata.lessons
+                                      : 'Not added'),
                               cardForOptions(
                                   context, 'Genre', widget.storydata.genre),
                               cardForOptions(context, 'Language',
@@ -286,19 +286,25 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
   // Function to dispatch GenerateStoryEvent when button is clicked
   void _createStory(BuildContext context, StoryModal storydata) {
     // Dispatching the event to the Bloc to make the API call
-
-    context.read<StoryBloc>().add(GenerateStoryEvent(
-          event: storydata.event,
-          age: storydata.age,
-          topic: storydata.topic,
-          childName: storydata.child_name,
-          gender: storydata.gender,
-          relation: storydata.relation,
-          relativeName: storydata.relative_name,
-          genre: storydata.genre,
-          lessons: storydata.lessons,
-          length: storydata.length,
-          language: storydata.language.name,
-        ));
+    print(finalstorydatas);
+    print(finalstorydatas.age);
+    print(finalstorydatas.child_name);
+    print(finalstorydatas.event);
+    print(finalstorydatas.genre);
+    print(finalstorydatas.language);
+    print(finalstorydatas.lessons);
+    // context.read<StoryBloc>().add(GenerateStoryEvent(
+    //       event: storydata.event,
+    //       age: storydata.age,
+    //       topic: storydata.topic,
+    //       childName: storydata.child_name,
+    //       gender: storydata.gender,
+    //       relation: storydata.relation,
+    //       relativeName: storydata.relative_name,
+    //       genre: storydata.genre,
+    //       lessons: storydata.lessons,
+    //       length: storydata.length,
+    //       language: storydata.language.name,
+    //     ));
   }
 }
