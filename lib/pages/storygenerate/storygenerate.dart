@@ -5,7 +5,7 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 
 class StoryGeneratePage extends StatelessWidget {
-  final String story; // Accept the story text
+  final Map<String, String> story; // Accept the story text
 
   const StoryGeneratePage({super.key, required this.story});
 
@@ -14,16 +14,6 @@ class StoryGeneratePage extends StatelessWidget {
     final devicewidth = MediaQuery.of(context).size.width;
     final deviceheight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
-
-    // Split the story into title and body
-    List<String> storyLines =
-        story.split('\n'); // Split story into lines by new line
-    String title = storyLines.isNotEmpty
-        ? storyLines[0]
-        : "Generated Story"; // First line is title
-    String body = storyLines.length > 1
-        ? storyLines.sublist(1).join('\n') // Rest of the lines are body
-        : "No content available."; // Default message if there's no body
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
@@ -45,7 +35,7 @@ class StoryGeneratePage extends StatelessWidget {
                   centerTitle: true,
                   titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
                   title: Text(
-                    title,
+                    story["title"] ?? "No data",
                     style: theme.textTheme.titleMedium!.copyWith(
                       color: AppColors.textColorWhite,
                       fontWeight: FontWeight.bold,
@@ -86,7 +76,7 @@ class StoryGeneratePage extends StatelessWidget {
                       isRepeatingAnimation: false,
                       animatedTexts: [
                         TyperAnimatedText(
-                          body,
+                          story["story"] ?? "No data",
                         ),
                       ],
                       onTap: () {

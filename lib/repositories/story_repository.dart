@@ -8,7 +8,7 @@ class StoryRepository {
   final String storyApiUrl = 'http://54.86.247.121:8000/story';
   final String audioApiUrl = 'http://54.86.247.121:8000/audio';
 
-  Future<String> generateStory({
+  Future<Map<String, String>> generateStory({
     required String event,
     required String age,
     required String topic,
@@ -40,7 +40,14 @@ class StoryRepository {
 
     if (response.statusCode == 200) {
       print(response.body);
-      return response.body;
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      final Map<String, String> storyMap = {
+        "title": responseData["title"] ?? "",
+        "story": responseData["story"] ?? "",
+      };
+
+      return storyMap;
     } else {
       throw Exception('Failed to generate story: ${response.body}');
     }
@@ -52,10 +59,10 @@ class StoryRepository {
   }) async {
     final response = await http.post(
       Uri.parse(audioApiUrl),
-      body: {
+      body: jsonEncode({
         'text': text,
         'language': language,
-      },
+      }),
     );
 
     if (response.statusCode == 200) {

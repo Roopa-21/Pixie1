@@ -25,6 +25,7 @@ class AddCharacter extends StatefulWidget {
 class _AddCharacterState extends State<AddCharacter> {
   PageController? pageViewController;
   List<Lovedonces> lovedOnceList = [];
+
   int? selectedlovedone;
   StoryModal storydata = StoryModal(
       age: "age",
@@ -84,6 +85,7 @@ class _AddCharacterState extends State<AddCharacter> {
   @override
   void initState() {
     super.initState();
+
     fetchLovedOnes().then((lovedOnes) {
       setState(() {
         lovedOnceList = lovedOnes;
@@ -576,58 +578,6 @@ class _AddCharacterState extends State<AddCharacter> {
                                           ),
                                         ),
                                         const SizedBox(height: 25),
-                                        // ChoiceChips(
-                                        //   options: const [
-                                        //     ChipData('Mom',
-                                        //         Icons.star_purple500_rounded),
-                                        //     ChipData('Dad',
-                                        //         Icons.star_purple500_rounded),
-                                        //     ChipData('Nidhi',
-                                        //         Icons.star_purple500_rounded),
-                                        //     ChipData('Mishka',
-                                        //         Icons.star_rate_outlined),
-                                        //     ChipData('Friend',
-                                        //         Icons.star_purple500_rounded),
-                                        //     ChipData('Name',
-                                        //         Icons.star_purple500_rounded)
-                                        //   ],
-                                        //   onChanged: (val) =>
-                                        //       choiceChipsValue2 =
-                                        //           val?.firstOrNull,
-                                        //   selectedChipStyle: ChipStyle(
-                                        //     backgroundColor:
-                                        //         AppColors.sliderColor,
-                                        //     textStyle:
-                                        //         theme.textTheme.bodyMedium,
-                                        //     iconColor: AppColors.sliderColor,
-                                        //     iconSize: 18.0,
-                                        //     elevation: 0.0,
-                                        //     borderRadius:
-                                        //         BorderRadius.circular(8.0),
-                                        //   ),
-                                        //   unselectedChipStyle: ChipStyle(
-                                        //     backgroundColor:
-                                        //         AppColors.choicechipUnSelected,
-                                        //     textStyle:
-                                        //         theme.textTheme.bodySmall,
-                                        //     iconColor: AppColors.sliderColor,
-                                        //     iconSize: 16.0,
-                                        //     elevation: 0.0,
-                                        //     borderRadius:
-                                        //         BorderRadius.circular(8.0),
-                                        //   ),
-                                        //   chipSpacing: 10.0,
-                                        //   rowSpacing: 10.0,
-                                        //   multiselect: true,
-                                        //   alignment: WrapAlignment.start,
-                                        //   controller:
-                                        //       choiceChipsValueController2 ??=
-                                        //           FormFieldController<
-                                        //               List<String>>(
-                                        //     [],
-                                        //   ),
-                                        //   wrapped: true,
-                                        // ),
                                         Wrap(
                                             children: List<Widget>.generate(
                                                 lovedOnceList.length,
@@ -1095,7 +1045,17 @@ class _AddCharacterState extends State<AddCharacter> {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    print(pageViewCurrentIndex);
+                                    User? user =
+                                        FirebaseAuth.instance.currentUser;
+                                    if (user == null) return;
+
+                                    DocumentSnapshot doc =
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(user.uid)
+                                            .get();
+
+                                    storydata.child_name = doc['child_name'];
                                     if (state.currentpageindex == 4) {
                                       context.push('/CreateStoryPage',
                                           extra: storydata);

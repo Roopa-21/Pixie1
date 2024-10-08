@@ -15,9 +15,12 @@ class StoryInitial extends StoryState {}
 // State when the app is loading, like during an API call
 class StoryLoading extends StoryState {}
 
+// State when the play button is loading, like during an API call
+class StoryAudioLoading extends StoryState {}
+
 // State when a story is successfully generated
 class StorySuccess extends StoryState {
-  final String story;
+  final Map<String, String> story;
 
   const StorySuccess({required this.story});
 

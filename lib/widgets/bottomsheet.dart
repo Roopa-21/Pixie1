@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/models/Child_data_model.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
-import 'package:pixieapp/widgets/choicechip.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   const BottomSheetWidget({super.key, required this.text});
@@ -17,6 +19,18 @@ set choiceChipsValues1(List<String>? val) =>
     choiceChipsValueController1?.value = val;
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
+  @override
+  List<Lovedonces> lovedOnceList = [];
+  int? selectedlovedone;
+  void initState() {
+    super.initState();
+    fetchLovedOnes().then((lovedOnes) {
+      setState(() {
+        lovedOnceList = lovedOnes;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -38,45 +52,53 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                     color: AppColors.textColorblue,
                     fontWeight: FontWeight.w600)),
             const SizedBox(height: 25),
-            ChoiceChips(
-              options: const [
-                ChipData('Elephant', Icons.star_purple500_rounded),
-                ChipData('Name', Icons.star_purple500_rounded),
-                ChipData('Hippopotamus', Icons.star_purple500_rounded),
-                ChipData('Person', Icons.star_rate_outlined),
-                ChipData('Friend', Icons.star_purple500_rounded),
-                ChipData('Dog', Icons.star_purple500_rounded)
-              ],
-              onChanged: (val) => choiceChipsValues1 = val,
-              selectedChipStyle: ChipStyle(
-                backgroundColor: AppColors.sliderColor,
-                textStyle: theme.textTheme.bodyMedium,
-                iconColor: AppColors.sliderColor,
-                iconSize: 18.0,
-                elevation: 0.0,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              unselectedChipStyle: ChipStyle(
-                backgroundColor: AppColors.choicechipUnSelected,
-                textStyle: theme.textTheme.bodySmall,
-                iconColor: AppColors.sliderColor,
-                iconSize: 16.0,
-                elevation: 0.0,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              chipSpacing: 10.0,
-              rowSpacing: 10.0,
-              multiselect: true,
-              alignment: WrapAlignment.start,
-              controller: choiceChipsValueController1 ??=
-                  FormFieldController<List<String>>(
-                [],
-              ),
-              wrapped: true,
-            ),
+            Wrap(
+                children:
+                    List<Widget>.generate(lovedOnceList.length, (int index) {
+              return Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: ChoiceChip(
+                  onSelected: (value) {
+                    setState(() {
+                      selectedlovedone = index;
+                      // storydata.relative_name = lovedOnceList[index].name;
+                      // storydata.relation = lovedOnceList[index].relation;
+                    });
+                    print(lovedOnceList[index].name);
+                    print(lovedOnceList[index].relation);
+                  },
+                  selectedColor: AppColors.kpurple,
+                  elevation: 3,
+                  checkmarkColor: AppColors.kwhiteColor,
+                  label: Text(
+                    lovedOnceList[index].name,
+                    style: TextStyle(
+                        color: selectedlovedone == index
+                            ? AppColors.kwhiteColor
+                            : AppColors.kblackColor),
+                  ),
+                  selected: selectedlovedone == index ? true : false,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                ),
+              );
+            })),
           ],
         ),
       ),
     );
   }
+}
+
+Future<List<Lovedonces>> fetchLovedOnes() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user == null) return [];
+
+  DocumentSnapshot doc =
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+  List<dynamic> lovedOnceData = doc['loved_once'] ?? [];
+
+  return lovedOnceData.map((item) => Lovedonces.fromMap(item)).toList();
 }
