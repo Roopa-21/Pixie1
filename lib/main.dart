@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<StoryBloc>(
           create: (_) => StoryBloc(storyRepository: StoryRepository()),
         ),
-        BlocProvider<TextBloc>(
-          create: (_) => TextBloc(),
+        BlocProvider<IntroductionBloc>(
+          create: (_) => IntroductionBloc(),
         ),
       ],
       child: MaterialApp.router(

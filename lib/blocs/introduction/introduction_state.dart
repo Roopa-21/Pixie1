@@ -2,7 +2,7 @@ import 'package:pixieapp/models/Child_data_model.dart';
 
 abstract class IntroductionState {}
 
-class TextInitial extends IntroductionState {}
+class IntroductionInitial extends IntroductionState {}
 
 class TextUpdated extends IntroductionState {
   final String name;
@@ -10,9 +10,18 @@ class TextUpdated extends IntroductionState {
 }
 
 
-class GenderInitial extends IntroductionState {}
-
 class GenderUpdated extends IntroductionState {
   final Gender gender;
   GenderUpdated({required this.gender});
+}
+
+
+class DobUpdated extends IntroductionState {
+  final DateTime dob;
+  DobUpdated({required this.dob});
+}
+
+class FavListUpdated extends IntroductionState {
+  final String favList;
+  FavListUpdated({required this.favList});
 }
