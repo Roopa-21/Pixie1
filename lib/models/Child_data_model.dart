@@ -1,4 +1,3 @@
-import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 
 class ClildDataModel {
   String name;

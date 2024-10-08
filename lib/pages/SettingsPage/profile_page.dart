@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/widgets/navbar.dart';
 
+import 'package:go_router/go_router.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -30,13 +30,12 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-  
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
-        height:deviceHeight,
+        height: deviceHeight,
         width: deviceWidth,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -57,8 +56,17 @@ class _ProfilePageState extends State<ProfilePage>
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   children: [
-                    Icon(Icons.arrow_back,
-                        size: 24, color: AppColors.buttonblue),
+                    IconButton(
+                                            onPressed: () {
+                                              context.pop();
+                                            },
+                                            icon: const Icon(
+                                              Icons.arrow_back,
+                                              color: AppColors.sliderColor,
+                                              size: 23,
+                                            ),
+                                          ),
+                  
                     SizedBox(
                       width: 20,
                     ),
