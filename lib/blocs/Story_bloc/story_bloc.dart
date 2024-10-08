@@ -16,7 +16,7 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
       GenerateStoryEvent event, Emitter<StoryState> emit) async {
     emit(StoryLoading());
     try {
-      final story = await storyRepository.generateStory(
+      final storyResponse = await storyRepository.generateStory(
         event: event.event,
         age: event.age,
         topic: event.topic,
@@ -29,7 +29,18 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
         length: event.length,
         language: event.language,
       );
-      emit(StorySuccess(story: story));
+
+      emit(StorySuccess(story: storyResponse));
+      try {
+        final audioFile = await storyRepository.speechToText(
+          text: storyResponse['title']! + storyResponse['story']!,
+          language: event.language,
+        );
+        emit(StoryAudioSuccess(audioFile: audioFile));
+      } catch (error) {
+        print(error);
+        emit(StoryFailure(error: error.toString()));
+      }
     } catch (error) {
       emit(StoryFailure(error: error.toString()));
     }

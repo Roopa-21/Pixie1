@@ -123,7 +123,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/StoryGeneratePage',
       builder: (context, state) {
-        final story = state.extra as String;
+        final story = state.extra as Map<String, String>;
         return StoryGeneratePage(story: story);
       },
     ),

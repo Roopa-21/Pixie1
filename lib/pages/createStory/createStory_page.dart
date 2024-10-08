@@ -163,12 +163,22 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                   ],
                                 ),
                               ),
-                              cardForOptions(context, 'Loved ones', 'Dad'),
-                              cardForOptions(context, 'Characters',
-                                  'Elephant, Cat, Dog, Puppy'),
-                              cardForOptions(context, 'Theme', 'Bedtime Story'),
-                              cardForOptions(context, 'Vocation',
-                                  'Select up to five loved ones.'),
+                              cardForOptions(context, 'Music and speed ',
+                                  widget.storydata.event),
+                              cardForOptions(
+                                  context, 'Characters', 'Cat, Dog, Puppy'),
+                              cardForOptions(context, 'Loved ones',
+                                  widget.storydata.relation),
+                              // cardForOptions(
+                              //     context, 'Theme', widget.storydata.event),
+                              // cardForOptions(context, 'Vocation',
+                              //     'Select up to five loved ones.'),
+                              cardForOptions(
+                                  context, 'Lesson', widget.storydata.lessons),
+                              cardForOptions(
+                                  context, 'Genre', widget.storydata.genre),
+                              cardForOptions(context, 'Language',
+                                  widget.storydata.language.name),
                             ],
                           ),
                         ),
@@ -276,15 +286,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
   // Function to dispatch GenerateStoryEvent when button is clicked
   void _createStory(BuildContext context, StoryModal storydata) {
     // Dispatching the event to the Bloc to make the API call
-    print(storydata.event);
-    print(storydata.age);
-    print(storydata.topic);
-    print(storydata.child_name);
-    print(storydata.gender);
-    print(storydata.relation);
-    print(storydata.relative_name);
-    print(storydata.genre);
-    print(storydata.language.name);
+
     context.read<StoryBloc>().add(GenerateStoryEvent(
           event: storydata.event,
           age: storydata.age,
