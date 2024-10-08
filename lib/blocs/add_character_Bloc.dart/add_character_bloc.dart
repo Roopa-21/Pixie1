@@ -7,5 +7,9 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
     on<Pagechange>((event, emit) {
       emit(AddCharacterState(currentpageindex: event.currentpageindex));
     });
+
+    // on<LanguageChangeEvent>((event, emit) {
+    //   emit(LanguageUpdatedState(event.language));
+    // });
   }
 }

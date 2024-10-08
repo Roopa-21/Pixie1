@@ -15,3 +15,13 @@ class Pagechange extends AddCharacterEvent {
   @override
   List<Object?> get props => [currentpageindex];
 }
+
+// Event for language change
+class LanguageChangeEvent extends AddCharacterEvent {
+  final String language;
+
+  const LanguageChangeEvent(this.language);
+
+  @override
+  List<Object?> get props => [language];
+}
