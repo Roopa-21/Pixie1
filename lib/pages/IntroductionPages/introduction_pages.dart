@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pixieapp/blocs/introduction/introduction_event.dart';
 import 'package:pixieapp/blocs/introduction/introduction_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/models/Child_data_model.dart';
@@ -23,7 +24,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   // State field(s) for PageView widget.
   PageController? pageViewController;
   ClildDataModel childdata = ClildDataModel(
-      name: "name",
+      name: 'name',
       gender: Gender.prefernottosay,
       favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
       dob: DateTime.now(),
@@ -56,7 +57,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
       required double width,
       required bool selected,
       required VoidCallback ontap}) {
-    final theme = Theme.of(context);
     return InkWell(
       onTap: ontap,
       child: Container(
@@ -74,19 +74,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
                     selected ? AppColors.kwhiteColor : AppColors.kblackColor),
           ))),
     );
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2010),
-      lastDate: DateTime(2030),
-    );
-    if (picked != null && picked != selectedDate)
-      setState(() {
-        selectedDate = picked;
-      });
   }
 
   @override
@@ -111,15 +98,25 @@ class _IntroductionPageState extends State<IntroductionPage> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 236, 215, 244),
         key: scaffoldKey,
-        body: BlocConsumer<TextBloc, TextState>(
+        body: BlocConsumer<TextBloc, IntroductionState>(
           listener: (context, state) {
-            if (state is TextUpdated) {}
+            if (state is TextUpdated) {
+              childdata.name = state.name;
+            }
+            if (state is GenderUpdated) {
+              childdata.gender =state.gender;
+            }
           },
           builder: (context, state) {
+            Gender gender ;
             String name = '';
             if (state is TextUpdated) {
               name = state.name;
             }
+             if (state is GenderUpdated) {
+              gender = state.gender;
+            }
+
             return Container(
               width: MediaQuery.sizeOf(context).width * 1.0,
               height: MediaQuery.sizeOf(context).height * 1.0,
@@ -143,7 +140,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       height: deviceHeight,
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            20.0, 10.0, 20.0, 10.0),
+                            20.0, 10.0, 20.0, 0.0),
                         child: SafeArea(
                           child: PageView(
                             controller: pageViewController ??=
@@ -192,8 +189,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                       )
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: deviceHeight * 0.5899,
+                                  Expanded(
                                     child: SingleChildScrollView(
                                       child: Column(
                                         crossAxisAlignment:
@@ -244,10 +240,14 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               cursorColor:
                                                   AppColors.textColorblue,
                                               onChanged: (value) {
-                                                setState(() {
-                                                  childdata.name = value;
-                                                });
+                                                context.read<TextBloc>().add(
+                                                    TextChanged(name: value));
                                               },
+                                              // onChanged: (value) {
+                                              //   setState(() {
+                                              //     childdata.name = value;
+                                              //   });
+                                              // },
                                               decoration: InputDecoration(
                                                 contentPadding:
                                                     const EdgeInsets.only(
@@ -294,10 +294,14 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   text: "He",
                                                   width: deviceWidth * 0.4305,
                                                   ontap: () {
-                                                    setState(() {
-                                                      childdata.gender =
-                                                          Gender.male;
-                                                    });
+                                                    context
+                                                        .read<TextBloc>()
+                                                        .add(GenderChanged(
+                                                            gender:  Gender.male));
+                                                    // setState(() {
+                                                    //   childdata.gender =
+                                                    //       Gender.male;
+                                                    // });
                                                   },
                                                   selected: childdata.gender ==
                                                           Gender.male
@@ -341,7 +345,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           SizedBox(
                                             height: 200,
                                             child: CupertinoDatePicker(
+                                              maximumYear: DateTime.now().year,
+                                              minimumYear: 2000,
                                               initialDateTime: selectedDate,
+                                              maximumDate: selectedDate,
                                               mode:
                                                   CupertinoDatePickerMode.date,
                                               onDateTimeChanged:
@@ -357,7 +364,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           //   onPressed: () =>
                                           //       Navigator.of(context).pop(),
                                           // ),
-                                          const SizedBox(height: 20),
                                         ],
                                       ),
                                     ),
@@ -505,8 +511,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                       )
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: deviceHeight * 0.5899,
+                                  Expanded(
                                     child: SingleChildScrollView(
                                       child: Column(
                                         crossAxisAlignment:
@@ -762,7 +767,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           'email': user.email,
                                           'phone': '',
 
-                                          'child_name': childdata.name,
+                                          'child_name': name,
                                           'gender': childdata.gender.name,
                                           'fav_things': childdata.favthings,
                                           'dob': childdata.dob,
