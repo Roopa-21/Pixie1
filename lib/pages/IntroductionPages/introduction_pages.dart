@@ -9,8 +9,7 @@ import 'package:pixieapp/blocs/introduction/introduction_event.dart';
 import 'package:pixieapp/blocs/introduction/introduction_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/models/Child_data_model.dart';
-import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
-import 'package:pixieapp/widgets/add_new_character.dart';
+import 'package:pixieapp/widgets/widgets_index.dart';
 import '../../blocs/introduction/introduction_bloc.dart';
 
 class IntroductionPage extends StatefulWidget {
@@ -78,7 +77,22 @@ class _IntroductionPageState extends State<IntroductionPage> {
 
   @override
   void initState() {
+    favThings();
     super.initState();
+  }
+
+  Future<void> favThings() async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get();
+
+      List<String> fetchedFavThings = List<String>.from(userDoc['fav_things']);
+      childdata.favthings = fetchedFavThings;
+    } catch (e) {
+      print('Error');
+    }
   }
 
   @override
@@ -92,31 +106,27 @@ class _IntroductionPageState extends State<IntroductionPage> {
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-    print(deviceWidth);
+
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 236, 215, 244),
         key: scaffoldKey,
-        body: BlocConsumer<TextBloc, IntroductionState>(
+        body: BlocConsumer<IntroductionBloc, IntroductionState>(
           listener: (context, state) {
             if (state is TextUpdated) {
               childdata.name = state.name;
             }
             if (state is GenderUpdated) {
-              childdata.gender =state.gender;
+              print('ddddddd${state.gender}');
+              childdata.gender = state.gender;
+            }
+            if (state is DobUpdated) {
+              print('ddddddd${state.dob}');
+              childdata.dob = state.dob;
             }
           },
           builder: (context, state) {
-            Gender gender ;
-            String name = '';
-            if (state is TextUpdated) {
-              name = state.name;
-            }
-             if (state is GenderUpdated) {
-              gender = state.gender;
-            }
-
             return Container(
               width: MediaQuery.sizeOf(context).width * 1.0,
               height: MediaQuery.sizeOf(context).height * 1.0,
@@ -240,14 +250,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               cursorColor:
                                                   AppColors.textColorblue,
                                               onChanged: (value) {
-                                                context.read<TextBloc>().add(
-                                                    TextChanged(name: value));
+                                                context
+                                                    .read<IntroductionBloc>()
+                                                    .add(TextChanged(
+                                                        name: value));
                                               },
-                                              // onChanged: (value) {
-                                              //   setState(() {
-                                              //     childdata.name = value;
-                                              //   });
-                                              // },
                                               decoration: InputDecoration(
                                                 contentPadding:
                                                     const EdgeInsets.only(
@@ -295,13 +302,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   width: deviceWidth * 0.4305,
                                                   ontap: () {
                                                     context
-                                                        .read<TextBloc>()
+                                                        .read<
+                                                            IntroductionBloc>()
                                                         .add(GenderChanged(
-                                                            gender:  Gender.male));
-                                                    // setState(() {
-                                                    //   childdata.gender =
-                                                    //       Gender.male;
-                                                    // });
+                                                            gender:
+                                                                Gender.male));
                                                   },
                                                   selected: childdata.gender ==
                                                           Gender.male
@@ -313,10 +318,12 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   text: "She",
                                                   width: deviceWidth * 0.4305,
                                                   ontap: () {
-                                                    setState(() {
-                                                      childdata.gender =
-                                                          Gender.female;
-                                                    });
+                                                    context
+                                                        .read<
+                                                            IntroductionBloc>()
+                                                        .add(GenderChanged(
+                                                            gender:
+                                                                Gender.female));
                                                   },
                                                   selected: childdata.gender ==
                                                           Gender.female
@@ -327,12 +334,13 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           const SizedBox(height: 10),
                                           _buildPronounButton(
                                               text: "Prefer not to say",
-                                              width: deviceWidth * 0.4305,
+                                              width: deviceWidth * 0.8888,
                                               ontap: () {
-                                                setState(() {
-                                                  childdata.gender =
-                                                      Gender.prefernottosay;
-                                                });
+                                                context
+                                                    .read<IntroductionBloc>()
+                                                    .add(GenderChanged(
+                                                        gender: Gender
+                                                            .prefernottosay));
                                               },
                                               selected: childdata.gender ==
                                                       Gender.prefernottosay
@@ -340,8 +348,16 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   : false),
                                           const SizedBox(height: 20),
                                           const SizedBox(height: 20),
-                                          const Text("Date of Birth",
-                                              style: TextStyle(fontSize: 18)),
+                                          Text(
+                                            "Date of Birth",
+                                            style: theme
+                                                .textTheme.headlineSmall!
+                                                .copyWith(
+                                                    color: AppColors
+                                                        .textColorblack,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                          ),
                                           SizedBox(
                                             height: 200,
                                             child: CupertinoDatePicker(
@@ -353,9 +369,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   CupertinoDatePickerMode.date,
                                               onDateTimeChanged:
                                                   (DateTime newDate) {
-                                                setState(() {
-                                                  childdata.dob = newDate;
-                                                });
+                                                context
+                                                    .read<IntroductionBloc>()
+                                                    .add(DobChanged(
+                                                        dob: newDate));
                                               },
                                             ),
                                           ),
@@ -413,7 +430,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                     ],
                                   ),
                                   Text(
-                                    '''What are [name]'s favorite things?''',
+                                    'What are ${childdata.name}\'s favorite things?',
                                     style: theme.textTheme.displaySmall!
                                         .copyWith(
                                             color: AppColors.textColorblue,
@@ -443,7 +460,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                     );
                                   })),
                                   addbutton(
-                                      title: "Add a character",
+                                      title: "Add your own",
                                       width: 180,
                                       theme: theme,
                                       onTap: () async {
@@ -453,19 +470,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           enableDrag: false,
                                           context: context,
                                           builder: (context) {
-                                            return GestureDetector(
-                                              onTap: () =>
-                                                  FocusScope.of(context)
-                                                      .unfocus(),
-                                              child: Padding(
-                                                padding:
-                                                    MediaQuery.viewInsetsOf(
-                                                        context),
-                                                child: const AddNewCharacter(
-                                                  text: "Name a\ncharacter",
-                                                ),
-                                              ),
-                                            );
+                                            return const AddFavoritesBottomsheet();
                                           },
                                         );
                                       })
@@ -518,7 +523,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Who are [Name]’s loved ones?",
+                                            'Who are ${childdata.name}\'s loved ones?',
                                             style: theme.textTheme.displaySmall!
                                                 .copyWith(
                                                     color:
@@ -767,7 +772,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           'email': user.email,
                                           'phone': '',
 
-                                          'child_name': name,
+                                          'child_name': childdata.name,
                                           'gender': childdata.gender.name,
                                           'fav_things': childdata.favthings,
                                           'dob': childdata.dob,
