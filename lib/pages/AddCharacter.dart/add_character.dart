@@ -101,9 +101,9 @@ class _AddCharacterState extends State<AddCharacter> {
     super.dispose();
   }
 
-  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
@@ -387,70 +387,6 @@ class _AddCharacterState extends State<AddCharacter> {
                                               ),
                                             ),
                                             const SizedBox(height: 25),
-                                            ChoiceChips(
-                                              options: const [
-                                                ChipData(
-                                                    'Elephant',
-                                                    Icons
-                                                        .star_purple500_rounded),
-                                                ChipData(
-                                                    'Name',
-                                                    Icons
-                                                        .star_purple500_rounded),
-                                                ChipData(
-                                                    'Hippopotamus',
-                                                    Icons
-                                                        .star_purple500_rounded),
-                                                ChipData('Person',
-                                                    Icons.star_rate_outlined),
-                                                ChipData(
-                                                    'Friend',
-                                                    Icons
-                                                        .star_purple500_rounded),
-                                                ChipData(
-                                                    'Dog',
-                                                    Icons
-                                                        .star_purple500_rounded)
-                                              ],
-                                              onChanged: (val) =>
-                                                  choiceChipsValue1 =
-                                                      val?.firstOrNull,
-                                              selectedChipStyle: ChipStyle(
-                                                backgroundColor:
-                                                    AppColors.sliderColor,
-                                                textStyle:
-                                                    theme.textTheme.bodyMedium,
-                                                iconColor:
-                                                    AppColors.sliderColor,
-                                                iconSize: 18.0,
-                                                elevation: 0.0,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                              unselectedChipStyle: ChipStyle(
-                                                backgroundColor: AppColors
-                                                    .choicechipUnSelected,
-                                                textStyle:
-                                                    theme.textTheme.bodySmall,
-                                                iconColor:
-                                                    AppColors.sliderColor,
-                                                iconSize: 16.0,
-                                                elevation: 0.0,
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                              ),
-                                              chipSpacing: 10.0,
-                                              rowSpacing: 10.0,
-                                              multiselect: true,
-                                              alignment: WrapAlignment.start,
-                                              controller:
-                                                  choiceChipsValueController1 ??=
-                                                      FormFieldController<
-                                                          List<String>>(
-                                                [],
-                                              ),
-                                              wrapped: true,
-                                            ),
                                             addbutton(
                                                 title: "Add a character",
                                                 width: 180,

@@ -146,12 +146,13 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 10),
                 Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    'Give feedback',
-                    style: theme.textTheme.headlineLarge!.copyWith(
-                        color: AppColors.textColorblue,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w400),
+                  child: TextButton(
+                    child: Text('Give feedback',
+                        style: theme.textTheme.headlineLarge!.copyWith(
+                            color: AppColors.textColorblue,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400)),
+                    onPressed: () => context.push('/feedbackPage'),
                   ),
                 ),
               ],

@@ -77,3 +77,5 @@ class UpdateMusicandspeedEvent extends AddCharacterEvent {
   @override
   List<Object?> get props => [musicandspeed];
 }
+
+class ResetStateEvent extends AddCharacterEvent {}

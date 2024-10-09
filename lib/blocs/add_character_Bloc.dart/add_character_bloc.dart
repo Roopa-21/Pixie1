@@ -50,5 +50,17 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
     on<UpdateMusicandspeedEvent>((event, emit) {
       emit(state.copyWith(musicAndSpeed: event.musicandspeed));
     });
+    // Handle ResetStateEvent to reset bloc state to initial values
+    on<ResetStateEvent>((event, emit) {
+      emit(const AddCharacterState(
+        currentPageIndex: 0,
+        language: Language.English,
+        lovedOnce: null,
+        selectedindex: -1,
+        selectedindexlesson: -1,
+        genre: 'Funny',
+        musicAndSpeed: 'Bedtime',
+      ));
+    });
   }
 }
