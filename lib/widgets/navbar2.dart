@@ -4,7 +4,8 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/routes/routes.dart';
 
 class NavBar2 extends StatefulWidget {
-  const NavBar2({super.key});
+  final VoidCallback ontap;
+  const NavBar2({super.key, required this.ontap});
 
   @override
   State<NavBar2> createState() => _NavBar2State();
@@ -58,12 +59,7 @@ class _NavBar2State extends State<NavBar2> {
                 child: SizedBox(
                   width: 50,
                   child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        fav = !fav;
-                      });
-                      // router.push('/AddCharacter');
-                    },
+                    onPressed: widget.ontap,
                     icon: SvgPicture.asset(
                       fav == true
                           ? 'assets/images/Heart_filled.svg'

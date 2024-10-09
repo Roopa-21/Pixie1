@@ -70,8 +70,7 @@ class _NameCharacterBottomsheetState extends State<NameCharacterBottomsheet> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     foregroundColor: Colors.white,
-                    backgroundColor:
-                        AppColors.buttonblue, 
+                    backgroundColor: AppColors.buttonblue,
                   ),
                   child: Text("Add",
                       style: theme.textTheme.bodyLarge!.copyWith(

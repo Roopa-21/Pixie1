@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
+import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 
 class AddNewCharacter extends StatefulWidget {
   const AddNewCharacter({super.key, required this.text});
@@ -10,10 +11,10 @@ class AddNewCharacter extends StatefulWidget {
   State<AddNewCharacter> createState() => _AddNewCharacterState();
 }
 
-FormFieldController<List<String>>? choiceChipsValueController1;
-List<String>? get choiceChipsValues1 => choiceChipsValueController1?.value;
-set choiceChipsValues1(List<String>? val) =>
-    choiceChipsValueController1?.value = val;
+// FormFieldController<List<String>>? choiceChipsValueController1;
+// List<String>? get choiceChipsValues1 => choiceChipsValueController1?.value;
+// set choiceChipsValues1(List<String>? val) =>
+//     choiceChipsValueController1?.value = val;
 
 class _AddNewCharacterState extends State<AddNewCharacter> {
   @override

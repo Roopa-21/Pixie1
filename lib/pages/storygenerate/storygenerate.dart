@@ -1,18 +1,73 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StoryGeneratePage extends StatelessWidget {
-  final Map<String, String> story; // Accept the story text
+class StoryGeneratePage extends StatefulWidget {
+  final Map<String, String> story;
+  final String storytype;
 
-  const StoryGeneratePage({super.key, required this.story});
+  const StoryGeneratePage({
+    super.key,
+    required this.story,
+    required this.storytype,
+  });
+
+  @override
+  _StoryGeneratePageState createState() => _StoryGeneratePageState();
+}
+
+class _StoryGeneratePageState extends State<StoryGeneratePage> {
+  bool isFavorited = false;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    // _checkIfFavorited();
+  }
+
+  // Future<void> _checkIfFavorited() async {
+  //   final snapshot = await _firestore
+  //       .collection('fav_storys')
+  //       .doc(widget.story['title'])
+  //       .get();
+  //   setState(() {
+  //     isFavorited = snapshot.exists;
+  //   });
+  // }
+
+  Future<void> _toggleFavorite() async {
+    final String title = widget.story['title'] ?? 'Untitled';
+    final String audioFile = ''; // Placeholder for the audio file URL
+    final String storyContent = widget.story['story'] ?? 'No story';
+
+    if (isFavorited) {
+      // Remove the story from favorites
+      await _firestore.collection('fav_storys').doc(title).delete();
+      print('Story removed from favorites');
+    } else {
+      // Add the story to favorites
+      await _firestore.collection('fav_storys').add({
+        'storytype': widget.storytype,
+        'title': title,
+        'audiofile': audioFile, // Add the audio file link here
+        'story': storyContent,
+      });
+      print('Story added to favorites');
+    }
+    // _checkIfFavorited(); // Refresh the favorite state
+  }
 
   @override
   Widget build(BuildContext context) {
-    final devicewidth = MediaQuery.of(context).size.width;
-    final deviceheight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -21,9 +76,9 @@ class StoryGeneratePage extends StatelessWidget {
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            expandedHeight: deviceheight * 0.3,
-            leadingWidth: devicewidth,
-            collapsedHeight: deviceheight * 0.1,
+            expandedHeight: deviceHeight * 0.3,
+            leadingWidth: deviceWidth,
+            collapsedHeight: deviceHeight * 0.1,
             pinned: true,
             floating: false,
             flexibleSpace: LayoutBuilder(
@@ -35,7 +90,7 @@ class StoryGeneratePage extends StatelessWidget {
                   centerTitle: true,
                   titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
                   title: Text(
-                    story["title"] ?? "No data",
+                    widget.story["title"] ?? "No data",
                     style: theme.textTheme.titleMedium!.copyWith(
                       color: AppColors.textColorWhite,
                       fontWeight: FontWeight.bold,
@@ -52,31 +107,40 @@ class StoryGeneratePage extends StatelessWidget {
             actions: [
               IconButton(
                 icon: const Icon(Icons.close),
-                onPressed: () {
+                onPressed: () async {
+                  context.read<AddCharacterBloc>().add(ResetStateEvent());
                   context.go('/HomePage');
                 },
               ),
+              // IconButton(
+              //   icon: Icon(isFavorited
+              //       ? Icons.favorite
+              //       : Icons.favorite_border), // Heart icon
+              //   onPressed: ,
+              // ),
             ],
           ),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(
-                  top: 5,
-                  left: deviceheight * 0.0294,
-                  right: deviceheight * 0.0294,
-                  bottom: deviceheight * 0.0294),
+                top: 5,
+                left: deviceHeight * 0.0294,
+                right: deviceHeight * 0.0294,
+                bottom: deviceHeight * 0.0294,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DefaultTextStyle(
                     style: theme.textTheme.bodyLarge!.copyWith(
-                        color: AppColors.textColorGrey,
-                        fontWeight: FontWeight.w400),
+                      color: AppColors.textColorGrey,
+                      fontWeight: FontWeight.w400,
+                    ),
                     child: AnimatedTextKit(
                       isRepeatingAnimation: false,
                       animatedTexts: [
                         TyperAnimatedText(
-                          story["story"] ?? "No data",
+                          widget.story["story"] ?? "No data",
                         ),
                       ],
                       onTap: () {
@@ -84,17 +148,13 @@ class StoryGeneratePage extends StatelessWidget {
                       },
                     ),
                   ),
-                  // Text(body,
-                  //     style: theme.textTheme.bodyLarge!.copyWith(
-                  //         color: AppColors.textColorGrey,
-                  //         fontWeight: FontWeight.w400)),
                 ],
               ),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: const NavBar2(),
+      bottomNavigationBar: NavBar2(ontap: _toggleFavorite),
     );
   }
 }

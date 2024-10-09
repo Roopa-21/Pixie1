@@ -99,7 +99,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: 'Logout',
                       ontap: () {
                         context.read<AuthBloc>().add(AuthLogOutRequested());
-                        context.read<AddCharacterBloc>().add(Pagechange(0));
+                        context
+                            .read<AddCharacterBloc>()
+                            .add(const PageChangeEvent(0));
                       },
                       icon_path: 'assets/images/logout.svg',
                       theme: theme,

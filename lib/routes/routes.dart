@@ -94,7 +94,7 @@ final GoRouter router = GoRouter(
         path: '/CreateStoryPage',
         builder: (context, state) {
           final storydata = state.extra as StoryModal;
-          return CreateStoryPage(storydata: storydata);
+          return CreateStoryPage();
         }),
     GoRoute(
       path: '/AddCharacter',
@@ -124,7 +124,8 @@ final GoRouter router = GoRouter(
       path: '/StoryGeneratePage',
       builder: (context, state) {
         final story = state.extra as Map<String, String>;
-        return StoryGeneratePage(story: story);
+        final storytype = state.uri.queryParameters['storytype'];
+        return StoryGeneratePage(story: story, storytype: storytype!);
       },
     ),
     GoRoute(
