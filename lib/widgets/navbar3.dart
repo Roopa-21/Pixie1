@@ -6,17 +6,27 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 
-class NavBar2 extends StatefulWidget {
+class NavBar3 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
-  const NavBar2({super.key, required this.documentReference});
+  final bool favstatus;
+  const NavBar3(
+      {super.key, required this.documentReference, required this.favstatus});
 
   @override
-  State<NavBar2> createState() => _NavBar2State();
+  State<NavBar3> createState() => _NavBar3State();
 }
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-class _NavBar2State extends State<NavBar2> {
+class _NavBar3State extends State<NavBar3> {
+  @override
+  void initState() {
+    context
+        .read<AddCharacterBloc>()
+        .add(UpdatefavbuttonEvent(widget.favstatus));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
@@ -75,7 +85,7 @@ class _NavBar2State extends State<NavBar2> {
                         state.fav == true
                             ? 'assets/images/Heart_filled.svg'
                             : 'assets/images/Heart.svg',
-                        width: state.fav == true ? 40 : 25,
+                        width: state.fav || widget.favstatus == true ? 40 : 25,
                         height: state.fav == true ? 40 : 25,
                       ),
                     ),

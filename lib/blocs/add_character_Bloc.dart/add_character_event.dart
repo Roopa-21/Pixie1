@@ -78,4 +78,12 @@ class UpdateMusicandspeedEvent extends AddCharacterEvent {
   List<Object?> get props => [musicandspeed];
 }
 
+class UpdatefavbuttonEvent extends AddCharacterEvent {
+  final bool fav;
+  const UpdatefavbuttonEvent(this.fav);
+
+  @override
+  List<Object?> get props => [fav];
+}
+
 class ResetStateEvent extends AddCharacterEvent {}

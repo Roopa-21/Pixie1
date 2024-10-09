@@ -14,7 +14,6 @@ import 'package:pixieapp/models/story_model.dart';
 import 'package:pixieapp/widgets/add_lesson_bottom_sheet.dart';
 import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
 import 'package:pixieapp/widgets/add_new_character.dart';
-import 'package:pixieapp/widgets/choicechip.dart';
 
 class AddCharacter extends StatefulWidget {
   const AddCharacter({super.key});
