@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,9 +7,9 @@ import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/models/story_model.dart';
 import 'package:pixieapp/widgets/LovedonceBottomsheet.dart';
 import 'package:pixieapp/widgets/genre_bottomsheet.dart';
 import 'package:pixieapp/widgets/laguage_bottomsheet.dart';
@@ -15,18 +17,51 @@ import 'package:pixieapp/widgets/lesson_bottomsheet.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/music_and_speed_bottomsheet.dart';
 import 'package:pixieapp/widgets/pixie_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CreateStoryPage extends StatefulWidget {
-  // StoryModal storydata;
-  CreateStoryPage({
-    super.key,
-  });
+  const CreateStoryPage({super.key});
 
   @override
   State<CreateStoryPage> createState() => _CreateStoryPageState();
 }
 
 class _CreateStoryPageState extends State<CreateStoryPage> {
+  Future<Map<String, dynamic>> _fetchChildDetailsFromFirebase() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception('User not logged in');
+    }
+
+    // Fetch user data from Firebase
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    if (!userDoc.exists) {
+      throw Exception('User data not found');
+    }
+
+    // Extract child details
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+    String childName = userData['child_name'] ?? 'No Name';
+    String gender = userData['gender'] ?? 'Unknown';
+    int birthYear = (userData['dob'].toDate()).year;
+    int currentYear = DateTime.now().year;
+
+    int ageInYears = currentYear - birthYear;
+    print(userData['dob'].toString());
+    String age = ageInYears.toString();
+
+    return {
+      'child_name': childName,
+      'gender': gender,
+      'age': age,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -40,11 +75,10 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 listener: (context, state) {
                   if (state is StorySuccess) {
                     context.push(
-                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}',
+                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}',
                       extra: state.story,
                     );
                   } else if (state is StoryFailure) {
-                    // Show error message
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(state.error)),
                     );
@@ -334,35 +368,12 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                 ),
                               ),
                             ),
-                            // Show loading spinner when API call is in progress
                             if (state is StoryLoading)
                               const Center(child: LoadingWidget())
                             else
                               PixieButton(
                                 text: 'Create Your Story',
-                                onPressed: () {
-                                  _createStory(
-                                      context,
-                                      StoryModal(
-                                          age: "10",
-                                          child_name: "ammu",
-                                          event: builderstate.musicAndSpeed,
-                                          gender: 'female',
-                                          genre: builderstate.genre,
-                                          language: builderstate.language,
-                                          length: builderstate.musicAndSpeed ==
-                                                  'Bedtime'
-                                              ? '5min'
-                                              : '10min',
-                                          lessons: builderstate.lessons ?? '',
-                                          relation: builderstate
-                                                  .lovedOnce?.relation ??
-                                              '',
-                                          relative_name:
-                                              builderstate.lovedOnce?.name ??
-                                                  '',
-                                          topic: builderstate.musicAndSpeed));
-                                },
+                                onPressed: () => _createStory(context),
                                 color1: AppColors.buttonColor1,
                                 color2: AppColors.buttonColor2,
                               ),
@@ -435,28 +446,35 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
     );
   }
 
-  // Function to dispatch GenerateStoryEvent when button is clicked
-  void _createStory(BuildContext context, StoryModal storydata) {
-    // Dispatching the event to the Bloc to make the API call
+  Future<void> _createStory(BuildContext context) async {
+    try {
+      Map<String, dynamic> childDetails =
+          await _fetchChildDetailsFromFirebase();
 
-    print(storydata.age);
-    print(storydata.child_name);
-    print(storydata.event);
-    print(storydata.genre);
-    print(storydata.language);
-    print(storydata.lessons);
-    context.read<StoryBloc>().add(GenerateStoryEvent(
-          event: storydata.event,
-          age: storydata.age,
-          topic: storydata.topic,
-          childName: storydata.child_name,
-          gender: storydata.gender,
-          relation: storydata.relation,
-          relativeName: storydata.relative_name,
-          genre: storydata.genre,
-          lessons: storydata.lessons,
-          length: storydata.length,
-          language: storydata.language.name,
-        ));
+      context.read<StoryBloc>().add(GenerateStoryEvent(
+            event: context.read<AddCharacterBloc>().state.musicAndSpeed,
+            age: childDetails['age'],
+            topic: context.read<AddCharacterBloc>().state.musicAndSpeed,
+            childName: childDetails['child_name'],
+            gender: childDetails['gender'],
+            relation:
+                context.read<AddCharacterBloc>().state.lovedOnce?.relation ??
+                    '',
+            relativeName:
+                context.read<AddCharacterBloc>().state.lovedOnce?.name ?? '',
+            genre: context.read<AddCharacterBloc>().state.genre,
+            lessons: context.read<AddCharacterBloc>().state.lessons ?? '',
+            length: context.read<AddCharacterBloc>().state.musicAndSpeed ==
+                    'Bedtime'
+                ? '5min'
+                : '10min',
+            language: context.read<AddCharacterBloc>().state.language.name,
+          ));
+      context.read<AddCharacterBloc>().add(const PageChangeEvent(0));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching child details: $e')),
+      );
+    }
   }
 }

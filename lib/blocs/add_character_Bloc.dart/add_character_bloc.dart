@@ -6,13 +6,15 @@ import 'add_character_state.dart';
 class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
   AddCharacterBloc()
       : super(const AddCharacterState(
-            currentPageIndex: 0,
-            language: Language.English,
-            lovedOnce: null,
-            selectedindex: -1,
-            selectedindexlesson: -1,
-            genre: 'Funny',
-            musicAndSpeed: 'Bedtime')) {
+          currentPageIndex: 0,
+          language: Language.English,
+          lovedOnce: null,
+          selectedindex: -1,
+          selectedindexlesson: -1,
+          genre: 'Funny',
+          musicAndSpeed: 'Bedtime',
+          fav: false,
+        )) {
     // Handle page change events
     on<PageChangeEvent>((event, emit) {
       emit(state.copyWith(currentPageIndex: event.currentPageIndex));
@@ -47,20 +49,26 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
     on<UpdateGenreEvent>((event, emit) {
       emit(state.copyWith(genre: event.genre));
     });
+    // Handle update music speed event
     on<UpdateMusicandspeedEvent>((event, emit) {
       emit(state.copyWith(musicAndSpeed: event.musicandspeed));
     });
+    // Handle update favbutton event
+    on<UpdatefavbuttonEvent>((event, emit) {
+      emit(state.copyWith(fav: event.fav));
+    });
+
     // Handle ResetStateEvent to reset bloc state to initial values
     on<ResetStateEvent>((event, emit) {
       emit(const AddCharacterState(
-        currentPageIndex: 0,
-        language: Language.English,
-        lovedOnce: null,
-        selectedindex: -1,
-        selectedindexlesson: -1,
-        genre: 'Funny',
-        musicAndSpeed: 'Bedtime',
-      ));
+          currentPageIndex: 0,
+          language: Language.English,
+          lovedOnce: null,
+          selectedindex: -1,
+          selectedindexlesson: -1,
+          genre: 'Funny',
+          musicAndSpeed: 'Bedtime',
+          fav: false));
     });
   }
 }

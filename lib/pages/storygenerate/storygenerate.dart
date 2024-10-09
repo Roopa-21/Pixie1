@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,11 +12,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class StoryGeneratePage extends StatefulWidget {
   final Map<String, String> story;
   final String storytype;
-
+  final String language;
   const StoryGeneratePage({
     super.key,
     required this.story,
     required this.storytype,
+    required this.language,
   });
 
   @override
@@ -23,45 +25,30 @@ class StoryGeneratePage extends StatefulWidget {
 }
 
 class _StoryGeneratePageState extends State<StoryGeneratePage> {
-  bool isFavorited = false;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  DocumentReference<Object?>? _documentReference;
 
   @override
-  void initState() {
-    super.initState();
-    // _checkIfFavorited();
-  }
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-  // Future<void> _checkIfFavorited() async {
-  //   final snapshot = await _firestore
-  //       .collection('fav_storys')
-  //       .doc(widget.story['title'])
-  //       .get();
-  //   setState(() {
-  //     isFavorited = snapshot.exists;
-  //   });
-  // }
+    final queryParams = GoRouterState.of(context).uri.queryParameters;
 
-  Future<void> _toggleFavorite() async {
-    final String title = widget.story['title'] ?? 'Untitled';
-    final String audioFile = ''; // Placeholder for the audio file URL
-    final String storyContent = widget.story['story'] ?? 'No story';
-
-    if (isFavorited) {
-      // Remove the story from favorites
-      await _firestore.collection('fav_storys').doc(title).delete();
-      print('Story removed from favorites');
-    } else {
-      // Add the story to favorites
-      await _firestore.collection('fav_storys').add({
-        'storytype': widget.storytype,
-        'title': title,
-        'audiofile': audioFile, // Add the audio file link here
-        'story': storyContent,
+    // Ensure this code only runs once by checking if the document has already been added
+    if (_documentReference == null) {
+      _addStoryToFirebase(
+        audiopath: '',
+        fav: false,
+        story: widget.story["story"] ?? "No data",
+        title: widget.story["title"] ?? "No data",
+        type: queryParams['storytype']!,
+        language: queryParams['language']!,
+      ).then((doc) {
+        setState(() {
+          _documentReference = doc;
+        });
       });
-      print('Story added to favorites');
     }
-    // _checkIfFavorited(); // Refresh the favorite state
   }
 
   @override
@@ -112,12 +99,6 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                   context.go('/HomePage');
                 },
               ),
-              // IconButton(
-              //   icon: Icon(isFavorited
-              //       ? Icons.favorite
-              //       : Icons.favorite_border), // Heart icon
-              //   onPressed: ,
-              // ),
             ],
           ),
           SliverToBoxAdapter(
@@ -154,7 +135,37 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
           ),
         ],
       ),
-      bottomNavigationBar: NavBar2(ontap: _toggleFavorite),
+      bottomNavigationBar: NavBar2(
+        documentReference: _documentReference,
+      ),
     );
+  }
+
+  Future<DocumentReference<Object?>?> _addStoryToFirebase(
+      {required String title,
+      required String audiopath,
+      required bool fav,
+      required String story,
+      required String type,
+      required String language}) async {
+    // Add the story to favorites
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) return null;
+      DocumentReference docRef = await _firestore.collection('fav_storys').add({
+        'storytype': type,
+        'title': title,
+        'audiofile': audiopath,
+        'story': story,
+        'isfav': fav,
+        'user_ref': user.uid,
+        'language': language
+      });
+      print('Story added to favorites');
+      return docRef;
+    } catch (er) {
+      print(er);
+      return null;
+    }
   }
 }

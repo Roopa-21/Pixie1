@@ -11,6 +11,7 @@ class AddCharacterState extends Equatable {
   final int selectedindex;
   final String genre;
   final String musicAndSpeed;
+  final bool fav;
 
   const AddCharacterState(
       {required this.currentPageIndex,
@@ -19,6 +20,7 @@ class AddCharacterState extends Equatable {
       required this.selectedindexlesson,
       required this.genre,
       required this.musicAndSpeed,
+      required this.fav,
       this.lessons,
       this.lovedOnce});
 
@@ -30,6 +32,7 @@ class AddCharacterState extends Equatable {
       String? lessons,
       int? selectedindex,
       int? selectedindexlesson,
+      bool? fav,
       String? genre,
       String? musicAndSpeed}) {
     return AddCharacterState(
@@ -40,7 +43,8 @@ class AddCharacterState extends Equatable {
         lessons: lessons ?? this.lessons,
         selectedindexlesson: selectedindexlesson ?? this.selectedindexlesson,
         genre: genre ?? this.genre,
-        musicAndSpeed: musicAndSpeed ?? this.musicAndSpeed);
+        musicAndSpeed: musicAndSpeed ?? this.musicAndSpeed,
+        fav: fav ?? this.fav);
   }
 
   @override
@@ -52,6 +56,7 @@ class AddCharacterState extends Equatable {
         selectedindex,
         selectedindexlesson,
         genre,
-        musicAndSpeed
+        musicAndSpeed,
+        fav
       ];
 }

@@ -9,6 +9,7 @@ import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
 import 'package:pixieapp/pages/AllStories/all_stories.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
 import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
+import 'package:pixieapp/pages/FirebaseStory/firebasestory.dart';
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
@@ -125,7 +126,9 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final story = state.extra as Map<String, String>;
         final storytype = state.uri.queryParameters['storytype'];
-        return StoryGeneratePage(story: story, storytype: storytype!);
+        final language = state.uri.queryParameters['language'] ?? 'English';
+        return StoryGeneratePage(
+            story: story, storytype: storytype!, language: language!);
       },
     ),
     GoRoute(
@@ -178,6 +181,13 @@ final GoRouter router = GoRouter(
         return const NoTransitionPage(
           child: SettingsPage(),
         );
+      },
+    ),
+    GoRoute(
+      path: '/Firebasestory',
+      builder: (context, state) {
+        final storyDocRef = state.extra as DocumentReference<Object?>;
+        return Firebasestory(storyDocRef: storyDocRef);
       },
     ),
   ],
