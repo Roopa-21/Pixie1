@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
           create: (_) => IntroductionBloc(),
         ),
         BlocProvider(
-          create: (context) => FetchStoryBloc(FetchStoryRepository()),
+          create: (context) => FetchStoryBloc(FetchStoryRepository1()),
         ),
       ],
       child: MaterialApp.router(

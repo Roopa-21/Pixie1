@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_bloc.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_event.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_state.dart';
@@ -73,45 +75,49 @@ class _LibraryState extends State<Library> {
                         child: Row(
                           children: [
                             filterChoicechip(
-                                ontap: () async {
-                                  context.read<FetchStoryBloc>().add(
-                                      const AddfilterEvent(filter: 'Bedtime'));
-                                  print(state);
-                                },
-                                title: 'Bedtime',
-                                theme: theme,
-                                selected:
-                                    state.filter == 'Bedtime' ? true : false),
+                              ontap: () => context
+                                  .read<FetchStoryBloc>()
+                                  .add(const AddfilterEvent(filter: 'Bedtime')),
+                              title: 'Bedtime',
+                              theme: theme,
+                              selected: state is StoryLoaded &&
+                                  state.filter == 'Bedtime',
+                            ),
                             filterChoicechip(
-                                ontap: () => context.read<FetchStoryBloc>().add(
-                                    const AddfilterEvent(filter: 'Playtime')),
-                                title: 'Playtime',
-                                theme: theme,
-                                selected:
-                                    state.filter == 'Playtime' ? true : false),
+                              ontap: () => context.read<FetchStoryBloc>().add(
+                                  const AddfilterEvent(filter: 'Playtime')),
+                              title: 'Playtime',
+                              theme: theme,
+                              selected: state is StoryLoaded &&
+                                  state.filter == 'Playtime',
+                            ),
                             filterChoicechip(
-                                ontap: () => context
-                                    .read<FetchStoryBloc>()
-                                    .add(const AddfilterEvent(filter: 'Liked')),
-                                title: 'Liked',
-                                theme: theme,
-                                selected:
-                                    state.filter == 'Liked' ? true : false),
+                              ontap: () => context
+                                  .read<FetchStoryBloc>()
+                                  .add(const AddfilterEvent(filter: 'Liked')),
+                              title: 'Liked',
+                              theme: theme,
+                              selected: state is StoryLoaded &&
+                                  state.filter == 'Liked',
+                            ),
                             filterChoicechip(
-                                ontap: () => context.read<FetchStoryBloc>().add(
-                                    const AddfilterEvent(filter: 'English')),
-                                title: 'English',
-                                theme: theme,
-                                selected:
-                                    state.filter == 'English' ? true : false),
+                              ontap: () => context
+                                  .read<FetchStoryBloc>()
+                                  .add(const AddfilterEvent(filter: 'English')),
+                              title: 'English',
+                              theme: theme,
+                              selected: state is StoryLoaded &&
+                                  state.filter == 'English',
+                            ),
                             filterChoicechip(
-                                ontap: () => context
-                                    .read<FetchStoryBloc>()
-                                    .add(const AddfilterEvent(filter: 'Hindi')),
-                                title: 'Hindi',
-                                theme: theme,
-                                selected:
-                                    state.filter == 'Hindi' ? true : false)
+                              ontap: () => context
+                                  .read<FetchStoryBloc>()
+                                  .add(const AddfilterEvent(filter: 'Hindi')),
+                              title: 'Hindi',
+                              theme: theme,
+                              selected: state is StoryLoaded &&
+                                  state.filter == 'Hindi',
+                            ),
                           ],
                         ),
                       ),
@@ -128,11 +134,10 @@ class _LibraryState extends State<Library> {
                           'Recents',
                           style:
                               theme.textTheme.bodySmall!.copyWith(fontSize: 14),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                  // Handle different states here
                   Expanded(
                     child: _buildStoryContent(state, theme),
                   ),
@@ -181,34 +186,34 @@ class _LibraryState extends State<Library> {
     if (state is StoryLoading) {
       return const Center(child: LoadingWidget());
     } else if (state is StoryLoaded) {
-      List<Map<String, dynamic>> filteredStories = state.stories.where((story) {
-        if (state.filter == 'English' || state.filter == 'Hindi') {
-          return story['language'] == state.filter;
-        } else if (state.filter == 'Bedtime' || state.filter == 'Playtime') {
-          return story['storytype'] == state.filter;
-        } else if (state.filter == 'Liked') {
-          return story['isfav'] == true;
-        }
-        return true; // If no filter, return all stories
-      }).toList();
-
-      if (filteredStories.isEmpty) {
+      if (state.filteredStories.isEmpty) {
         return const Center(child: Text("No stories found"));
       }
 
       return ListView.builder(
-        itemCount: filteredStories.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: storylistCard(
-            theme: theme,
-            title: filteredStories[index]['title'],
-            storytype: filteredStories[index]['storytype'],
-            duration: filteredStories[index]['audiofile'],
-            image: '',
-            ontap: () {},
-          ),
-        ),
+        itemCount: state.filteredStories.length,
+        itemBuilder: (context, index) {
+          final story = state.filteredStories[index];
+          final DocumentReference storyRef =
+              story['reference']; // Get reference
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: storylistCard(
+              theme: theme,
+              title: story['title'],
+              storytype: story['storytype'],
+              duration: story['audiofile'],
+              image: '',
+              storyRef: storyRef,
+              ontap: () {
+                if (storyRef != null && storyRef is DocumentReference) {
+                  context.push('/Firebasestory', extra: storyRef);
+                }
+              },
+            ),
+          );
+        },
       );
     } else if (state is StoryError) {
       return Center(child: Text(state.error));
@@ -223,52 +228,56 @@ class _LibraryState extends State<Library> {
     required String storytype,
     required String duration,
     required String image,
+    required DocumentReference storyRef,
     required void Function() ontap,
   }) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      color: Colors.transparent,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Container(
-              height: 70,
-              width: 100,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
+    return InkWell(
+      onTap: ontap,
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Container(
+                height: 70,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyLarge,
-                ),
-                Row(
-                  children: [
-                    Text(storytype, style: theme.textTheme.bodyMedium),
-                    const Text(
-                      ' - ',
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                    Text(duration, style: theme.textTheme.bodyMedium),
-                  ],
-                ),
-              ],
+            const SizedBox(width: 10),
+            Expanded(
+              flex: 5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyLarge,
+                  ),
+                  Row(
+                    children: [
+                      Text(storytype, style: theme.textTheme.bodyMedium),
+                      const Text(
+                        ' - ',
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      Text(duration, style: theme.textTheme.bodyMedium),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 10),
-          const Expanded(flex: 1, child: Icon(Icons.ios_share_rounded)),
-        ],
+            const SizedBox(width: 10),
+            const Expanded(flex: 1, child: Icon(Icons.ios_share_rounded)),
+          ],
+        ),
       ),
     );
   }
