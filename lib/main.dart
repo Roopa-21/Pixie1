@@ -13,6 +13,8 @@ import 'package:pixieapp/repositories/library_repository.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,8 +23,21 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final GoRouter _router = router; // Initialize the router instance
+
+  @override
+  void initState() {
+    super.initState();
+    handleDynamicLinks(); // Handle dynamic links on startup
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +60,43 @@ class MyApp extends StatelessWidget {
           create: (_) => IntroductionBloc(),
         ),
         BlocProvider(
-          create: (context) => FetchStoryBloc(FetchStoryRepository()),
+          create: (context) => FetchStoryBloc(FetchStoryRepository1()),
         ),
       ],
       child: MaterialApp.router(
-        routerConfig: router,
+        routerConfig: _router, // Use the router here
         debugShowCheckedModeBanner: false,
         title: 'Pixie App',
         theme: ThemeData(),
       ),
     );
+  }
+
+  void handleDynamicLinks() async {
+    // For initial dynamic link when the app is opened through the link
+    final PendingDynamicLinkData? initialLink =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+
+    if (initialLink != null) {
+      final Uri deepLink = initialLink.link;
+      _handleDeepLink(deepLink);
+    }
+
+    // For when the app is already opened and a new link is clicked
+    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+      _handleDeepLink(dynamicLinkData.link);
+    }).onError((error) {
+      print('Dynamic Link Failed: $error');
+    });
+  }
+
+  void _handleDeepLink(Uri link) {
+    if (link.queryParameters.containsKey('id')) {
+      final storyId = link.queryParameters['id'];
+      if (storyId != null) {
+        // Use GoRouter to navigate to the story details page with the storyId
+        _router.go('/storyDetails', extra: storyId);
+      }
+    }
   }
 }

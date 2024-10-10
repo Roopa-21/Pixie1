@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_event.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_state.dart';
 import 'package:pixieapp/repositories/library_repository.dart';
 
 class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
-  final FetchStoryRepository _fetchStoryRepository;
+  final FetchStoryRepository1 _fetchStoryRepository;
 
   FetchStoryBloc(this._fetchStoryRepository) : super(const StoryInitial()) {
     on<FetchStories>(_onFetchStories);
@@ -34,9 +35,10 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
 
       // Emit the updated state with both the original list and filtered list
       emit(StoryLoaded(
-          stories: loadedState.stories, // Keep the original stories
-          filteredStories: filteredStories, // Pass the filtered stories
-          filter: event.filter));
+        stories: loadedState.stories, // Keep the original stories
+        filteredStories: filteredStories, // Pass the filtered stories
+        filter: event.filter,
+      ));
     } else {
       emit(StoryError('Cannot apply filter. No stories available.'));
     }
@@ -57,5 +59,33 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
       }
       return true;
     }).toList();
+  }
+}
+
+// Library Repository
+class FetchStoryRepository {
+  final FirebaseFirestore _firestore;
+
+  FetchStoryRepository({FirebaseFirestore? firestore})
+      : _firestore = firestore ?? FirebaseFirestore.instance;
+
+  Future<List<Map<String, dynamic>>> fetchStories(String userId) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('fav_storys')
+          .where('user_ref', isEqualTo: userId)
+          .get();
+
+      // Parse the data into a list of maps and include the document reference
+      List<Map<String, dynamic>> stories = querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        data['reference'] = doc.reference; // Include DocumentReference
+        return data;
+      }).toList();
+
+      return stories;
+    } catch (e) {
+      throw Exception('Failed to fetch stories: $e');
+    }
   }
 }

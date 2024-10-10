@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FetchStoryRepository {
+class FetchStoryRepository1 {
   final FirebaseFirestore _firestore;
 
-  FetchStoryRepository({FirebaseFirestore? firestore})
+  FetchStoryRepository1({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
   Future<List<Map<String, dynamic>>> fetchStories(String userId) async {
@@ -13,10 +13,17 @@ class FetchStoryRepository {
           .where('user_ref', isEqualTo: userId)
           .get();
 
-      // Parse the data into a list of maps
-      List<Map<String, dynamic>> stories = querySnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+      // Parse the data into a list of maps, including the DocumentReference
+      List<Map<String, dynamic>> stories = querySnapshot.docs.map((doc) {
+        return {
+          'title': doc['title'],
+          'storytype': doc['storytype'],
+          'audiofile': doc['audiofile'],
+          'isfav': doc['isfav'],
+          'language': doc['language'],
+          'reference': doc.reference, // Include the DocumentReference
+        };
+      }).toList();
 
       return stories;
     } catch (e) {
