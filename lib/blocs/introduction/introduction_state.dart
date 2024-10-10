@@ -1,6 +1,8 @@
 import 'package:pixieapp/models/Child_data_model.dart';
 
-abstract class IntroductionState {}
+abstract class IntroductionState {
+ 
+}
 
 class IntroductionInitial extends IntroductionState {}
 
@@ -24,4 +26,10 @@ class DobUpdated extends IntroductionState {
 class FavListUpdated extends IntroductionState {
   final String favList;
   FavListUpdated({required this.favList});
+}
+
+class RelationUpdated extends IntroductionState {
+  final String relation;
+  final String relationName;
+  RelationUpdated({required this.relation, required this.relationName});
 }

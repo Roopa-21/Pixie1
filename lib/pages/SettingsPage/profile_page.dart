@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pixieapp/const/colors.dart';
-
 import 'package:go_router/go_router.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -12,13 +15,75 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  TextEditingController _nameController = TextEditingController();
+  String? childName;
+  String? pronoun;
+  String? dateOfBirth;
+  List<dynamic> favoriteThings = [];
+  String? motherName;
+  String? fatherName;
+  String? grandMotherName;
+  String? grandFatherName;
+  String? petDogName;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
-    _nameController.text = 'Zoe';
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(user?.uid)
+          .get();
+
+      setState(() {
+        childName = userDoc.data()?['child_name'] ?? 'Zoe';
+        pronoun = userDoc.data()?['gender'] ?? 'prefer not to say';
+        Timestamp dobTimestamp = userDoc.data()?['dob'];
+        DateTime dobDateTime = dobTimestamp.toDate();
+
+        dateOfBirth = DateFormat('dd/MM/yyyy').format(dobDateTime);
+        favoriteThings = List<String>.from(userDoc.data()?['fav_things'] ?? []);
+
+        List<dynamic> lovedOnes = userDoc.data()?['loved_once'] ?? [];
+        print(lovedOnes);
+
+        for (var lovedOne in lovedOnes) {
+          String? relation = lovedOne['relation'];
+          String? name = lovedOne['name'];
+
+          if (relation != null && name != null) {
+            switch (relation) {
+              case 'Mother':
+                motherName = name;
+                break;
+              case 'Father':
+                fatherName = name;
+                break;
+              case 'GrandMother':
+                grandMotherName = name;
+                break;
+              case 'GrandFather':
+                grandFatherName = name;
+                break;
+              case 'Pet Dog':
+                petDogName = name;
+                break;
+              default:
+                break;
+            }
+          }
+        }
+      });
+    } catch (e) {
+      print("Error fetching user data: $e");
+    }
   }
 
   @override
@@ -30,7 +95,6 @@ class _ProfilePageState extends State<ProfilePage>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -57,19 +121,16 @@ class _ProfilePageState extends State<ProfilePage>
                 child: Row(
                   children: [
                     IconButton(
-                                            onPressed: () {
-                                              context.pop();
-                                            },
-                                            icon: const Icon(
-                                              Icons.arrow_back,
-                                              color: AppColors.sliderColor,
-                                              size: 23,
-                                            ),
-                                          ),
-                  
-                    SizedBox(
-                      width: 20,
+                      onPressed: () {
+                        context.pop();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: AppColors.sliderColor,
+                        size: 23,
+                      ),
                     ),
+                    const SizedBox(width: 20),
                     ShaderMask(
                       shaderCallback: (bounds) => const LinearGradient(
                         colors: [
@@ -95,37 +156,12 @@ class _ProfilePageState extends State<ProfilePage>
                 dividerColor: Colors.transparent,
                 controller: _tabController,
                 indicatorColor: Colors.transparent,
+                onTap: (index) {
+                  setState(() {});
+                },
                 tabs: [
-                  Container(
-                    width: deviceWidth * 0.475,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.kwhiteColor,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Center(
-                        child: Text(
-                      "Name of chile",
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          color: AppColors.textColorblack,
-                          fontWeight: FontWeight.w400),
-                    )),
-                  ),
-                  Container(
-                    width: deviceWidth * 0.475,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: AppColors.kwhiteColor,
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: Center(
-                        child: Text(
-                      "Family",
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          color: AppColors.textColorblack,
-                          fontWeight: FontWeight.w400),
-                    )),
-                  ),
+                  _tabTitle(deviceWidth, childName!, 0),
+                  _tabTitle(deviceWidth, "Family", 1),
                 ],
               ),
               const SizedBox(height: 20),
@@ -145,93 +181,78 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
-  Widget detailsChild(String title, String detailAnswer) {
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final deviceWidth = MediaQuery.of(context).size.width;
-    final theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
+  Widget _tabTitle(double deviceWidth, String title, int index) {
+    bool isSelected = _tabController.index == index;
+    return Container(
+      width: deviceWidth * 0.475,
+      height: 50,
+      decoration: BoxDecoration(
+        color: isSelected ? AppColors.kpurple : AppColors.kwhiteColor,
+        borderRadius: BorderRadius.circular(40),
+      ),
+      child: Center(
+        child: Text(
           title,
-          style: theme.textTheme.bodyMedium!.copyWith(
-              color: AppColors.textColorblack, fontWeight: FontWeight.w400),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+              color:
+                  isSelected ? AppColors.kwhiteColor : AppColors.textColorblack,
+              fontWeight: FontWeight.w400),
         ),
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: AppColors.kwhiteColor,
-          ),
-          width: deviceWidth * 0.5555,
-          height: 48,
-          child: TextField(
-            controller: _nameController,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: AppColors.textColorGrey,
-              fontWeight: FontWeight.w400,
-            ),
-            textAlign: TextAlign.center,
-            cursorColor: AppColors.textColorblue,
-            onChanged: (value) {},
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              focusedErrorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              hintText: 'Type $detailAnswer name',
-              hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textColorGrey,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
   Widget profileChildTab(ThemeData theme) {
+    print(dateOfBirth);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Name', 'abx'),
+          detailsChild('Name', childName ?? 'Loading...'),
+          const SizedBox(height: 20),
+          detailsChild('Pronoun', pronoun ?? 'Loading...'),
+          const SizedBox(height: 20),
+          detailsChild('Date Of Birth', dateOfBirth.toString()),
+          const SizedBox(height: 20),
           Row(
             children: [
               Text(
-                'Pronoun',
+                'Favorite thing',
                 style: theme.textTheme.bodyMedium!.copyWith(
                     color: AppColors.textColorblack,
                     fontWeight: FontWeight.w400),
               ),
+              Spacer(),
+              Container(
+                  width: MediaQuery.of(context).size.width * 0.5555,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      ...favoriteThings.map((thing) {
+                        return ListTile(
+                          title: Text(thing),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete,
+                                color: AppColors.kgreyColor),
+                            onPressed: () {},
+                          ),
+                        );
+                      }),
+                    ],
+                  )),
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Text(
-                'Date Of Birth',
-                style: theme.textTheme.bodyMedium!.copyWith(
-                    color: AppColors.textColorblack,
-                    fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(children: [
-            Text(
-              'Favorite Thing',
-              style: theme.textTheme.bodyMedium!.copyWith(
-                  color: AppColors.textColorblack, fontWeight: FontWeight.w400),
-            ),
-          ]),
           const SizedBox(
             height: 20,
           ),
@@ -245,13 +266,12 @@ class _ProfilePageState extends State<ProfilePage>
           ),
           const Spacer(),
           ElevatedButton(
-            onPressed: () async {},
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
               minimumSize: Size(MediaQuery.of(context).size.width, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              foregroundColor: Colors.white,
               backgroundColor: Colors.white,
             ),
             child: Text(
@@ -268,59 +288,61 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
+  Widget detailsChild(String title, String detailAnswer) {
+    final theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: theme.textTheme.bodyMedium!.copyWith(
+              color: AppColors.textColorblack, fontWeight: FontWeight.w400),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: AppColors.kwhiteColor,
+          ),
+          width: MediaQuery.of(context).size.width * 0.5555,
+          height: 48,
+          child: Center(
+            child: Text(
+              detailAnswer,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppColors.textColorblack,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget profileFamilyTab() {
-    final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Mother', 'abx'),
-          const SizedBox(
-            height: 20,
-          ),
-          detailsChild('Father', 'abx'),
-          const SizedBox(
-            height: 20,
-          ),
-          detailsChild('Grandmother', 'abx'),
-          const SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Container(
-                width: deviceWidth,
-                height: 47,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: const Color.fromARGB(255, 178, 178, 178)),
-                    borderRadius: BorderRadius.circular(40)),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.add,
-                        color: AppColors.textColorblack,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 10),
-                      Text('Add a loved one',
-                          style: theme.textTheme.bodyLarge!
-                              .copyWith(fontWeight: FontWeight.w500)),
-                    ])),
-          ),
+          detailsChild('Mother', motherName ?? 'Loading...'),
+          const SizedBox(height: 20),
+          detailsChild('Father', fatherName ?? 'Loading...'),
+          const SizedBox(height: 20),
+          detailsChild('Grandmother', grandMotherName ?? 'Loading...'),
+          const SizedBox(height: 20),
+          detailsChild('GrandFather', grandFatherName ?? 'Loading...'),
+          const SizedBox(height: 20),
+          detailsChild('PetDog', petDogName ?? 'Loading...'),
           const Spacer(),
           ElevatedButton(
-            onPressed: () async {},
+            onPressed: () {},
             style: ElevatedButton.styleFrom(
-              minimumSize: Size(MediaQuery.of(context).size.width, 50),
+              minimumSize: Size(deviceWidth, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              foregroundColor: Colors.white,
               backgroundColor: Colors.white,
             ),
             child: Text(

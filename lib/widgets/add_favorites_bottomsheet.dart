@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/blocs/introduction/introduction_bloc.dart';
-import 'package:pixieapp/blocs/introduction/introduction_event.dart';
 import 'package:pixieapp/blocs/introduction/introduction_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +24,7 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
       favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
       dob: DateTime.now(),
       lovedonce: []);
-      
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -37,7 +35,10 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
           String lastadded = state.favList;
           childdata.favthings.add(lastadded);
           print('.....${childdata.favthings}');
-          FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser?.uid).update({
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .update({
             'fav_things': childdata.favthings,
           });
         }
@@ -91,12 +92,13 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
                     width: MediaQuery.sizeOf(context).width * 0.85,
                     height: 60,
                     child: ElevatedButton(
-                      onPressed: () {
-                        context
-                            .read<IntroductionBloc>()
-                            .add(FavListChanged(favList: addyourown.text));
-                        context.pop();
-                        
+                      onPressed: () async {
+                        // context
+                        //     .read<IntroductionBloc>()
+                        //     .add(FavListChanged(favList: addyourown.text));
+                        // context.pop();
+                        await _addYourOwn(
+                            context: context, addyourown: addyourown.text);
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -119,5 +121,54 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
         );
       },
     );
+  }
+}
+
+Future<void> _addYourOwn({
+  required BuildContext context,
+  required String addyourown,
+}) async {
+  // Get the current authenticated user
+  User? user = FirebaseAuth.instance.currentUser;
+
+  if (user == null) {
+    // If no user is signed in, show an error
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("No user is signed in"),
+      backgroundColor: Colors.red,
+    ));
+    return;
+  }
+
+  // Get the UID of the authenticated user
+  final String userId = user.uid;
+
+  if (addyourown.isNotEmpty) {
+    try {
+      // Reference to the user's document
+
+      final userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(userId);
+
+      // Add the new lesson to the existing array using arrayUnion
+      await userDocRef.update({
+        'fav_things': FieldValue.arrayUnion([addyourown]),
+      });
+      context.pop();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("favthings added successfully!"),
+        backgroundColor: Colors.green,
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to add favthings: $e"),
+        backgroundColor: Colors.red,
+      ));
+    }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Please enter a favthings"),
+      backgroundColor: Colors.orange,
+    ));
   }
 }

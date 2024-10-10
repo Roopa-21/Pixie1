@@ -17,8 +17,13 @@ class DobChanged extends IntroductionEvent {
   DobChanged({required this.dob});
 }
 
-
 class FavListChanged extends IntroductionEvent {
   final String favList;
   FavListChanged({required this.favList});
+}
+
+class RelationAdded extends IntroductionEvent {
+  final String relation;
+  final String relationName;
+  RelationAdded({required this.relation, required this.relationName});
 }
