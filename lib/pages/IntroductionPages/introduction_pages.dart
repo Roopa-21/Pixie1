@@ -103,7 +103,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
+    User? user = FirebaseAuth.instance.currentUser;
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
@@ -124,6 +124,17 @@ class _IntroductionPageState extends State<IntroductionPage> {
             if (state is DobUpdated) {
               print('ddddddd${state.dob}');
               childdata.dob = state.dob;
+            }
+            if (state is FavListUpdated) {
+              String lastadded = state.favList;
+              childdata.favthings.add(lastadded);
+              //   print('.....${childdata.favthings}');
+              FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                  .update({
+                'fav_things': childdata.favthings,
+              });
             }
           },
           builder: (context, state) {
@@ -437,28 +448,69 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                             fontWeight: FontWeight.w600),
                                   ),
                                   const SizedBox(height: 25),
-                                  Wrap(
-                                      children: List<Widget>.generate(
-                                          childdata.favthings.length,
-                                          (int index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: ChoiceChip(
-                                        elevation: 3,
-                                        label: Text(
-                                          childdata.favthings[index],
-                                          style: const TextStyle(
-                                              color: AppColors.kblackColor),
-                                        ),
-                                        selected: false,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        ),
-                                        padding: const EdgeInsets.all(16),
-                                      ),
-                                    );
-                                  })),
+                                  StreamBuilder(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('users')
+                                          .doc(user!.uid)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+
+                                        if (snapshot.hasError) {
+                                          return Center(
+                                              child: Text(
+                                                  'Error: ${snapshot.error}'));
+                                        }
+
+                                        if (snapshot.hasData) {
+                                          var userData = snapshot.data!.data()
+                                              as Map<String, dynamic>;
+
+                                          // Assuming 'lessons' is a List of strings for simplicity.
+                                          List<dynamic> addyourowns =
+                                              userData['fav_things'] ?? [];
+
+                                          if (addyourowns.isEmpty) {
+                                            return const Center(
+                                                child: Text(
+                                                    'No fav things found.'));
+                                          }
+
+                                          return Wrap(
+                                              children: List<Widget>.generate(
+                                                  addyourowns.length,
+                                                  (int index) {
+                                            var addyourown = addyourowns[index];
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(5.0),
+                                              child: ChoiceChip(
+                                                elevation: 3,
+                                                label: Text(
+                                                  addyourown,
+                                                  style: const TextStyle(
+                                                      color: AppColors
+                                                          .kblackColor),
+                                                ),
+                                                selected: false,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                              ),
+                                            );
+                                          }));
+                                        }
+                                        return const Center(
+                                            child: Text('No favthings found.'));
+                                      }),
                                   addbutton(
                                       title: "Add your own",
                                       width: 180,
@@ -564,6 +616,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 controller: mother,
                                                 onChanged: (mom) {
                                                   setState(() {
+                                                    mother.text = mom;
                                                     childdata.lovedonce.add(
                                                         Lovedonces(
                                                             name: mom,
@@ -630,11 +683,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 theme: theme,
                                                 relationName: 'Pet Dog',
                                                 controller: pet,
-                                                onChanged: (pet) {
+                                                onChanged: (pett) {
                                                   setState(() {
                                                     childdata.lovedonce.add(
                                                         Lovedonces(
-                                                            name: pet,
+                                                            name: pett,
                                                             relation:
                                                                 "Pet Dog"));
                                                   });
@@ -644,14 +697,17 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 height: 20,
                                               ),
                                               GestureDetector(
-                                                onTap: () {
-                                                  showModalBottomSheet(
-                                                      isScrollControlled: true,
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return const AddLovedOnesBottomSheet();
-                                                      });
+                                                onTap: () async {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    enableDrag: false,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return const AddLovedOnesBottomSheet();
+                                                    },
+                                                  );
                                                 },
                                                 child: Padding(
                                                   padding:
@@ -777,6 +833,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           'fav_things': childdata.favthings,
                                           'dob': childdata.dob,
                                           'loved_once': lovedOnceList,
+
                                           'displayName':
                                               "displayName", // Update as needed
                                           'photoURL':
@@ -955,6 +1012,7 @@ class Relations extends StatelessWidget {
           width: deviceWidth * 0.5555,
           height: 48,
           child: TextField(
+            controller: controller,
             textAlign: TextAlign.center,
             cursorColor: AppColors.textColorblue,
             onChanged: (value) {},
