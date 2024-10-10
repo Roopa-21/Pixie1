@@ -127,10 +127,10 @@ Future<void> _addLesson({
         'lessons': FieldValue.arrayUnion([lesson]),
       });
       context.pop();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Lesson added successfully!"),
-        backgroundColor: Colors.green,
-      ));
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   content: Text("Lesson added successfully!"),
+      //   backgroundColor: Colors.green,
+      // ));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to add lesson: $e"),
@@ -138,9 +138,9 @@ Future<void> _addLesson({
       ));
     }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text("Please enter a lesson"),
-      backgroundColor: Colors.orange,
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    //   content: Text("Please enter a lesson"),
+    //   backgroundColor: Colors.orange,
+    // ));
   }
 }

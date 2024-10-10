@@ -11,6 +11,7 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart'
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/LovedonceBottomsheet.dart';
+import 'package:pixieapp/widgets/character_bottomsheet.dart';
 import 'package:pixieapp/widgets/genre_bottomsheet.dart';
 import 'package:pixieapp/widgets/laguage_bottomsheet.dart';
 import 'package:pixieapp/widgets/lesson_bottomsheet.dart';
@@ -251,9 +252,34 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                           );
                                         },
                                       ),
-                                      cardForOptions(context, 'Characters',
-                                          'Cat, Dog, Puppy',
-                                          ontap: () {}),
+                                      cardForOptions(
+                                        context,
+                                        'Characters',
+                                        builderstate.charactorname ??
+                                            'Not added',
+                                        ontap: () async {
+                                          await showModalBottomSheet(
+                                            isScrollControlled: true,
+                                            backgroundColor: Colors.transparent,
+                                            enableDrag: false,
+                                            context: context,
+                                            builder: (context) {
+                                              return GestureDetector(
+                                                onTap: () =>
+                                                    FocusScope.of(context)
+                                                        .unfocus(),
+                                                child: Padding(
+                                                  padding:
+                                                      MediaQuery.viewInsetsOf(
+                                                          context),
+                                                  child:
+                                                      const CharacterBottomsheet(),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
                                       cardForOptions(
                                         context,
                                         'Loved ones',
@@ -454,7 +480,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
       context.read<StoryBloc>().add(GenerateStoryEvent(
             event: context.read<AddCharacterBloc>().state.musicAndSpeed,
             age: childDetails['age'],
-            topic: context.read<AddCharacterBloc>().state.musicAndSpeed,
+            topic: context.read<AddCharacterBloc>().state.charactorname ?? '',
             childName: childDetails['child_name'],
             gender: childDetails['gender'],
             relation:

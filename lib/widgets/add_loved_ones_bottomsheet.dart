@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/blocs/introduction/introduction_bloc.dart';
 import 'package:pixieapp/blocs/introduction/introduction_event.dart';
 import 'package:pixieapp/blocs/introduction/introduction_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/models/Child_data_model.dart';
+import 'package:pixieapp/widgets/loading_widget.dart';
 
 class AddLovedOnesBottomSheet extends StatefulWidget {
   const AddLovedOnesBottomSheet({super.key});
@@ -16,6 +20,7 @@ class AddLovedOnesBottomSheet extends StatefulWidget {
 class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
   String? selectedRelation;
   bool isExpanded = false;
+  bool isSubmitting = false;
 
   final List<String> relations = [
     'Friend',
@@ -26,7 +31,6 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
     'Pet Cat',
   ];
   TextEditingController nameofRelation = TextEditingController();
-   
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,9 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
 
     return BlocConsumer<IntroductionBloc, IntroductionState>(
       listener: (context, state) {
-        if (state is RelationUpdated) {}
+        if (state is RelationUpdated) {
+          Navigator.pop(context); // Go back once relation is added
+        }
       },
       builder: (context, state) {
         return Stack(
@@ -160,31 +166,46 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                           width: MediaQuery.sizeOf(context).width * 0.85,
                           height: 60,
                           child: ElevatedButton(
-                            onPressed: () async {
-                              if (selectedRelation != null &&
-                                  nameofRelation.text.isNotEmpty) {
-                                context.read<IntroductionBloc>().add(
-                                    RelationAdded(
-                                        relation: selectedRelation!,
-                                        relationName: nameofRelation.text));
-                              }
-                            },
+                            onPressed: isSubmitting
+                                ? null
+                                : () async {
+                                    if (selectedRelation != null &&
+                                        nameofRelation.text.isNotEmpty) {
+                                      setState(() {
+                                        isSubmitting = true;
+                                      });
+                                      User? user =
+                                          FirebaseAuth.instance.currentUser;
+                                      if (user != null) {
+                                        // Add relation to Firestore
+                                        await addRelationToFirebase(
+                                            user.uid,
+                                            selectedRelation!,
+                                            nameofRelation.text);
+                                        setState(() {
+                                          isSubmitting = false;
+                                        });
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               foregroundColor: AppColors.kwhiteColor,
-                              backgroundColor: AppColors
-                                  .buttonblue, // Text (foreground) color
+                              backgroundColor: AppColors.buttonblue,
                             ),
-                            child: Text("Add",
-                                style: theme.textTheme.bodyLarge!.copyWith(
-                                    color: AppColors.textColorWhite,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400)),
+                            child: isSubmitting
+                                ? const LoadingWidget()
+                                : Text("Add",
+                                    style: theme.textTheme.bodyLarge!.copyWith(
+                                        color: AppColors.textColorWhite,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400)),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -232,5 +253,14 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
         );
       },
     );
+  }
+
+  Future<void> addRelationToFirebase(
+      String userId, String relation, String name) async {
+    final lovedOne = Lovedonces(relation: relation, name: name);
+
+    await FirebaseFirestore.instance.collection('users').doc(userId).update({
+      'loved_once': FieldValue.arrayUnion([lovedOne.toMap()])
+    });
   }
 }

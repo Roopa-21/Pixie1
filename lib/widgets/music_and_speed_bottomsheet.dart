@@ -8,7 +8,6 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/models/Child_data_model.dart';
 
 class MusicAndSpeedBottomsheet extends StatefulWidget {
   const MusicAndSpeedBottomsheet({
