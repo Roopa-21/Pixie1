@@ -11,9 +11,9 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart'
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/models/Child_data_model.dart';
 import 'package:pixieapp/models/story_model.dart';
+import 'package:pixieapp/widgets/add_charactor_story.dart';
 import 'package:pixieapp/widgets/add_lesson_bottom_sheet.dart';
 import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
-import 'package:pixieapp/widgets/add_new_character.dart';
 
 class AddCharacter extends StatefulWidget {
   const AddCharacter({super.key});
@@ -26,7 +26,6 @@ class _AddCharacterState extends State<AddCharacter> {
   PageController? pageViewController;
   List<Lovedonces> lovedOnceList = [];
   List<String> lessons = [];
-  
 
   int? selectedlovedone;
   StoryModal storydata = StoryModal(
@@ -41,47 +40,6 @@ class _AddCharacterState extends State<AddCharacter> {
       relation: "dad",
       relative_name: "jayan",
       topic: "Bedtime");
-  int get pageViewCurrentIndex => pageViewController != null &&
-          pageViewController!.hasClients &&
-          pageViewController!.page != null
-      ? pageViewController!.page!.round()
-      : 0;
-
-  FormFieldController<List<String>>? choiceChipsValueController1;
-  String? get choiceChipsValue1 =>
-      choiceChipsValueController1?.value?.firstOrNull;
-  set choiceChipsValue1(String? val) =>
-      choiceChipsValueController1?.value = val != null ? [val] : [];
-
-  FormFieldController<List<String>>? choiceChipsValueController2;
-  String? get choiceChipsValue2 =>
-      choiceChipsValueController2?.value?.firstOrNull;
-  set choiceChipsValue2(String? val) =>
-      choiceChipsValueController2?.value = val != null ? [val] : [];
-
-  FormFieldController<List<String>>? choiceChipsValueController3;
-  String? get choiceChipsValue3 =>
-      choiceChipsValueController3?.value?.firstOrNull;
-  set choiceChipsValue3(String? val) =>
-      choiceChipsValueController3?.value = val != null ? [val] : [];
-
-  FormFieldController<List<String>>? choiceChipsValueController4;
-  String? get choiceChipsValue4 =>
-      choiceChipsValueController4?.value?.firstOrNull;
-  set choiceChipsValue4(String? val) =>
-      choiceChipsValueController4?.value = val != null ? [val] : [];
-
-  FormFieldController<List<String>>? choiceChipsValueController5;
-  String? get choiceChipsValue5 =>
-      choiceChipsValueController5?.value?.firstOrNull;
-  set choiceChipsValue5(String? val) =>
-      choiceChipsValueController5?.value = val != null ? [val] : [];
-
-  FormFieldController<List<String>>? choiceChipsValueController6;
-  String? get choiceChipsValue6 =>
-      choiceChipsValueController6?.value?.firstOrNull;
-  set choiceChipsValue6(String? val) =>
-      choiceChipsValueController6?.value = val != null ? [val] : [];
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -116,6 +74,7 @@ class _AddCharacterState extends State<AddCharacter> {
           finalstorydatas.relative_name = state.lovedOnce?.name ?? '';
           finalstorydatas.lessons = state.lessons ?? '';
           finalstorydatas.genre = state.genre;
+          finalstorydatas.topic = state.charactorname ?? '';
 
           storydata.language = state.language;
           storydata.relative_name = state.lovedOnce?.name ?? '';
@@ -124,6 +83,7 @@ class _AddCharacterState extends State<AddCharacter> {
           selectedlovedone = state.selectedindex;
           storydata.genre = state.genre;
           storydata.event = state.musicAndSpeed;
+          storydata.topic = state.charactorname ?? '';
         },
         child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
           builder: (context, state) => GestureDetector(
@@ -387,6 +347,110 @@ class _AddCharacterState extends State<AddCharacter> {
                                               ),
                                             ),
                                             const SizedBox(height: 25),
+                                            StreamBuilder<DocumentSnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('users')
+                                                  .doc(user!.uid)
+                                                  .snapshots(), // Listening for real-time updates to the user document
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const Center(
+                                                      child:
+                                                          CircularProgressIndicator());
+                                                }
+
+                                                if (snapshot.hasError) {
+                                                  return Center(
+                                                      child: Text(
+                                                          'Error: ${snapshot.error}'));
+                                                }
+
+                                                if (snapshot.hasData) {
+                                                  var userData = snapshot.data!
+                                                          .data()
+                                                      as Map<String, dynamic>;
+
+                                                  List<dynamic> charactors =
+                                                      userData[
+                                                              'storycharactors'] ??
+                                                          [];
+
+                                                  if (charactors.isEmpty) {
+                                                    return const Center(
+                                                        child: Text(
+                                                            'No character found.'));
+                                                  }
+
+                                                  return Wrap(
+                                                    children:
+                                                        List<Widget>.generate(
+                                                            charactors.length,
+                                                            (int indexx) {
+                                                      // Accessing each lesson by index
+                                                      String charactorsitem =
+                                                          charactors[
+                                                              indexx]; // Get the lesson data for the current index
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        child: ChoiceChip(
+                                                          onSelected: (value) {
+                                                            // Trigger an event or do something with the selected lesson
+                                                            context
+                                                                .read<
+                                                                    AddCharacterBloc>()
+                                                                .add(AddcharactorstoryEvent(
+                                                                    charactorsitem,
+                                                                    selectedindexcharactor:
+                                                                        indexx));
+                                                            // print(
+                                                            //     charactorsitem);
+                                                          },
+                                                          selectedColor:
+                                                              AppColors.kpurple,
+                                                          elevation: 3,
+                                                          checkmarkColor:
+                                                              AppColors
+                                                                  .kwhiteColor,
+                                                          label: Text(
+                                                            charactorsitem
+                                                                .toString(), // Display the lesson name or string representation
+                                                            style: TextStyle(
+                                                              color: state
+                                                                          .selectedindexcharactor ==
+                                                                      indexx
+                                                                  ? AppColors
+                                                                      .kwhiteColor
+                                                                  : AppColors
+                                                                      .kblackColor,
+                                                            ),
+                                                          ),
+                                                          selected: state
+                                                                  .selectedindexcharactor ==
+                                                              indexx, // Set the selection based on index
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        50),
+                                                          ),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(16),
+                                                        ),
+                                                      );
+                                                    }),
+                                                  );
+                                                }
+
+                                                return const Center(
+                                                    child: Text(
+                                                        'No character found.'));
+                                              },
+                                            ),
                                             addbutton(
                                                 title: "Add a character",
                                                 width: 180,
@@ -409,10 +473,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                               .viewInsetsOf(
                                                                   context),
                                                           child:
-                                                              const AddNewCharacter(
-                                                            text:
-                                                                "Name a\ncharacter",
-                                                          ),
+                                                              const AddCharactorStory(),
                                                         ),
                                                       );
                                                     },
@@ -584,58 +645,126 @@ class _AddCharacterState extends State<AddCharacter> {
                                               ),
                                             ),
                                             const SizedBox(height: 25),
-                                            Wrap(
-                                                children: List<Widget>.generate(
-                                                    lovedOnceList.length,
-                                                    (int index) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: ChoiceChip(
-                                                  onSelected: (value) {
-                                                    context
-                                                        .read<
-                                                            AddCharacterBloc>()
-                                                        .add(AddLovedOnceEvent(
-                                                            lovedOnceList[
-                                                                index],
-                                                            selectedindex:
-                                                                index));
+                                            StreamBuilder<DocumentSnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('users')
+                                                  .doc(user!.uid)
+                                                  .snapshots(), // Listening for real-time updates to the user document
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const Center(
+                                                      child:
+                                                          CircularProgressIndicator());
+                                                }
 
-                                                    print(lovedOnceList[index]
-                                                        .name);
-                                                    print(lovedOnceList[index]
-                                                        .relation);
-                                                  },
-                                                  selectedColor:
-                                                      AppColors.kpurple,
-                                                  elevation: 3,
-                                                  checkmarkColor:
-                                                      AppColors.kwhiteColor,
-                                                  label: Text(
-                                                    lovedOnceList[index].name,
-                                                    style: TextStyle(
-                                                        color: selectedlovedone ==
-                                                                index
-                                                            ? AppColors
-                                                                .kwhiteColor
-                                                            : AppColors
-                                                                .kblackColor),
-                                                  ),
-                                                  selected:
-                                                      selectedlovedone == index
-                                                          ? true
-                                                          : false,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                  padding:
-                                                      const EdgeInsets.all(16),
-                                                ),
-                                              );
-                                            })),
+                                                if (snapshot.hasError) {
+                                                  return Center(
+                                                      child: Text(
+                                                          'Error: ${snapshot.error}'));
+                                                }
+
+                                                if (snapshot.hasData) {
+                                                  var userData = snapshot.data!
+                                                          .data()
+                                                      as Map<String, dynamic>;
+
+                                                  // Deserialize the loved_once list
+                                                  List<
+                                                      Lovedonces> lovedonce = userData[
+                                                              'loved_once'] !=
+                                                          null
+                                                      ? List<Lovedonces>.from(
+                                                          userData['loved_once']
+                                                              .map((item) =>
+                                                                  Lovedonces
+                                                                      .fromMap(
+                                                                          item)))
+                                                      : [];
+
+                                                  if (lovedonce.isEmpty) {
+                                                    return const Center(
+                                                        child: Text(
+                                                            'No loved one found.'));
+                                                  }
+
+                                                  return Wrap(
+                                                    children:
+                                                        List<Widget>.generate(
+                                                      lovedonce.length,
+                                                      (int index) {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: BlocBuilder<
+                                                              AddCharacterBloc,
+                                                              AddCharacterState>(
+                                                            builder: (context,
+                                                                state) {
+                                                              return ChoiceChip(
+                                                                onSelected:
+                                                                    (value) {
+                                                                  context
+                                                                      .read<
+                                                                          AddCharacterBloc>()
+                                                                      .add(
+                                                                        AddLovedOnceEvent(
+                                                                          lovedonce[
+                                                                              index],
+                                                                          selectedindex:
+                                                                              index,
+                                                                        ),
+                                                                      );
+                                                                },
+                                                                selectedColor:
+                                                                    AppColors
+                                                                        .kpurple,
+                                                                elevation: 3,
+                                                                checkmarkColor:
+                                                                    AppColors
+                                                                        .kwhiteColor,
+                                                                label: Text(
+                                                                  lovedonce[
+                                                                          index]
+                                                                      .name,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: state.selectedindex ==
+                                                                            index
+                                                                        ? AppColors
+                                                                            .kwhiteColor
+                                                                        : AppColors
+                                                                            .kblackColor,
+                                                                  ),
+                                                                ),
+                                                                selected: state
+                                                                        .selectedindex ==
+                                                                    index,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50),
+                                                                ),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        16),
+                                                              );
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                }
+                                                return const Center(
+                                                    child: Text(
+                                                        'No loved one found.'));
+                                              },
+                                            ),
                                             addbutton(
                                                 title: "Add a loved one",
                                                 width: 200,
@@ -811,8 +940,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                     selectedindexlesson:
                                                                         index));
 
-                                                            print(
-                                                                lesson); // Print the lesson to check the data
+                                                            // Print the lesson to check the data
                                                           },
                                                           selectedColor:
                                                               AppColors.kpurple,

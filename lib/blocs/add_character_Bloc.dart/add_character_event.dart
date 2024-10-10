@@ -55,6 +55,17 @@ class AddlessonEvent extends AddCharacterEvent {
   List<Object?> get props => [lesson, selectedindexlesson];
 }
 
+class AddcharactorstoryEvent extends AddCharacterEvent {
+  final String charactorname;
+  final int selectedindexcharactor;
+
+  const AddcharactorstoryEvent(this.charactorname,
+      {required this.selectedindexcharactor});
+
+  @override
+  List<Object?> get props => [charactorname, selectedindexcharactor];
+}
+
 class ResetlessonEvent extends AddCharacterEvent {
   const ResetlessonEvent();
 

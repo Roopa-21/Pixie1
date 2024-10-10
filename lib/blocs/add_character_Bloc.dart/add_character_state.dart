@@ -8,6 +8,8 @@ class AddCharacterState extends Equatable {
   final Lovedonces? lovedOnce;
   final String? lessons;
   final int? selectedindexlesson;
+  final String? charactorname;
+  final int? selectedindexcharactor;
   final int selectedindex;
   final String genre;
   final String musicAndSpeed;
@@ -18,10 +20,12 @@ class AddCharacterState extends Equatable {
       required this.language,
       required this.selectedindex,
       required this.selectedindexlesson,
+      required this.selectedindexcharactor,
       required this.genre,
       required this.musicAndSpeed,
       required this.fav,
       this.lessons,
+      this.charactorname,
       this.lovedOnce});
 
   // Create a copyWith method to update specific parts of the state
@@ -30,8 +34,10 @@ class AddCharacterState extends Equatable {
       Language? language,
       Lovedonces? lovedOnce,
       String? lessons,
+      String? charactorname,
       int? selectedindex,
       int? selectedindexlesson,
+      int? selectedindexcharactor,
       bool? fav,
       String? genre,
       String? musicAndSpeed}) {
@@ -42,6 +48,9 @@ class AddCharacterState extends Equatable {
         selectedindex: selectedindex ?? this.selectedindex,
         lessons: lessons ?? this.lessons,
         selectedindexlesson: selectedindexlesson ?? this.selectedindexlesson,
+        charactorname: charactorname ?? this.charactorname,
+        selectedindexcharactor:
+            selectedindexcharactor ?? this.selectedindexcharactor,
         genre: genre ?? this.genre,
         musicAndSpeed: musicAndSpeed ?? this.musicAndSpeed,
         fav: fav ?? this.fav);
@@ -53,8 +62,10 @@ class AddCharacterState extends Equatable {
         language,
         lovedOnce,
         lessons,
+        charactorname,
         selectedindex,
         selectedindexlesson,
+        selectedindexcharactor,
         genre,
         musicAndSpeed,
         fav
