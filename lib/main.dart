@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
+import 'package:pixieapp/blocs/Feedback/feedback_bloc.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_bloc.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
@@ -61,6 +62,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => FetchStoryBloc(FetchStoryRepository1()),
+        ),
+        BlocProvider(
+          create: (context) => FeedbackBloc(),
         ),
       ],
       child: MaterialApp.router(
