@@ -34,7 +34,6 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
     final queryParams = GoRouterState.of(context).uri.queryParameters;
 
-    // Ensure this code only runs once by checking if the document has already been added
     if (_documentReference == null) {
       _addStoryToFirebase(
         audiopath: '',
