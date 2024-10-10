@@ -26,6 +26,7 @@ class _AddCharacterState extends State<AddCharacter> {
   PageController? pageViewController;
   List<Lovedonces> lovedOnceList = [];
   List<String> lessons = [];
+  
 
   int? selectedlovedone;
   StoryModal storydata = StoryModal(

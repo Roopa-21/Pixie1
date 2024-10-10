@@ -5,6 +5,7 @@ class ClildDataModel {
   List<String> favthings;
   DateTime dob;
   List<Lovedonces> lovedonce;
+  
   ClildDataModel(
       {required this.name,
       required this.gender,
