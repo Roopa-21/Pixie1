@@ -55,7 +55,7 @@ class _NavBar3State extends State<NavBar3> {
                   disabledColor: Colors.white,
                   highlightColor: Colors.white,
                   icon: SvgPicture.asset(
-                    'assets/images/home-02.svg',
+                    'assets/images/home_unselect.svg',
                     width: 40,
                     height: 40,
                     color: Colors.white,

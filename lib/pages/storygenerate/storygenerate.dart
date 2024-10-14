@@ -36,13 +36,14 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
     if (_documentReference == null) {
       _addStoryToFirebase(
-        audiopath: '',
-        fav: false,
-        story: widget.story["story"] ?? "No data",
-        title: widget.story["title"] ?? "No data",
-        type: queryParams['storytype']!,
-        language: queryParams['language']!,
-      ).then((doc) {
+              audiopath: '',
+              fav: false,
+              story: widget.story["story"] ?? "No data",
+              title: widget.story["title"] ?? "No data",
+              type: queryParams['storytype']!,
+              language: queryParams['language']!,
+              createdTime: DateTime.now())
+          .then((doc) {
         setState(() {
           _documentReference = doc;
         });
@@ -146,7 +147,8 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
       required bool fav,
       required String story,
       required String type,
-      required String language}) async {
+      required String language,
+      required DateTime createdTime}) async {
     // Add the story to favorites
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -158,7 +160,8 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         'story': story,
         'isfav': fav,
         'user_ref': user.uid,
-        'language': language
+        'language': language,
+        'createdTime': DateTime.now()
       });
       print('Story added to favorites');
       return docRef;

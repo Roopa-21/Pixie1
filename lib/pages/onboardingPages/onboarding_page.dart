@@ -144,30 +144,47 @@ class OnboardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final deviceheight = MediaQuery.of(context).size.height;
-    print(deviceheight);
-    return Padding(
-      padding: EdgeInsets.all(deviceheight * 0.0589), //40
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: deviceheight * 0.35,
+    final devicewidth = MediaQuery.of(context).size.width;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: devicewidth,
+          height: deviceheight * 0.5,
+          child: Image.asset(
+            'assets/images/onboarding_image.png',
+            fit: BoxFit.cover,
           ),
-          Text(
-            title,
-            style: theme.textTheme.displaySmall!.copyWith(
-                color: AppColors.textColorblue, fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            left: deviceheight * 0.0589,
+            right: deviceheight * 0.0589,
           ),
-          SizedBox(height: deviceheight * 0.0242),
-          Text(
-            description,
-            style: theme.textTheme.bodyLarge!.copyWith(
-                color: AppColors.textColorGrey, fontWeight: FontWeight.w400),
-            textAlign: TextAlign.center,
+          child: Column(
+            children: [
+              FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  title,
+                  style: theme.textTheme.displaySmall!.copyWith(
+                      color: AppColors.textColorblue,
+                      fontWeight: FontWeight.w600),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: deviceheight * 0.0242),
+        Text(
+          description,
+          style: theme.textTheme.bodyLarge!.copyWith(
+              color: AppColors.textColorGrey, fontWeight: FontWeight.w400),
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
