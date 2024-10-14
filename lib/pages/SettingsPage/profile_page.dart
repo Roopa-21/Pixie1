@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pixieapp/const/colors.dart';
@@ -15,6 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  TextEditingController _nameController = TextEditingController();
   String? childName;
   String? pronoun;
   String? dateOfBirth;
@@ -24,71 +26,161 @@ class _ProfilePageState extends State<ProfilePage>
   String? grandMotherName;
   String? grandFatherName;
   String? petDogName;
-
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _fetchUserData();
+    _nameController = TextEditingController(text: childName);
   }
 
   Future<void> _fetchUserData() async {
     try {
-      User? user = FirebaseAuth.instance.currentUser;
-
       DocumentSnapshot<Map<String, dynamic>> userDoc = await FirebaseFirestore
           .instance
           .collection('users')
           .doc(user?.uid)
           .get();
+      if (userDoc.exists) {
+        setState(() {
+          childName = userDoc.data()?['child_name'] ?? 'Zoe';
+          pronoun = userDoc.data()?['gender'] ?? 'prefer not to say';
+          Timestamp dobTimestamp = userDoc.data()?['dob'];
+          DateTime dobDateTime = dobTimestamp.toDate();
 
-      setState(() {
-        childName = userDoc.data()?['child_name'] ?? 'Zoe';
-        pronoun = userDoc.data()?['gender'] ?? 'prefer not to say';
-        Timestamp dobTimestamp = userDoc.data()?['dob'];
-        DateTime dobDateTime = dobTimestamp.toDate();
+          dateOfBirth = DateFormat('dd/MM/yyyy').format(dobDateTime);
+          favoriteThings =
+              List<String>.from(userDoc.data()?['fav_things'] ?? []);
 
-        dateOfBirth = DateFormat('dd/MM/yyyy').format(dobDateTime);
-        favoriteThings = List<String>.from(userDoc.data()?['fav_things'] ?? []);
+          List<dynamic> lovedOnes = userDoc.data()?['loved_once'] ?? [];
 
-        List<dynamic> lovedOnes = userDoc.data()?['loved_once'] ?? [];
-        print(lovedOnes);
+          for (var lovedOne in lovedOnes) {
+            String? relation = lovedOne['relation'];
+            String? name = lovedOne['name'];
 
-        for (var lovedOne in lovedOnes) {
-          String? relation = lovedOne['relation'];
-          String? name = lovedOne['name'];
-
-          if (relation != null && name != null) {
-            switch (relation) {
-              case 'Mother':
-                motherName = name;
-                break;
-              case 'Father':
-                fatherName = name;
-                break;
-              case 'GrandMother':
-                grandMotherName = name;
-                break;
-              case 'GrandFather':
-                grandFatherName = name;
-                break;
-              case 'Pet Dog':
-                petDogName = name;
-                break;
-              default:
-                break;
+            if (relation != null && name != null) {
+              switch (relation) {
+                case 'Mother':
+                  motherName = name;
+                  break;
+                case 'Father':
+                  fatherName = name;
+                  break;
+                case 'GrandMother':
+                  grandMotherName = name;
+                  break;
+                case 'GrandFather':
+                  grandFatherName = name;
+                  break;
+                case 'Pet Dog':
+                  petDogName = name;
+                  break;
+                default:
+                  break;
+              }
             }
           }
-        }
-      });
+        });
+      }
     } catch (e) {
       print("Error fetching user data: $e");
     }
   }
 
+  void _editName() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Change Name"),
+          content: TextField(
+            controller: _nameController,
+            decoration: InputDecoration(hintText: "Update name"),
+          ),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Save"),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user?.uid)
+                    .update({
+                  'child_name': _nameController.text,
+                });
+                setState(() {
+                  childName = _nameController.text;
+                });
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editDateOfBirth() {
+    DateTime selectedDate = DateTime.now();
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 350,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+                child: CupertinoDatePicker(
+                  maximumYear: DateTime.now().year,
+                  minimumYear: 2000,
+                  initialDateTime: selectedDate,
+                  mode: CupertinoDatePickerMode.date,
+                  onDateTimeChanged: (DateTime newDate) {
+                    setState(() {
+                      selectedDate = newDate;
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user?.uid)
+                      .update({
+                    'dob': selectedDate,
+                  });
+
+                  setState(() {
+                    dateOfBirth = DateFormat('dd/MM/yyyy').format(selectedDate);
+                  });
+
+                  Navigator.of(context).pop();
+                },
+                child: Text('Update'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -208,11 +300,12 @@ class _ProfilePageState extends State<ProfilePage>
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Name', childName ?? 'Loading...'),
+          detailsChild('Name', childName ?? 'Loading...', _editName),
           const SizedBox(height: 20),
-          detailsChild('Pronoun', pronoun ?? 'Loading...'),
+          detailsChild('Pronoun', pronoun ?? 'Loading...', () {}),
           const SizedBox(height: 20),
-          detailsChild('Date Of Birth', dateOfBirth.toString()),
+          detailsChild(
+              'Date Of Birth', dateOfBirth.toString(), _editDateOfBirth),
           const SizedBox(height: 20),
           Row(
             children: [
@@ -288,7 +381,8 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
-  Widget detailsChild(String title, String detailAnswer) {
+  Widget detailsChild(
+      String title, String detailAnswer, VoidCallback onpressed) {
     final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -299,6 +393,7 @@ class _ProfilePageState extends State<ProfilePage>
               color: AppColors.textColorblack, fontWeight: FontWeight.w400),
         ),
         Container(
+          padding: EdgeInsets.only(left: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: AppColors.kwhiteColor,
@@ -306,12 +401,23 @@ class _ProfilePageState extends State<ProfilePage>
           width: MediaQuery.of(context).size.width * 0.5555,
           height: 48,
           child: Center(
-            child: Text(
-              detailAnswer,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textColorblack,
-                fontWeight: FontWeight.w400,
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: TextEditingController(text: detailAnswer),
+                    enabled: false,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textColorblack,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: onpressed,
+                ),
+              ],
             ),
           ),
         ),
@@ -326,15 +432,17 @@ class _ProfilePageState extends State<ProfilePage>
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Mother', motherName ?? 'Loading...'),
+          detailsChild('Mother', motherName ?? 'Loading...', _editName),
           const SizedBox(height: 20),
-          detailsChild('Father', fatherName ?? 'Loading...'),
+          detailsChild('Father', fatherName ?? 'Loading...', _editName),
           const SizedBox(height: 20),
-          detailsChild('Grandmother', grandMotherName ?? 'Loading...'),
+          detailsChild(
+              'Grandmother', grandMotherName ?? 'Loading...', _editName),
           const SizedBox(height: 20),
-          detailsChild('GrandFather', grandFatherName ?? 'Loading...'),
+          detailsChild(
+              'GrandFather', grandFatherName ?? 'Loading...', _editName),
           const SizedBox(height: 20),
-          detailsChild('PetDog', petDogName ?? 'Loading...'),
+          detailsChild('PetDog', petDogName ?? 'Loading...', _editName),
           const Spacer(),
           ElevatedButton(
             onPressed: () {},
