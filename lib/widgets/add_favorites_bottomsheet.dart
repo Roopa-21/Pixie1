@@ -155,15 +155,9 @@ Future<void> _addYourOwn({
         'fav_things': FieldValue.arrayUnion([addyourown]),
       });
       context.pop();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("favthings added successfully!"),
-        backgroundColor: Colors.green,
-      ));
+     
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to add favthings: $e"),
-        backgroundColor: Colors.red,
-      ));
+      print(e);
     }
   } else {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

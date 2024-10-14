@@ -74,6 +74,7 @@ class FetchStoryRepository {
       QuerySnapshot querySnapshot = await _firestore
           .collection('fav_storys')
           .where('user_ref', isEqualTo: userId)
+          .orderBy('createdTime', descending: true)
           .get();
 
       // Parse the data into a list of maps and include the document reference

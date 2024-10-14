@@ -39,7 +39,7 @@ class NavBar extends StatelessWidget {
                     index: 0,
                     label: 'Home',
                     iconSelected: 'assets/images/home_selected.svg',
-                    iconUnselected: 'assets/images/home-02.svg',
+                    iconUnselected: 'assets/images/home_unselect.svg',
                     isSelected:
                         state.selectedIndex == 0 || state.selectedIndex == 1,
                     route: '/HomePage',

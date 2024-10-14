@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/widgets/add_favorites_bottomsheet.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -259,6 +260,7 @@ class _ProfilePageState extends State<ProfilePage>
               const SizedBox(height: 20),
               Expanded(
                 child: TabBarView(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: _tabController,
                   children: [
                     profileChildTab(theme),
@@ -295,69 +297,124 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   Widget profileChildTab(ThemeData theme) {
-    print(dateOfBirth);
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Name', childName ?? 'Loading...', _editName),
-          const SizedBox(height: 20),
-          detailsChild('Pronoun', pronoun ?? 'Loading...', () {}),
-          const SizedBox(height: 20),
-          detailsChild(
-              'Date Of Birth', dateOfBirth.toString(), _editDateOfBirth),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Text(
-                'Favorite thing',
-                style: theme.textTheme.bodyMedium!.copyWith(
-                    color: AppColors.textColorblack,
-                    fontWeight: FontWeight.w400),
-              ),
-              Spacer(),
-              Container(
-                  width: MediaQuery.of(context).size.width * 0.5555,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  detailsChild('Name', childName ?? 'Loading...', _editName),
+                  const SizedBox(height: 20),
+                  detailsChild('Pronoun', pronoun ?? 'Loading...', () {}),
+                  const SizedBox(height: 20),
+                  detailsChild('Date Of Birth', dateOfBirth.toString(),
+                      _editDateOfBirth),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Favorite thing',
+                        style: theme.textTheme.bodyMedium!.copyWith(
+                            color: AppColors.textColorblack,
+                            fontWeight: FontWeight.w400),
                       ),
+                      Spacer(),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 0.5555,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            children: [
+                              ...favoriteThings.map((thing) {
+                                return ListTile(
+                                  title: Text(thing),
+                                  trailing: InkWell(
+                                      onTap: () async {
+                                        favoriteThings.remove(thing);
+                                        await FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(user?.uid)
+                                            .update({
+                                          'fav_things': favoriteThings,
+                                        });
+                                        setState(() {});
+                                      },
+                                      child: Image.asset(
+                                        'assets/images/delete.png',
+                                        fit: BoxFit.cover,
+                                      )),
+                                );
+                              }),
+                              Container(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.5555,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      await showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        enableDrag: false,
+                                        context: context,
+                                        builder: (context) {
+                                          return const AddFavoritesBottomsheet();
+                                        },
+                                      );
+
+                                      setState(() {});
+                                    },
+                                    child: Text(
+                                      'Add your own',
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
                     ],
                   ),
-                  child: Column(
-                    children: [
-                      ...favoriteThings.map((thing) {
-                        return ListTile(
-                          title: Text(thing),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete,
-                                color: AppColors.kgreyColor),
-                            onPressed: () {},
-                          ),
-                        );
-                      }),
-                    ],
-                  )),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              "Delete my account",
-              style: theme.textTheme.bodyLarge!.copyWith(
-                  color: AppColors.textColorblue, fontWeight: FontWeight.w400),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Delete my account",
+                      style: theme.textTheme.bodyLarge!.copyWith(
+                          color: AppColors.textColorblue,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          const Spacer(),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
