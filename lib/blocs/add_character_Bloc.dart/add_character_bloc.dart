@@ -11,6 +11,7 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
           lovedOnce: null,
           selectedindex: -1,
           selectedindexlesson: -1,
+          selectedindexcharactor: -1,
           genre: 'Funny',
           musicAndSpeed: 'Bedtime',
           fav: false,
@@ -39,12 +40,20 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
     on<ResetlessonEvent>((event, emit) {
       emit(state.copyWith(lessons: null));
     });
-    // handle Loved once change event
+    // handle Llesson change event
     on<AddlessonEvent>((event, emit) {
       emit(state.copyWith(
           lessons: event.lesson,
           selectedindexlesson: event.selectedindexlesson));
     });
+
+    // handle add charctor change event
+    on<AddcharactorstoryEvent>((event, emit) {
+      emit(state.copyWith(
+          charactorname: event.charactorname,
+          selectedindexcharactor: event.selectedindexcharactor));
+    });
+
     // Handle update genre event
     on<UpdateGenreEvent>((event, emit) {
       emit(state.copyWith(genre: event.genre));
@@ -66,6 +75,7 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
           lovedOnce: null,
           selectedindex: -1,
           selectedindexlesson: -1,
+          selectedindexcharactor: -1,
           genre: 'Funny',
           musicAndSpeed: 'Bedtime',
           fav: false));

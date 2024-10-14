@@ -8,7 +8,7 @@ import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:pixieapp/widgets/navbar3.dart';
 
 class Firebasestory extends StatefulWidget {
-  final DocumentReference<Object?> storyDocRef; // Accept the DocumentReference
+  final DocumentReference<Object?> storyDocRef;
   const Firebasestory({super.key, required this.storyDocRef});
 
   @override
