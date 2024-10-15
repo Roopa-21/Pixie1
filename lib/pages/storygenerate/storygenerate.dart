@@ -63,9 +63,9 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            expandedHeight: deviceHeight * 0.3,
+            expandedHeight: deviceHeight * 0.38,
             leadingWidth: deviceWidth,
-            collapsedHeight: deviceHeight * 0.1,
+            collapsedHeight: deviceHeight * 0.15,
             pinned: true,
             floating: false,
             flexibleSpace: LayoutBuilder(
@@ -84,10 +84,15 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                       fontSize: isCollapsed ? 5 : 20,
                     ),
                   ),
-                  background: Image.asset(
-                    'assets/images/sliverApp.png',
-                    fit: BoxFit.cover,
-                  ),
+                  background: isCollapsed
+                      ? Image.asset(
+                          'assets/images/sliver_collapse.png',
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/images/sliverApp.png',
+                          fit: BoxFit.cover,
+                        ),
                 );
               },
             ),

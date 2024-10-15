@@ -487,12 +487,27 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       .height *
                                                   .2,
                                               decoration: BoxDecoration(
-                                                  color:
-                                                      AppColors.koffwhiteColor,
+                                                  color: AppColors.kwhiteColor
+                                                      .withOpacity(0.4),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                     12,
-                                                  )),
+                                                  ),
+                                                  border: const Border(
+                                                      left: BorderSide(
+                                                          color: Color(
+                                                              0xffECECEC)),
+                                                      right: BorderSide(
+                                                        color:
+                                                            Color(0xffECECEC),
+                                                      ),
+                                                      bottom: BorderSide(
+                                                        color:
+                                                            Color(0xffECECEC),
+                                                      ),
+                                                      top: BorderSide(
+                                                          color: Color(
+                                                              0xffECECEC)))),
                                               child: Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: width * .04,
