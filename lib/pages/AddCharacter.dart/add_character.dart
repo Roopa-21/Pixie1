@@ -395,51 +395,66 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(5.0),
-                                                        child: ChoiceChip(
-                                                          onSelected: (value) {
-                                                            // Trigger an event or do something with the selected lesson
-                                                            context
-                                                                .read<
-                                                                    AddCharacterBloc>()
-                                                                .add(AddcharactorstoryEvent(
-                                                                    charactorsitem,
-                                                                    selectedindexcharactor:
-                                                                        indexx));
-                                                            // print(
-                                                            //     charactorsitem);
-                                                          },
-                                                          selectedColor:
-                                                              AppColors.kpurple,
-                                                          elevation: 3,
-                                                          checkmarkColor:
-                                                              AppColors
-                                                                  .kwhiteColor,
-                                                          label: Text(
-                                                            charactorsitem
-                                                                .toString(), // Display the lesson name or string representation
-                                                            style: TextStyle(
-                                                              color: state
-                                                                          .selectedindexcharactor ==
-                                                                      indexx
-                                                                  ? AppColors
-                                                                      .kwhiteColor
-                                                                  : AppColors
-                                                                      .kblackColor,
+                                                        child: SizedBox(
+                                                          height: 48,
+                                                          child: ChoiceChip(
+                                                            shadowColor:
+                                                                AppColors
+                                                                    .kgreyColor
+                                                                    .withOpacity(
+                                                                        0.3),
+                                                            onSelected:
+                                                                (value) {
+                                                              // Trigger an event or do something with the selected lesson
+                                                              context
+                                                                  .read<
+                                                                      AddCharacterBloc>()
+                                                                  .add(AddcharactorstoryEvent(
+                                                                      charactorsitem,
+                                                                      selectedindexcharactor:
+                                                                          indexx));
+                                                              // print(
+                                                              //     charactorsitem);
+                                                            },
+                                                            selectedColor:
+                                                                AppColors
+                                                                    .kpurple,
+                                                            elevation: 3,
+                                                            checkmarkColor:
+                                                                AppColors
+                                                                    .kwhiteColor,
+                                                            label: Text(
+                                                                charactorsitem
+                                                                    .toString(),
+                                                                style: theme
+                                                                    .textTheme
+                                                                    .bodyMedium!
+                                                                    .copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  color: state.selectedindexcharactor ==
+                                                                          indexx
+                                                                      ? AppColors
+                                                                          .kwhiteColor
+                                                                      : AppColors
+                                                                          .kblackColor,
+                                                                ) // Display the lesson name or string representation
+
+                                                                ),
+                                                            selected: state
+                                                                    .selectedindexcharactor ==
+                                                                indexx, // Set the selection based on index
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: BorderSide
+                                                                  .none,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          40),
                                                             ),
                                                           ),
-                                                          selected: state
-                                                                  .selectedindexcharactor ==
-                                                              indexx, // Set the selection based on index
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50),
-                                                          ),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(16),
                                                         ),
                                                       );
                                                     }),

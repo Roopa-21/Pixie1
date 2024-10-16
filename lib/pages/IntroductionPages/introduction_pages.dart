@@ -471,7 +471,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           var userData = snapshot.data!.data()
                                               as Map<String, dynamic>;
 
-                                          // Assuming 'lessons' is a List of strings for simplicity.
                                           List<dynamic> addyourowns =
                                               userData['fav_things'] ?? [];
 
@@ -489,21 +488,35 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                             return Padding(
                                               padding:
                                                   const EdgeInsets.all(5.0),
-                                              child: ChoiceChip(
-                                                elevation: 3,
-                                                label: Text(
-                                                  addyourown,
-                                                  style: const TextStyle(
-                                                      color: AppColors
-                                                          .kblackColor),
+                                              child: SizedBox(
+                                                height: 48,
+                                                child: ChoiceChip(
+                                                  elevation: 3,
+                                                  shadowColor: AppColors
+                                                      .kgreyColor
+                                                      .withOpacity(0.3),
+                                                  label: Text(addyourown,
+                                                      style: theme
+                                                          .textTheme.bodyMedium!
+                                                          .copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: AppColors
+                                                                  .textColorblack)),
+                                                  selected: false,
+                                                   selectedColor:
+                                                                AppColors.kpurple,
+                                                                 checkmarkColor:
+                                                                AppColors
+                                                                    .kwhiteColor,
+                                                  shape: RoundedRectangleBorder(
+                                                    side: BorderSide.none,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            40),
+                                                  ),
                                                 ),
-                                                selected: false,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(16),
                                               ),
                                             );
                                           }));

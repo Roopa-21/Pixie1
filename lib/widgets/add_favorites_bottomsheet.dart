@@ -54,15 +54,25 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
           child: Padding(
             padding: EdgeInsets.all(20.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Align(
                   alignment: Alignment.topRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      context.pop();
-                    },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE8DEF8),
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        context.pop();
+                      },
+                    ),
                   ),
                 ),
                 Text(
@@ -104,7 +114,7 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppColors.kwhiteColor,
                         backgroundColor: AppColors.buttonblue,
                       ),
                       child: Text("Save",
@@ -155,7 +165,6 @@ Future<void> _addYourOwn({
         'fav_things': FieldValue.arrayUnion([addyourown]),
       });
       context.pop();
-     
     } catch (e) {
       print(e);
     }

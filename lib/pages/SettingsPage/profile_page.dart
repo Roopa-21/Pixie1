@@ -339,23 +339,32 @@ class _ProfilePageState extends State<ProfilePage>
                           child: Column(
                             children: [
                               ...favoriteThings.map((thing) {
-                                return ListTile(
-                                  title: Text(thing),
-                                  trailing: InkWell(
-                                      onTap: () async {
-                                        favoriteThings.remove(thing);
-                                        await FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(user?.uid)
-                                            .update({
-                                          'fav_things': favoriteThings,
-                                        });
-                                        setState(() {});
-                                      },
-                                      child: Image.asset(
-                                        'assets/images/delete.png',
-                                        fit: BoxFit.cover,
-                                      )),
+                                return Column(
+                                  children: [
+                                    ListTile(
+                                      title: Text(thing),
+                                      trailing: InkWell(
+                                        onTap: () async {
+                                          favoriteThings.remove(thing);
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(user?.uid)
+                                              .update({
+                                            'fav_things': favoriteThings,
+                                          });
+                                          setState(() {});
+                                        },
+                                        child: Image.asset(
+                                          'assets/images/delete.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const Divider(
+                                      color: AppColors.kgreyColor,
+                                      thickness: 0.45,
+                                    ),
+                                  ],
                                 );
                               }),
                               Container(
