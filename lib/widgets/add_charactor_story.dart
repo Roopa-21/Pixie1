@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/widgets_index.dart';
+import 'package:go_router/go_router.dart';
 
 class AddCharactorStory extends StatefulWidget {
   const AddCharactorStory({super.key});
@@ -20,7 +21,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
     final theme = Theme.of(context);
 
     return Container(
-      height: MediaQuery.of(context).size.height * .7,
+      height: MediaQuery.of(context).size.height * .8,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         color: AppColors.bottomSheetBackground,
@@ -30,11 +31,29 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE8DEF8),
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    context.pop();
+                  },
+                ),
+              ),
+            ),
             Text(
               'Add a character',
               style: theme.textTheme.displayMedium?.copyWith(
@@ -43,17 +62,19 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 16),
 
             // Character TextField
             TextField(
               controller: _characterController,
-              autofocus: true,
-              decoration: const InputDecoration(
-                hintText: "Character name",
-                hintStyle: TextStyle(color: Color.fromARGB(255, 199, 199, 199)),
+              autofocus: false,
+              decoration: InputDecoration(
+                hintText: "Type your response",
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textColorGrey,
+                    fontWeight: FontWeight.w400),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: AppColors.kwhiteColor,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
@@ -78,7 +99,8 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
 
             // Submit Button
             SizedBox(
-              width: MediaQuery.of(context).size.width * .9,
+              width: MediaQuery.sizeOf(context).width * 0.9,
+              height: 60,
               child: ElevatedButton(
                 onPressed: _isLoading
                     ? null // Disable button when loading
@@ -97,7 +119,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
                       },
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   foregroundColor: AppColors.buttonblue,
                   backgroundColor: AppColors.buttonblue,
@@ -108,7 +130,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
                         "Add",
                         style: theme.textTheme.bodyLarge!.copyWith(
                           color: AppColors.textColorWhite,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
               ),
