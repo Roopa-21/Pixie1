@@ -18,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _familyController = TextEditingController();
   String? childName;
   String? pronoun;
   String? dateOfBirth;
@@ -94,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage>
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Change Name"),
+          title: Text("Edit Name"),
           content: TextField(
             controller: _nameController,
             decoration: InputDecoration(hintText: "Update name"),
@@ -178,10 +179,86 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
+  void _editFamilyName(String relation) {
+    _familyController.clear();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Edit name"),
+          content: TextField(
+            controller: _familyController,
+            decoration: InputDecoration(hintText: "Update name"),
+          ),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Save"),
+              onPressed: () async {
+            
+                DocumentSnapshot userDoc = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user?.uid)
+                    .get();
+                Map<String, dynamic> userData =
+                    userDoc.data() as Map<String, dynamic>;
+
+                List lovedOnes = userData['loved_once'] ?? [];
+
+                for (var lovedOne in lovedOnes) {
+                  if (lovedOne['relation'] == relation) {
+                    lovedOne['name'] = _familyController.text;
+                    break;
+                  }
+                }
+
+  
+                await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(user?.uid)
+                    .update({
+                  'loved_once': lovedOnes,
+                });
+
+                setState(() {
+                  switch (relation) {
+                    case 'Mother':
+                      motherName = _familyController.text;
+                      break;
+                    case 'Father':
+                      fatherName = _familyController.text;
+                      break;
+                    case 'GrandMother':
+                      grandMotherName = _familyController.text;
+                      break;
+                    case 'GrandFather':
+                      grandFatherName = _familyController.text;
+                      break;
+                    case 'Pet Dog':
+                      petDogName = _familyController.text;
+                      break;
+                  }
+                });
+
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
     _nameController.dispose();
+    _familyController.dispose();
     super.dispose();
   }
 
@@ -425,7 +502,9 @@ class _ProfilePageState extends State<ProfilePage>
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
             style: ElevatedButton.styleFrom(
               minimumSize: Size(MediaQuery.of(context).size.width, 50),
               shape: RoundedRectangleBorder(
@@ -498,20 +577,25 @@ class _ProfilePageState extends State<ProfilePage>
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Mother', motherName ?? 'Loading...', _editName),
+          detailsChild('Mother', motherName ?? 'Loading...',
+              () => _editFamilyName('Mother')),
           const SizedBox(height: 20),
-          detailsChild('Father', fatherName ?? 'Loading...', _editName),
+          detailsChild('Father', fatherName ?? 'Loading...',
+              () => _editFamilyName('Father')),
           const SizedBox(height: 20),
-          detailsChild(
-              'Grandmother', grandMotherName ?? 'Loading...', _editName),
+          detailsChild('Grandmother', grandMotherName ?? 'Loading...',
+              () => _editFamilyName('GrandMother')),
           const SizedBox(height: 20),
-          detailsChild(
-              'GrandFather', grandFatherName ?? 'Loading...', _editName),
+          detailsChild('GrandFather', grandFatherName ?? 'Loading...',
+              () => _editFamilyName('GrandFather')),
           const SizedBox(height: 20),
-          detailsChild('PetDog', petDogName ?? 'Loading...', _editName),
+          detailsChild('PetDog', petDogName ?? 'Loading...',
+              () => _editFamilyName('Pet Dog')),
           const Spacer(),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
             style: ElevatedButton.styleFrom(
               minimumSize: Size(deviceWidth, 50),
               shape: RoundedRectangleBorder(
