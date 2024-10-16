@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:pixieapp/blocs/AudioBloc/audio_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Feedback/feedback_bloc.dart';
@@ -14,7 +16,7 @@ import 'package:pixieapp/repositories/library_repository.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 import 'package:go_router/go_router.dart';
 
 void main() async {
@@ -37,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    handleDynamicLinks(); // Handle dynamic links on startup
+    // Handle dynamic links on startup
   }
 
   @override
@@ -66,6 +68,10 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => FeedbackBloc(),
         ),
+        BlocProvider(
+          create: (context) =>
+              AudioBloc(AudioPlayer()), // Pass the AudioPlayer instance
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: _router, // Use the router here
@@ -75,32 +81,32 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
-  void handleDynamicLinks() async {
-    // For initial dynamic link when the app is opened through the link
-    final PendingDynamicLinkData? initialLink =
-        await FirebaseDynamicLinks.instance.getInitialLink();
-
-    if (initialLink != null) {
-      final Uri deepLink = initialLink.link;
-      _handleDeepLink(deepLink);
-    }
-
-    // For when the app is already opened and a new link is clicked
-    FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
-      _handleDeepLink(dynamicLinkData.link);
-    }).onError((error) {
-      print('Dynamic Link Failed: $error');
-    });
-  }
-
-  void _handleDeepLink(Uri link) {
-    if (link.queryParameters.containsKey('id')) {
-      final storyId = link.queryParameters['id'];
-      if (storyId != null) {
-        // Use GoRouter to navigate to the story details page with the storyId
-        _router.go('/storyDetails', extra: storyId);
-      }
-    }
-  }
 }
+//   void handleDynamicLinks() async {
+//     // For initial dynamic link when the app is opened through the link
+//     final PendingDynamicLinkData? initialLink =
+//         await FirebaseDynamicLinks.instance.getInitialLink();
+
+//     if (initialLink != null) {
+//       final Uri deepLink = initialLink.link;
+//       _handleDeepLink(deepLink);
+//     }
+
+//     // For when the app is already opened and a new link is clicked
+//     FirebaseDynamicLinks.instance.onLink.listen((dynamicLinkData) {
+//       _handleDeepLink(dynamicLinkData.link);
+//     }).onError((error) {
+//       print('Dynamic Link Failed: $error');
+//     });
+//   }
+
+//   void _handleDeepLink(Uri link) {
+//     if (link.queryParameters.containsKey('id')) {
+//       final storyId = link.queryParameters['id'];
+//       if (storyId != null) {
+//         // Use GoRouter to navigate to the story details page with the storyId
+//         _router.go('/storyDetails', extra: storyId);
+//       }
+//     }
+//   }
+// }

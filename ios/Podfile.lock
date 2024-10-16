@@ -1435,6 +1435,8 @@ PODS:
     - Flutter
   - PromisesObjC (2.4.0)
   - RecaptchaInterop (100.0.0)
+  - share_plus (0.0.1):
+    - Flutter
   - sms_autofill (0.0.1):
     - Flutter
 
@@ -1455,6 +1457,7 @@ DEPENDENCIES:
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - pointer_interceptor_ios (from `.symlinks/plugins/pointer_interceptor_ios/ios`)
+  - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
 
 SPEC REPOS:
@@ -1512,6 +1515,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   pointer_interceptor_ios:
     :path: ".symlinks/plugins/pointer_interceptor_ios/ios"
+  share_plus:
+    :path: ".symlinks/plugins/share_plus/ios"
   sms_autofill:
     :path: ".symlinks/plugins/sms_autofill/ios"
 
@@ -1555,6 +1560,7 @@ SPEC CHECKSUMS:
   pointer_interceptor_ios: 508241697ff0947f853c061945a8b822463947c1
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
+  share_plus: 8875f4f2500512ea181eef553c3e27dba5135aad
   sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
 
 PODFILE CHECKSUM: c85871111482c1eb969a6e9032f7040e5fda55cc
