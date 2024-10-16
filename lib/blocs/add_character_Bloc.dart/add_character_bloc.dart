@@ -7,16 +7,16 @@ import 'add_character_state.dart';
 class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
   AddCharacterBloc()
       : super(const AddCharacterState(
-          currentPageIndex: 0,
-          language: Language.English,
-          lovedOnce: null,
-          selectedindex: -1,
-          selectedindexlesson: -1,
-          selectedindexcharactor: -1,
-          genre: 'Funny',
-          musicAndSpeed: 'Bedtime',
-          fav: false,
-        )) {
+            currentPageIndex: 0,
+            language: Language.English,
+            lovedOnce: null,
+            selectedindex: -1,
+            selectedindexlesson: -1,
+            selectedindexcharactor: -1,
+            genre: 'Funny',
+            musicAndSpeed: 'Bedtime',
+            fav: false,
+            charactorname: null)) {
     // Handle page change events
     on<PageChangeEvent>((event, emit) {
       emit(state.copyWith(currentPageIndex: event.currentPageIndex));

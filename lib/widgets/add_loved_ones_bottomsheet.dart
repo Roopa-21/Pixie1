@@ -257,7 +257,15 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
 
   Future<void> addRelationToFirebase(
       String userId, String relation, String name) async {
-    final lovedOne = Lovedonces(relation: relation, name: name);
+    // Capitalize the first letter of relation and name
+    String capitalizedRelation =
+        relation[0].toUpperCase() + relation.substring(1);
+    String capitalizedName = name[0].toUpperCase() + name.substring(1);
+
+    final lovedOne = Lovedonces(
+      relation: capitalizedRelation,
+      name: capitalizedName,
+    );
 
     await FirebaseFirestore.instance.collection('users').doc(userId).update({
       'loved_once': FieldValue.arrayUnion([lovedOne.toMap()])

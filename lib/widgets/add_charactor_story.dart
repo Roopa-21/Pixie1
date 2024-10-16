@@ -31,7 +31,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,16 +75,16 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
                     fontWeight: FontWeight.w400),
                 filled: true,
                 fillColor: AppColors.kwhiteColor,
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.textColorblue,
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
-                focusedBorder: OutlineInputBorder(
+                focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
                     color: AppColors.textColorblue,
                     width: 2.0,
@@ -141,7 +141,6 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
     );
   }
 
-  // Function to add character to Firestore
   Future<void> _addCharacterToFirestore(String character) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -157,14 +156,18 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
             throw Exception("User does not exist!");
           }
 
+          // Capitalize the first letter of the character string
+          String capitalizedCharacter =
+              character[0].toUpperCase() + character.substring(1);
+
           // Get the existing story characters or create a new list if the field doesn't exist
           List<dynamic> storyCharacters =
               (snapshot.data() as Map<String, dynamic>?)?['storycharactors'] ??
                   [];
 
           // Add the new character if it's not already in the list
-          if (!storyCharacters.contains(character)) {
-            storyCharacters.add(character);
+          if (!storyCharacters.contains(capitalizedCharacter)) {
+            storyCharacters.add(capitalizedCharacter);
           } else {
             // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             //   content: Text('Character already exists!'),

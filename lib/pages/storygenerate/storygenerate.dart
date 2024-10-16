@@ -143,10 +143,11 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                       ),
                       child: AnimatedTextKit(
                         isRepeatingAnimation: false,
+                        pause: const Duration(milliseconds: 100),
                         animatedTexts: [
-                          TyperAnimatedText(
-                            widget.story["story"] ?? "No data",
-                          ),
+                          TyperAnimatedText(widget.story["story"] ?? "No data",
+                              textStyle: theme.textTheme.bodyMedium!.copyWith(
+                                  fontSize: 24, fontWeight: FontWeight.w400)),
                         ],
                         onTap: () {
                           print("Tap Event");

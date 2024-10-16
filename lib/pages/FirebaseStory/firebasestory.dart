@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,12 +97,14 @@ class _FirebasestoryState extends State<Firebasestory> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    storyData?["story"] ?? "No data",
-                    style: theme.textTheme.bodyLarge!.copyWith(
-                      color: AppColors.textColorGrey,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  AnimatedTextKit(
+                    isRepeatingAnimation: false,
+                    pause: const Duration(milliseconds: 100),
+                    animatedTexts: [
+                      TyperAnimatedText(storyData?["story"] ?? "No data",
+                          textStyle: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: 24, fontWeight: FontWeight.w400)),
+                    ],
                   ),
                 ],
               ),
