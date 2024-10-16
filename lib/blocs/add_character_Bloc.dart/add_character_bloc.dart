@@ -8,13 +8,13 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
   AddCharacterBloc()
       : super(const AddCharacterState(
             currentPageIndex: 0,
-            language: Language.English,
+            language: Language.notselected,
             lovedOnce: null,
             selectedindex: -1,
             selectedindexlesson: -1,
             selectedindexcharactor: -1,
             genre: 'Funny',
-            musicAndSpeed: 'Bedtime',
+            musicAndSpeed: 'notselected',
             fav: false,
             charactorname: null)) {
     // Handle page change events
@@ -72,13 +72,13 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
     on<ResetStateEvent>((event, emit) {
       emit(const AddCharacterState(
           currentPageIndex: 0,
-          language: Language.English,
+          language: Language.notselected,
           lovedOnce: null,
           selectedindex: -1,
           selectedindexlesson: -1,
           selectedindexcharactor: -1,
           genre: 'Funny',
-          musicAndSpeed: 'Bedtime',
+          musicAndSpeed: 'notselected',
           fav: false));
     });
   }

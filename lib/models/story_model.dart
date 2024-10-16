@@ -25,10 +25,7 @@ class StoryModal {
       required this.topic});
 }
 
-enum Language {
-  English,
-  Hindi,
-}
+enum Language { English, Hindi, notselected }
 
 StoryModal finalstorydatas = StoryModal(
     age: "age",

@@ -87,6 +87,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
               collapsedHeight: deviceHeight * 0.15,
               pinned: true,
               floating: false,
+              backgroundColor: const Color(0xff644a98),
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   var top = constraints.biggest.height;
@@ -105,11 +106,11 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                     ),
                     background: isCollapsed
                         ? Image.asset(
-                            'assets/images/sliver_collapse.png',
+                            'assets/images/appbarbg.jpg',
                             fit: BoxFit.cover,
                           )
                         : Image.asset(
-                            'assets/images/sliverApp.png',
+                            'assets/images/appbarbg.jpg',
                             fit: BoxFit.cover,
                           ),
                   );
@@ -145,9 +146,12 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                         isRepeatingAnimation: false,
                         pause: const Duration(milliseconds: 100),
                         animatedTexts: [
-                          TyperAnimatedText(widget.story["story"] ?? "No data",
-                              textStyle: theme.textTheme.bodyMedium!.copyWith(
-                                  fontSize: 24, fontWeight: FontWeight.w400)),
+                          TyperAnimatedText(
+                            widget.story["story"] ?? "No data",
+                            textStyle: theme.textTheme.bodyMedium!.copyWith(
+                                fontSize: 24, fontWeight: FontWeight.w400),
+                            speed: const Duration(milliseconds: 20),
+                          ),
                         ],
                         onTap: () {
                           print("Tap Event");
