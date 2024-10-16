@@ -118,13 +118,16 @@ Future<void> _addLesson({
 
   if (lesson.isNotEmpty) {
     try {
+      // Capitalize the first letter of the lesson
+      String capitalizedLesson = lesson[0].toUpperCase() + lesson.substring(1);
+
       // Reference to the user's document
       final userDocRef =
           FirebaseFirestore.instance.collection('users').doc(userId);
 
       // Add the new lesson to the existing array using arrayUnion
       await userDocRef.update({
-        'lessons': FieldValue.arrayUnion([lesson]),
+        'lessons': FieldValue.arrayUnion([capitalizedLesson]),
       });
       context.pop();
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

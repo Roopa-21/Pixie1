@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
-import 'package:pixieapp/widgets/widgets_index.dart';
 
 class NavBarLoading extends StatefulWidget {
   const NavBarLoading({
@@ -28,12 +27,13 @@ class _NavBarLoadingState extends State<NavBarLoading> {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12), topRight: Radius.circular(12)),
               image: DecorationImage(
-                  image: AssetImage('assets/images/Rectangle 11723.png'))),
+                  image: AssetImage('assets/images/Rectangle 11723.png'),
+                  fit: BoxFit.contain)),
           child: Padding(
             padding:
                 const EdgeInsets.only(left: 30, right: 30, top: 25, bottom: 20),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
                 SizedBox(

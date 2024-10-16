@@ -119,6 +119,8 @@ class _AddCharacterState extends State<AddCharacter> {
                             padding: const EdgeInsetsDirectional.fromSTEB(
                                 20.0, 10.0, 20.0, 10.0),
                             child: PageView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              allowImplicitScrolling: false,
                               onPageChanged: (index) {
                                 context
                                     .read<AddCharacterBloc>()
@@ -454,6 +456,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                       .circular(
                                                                           40),
                                                             ),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(12),
                                                           ),
                                                         ),
                                                       );
@@ -781,7 +786,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                 padding:
                                                                     const EdgeInsets
                                                                         .all(
-                                                                        16),
+                                                                        12),
                                                               );
                                                             },
                                                           ),
@@ -1002,7 +1007,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           ),
                                                           padding:
                                                               const EdgeInsets
-                                                                  .all(16),
+                                                                  .all(12),
                                                         ),
                                                       );
                                                     }),
@@ -1264,14 +1269,16 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 borderRadius:
                                                     BorderRadius.circular(12),
                                               ),
-                                              foregroundColor: Colors.white,
-                                              backgroundColor: Colors.white,
+                                              foregroundColor:
+                                                  AppColors.kpurple,
+                                              backgroundColor:
+                                                  AppColors.kpurple,
                                             ),
                                             child: Text(
                                               "Skip",
                                               style: theme.textTheme.bodyLarge!
                                                   .copyWith(
-                                                color: AppColors.textColorblue,
+                                                color: AppColors.kwhiteColor,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w400,
                                               ),
@@ -1299,11 +1306,45 @@ class _AddCharacterState extends State<AddCharacter> {
                                           context.push('/CreateStoryPage',
                                               extra: storydata);
                                         } else {
-                                          pageViewController?.nextPage(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            curve: Curves.ease,
-                                          );
+                                          if (state.currentPageIndex == 0 &&
+                                              (state.language ==
+                                                      Language.English ||
+                                                  state.language ==
+                                                      Language.Hindi) &&
+                                              (state.musicAndSpeed ==
+                                                      "Bedtime" ||
+                                                  state.language ==
+                                                      "Playtime")) {
+                                            pageViewController?.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          } else if (state.currentPageIndex ==
+                                                  1 &&
+                                              state.charactorname != null) {
+                                            pageViewController?.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          } else if (state.currentPageIndex ==
+                                                  2 &&
+                                              state.lovedOnce != null) {
+                                            pageViewController?.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          } else if (state.currentPageIndex ==
+                                                  3 &&
+                                              state.lessons != null) {
+                                            pageViewController?.nextPage(
+                                              duration: const Duration(
+                                                  milliseconds: 300),
+                                              curve: Curves.ease,
+                                            );
+                                          }
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -1314,14 +1355,66 @@ class _AddCharacterState extends State<AddCharacter> {
                                           borderRadius:
                                               BorderRadius.circular(12),
                                         ),
-                                        foregroundColor: Colors.white,
-                                        backgroundColor: Colors.white,
+                                        foregroundColor:
+                                            (state.currentPageIndex == 0 &&
+                                                    (state.language ==
+                                                            Language.English ||
+                                                        state.language ==
+                                                            Language.Hindi) &&
+                                                    (state.musicAndSpeed ==
+                                                            "Bedtime" ||
+                                                        state.language ==
+                                                            "Playtime"))
+                                                ? AppColors.textColorblue
+                                                : AppColors.textColorWhite,
+                                        backgroundColor: (state
+                                                            .currentPageIndex ==
+                                                        0 &&
+                                                    (state.language ==
+                                                            Language.English ||
+                                                        state.language ==
+                                                            Language.Hindi) &&
+                                                    (state.musicAndSpeed ==
+                                                            "Bedtime" ||
+                                                        state.musicAndSpeed ==
+                                                            "Playtime")) ||
+                                                (state.currentPageIndex == 1 &&
+                                                    state.charactorname !=
+                                                        null) ||
+                                                (state.currentPageIndex == 2 &&
+                                                    state.lovedOnce != null) ||
+                                                (state.currentPageIndex == 3 &&
+                                                    state.lessons != null)
+                                            ? AppColors.textColorblue
+                                            : AppColors.textColorWhite,
                                       ),
                                       child: Text(
                                         "Continue",
                                         style:
                                             theme.textTheme.bodyLarge!.copyWith(
-                                          color: AppColors.textColorblue,
+                                          color: (state.currentPageIndex == 0 &&
+                                                      (state.language ==
+                                                              Language
+                                                                  .English ||
+                                                          state.language ==
+                                                              Language.Hindi) &&
+                                                      (state.musicAndSpeed ==
+                                                              "Bedtime" ||
+                                                          state.musicAndSpeed ==
+                                                              "Playtime")) ||
+                                                  (state.currentPageIndex ==
+                                                          1 &&
+                                                      state.charactorname !=
+                                                          null) ||
+                                                  (state.currentPageIndex ==
+                                                          2 &&
+                                                      state.lovedOnce !=
+                                                          null) ||
+                                                  (state.currentPageIndex ==
+                                                          3 &&
+                                                      state.lessons != null)
+                                              ? AppColors.textColorWhite
+                                              : AppColors.textColorblue,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w400,
                                         ),
