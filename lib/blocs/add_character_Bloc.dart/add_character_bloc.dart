@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/models/story_model.dart';
+
 import 'add_character_event.dart';
 import 'add_character_state.dart';
 

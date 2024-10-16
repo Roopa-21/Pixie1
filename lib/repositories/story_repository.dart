@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
+import 'package:path_provider/path_provider.dart';
+import 'dart:convert';
 import 'dart:io';
 
 class StoryRepository {
@@ -39,14 +38,11 @@ class StoryRepository {
         ));
 
     if (response.statusCode == 200) {
-      print(response.body);
       final Map<String, dynamic> responseData = jsonDecode(response.body);
-
       final Map<String, String> storyMap = {
         "title": responseData["title"] ?? "",
         "story": responseData["story"] ?? "",
       };
-
       return storyMap;
     } else {
       throw Exception('Failed to generate story: ${response.body}');
@@ -67,7 +63,15 @@ class StoryRepository {
 
     if (response.statusCode == 200) {
       final bytes = response.bodyBytes;
-      final audioFile = File('story_audio.mp3');
+
+      // Get the app's temporary directory
+      final directory = await getTemporaryDirectory();
+
+      // Define the file path to save the audio
+      final audioFilePath = '${directory.path}/story_audio.mp3';
+
+      // Write the audio file to the temporary directory
+      final audioFile = File(audioFilePath);
       await audioFile.writeAsBytes(bytes);
       return audioFile;
     } else {
