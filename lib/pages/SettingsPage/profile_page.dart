@@ -179,6 +179,9 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
+void editGender(){
+  
+}
   void _editFamilyName(String relation) {
     _familyController.clear();
     showDialog(
