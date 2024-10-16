@@ -400,11 +400,16 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         child: SizedBox(
                                                           height: 48,
                                                           child: ChoiceChip(
+                                                            side: const BorderSide(
+                                                                width: .4,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        152,
+                                                                        152,
+                                                                        152)),
                                                             shadowColor:
-                                                                AppColors
-                                                                    .kgreyColor
-                                                                    .withOpacity(
-                                                                        0.3),
+                                                                Colors.black,
                                                             onSelected:
                                                                 (value) {
                                                               // Trigger an event or do something with the selected lesson
@@ -738,6 +743,17 @@ class _AddCharacterState extends State<AddCharacter> {
                                                             builder: (context,
                                                                 state) {
                                                               return ChoiceChip(
+                                                                side: const BorderSide(
+                                                                    width: .4,
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            255,
+                                                                            152,
+                                                                            152,
+                                                                            152)),
+                                                                shadowColor:
+                                                                    Colors
+                                                                        .black,
                                                                 onSelected:
                                                                     (value) {
                                                                   context
@@ -755,7 +771,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                 selectedColor:
                                                                     AppColors
                                                                         .kpurple,
-                                                                elevation: 3,
+                                                                elevation: 5,
                                                                 checkmarkColor:
                                                                     AppColors
                                                                         .kwhiteColor,
@@ -977,6 +993,17 @@ class _AddCharacterState extends State<AddCharacter> {
 
                                                             // Print the lesson to check the data
                                                           },
+                                                          side:
+                                                              const BorderSide(
+                                                                  width: .4,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          152,
+                                                                          152,
+                                                                          152)),
+                                                          shadowColor:
+                                                              Colors.black,
                                                           selectedColor:
                                                               AppColors.kpurple,
                                                           elevation: 3,
@@ -1447,6 +1474,7 @@ class _AddCharacterState extends State<AddCharacter> {
           width: MediaQuery.sizeOf(context).width * 0.9,
           height: 48,
           child: ElevatedButton(
+            iconAlignment: IconAlignment.start,
             onPressed: ontap,
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -1459,12 +1487,30 @@ class _AddCharacterState extends State<AddCharacter> {
                   ? AppColors.buttonblue
                   : AppColors.buttonwhite,
             ),
-            child: Text(title,
-                style: theme.textTheme.bodyLarge!.copyWith(
-                    color: selected == true
-                        ? AppColors.textColorWhite
-                        : AppColors.textColorblack,
-                    fontWeight: FontWeight.w500)),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.check,
+                      color: AppColors.kwhiteColor,
+                      size: 18,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Text(title,
+                      style: theme.textTheme.bodyLarge!.copyWith(
+                          color: selected == true
+                              ? AppColors.textColorWhite
+                              : AppColors.textColorblack,
+                          fontWeight: FontWeight.w500)),
+                ),
+              ],
+            ),
           ),
         ),
       );

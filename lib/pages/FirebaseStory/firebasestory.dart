@@ -56,6 +56,7 @@ class _FirebasestoryState extends State<Firebasestory> {
             collapsedHeight: deviceHeight * 0.1,
             pinned: true,
             floating: false,
+            backgroundColor: const Color(0xff644a98),
             flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 var top = constraints.biggest.height;
@@ -73,7 +74,7 @@ class _FirebasestoryState extends State<Firebasestory> {
                     ),
                   ),
                   background: Image.asset(
-                    'assets/images/sliverApp.png',
+                    'assets/images/appbarbg.jpg',
                     fit: BoxFit.cover,
                   ),
                 );
@@ -99,11 +100,14 @@ class _FirebasestoryState extends State<Firebasestory> {
                 children: [
                   AnimatedTextKit(
                     isRepeatingAnimation: false,
-                    pause: const Duration(milliseconds: 100),
+                    pause: const Duration(milliseconds: 1000),
                     animatedTexts: [
-                      TyperAnimatedText(storyData?["story"] ?? "No data",
-                          textStyle: theme.textTheme.bodyMedium!.copyWith(
-                              fontSize: 24, fontWeight: FontWeight.w400)),
+                      TyperAnimatedText(
+                        storyData?["story"] ?? "No data",
+                        textStyle: theme.textTheme.bodyMedium!.copyWith(
+                            fontSize: 24, fontWeight: FontWeight.w400),
+                        speed: const Duration(milliseconds: 20),
+                      ),
                     ],
                   ),
                 ],
