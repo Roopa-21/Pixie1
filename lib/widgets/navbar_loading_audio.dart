@@ -28,7 +28,7 @@ class _NavBarLoadingState extends State<NavBarLoading> {
                   topLeft: Radius.circular(12), topRight: Radius.circular(12)),
               image: DecorationImage(
                   image: AssetImage('assets/images/Rectangle 11723.png'),
-                  fit: BoxFit.contain)),
+                  fit: BoxFit.fill)),
           child: Padding(
             padding:
                 const EdgeInsets.only(left: 30, right: 30, top: 25, bottom: 20),

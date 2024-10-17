@@ -14,6 +14,7 @@ import 'package:pixieapp/models/story_model.dart';
 import 'package:pixieapp/widgets/add_charactor_story.dart';
 import 'package:pixieapp/widgets/add_lesson_bottom_sheet.dart';
 import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
+import 'package:pixieapp/widgets/widgets_index.dart';
 
 class AddCharacter extends StatefulWidget {
   const AddCharacter({super.key});
@@ -358,8 +359,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
                                                   return const Center(
-                                                      child:
-                                                          CircularProgressIndicator());
+                                                      child: LoadingWidget());
                                                 }
 
                                                 if (snapshot.hasError) {
@@ -694,8 +694,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
                                                   return const Center(
-                                                      child:
-                                                          CircularProgressIndicator());
+                                                      child: LoadingWidget());
                                                 }
 
                                                 if (snapshot.hasError) {
@@ -776,9 +775,19 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                     AppColors
                                                                         .kwhiteColor,
                                                                 label: Text(
-                                                                  lovedonce[
-                                                                          index]
-                                                                      .name,
+                                                                  (lovedonce[index].relation == "Mother" ||
+                                                                          lovedonce[index].relation ==
+                                                                              "Father" ||
+                                                                          lovedonce[index].relation ==
+                                                                              "GrandFather" ||
+                                                                          lovedonce[index].relation ==
+                                                                              "GrandMother")
+                                                                      ? lovedonce[
+                                                                              index]
+                                                                          .relation
+                                                                      : lovedonce[
+                                                                              index]
+                                                                          .name,
                                                                   style:
                                                                       TextStyle(
                                                                     color: state.selectedindex ==
@@ -943,8 +952,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 if (snapshot.connectionState ==
                                                     ConnectionState.waiting) {
                                                   return const Center(
-                                                      child:
-                                                          CircularProgressIndicator());
+                                                      child: LoadingWidget());
                                                 }
 
                                                 if (snapshot.hasError) {
@@ -1251,18 +1259,9 @@ class _AddCharacterState extends State<AddCharacter> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.sizeOf(context).width * 1.0,
                         height: MediaQuery.sizeOf(context).height * .16,
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                topRight: Radius.circular(12)),
-                            border: Border(
-                                top: BorderSide(
-                                    color: Color.fromARGB(255, 255, 213, 213),
-                                    strokeAlign: 1)),
-                            color: Color.fromARGB(145, 255, 255, 255)),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -1297,15 +1296,15 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     BorderRadius.circular(12),
                                               ),
                                               foregroundColor:
-                                                  AppColors.kpurple,
+                                                  AppColors.kwhiteColor,
                                               backgroundColor:
-                                                  AppColors.kpurple,
+                                                  AppColors.kwhiteColor,
                                             ),
                                             child: Text(
                                               "Skip",
                                               style: theme.textTheme.bodyLarge!
                                                   .copyWith(
-                                                color: AppColors.kwhiteColor,
+                                                color: AppColors.kpurple,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w400,
                                               ),
@@ -1411,7 +1410,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 (state.currentPageIndex == 2 &&
                                                     state.lovedOnce != null) ||
                                                 (state.currentPageIndex == 3 &&
-                                                    state.lessons != null)
+                                                    state.lessons != null) ||
+                                                state.currentPageIndex == 4
                                             ? AppColors.textColorblue
                                             : AppColors.textColorWhite,
                                       ),
@@ -1439,7 +1439,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           null) ||
                                                   (state.currentPageIndex ==
                                                           3 &&
-                                                      state.lessons != null)
+                                                      state.lessons != null) ||
+                                                  state.currentPageIndex == 4
                                               ? AppColors.textColorWhite
                                               : AppColors.textColorblue,
                                           fontSize: 20,

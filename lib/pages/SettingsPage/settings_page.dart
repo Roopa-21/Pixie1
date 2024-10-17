@@ -9,6 +9,7 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart'
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/widgets/story_feedback.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -91,7 +92,23 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     profilelistCard(
                       title: 'About',
-                      ontap: () {},
+                      ontap: () async {
+                        // await showModalBottomSheet(
+                        //   isScrollControlled: true,
+                        //   backgroundColor: Colors.transparent,
+                        //   enableDrag: false,
+                        //   context: context,
+                        //   builder: (context) {
+                        //     return GestureDetector(
+                        //       onTap: () => FocusScope.of(context).unfocus(),
+                        //       child: Padding(
+                        //         padding: MediaQuery.viewInsetsOf(context),
+                        //         child: const StoryFeedback(),
+                        //       ),
+                        //     );
+                        //   },
+                        // );
+                      },
                       icon_path: 'assets/images/about.svg',
                       theme: theme,
                     ),

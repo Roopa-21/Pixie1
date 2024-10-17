@@ -30,7 +30,6 @@ class CreateStoryPage extends StatefulWidget {
 
 class _CreateStoryPageState extends State<CreateStoryPage> {
   Future<Map<String, dynamic>> _fetchChildDetailsFromFirebase() async {
-    
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       throw Exception('User not logged in');
@@ -64,7 +63,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
     };
   }
 
-  @override  Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final devicewidth = MediaQuery.of(context).size.width;
     final deviceheight = MediaQuery.of(context).size.height;
@@ -76,7 +76,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 listener: (context, state) {
                   if (state is StorySuccess) {
                     context.push(
-                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}',
+                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}}',
                       extra: state.story,
                     );
                   } else if (state is StoryFailure) {

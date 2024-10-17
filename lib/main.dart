@@ -8,6 +8,7 @@ import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Feedback/feedback_bloc.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_bloc.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/StoryFeedback/story_feedback_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/introduction/introduction_bloc.dart';
@@ -71,6 +72,10 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) =>
               AudioBloc(AudioPlayer()), // Pass the AudioPlayer instance
+        ),
+        BlocProvider(
+          create: (context) =>
+              StoryFeedbackBloc(), // Pass the AudioPlayer instance
         ),
       ],
       child: MaterialApp.router(
