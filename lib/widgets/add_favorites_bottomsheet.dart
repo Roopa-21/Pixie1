@@ -55,7 +55,7 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
             padding: EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Align(
@@ -109,6 +109,8 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
                         // context.pop();
                         await _addYourOwn(
                             context: context, addyourown: addyourown.text);
+                            
+                       
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -156,15 +158,17 @@ Future<void> _addYourOwn({
   if (addyourown.isNotEmpty) {
     try {
       // Reference to the user's document
-
+      String capitalizedLesson =
+          addyourown[0].toUpperCase() + addyourown.substring(1);
       final userDocRef =
           FirebaseFirestore.instance.collection('users').doc(userId);
 
       // Add the new lesson to the existing array using arrayUnion
       await userDocRef.update({
-        'fav_things': FieldValue.arrayUnion([addyourown]),
+        'fav_things': FieldValue.arrayUnion([capitalizedLesson]),
       });
       context.pop();
+      
     } catch (e) {
       print(e);
     }

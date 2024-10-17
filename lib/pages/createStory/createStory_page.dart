@@ -173,45 +173,54 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                                         angle: -.05,
                                                         child: Stack(
                                                           children: [
-                                                            Text(
-                                                              'Create',
-                                                              textAlign:
-                                                                  TextAlign
+                                                            Align(
+                                                              alignment:
+                                                                  Alignment
                                                                       .center,
-                                                              style: theme
-                                                                  .textTheme
-                                                                  .displayLarge!
-                                                                  .copyWith(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      fontSize:
-                                                                          96),
+                                                              child: Text(
+                                                                'Your ',
+                                                                softWrap: true,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: theme
+                                                                    .textTheme
+                                                                    .displayMedium!
+                                                                    .copyWith(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                  fontSize: 96,
+                                                                ),
+                                                              ),
                                                             ),
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
                                                                       .only(
                                                                       top:
-                                                                          75.0),
-                                                              child: Text(
-                                                                '  Story',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: theme
-                                                                    .textTheme
-                                                                    .displayLarge!
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w600,
-                                                                        fontSize:
-                                                                            96),
+                                                                          95.0),
+                                                              child: FittedBox(
+                                                                fit: BoxFit
+                                                                    .fitWidth,
+                                                                child: Text(
+                                                                  '  selections',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: theme
+                                                                      .textTheme
+                                                                      .displayMedium!
+                                                                      .copyWith(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              96),
+                                                                ),
                                                               ),
                                                             ),
                                                           ],

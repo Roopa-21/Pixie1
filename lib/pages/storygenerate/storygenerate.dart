@@ -33,8 +33,6 @@ class StoryGeneratePage extends StatefulWidget {
 class _StoryGeneratePageState extends State<StoryGeneratePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   DocumentReference<Object?>? _documentReference;
-  File? audioFile;
-  bool audioloaded = false;
 
   @override
   void didChangeDependencies() {
@@ -61,6 +59,11 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
       });
     }
   }
+
+  File? audioFile;
+  bool audioloaded = false;
+
+  bool callAppBar = false;
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +96,13 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
               leadingWidth: deviceWidth,
               collapsedHeight: deviceHeight * 0.15,
               pinned: true,
+              floating: false,
               backgroundColor: const Color(0xff644a98),
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
-                  bool isCollapsed =
-                      constraints.biggest.height <= kToolbarHeight + 30;
+                  var top = constraints.biggest.height;
+                  bool isCollapsed = top <= kToolbarHeight + 30;
+
                   return FlexibleSpaceBar(
                     centerTitle: true,
                     titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
@@ -117,18 +122,31 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                 },
               ),
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    context.read<AddCharacterBloc>().add(ResetStateEvent());
-                    context.go('/HomePage');
-                  },
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.kwhiteColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(40.0),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () async {
+                      context.read<AddCharacterBloc>().add(ResetStateEvent());
+                      context.go('/HomePage');
+                    },
+                  ),
                 ),
               ],
             ),
             SliverToBoxAdapter(
               child: Padding(
-                padding: EdgeInsets.all(deviceHeight * 0.0294),
+                padding: EdgeInsets.only(
+                  top: 5,
+                  left: deviceHeight * 0.0294,
+                  right: deviceHeight * 0.0294,
+                  bottom: deviceHeight * 0.0294,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -138,17 +156,24 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                         fontWeight: FontWeight.w400,
                       ),
                       child: AnimatedTextKit(
+                        onFinished: () {
+                          setState(() {
+                            callAppBar = true;
+                          });
+                        },
                         isRepeatingAnimation: false,
+                        pause: const Duration(milliseconds: 100),
                         animatedTexts: [
                           TyperAnimatedText(
                             widget.story["story"] ?? "No data",
                             textStyle: theme.textTheme.bodyMedium!.copyWith(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                            ),
+                                fontSize: 24, fontWeight: FontWeight.w400),
                             speed: const Duration(milliseconds: 20),
                           ),
                         ],
+                        onTap: () {
+                          print("Tap Event");
+                        },
                       ),
                     ),
                   ],
@@ -162,6 +187,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                 documentReference: _documentReference,
                 audioFile: audioFile!,
               )
+            // : SizedBox.shrink()
             : const NavBarLoading(),
       ),
     );
