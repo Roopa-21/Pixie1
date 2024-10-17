@@ -1,11 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
-import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:pixieapp/widgets/navbar3.dart';
 
 class Firebasestory extends StatefulWidget {
@@ -31,6 +29,11 @@ class _FirebasestoryState extends State<Firebasestory> {
         });
       }
     });
+  }
+
+  // Function to add a new line after each full stop in the story text
+  String formatStory(String story) {
+    return story.replaceAll('. ', '.\n');
   }
 
   @override
@@ -103,9 +106,11 @@ class _FirebasestoryState extends State<Firebasestory> {
                     pause: const Duration(milliseconds: 1000),
                     animatedTexts: [
                       TyperAnimatedText(
-                        storyData?["story"] ?? "No data",
+                        formatStory(storyData?["story"] ?? "No data"),
                         textStyle: theme.textTheme.bodyMedium!.copyWith(
-                            fontSize: 24, fontWeight: FontWeight.w400),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                        ),
                         speed: const Duration(milliseconds: 20),
                       ),
                     ],

@@ -64,11 +64,22 @@ class _LovedonceBottomsheetState extends State<LovedonceBottomsheet> {
                                     selectedindex: index));
                             context.pop();
                           },
+                          side: const BorderSide(
+                              width: .4,
+                              color: Color.fromARGB(255, 152, 152, 152)),
+                          shadowColor: Colors.black,
                           selectedColor: AppColors.kpurple,
                           elevation: 3,
                           checkmarkColor: AppColors.kwhiteColor,
                           label: Text(
-                            lovedOnceList[index].name,
+                            (lovedOnceList[index].relation == "Mother" ||
+                                    lovedOnceList[index].relation == "Father" ||
+                                    lovedOnceList[index].relation ==
+                                        "GrandFather" ||
+                                    lovedOnceList[index].relation ==
+                                        "GrandMother")
+                                ? lovedOnceList[index].relation
+                                : lovedOnceList[index].name,
                             style: TextStyle(
                                 color: state.selectedindex == index
                                     ? AppColors.kwhiteColor

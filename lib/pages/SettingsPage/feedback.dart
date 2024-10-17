@@ -15,9 +15,6 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
-  int _currentRating = 0; // Track the current rating locally
-  late Map<String, Map<String, bool>> _currentQuestionsLikedDisliked;
-
   @override
   void initState() {
     super.initState();
@@ -29,72 +26,56 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: BlocConsumer<FeedbackBloc, FeedbackState>(
         listener: (context, state) {
           if (state is FeedbackSubmitted) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text('Feedback updated successfully!')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Feedback submitted!')));
           }
         },
         builder: (context, state) {
           if (state is FeedbackLoading) {
             return const Center(child: LoadingWidget());
           } else if (state is FeedbackExists) {
-            // Initialize the existing feedback data for editing
-            _initializeFeedback(state.feedbackData);
+            final rawQuestionsMap = state.feedbackData['questionsLikedDisliked']
+                as Map<String, dynamic>;
+            Map<String, Map<String, bool>> _currentQuestionsLikedDisliked =
+                rawQuestionsMap.map((key, value) {
+              final innerMap = (value as Map<String, dynamic>).map((k, v) {
+                return MapEntry(k, v as bool); // Convert inner values to bool
+              });
+              return MapEntry(key, innerMap);
+            });
+
             return _buildFeedbackForm(
-              "Update Feedback",
-              _currentRating,
-              _currentQuestionsLikedDisliked,
-              theme,
-              deviceHeight,
-              deviceWidth,
-              isUpdate: true,
-            );
+                state.feedbackData['rating'],
+                _currentQuestionsLikedDisliked,
+                theme,
+                deviceHeight,
+                deviceWidth);
+          } else if (state is FeedbackUpdated) {
+            return _buildFeedbackForm(state.rating,
+                state.questionsLikedDisliked, theme, deviceHeight, deviceWidth);
           } else {
-            // Initialize default values for new feedback
-            _currentQuestionsLikedDisliked = _initialQuestions();
             return _buildFeedbackForm(
-              "Submit Feedback",
-              _currentRating,
-              _currentQuestionsLikedDisliked,
-              theme,
-              deviceHeight,
-              deviceWidth,
-              isUpdate: false,
-            );
+                0, _initialQuestions(), theme, deviceHeight, deviceWidth);
           }
         },
       ),
     );
   }
 
-  // Initialize feedback data from Firebase to local variables for editing
-  void _initializeFeedback(Map<String, dynamic> feedbackData) {
-    _currentRating = feedbackData['rating'] ?? 0;
-    _currentQuestionsLikedDisliked =
-        (feedbackData['questionsLikedDisliked'] as Map<String, dynamic>).map(
-      (key, value) => MapEntry(
-        key,
-        (value as Map).map((k, v) => MapEntry(k.toString(), v as bool)),
-      ),
-    );
-  }
-
   Widget _buildFeedbackForm(
-    String buttonText,
-    int rating,
-    Map<String, Map<String, bool>> questionsLikedDisliked,
-    ThemeData theme,
-    double deviceHeight,
-    double deviceWidth, {
-    required bool isUpdate,
-  }) {
+      int rating,
+      Map<String, Map<String, bool>> questionsLikedDisliked,
+      ThemeData theme,
+      double deviceHeight,
+      double deviceWidth) {
     return Container(
       height: deviceHeight,
       width: deviceWidth,
@@ -112,15 +93,117 @@ class _FeedbackPageState extends State<FeedbackPage> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            _buildHeader(theme),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back,
+                        size: 24, color: AppColors.buttonblue),
+                  ),
+                  const SizedBox(width: 20),
+                  ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                      colors: [
+                        AppColors.textColorGrey,
+                        AppColors.textColorSettings,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(
+                      Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                    ),
+                    child: Text(
+                      "Feedback",
+                      style: theme.textTheme.headlineMedium!.copyWith(
+                          fontSize: 24, color: AppColors.textColorWhite),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 30),
-            _buildRatingSection(),
+            Text(
+              'Rate your experience',
+              style: theme.textTheme.bodyLarge!
+                  .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+            ),
             const SizedBox(height: 30),
-            _buildQuestionsSection(questionsLikedDisliked, theme),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(5, (index) {
+                return IconButton(
+                  onPressed: () {
+                    context
+                        .read<FeedbackBloc>()
+                        .add(UpdateRatingEvent(index + 1));
+                    print(index + 1);
+                  },
+                  icon: Icon(
+                    rating > index
+                        ? Icons.star_rate_rounded
+                        : Icons.star_border_rounded,
+                    color: AppColors.kpurple,
+                    size: 50,
+                  ),
+                );
+              }),
+            ),
+            const SizedBox(height: 30),
+            Card(
+              child: Container(
+                width: deviceWidth * .9,
+                height: deviceHeight * .36,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                decoration: BoxDecoration(
+                    color: AppColors.kwhiteColor,
+                    borderRadius: BorderRadius.circular(16)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: questionsLikedDisliked.keys.map((question) {
+                    final liked =
+                        questionsLikedDisliked[question]?['liked'] ?? false;
+                    final disliked =
+                        questionsLikedDisliked[question]?['disliked'] ?? false;
+                    return questionRow(
+                      title: question,
+                      liked: liked,
+                      disliked: disliked,
+                      theme: theme,
+                      onLike: () {
+                        context.read<FeedbackBloc>().add(
+                            UpdateLikedDislikedEvent(
+                                question: question, liked: true));
+                      },
+                      onDislike: () {
+                        context.read<FeedbackBloc>().add(
+                            UpdateLikedDislikedEvent(
+                                question: question, liked: false));
+                      },
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
             const SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () => _submitFeedback(isUpdate),
-              child: Text(buttonText),
+              onPressed: () {
+                User? user = FirebaseAuth.instance.currentUser;
+                if (user != null) {
+                  context.read<FeedbackBloc>().add(
+                        SubmitFeedbackEvent(
+                          rating: rating,
+                          questionsLikedDisliked: questionsLikedDisliked,
+                          userId: user.uid,
+                        ),
+                      );
+                }
+              },
+              child: const Text('Submit Feedback'),
             ),
           ],
         ),
@@ -128,97 +211,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  Widget _buildHeader(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back,
-                size: 24, color: AppColors.buttonblue),
-          ),
-          const SizedBox(width: 20),
-          ShaderMask(
-            shaderCallback: (bounds) => const LinearGradient(
-              colors: [
-                AppColors.textColorGrey,
-                AppColors.textColorSettings,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ).createShader(
-              Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
-            ),
-            child: Text(
-              "Feedback",
-              style: theme.textTheme.headlineMedium!
-                  .copyWith(fontSize: 24, color: AppColors.textColorWhite),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRatingSection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
-        return IconButton(
-          onPressed: () {
-            setState(() {
-              _currentRating = index + 1; // Update local rating
-            });
-          },
-          icon: Icon(
-            _currentRating > index
-                ? Icons.star_rate_rounded
-                : Icons.star_border_rounded,
-            color: AppColors.kpurple,
-            size: 50,
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildQuestionsSection(
-      Map<String, Map<String, bool>> questions, ThemeData theme) {
-    return Card(
-      child: Container(
-        width: MediaQuery.of(context).size.width * .9,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-        decoration: BoxDecoration(
-          color: AppColors.kwhiteColor,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: questions.keys.map((question) {
-            final liked = questions[question]?['liked'] ?? false;
-            final disliked = questions[question]?['disliked'] ?? false;
-
-            return _questionRow(
-              title: question,
-              liked: liked,
-              disliked: disliked,
-              onLike: () => _updateQuestion(question, true),
-              onDislike: () => _updateQuestion(question, false),
-              theme: theme,
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget _questionRow({
+  Widget questionRow({
     required String title,
     required bool liked,
     required bool disliked,
+    required ThemeData theme,
     required VoidCallback onLike,
     required VoidCallback onDislike,
-    required ThemeData theme,
   }) {
     return Row(
       children: [
@@ -253,26 +252,35 @@ class _FeedbackPageState extends State<FeedbackPage> {
     );
   }
 
-  void _updateQuestion(String question, bool liked) {
-    setState(() {
-      _currentQuestionsLikedDisliked[question] = {
-        'liked': liked,
-        'disliked': !liked,
-      };
-    });
-  }
-
-  Future<void> _submitFeedback(bool isUpdate) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      context.read<FeedbackBloc>().add(
-            SubmitFeedbackEvent(
-              rating: _currentRating,
-              questionsLikedDisliked: _currentQuestionsLikedDisliked,
-              userId: user.uid,
-            ),
-          );
-    }
+  Widget _buildSubmittedFeedback(
+      Map<String, dynamic> feedbackData, ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'You have already submitted feedback. Thank you!',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyLarge!.copyWith(fontSize: 20),
+          ),
+          const SizedBox(height: 40),
+          TextButton.icon(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.kpurple,
+                size: 20,
+              ),
+              label: Text(
+                "Back",
+                style: theme.textTheme.bodyLarge!
+                    .copyWith(fontSize: 20, color: AppColors.kpurple),
+              ))
+        ],
+      ),
+    );
   }
 
   Map<String, Map<String, bool>> _initialQuestions() {

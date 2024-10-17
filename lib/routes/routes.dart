@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
@@ -127,8 +129,12 @@ final GoRouter router = GoRouter(
         final story = state.extra as Map<String, String>;
         final storytype = state.uri.queryParameters['storytype'];
         final language = state.uri.queryParameters['language'] ?? 'English';
+
         return StoryGeneratePage(
-            story: story, storytype: storytype!, language: language!);
+          story: story,
+          storytype: storytype!,
+          language: language!,
+        );
       },
     ),
     GoRoute(

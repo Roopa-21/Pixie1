@@ -11,7 +11,7 @@ import 'package:pixieapp/const/colors.dart';
 
 class NavBar2 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
-  final File audioFile; // Accept the audio file
+  final File audioFile;
 
   const NavBar2(
       {super.key, required this.documentReference, required this.audioFile});

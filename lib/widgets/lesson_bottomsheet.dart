@@ -69,6 +69,9 @@ class _LessonBottomsheetState extends State<LessonBottomsheet> {
                             AddlessonEvent(lesson, selectedindexlesson: index));
                         context.pop();
                       },
+                      side: const BorderSide(
+                          width: .4, color: Color.fromARGB(255, 152, 152, 152)),
+                      shadowColor: Colors.black,
                       selectedColor: AppColors.kpurple,
                       elevation: 3,
                       checkmarkColor: AppColors.kwhiteColor,
