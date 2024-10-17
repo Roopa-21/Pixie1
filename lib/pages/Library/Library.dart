@@ -77,6 +77,15 @@ class _LibraryState extends State<Library> {
                             filterChoicechip(
                               ontap: () => context
                                   .read<FetchStoryBloc>()
+                                  .add(const AddfilterEvent(filter: '')),
+                              title: 'All',
+                              theme: theme,
+                              selected:
+                                  state is StoryLoaded && state.filter == '',
+                            ),
+                            filterChoicechip(
+                              ontap: () => context
+                                  .read<FetchStoryBloc>()
                                   .add(const AddfilterEvent(filter: 'Bedtime')),
                               title: 'Bedtime',
                               theme: theme,
@@ -203,7 +212,7 @@ class _LibraryState extends State<Library> {
               theme: theme,
               title: story['title'],
               storytype: story['storytype'],
-              duration: story['audiofile'],
+              duration: '',
               image: '',
               storyRef: storyRef,
               ontap: () {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
@@ -12,6 +10,7 @@ import 'package:pixieapp/pages/AllStories/all_stories.dart';
 import 'package:pixieapp/pages/CreateAccount/createaccount.dart';
 import 'package:pixieapp/pages/CreateAccountWithMail/create_account_with_email.dart';
 import 'package:pixieapp/pages/FirebaseStory/firebasestory.dart';
+import 'package:pixieapp/pages/Firebase_suggested_story.dart/suggested_strory.dart';
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
@@ -29,6 +28,9 @@ import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
 import 'package:pixieapp/pages/questions_intro_page.dart';
 import 'package:pixieapp/pages/storygenerate/storygenerate.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
+import 'package:pixieapp/pages/home/home_page.dart' as home;
+import 'package:pixieapp/pages/Firebase_suggested_story.dart/suggested_strory.dart'
+    as suggested;
 
 bool isUserAuthenticated(BuildContext context) {
   final authState = context.read<AuthBloc>().state;
@@ -75,12 +77,12 @@ final GoRouter router = GoRouter(
               } else if (snapshot.hasData && snapshot.data == true) {
                 return const QuestionsIntroPage();
               } else {
-                return const HomePage();
+                return const home.HomePage();
               }
             },
           );
         } else if (authState is SignUpScreenOtpSuccessState) {
-          return const HomePage();
+          return const home.HomePage();
         } else {
           return const OnboardingPage();
         }
@@ -141,7 +143,7 @@ final GoRouter router = GoRouter(
       path: '/HomePage',
       pageBuilder: (context, state) {
         return const NoTransitionPage(
-          child: HomePage(),
+          child: home.HomePage(),
         );
       },
     ),
@@ -194,6 +196,13 @@ final GoRouter router = GoRouter(
       builder: (context, state) {
         final storyDocRef = state.extra as DocumentReference<Object?>;
         return Firebasestory(storyDocRef: storyDocRef);
+      },
+    ),
+    GoRoute(
+      path: '/Firebasesuggestedstory',
+      builder: (context, state) {
+        final storyDocRef = state.extra as DocumentReference<Object?>;
+        return Firebasesuggestedstory(storyDocRef: storyDocRef);
       },
     ),
   ],
