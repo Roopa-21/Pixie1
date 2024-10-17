@@ -51,6 +51,8 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
 
     return stories.where((story) {
       if (filter == 'English' || filter == 'Hindi') {
+        print(filter);
+        print(story['language']);
         return story['language']?.toLowerCase() == filter.toLowerCase();
       } else if (filter == 'Bedtime' || filter == 'Playtime') {
         return story['storytype']?.toLowerCase() == filter.toLowerCase();

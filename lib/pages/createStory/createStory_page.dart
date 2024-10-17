@@ -76,7 +76,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 listener: (context, state) {
                   if (state is StorySuccess) {
                     context.push(
-                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}}',
+                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}',
                       extra: state.story,
                     );
                   } else if (state is StoryFailure) {
@@ -492,8 +492,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
             lessons: context.read<AddCharacterBloc>().state.lessons ?? '',
             length: context.read<AddCharacterBloc>().state.musicAndSpeed ==
                     'Bedtime'
-                ? '5min'
-                : '10min',
+                ? '400'
+                : '400',
             language: context.read<AddCharacterBloc>().state.language.name,
           ));
       context.read<AddCharacterBloc>().add(const PageChangeEvent(0));

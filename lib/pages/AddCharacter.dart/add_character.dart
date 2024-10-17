@@ -209,6 +209,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       .add(
                                                           const UpdateMusicandspeedEvent(
                                                               'Playtime'));
+
+                                                  print(storydata.event);
                                                 }),
                                             const SizedBox(height: 40),
                                             Text(
@@ -1339,7 +1341,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       Language.Hindi) &&
                                               (state.musicAndSpeed ==
                                                       "Bedtime" ||
-                                                  state.language ==
+                                                  state.musicAndSpeed ==
                                                       "Playtime")) {
                                             pageViewController?.nextPage(
                                               duration: const Duration(

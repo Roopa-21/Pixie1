@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pixieapp/blocs/Feedback/feedback_bloc.dart';
 import 'package:pixieapp/blocs/Feedback/feedback_event.dart';
 import 'package:pixieapp/blocs/Feedback/feedback_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/widgets_index.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -205,6 +207,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
               },
               child: const Text('Submit Feedback'),
             ),
+            const SizedBox(height: 20),
+            contactusbutton(theme)
           ],
         ),
       ),
@@ -266,19 +270,52 @@ class _FeedbackPageState extends State<FeedbackPage> {
             style: theme.textTheme.bodyLarge!.copyWith(fontSize: 20),
           ),
           const SizedBox(height: 40),
-          TextButton.icon(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: AppColors.kpurple,
-                size: 20,
-              ),
-              label: Text(
-                "Back",
-                style: theme.textTheme.bodyLarge!
-                    .copyWith(fontSize: 20, color: AppColors.kpurple),
-              ))
+          ElevatedButton.icon(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.kpurple,
+              size: 20,
+            ),
+            label: Text(
+              "Back",
+              style: theme.textTheme.bodyLarge!
+                  .copyWith(fontSize: 20, color: AppColors.kpurple),
+            ),
+          )
         ],
+      ),
+    );
+  }
+
+  Widget contactusbutton(ThemeData theme) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * .6,
+      child: ElevatedButton(
+        onPressed: openWhatsAppChat,
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(MediaQuery.of(context).size.width, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          foregroundColor: AppColors.kwhiteColor,
+          backgroundColor: AppColors.kwhiteColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Contact us",
+              style: theme.textTheme.bodyLarge!.copyWith(
+                color: AppColors.kpurple,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            const SizedBox(width: 10),
+            SvgPicture.asset('assets/images/contactus.svg', width: 20),
+          ],
+        ),
       ),
     );
   }
@@ -291,5 +328,17 @@ class _FeedbackPageState extends State<FeedbackPage> {
       'Background music': {'liked': false, 'disliked': false},
       'User journey': {'liked': false, 'disliked': false},
     };
+  }
+}
+
+// Function to open WhatsApp chat
+Future<void> openWhatsAppChat() async {
+  const whatsappUrl = 'https://wa.me/+918547062699';
+  final uri = Uri.parse(whatsappUrl);
+
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  } else {
+    throw 'Could not launch WhatsApp';
   }
 }

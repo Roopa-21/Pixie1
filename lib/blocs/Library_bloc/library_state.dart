@@ -11,7 +11,7 @@ abstract class StoryState extends Equatable {
 }
 
 class StoryInitial extends StoryState {
-  const StoryInitial() : super(error: '', filter: '');
+  const StoryInitial() : super(error: '', filter: 'All');
 }
 
 class StoryLoading extends StoryState {
