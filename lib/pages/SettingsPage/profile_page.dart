@@ -179,9 +179,105 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 
-void editGender(){
-  
-}
+  void editGender() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Update Pronoun"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      await updateGender("He");
+                      context.pop();
+                    },
+                    child: Container(
+                        height: 50,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppColors.kpurple,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "He",
+                          style: TextStyle(color: AppColors.kwhiteColor),
+                        ))),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      await updateGender("She");
+                      context.pop();
+                    },
+                    child: Container(
+                        height: 50,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          color: AppColors.kpurple,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Center(
+                            child: Text(
+                          "She",
+                          style: TextStyle(color: AppColors.kwhiteColor),
+                        ))),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () async {
+                  await updateGender("Prefer not to say");
+                  context.pop();
+                },
+                child: Container(
+                    height: 50,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      color: AppColors.kpurple,
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Center(
+                        child: Text(
+                      "Prefer not to say",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.kwhiteColor),
+                    ))),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(); // Close the dialog without updating
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> updateGender(String selectedPronoun) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .update({'gender': selectedPronoun});
+
+    setState(() {
+      pronoun = selectedPronoun;
+    });
+  }
+
   void _editFamilyName(String relation) {
     _familyController.clear();
     showDialog(
@@ -203,7 +299,6 @@ void editGender(){
             TextButton(
               child: Text("Save"),
               onPressed: () async {
-            
                 DocumentSnapshot userDoc = await FirebaseFirestore.instance
                     .collection('users')
                     .doc(user?.uid)
@@ -220,7 +315,6 @@ void editGender(){
                   }
                 }
 
-  
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(user?.uid)
@@ -333,7 +427,7 @@ void editGender(){
                   setState(() {});
                 },
                 tabs: [
-                  _tabTitle(deviceWidth, childName!, 0),
+                  _tabTitle(deviceWidth, childName ?? '', 0),
                   _tabTitle(deviceWidth, "Family", 1),
                 ],
               ),
@@ -387,7 +481,7 @@ void editGender(){
                 children: [
                   detailsChild('Name', childName ?? 'Loading...', _editName),
                   const SizedBox(height: 20),
-                  detailsChild('Pronoun', pronoun ?? 'Loading...', () {}),
+                  detailsChild('Pronoun', pronoun ?? 'Loading...', editGender),
                   const SizedBox(height: 20),
                   detailsChild('Date Of Birth', dateOfBirth.toString(),
                       _editDateOfBirth),
@@ -475,8 +569,6 @@ void editGender(){
                                           return const AddFavoritesBottomsheet();
                                         },
                                       );
-
-                                      setState(() {});
                                     },
                                     child: Text(
                                       'Add your own',
@@ -580,19 +672,19 @@ void editGender(){
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Mother', motherName ?? 'Loading...',
+          detailsChild('Mother', motherName ?? 'Add Mother Name',
               () => _editFamilyName('Mother')),
           const SizedBox(height: 20),
-          detailsChild('Father', fatherName ?? 'Loading...',
+          detailsChild('Father', fatherName ?? 'Add Father Name',
               () => _editFamilyName('Father')),
           const SizedBox(height: 20),
-          detailsChild('Grandmother', grandMotherName ?? 'Loading...',
+          detailsChild('Grandmother', grandMotherName ?? 'Add Grandmother Name',
               () => _editFamilyName('GrandMother')),
           const SizedBox(height: 20),
-          detailsChild('GrandFather', grandFatherName ?? 'Loading...',
+          detailsChild('GrandFather', grandFatherName ?? 'Add GrandFather Name',
               () => _editFamilyName('GrandFather')),
           const SizedBox(height: 20),
-          detailsChild('PetDog', petDogName ?? 'Loading...',
+          detailsChild('PetDog', petDogName ?? 'Add Petog Name',
               () => _editFamilyName('Pet Dog')),
           const Spacer(),
           ElevatedButton(

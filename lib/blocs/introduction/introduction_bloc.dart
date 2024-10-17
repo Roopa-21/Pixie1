@@ -21,13 +21,11 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
 
     on<FavListChanged>((event, emit) {
       emit(FavListUpdated(favList: event.favList));
-     
     });
 
-     on<RelationAdded>((event, emit) {
-      emit(RelationUpdated(relation: event.relation,relationName: event.relationName));
-     
+    on<RelationAdded>((event, emit) {
+      emit(RelationUpdated(
+          relation: event.relation, relationName: event.relationName));
     });
-
   }
 }

@@ -482,6 +482,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 theme: theme,
                                                 onTap: () async {
                                                   await showModalBottomSheet(
+                                                  
                                                     isScrollControlled: true,
                                                     backgroundColor:
                                                         Colors.transparent,
@@ -1137,7 +1138,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                           children: [
                                             SizedBox(height: height * .03),
                                             Text(
-                                              'Genre of the story',
+                                              'Genre of the story..',
                                               style: theme
                                                   .textTheme.displaySmall!
                                                   .copyWith(
