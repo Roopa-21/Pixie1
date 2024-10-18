@@ -292,7 +292,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * .6,
       child: ElevatedButton(
-        onPressed: openWhatsAppChat,
+        onPressed: () async {
+          await openWhatsAppChat();
+        },
         style: ElevatedButton.styleFrom(
           minimumSize: Size(MediaQuery.of(context).size.width, 50),
           shape: RoundedRectangleBorder(
