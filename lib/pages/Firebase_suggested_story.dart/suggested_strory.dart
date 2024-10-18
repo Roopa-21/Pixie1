@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
+import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:pixieapp/widgets/navbar3.dart';
 
 class Firebasesuggestedstory extends StatefulWidget {
@@ -18,7 +23,10 @@ class Firebasesuggestedstory extends StatefulWidget {
 
 class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
   Map<String, dynamic>? storyData;
-  String childName = "child_name"; // Default placeholder
+
+  String childName = "child_name";
+  File? audioFile;
+  StoryRepository? storyRepository;
 
   @override
   void initState() {
@@ -62,12 +70,42 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
       if (docSnapshot.exists) {
         setState(() {
           storyData = docSnapshot.data() as Map<String, dynamic>?;
+
+          //   audioUrl = _uploadAudioToStorage(audioFile!);
         });
+        print(
+            '***${storyData?["title"]! + storyData?["story"]! + storyData?["language"]}');
+        print('+++++${storyData?["story"]!}');
+        print('........${storyData?["language"]}');
+
+        audioFile = await storyRepository?.speechToText(
+            text: storyData?["title"]! + storyData?["story"]!,
+            language: storyData?["language"]);
+        print('Aaaa$audioFile');
       } else {
         print('Story document does not exist.');
       }
     } catch (e) {
       print('Error fetching story data: $e');
+    }
+  }
+
+  Future<String?> _uploadAudioToStorage(File audioFile) async {
+    try {
+      final storageRef = FirebaseStorage.instance
+          .ref()
+          .child('user_audio')
+          .child('${DateTime.now().millisecondsSinceEpoch}.mp3');
+
+      final uploadTask = storageRef.putFile(audioFile);
+      final snapshot = await uploadTask;
+      final audioUrl = await snapshot.ref.getDownloadURL();
+
+      print('Audio uploaded: $audioUrl');
+      return audioUrl;
+    } catch (e) {
+      print('Error uploading audio: $e');
+      return null;
     }
   }
 
@@ -164,11 +202,20 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
         ],
       ),
       bottomNavigationBar:
-      
-      
-       NavBar3(
+      //  NavBar2(
+      //   documentReference: widget.storyDocRef,
+      //   audioFile: audioFile!,
+      //   story: storyData?["story"] ?? 'No Story available',
+      //   title: storyData?["title"] ?? 'No title available',
+      //   firebaseAudioPath:
+      //       'https://firebasestorage.googleapis.com/v0/b/pixie-38007.appspot.com/o/user_audio%2F1729173045688.mp3?alt=media&token=4c83fd6f-7d1f-47d8-b0e4-3a1e793ffe5f',
+      // ),
+         NavBar3(
         documentReference: widget.storyDocRef,
         favstatus: storyData!['isfav'],
+        language: storyData?["language"]??'',
+        text: storyData?["title"]! + storyData?["story"]!??'',
+
       ),
     );
   }

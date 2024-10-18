@@ -14,6 +14,7 @@ import 'package:pixieapp/pages/Firebase_suggested_story.dart/suggested_strory.da
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
+import 'package:pixieapp/pages/SettingsPage/about.dart';
 import 'package:pixieapp/pages/SettingsPage/feedback.dart';
 import 'package:pixieapp/pages/SettingsPage/profile_page.dart';
 import 'package:pixieapp/pages/SettingsPage/settings_page.dart';
@@ -22,15 +23,12 @@ import 'package:pixieapp/pages/SplashScreen/story_confirmtion_page.dart';
 import 'package:pixieapp/pages/audioPlay/audioplay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
 import 'package:pixieapp/pages/error%20page/error_page.dart';
-import 'package:pixieapp/pages/home/home_page.dart';
 import 'package:pixieapp/pages/login_page/login_page.dart';
 import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
 import 'package:pixieapp/pages/questions_intro_page.dart';
 import 'package:pixieapp/pages/storygenerate/storygenerate.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/pages/home/home_page.dart' as home;
-import 'package:pixieapp/pages/Firebase_suggested_story.dart/suggested_strory.dart'
-    as suggested;
 
 bool isUserAuthenticated(BuildContext context) {
   final authState = context.read<AuthBloc>().state;
@@ -190,6 +188,10 @@ final GoRouter router = GoRouter(
           child: SettingsPage(),
         );
       },
+    ),
+     GoRoute(
+      path: '/aboutPage',
+      builder: (context, state) => const AboutPage(),
     ),
     GoRoute(
       path: '/Firebasestory',

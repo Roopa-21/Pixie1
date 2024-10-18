@@ -95,20 +95,20 @@ class _ProfilePageState extends State<ProfilePage>
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Edit Name"),
+          title: const Text("Edit Name"),
           content: TextField(
             controller: _nameController,
-            decoration: InputDecoration(hintText: "Update name"),
+            decoration: const InputDecoration(hintText: "Update name"),
           ),
           actions: [
             TextButton(
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Save"),
+              child: const Text("Save"),
               onPressed: () async {
                 await FirebaseFirestore.instance
                     .collection('users')
@@ -152,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage>
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -170,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage>
 
                   Navigator.of(context).pop();
                 },
-                child: Text('Update'),
+                child: const Text('Update'),
               ),
             ],
           ),
@@ -203,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage>
                           color: AppColors.kpurple,
                           borderRadius: BorderRadius.circular(12.0),
                         ),
-                        child: Center(
+                        child: const Center(
                             child: Text(
                           "He",
                           style: TextStyle(color: AppColors.kwhiteColor),
@@ -221,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage>
                           color: AppColors.kpurple,
                           borderRadius: BorderRadius.circular(12.0),
                         ),
-                        child: Center(
+                        child: const Center(
                             child: Text(
                           "She",
                           style: TextStyle(color: AppColors.kwhiteColor),
@@ -229,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage>
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               InkWell(
@@ -244,7 +244,7 @@ class _ProfilePageState extends State<ProfilePage>
                       color: AppColors.kpurple,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
-                    child: Center(
+                    child: const Center(
                         child: Text(
                       "Prefer not to say",
                       textAlign: TextAlign.center,
@@ -255,10 +255,9 @@ class _ProfilePageState extends State<ProfilePage>
           ),
           actions: [
             TextButton(
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed: () {
-                Navigator.of(context)
-                    .pop(); // Close the dialog without updating
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -278,26 +277,81 @@ class _ProfilePageState extends State<ProfilePage>
     });
   }
 
+  void _showDeleteAccountDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController reasonController = TextEditingController();
+        return AlertDialog(
+          title: const Text("Delete Account"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Are you sure you want to delete your account?"),
+              const SizedBox(height: 10),
+              TextField(
+                maxLines: null,
+                controller: reasonController,
+                decoration: const InputDecoration(
+                  labelText: "Reason for deletion",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                _deleteAccount(reasonController.text);
+                Navigator.of(context).pop();
+              },
+              child: const Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteAccount(String reason) async {
+    try {
+      await FirebaseFirestore.instance.collection('deleteAccount').add({
+        'userRef':
+            FirebaseFirestore.instance.collection('users').doc(user?.uid),
+        'reason': reason,
+        'deleted_at': Timestamp.now(),
+      });
+    } catch (e) {
+      print("Error deleting account: $e");
+    }
+  }
+
   void _editFamilyName(String relation) {
     _familyController.clear();
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Edit name"),
+          title: const Text("Edit name"),
           content: TextField(
             controller: _familyController,
-            decoration: InputDecoration(hintText: "Update name"),
+            decoration: const InputDecoration(hintText: "Update name"),
           ),
           actions: [
             TextButton(
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text("Save"),
+              child: const Text("Save"),
               onPressed: () async {
                 DocumentSnapshot userDoc = await FirebaseFirestore.instance
                     .collection('users')
@@ -434,7 +488,7 @@ class _ProfilePageState extends State<ProfilePage>
               const SizedBox(height: 20),
               Expanded(
                 child: TabBarView(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   controller: _tabController,
                   children: [
                     profileChildTab(theme),
@@ -495,7 +549,7 @@ class _ProfilePageState extends State<ProfilePage>
                             color: AppColors.textColorblack,
                             fontWeight: FontWeight.w400),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                           width: MediaQuery.of(context).size.width * 0.5555,
                           decoration: BoxDecoration(
@@ -506,7 +560,7 @@ class _ProfilePageState extends State<ProfilePage>
                                 color: Colors.grey.withOpacity(0.3),
                                 spreadRadius: 1,
                                 blurRadius: 5,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
@@ -552,7 +606,7 @@ class _ProfilePageState extends State<ProfilePage>
                                       color: Colors.grey.withOpacity(0.3),
                                       spreadRadius: 1,
                                       blurRadius: 5,
-                                      offset: Offset(0, 3),
+                                      offset: const Offset(0, 3),
                                     ),
                                   ],
                                 ),
@@ -570,7 +624,7 @@ class _ProfilePageState extends State<ProfilePage>
                                         },
                                       );
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Add your own',
                                     ),
                                   ),
@@ -584,7 +638,9 @@ class _ProfilePageState extends State<ProfilePage>
                     height: 20,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _showDeleteAccountDialog(context);
+                    },
                     child: Text(
                       "Delete my account",
                       style: theme.textTheme.bodyLarge!.copyWith(
@@ -633,7 +689,7 @@ class _ProfilePageState extends State<ProfilePage>
               color: AppColors.textColorblack, fontWeight: FontWeight.w400),
         ),
         Container(
-          padding: EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.only(left: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: AppColors.kwhiteColor,
