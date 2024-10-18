@@ -149,7 +149,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
       // Create user collection in Firestore
 
-      await FirebaseFirestore.instance.collection('users').doc('userId').set({
+      await FirebaseFirestore.instance.collection('users').doc(userId).set({
         'email': event.email,
         'phone': '',
         'createdAt': DateTime.now(),
