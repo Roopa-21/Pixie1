@@ -271,8 +271,9 @@ class _NavBar2State extends State<NavBar2> {
                     onPressed: handlePlayPause,
                     icon: SvgPicture.asset(
                       player.playing
-                          ? 'assets/images/playing.svg'
-                          : 'assets/images/pausebutton.svg',
+                          ? 'assets/images/playgrad.svg'
+                          : 'assets/images/pausegrad.svg',
+                      fit: BoxFit.contain,
                       width: 60,
                       height: 60,
                     ),
@@ -286,12 +287,13 @@ class _NavBar2State extends State<NavBar2> {
                     ),
                   ),
                   IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.upload,
-                        size: 25,
-                        color: AppColors.iconColor,
-                      )),
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      'assets/images/share.svg',
+                      width: 25,
+                      height: 25,
+                    ),
+                  ),
                 ],
               ),
             ],
