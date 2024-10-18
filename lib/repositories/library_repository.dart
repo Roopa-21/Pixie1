@@ -21,9 +21,22 @@ class FetchStoryRepository1 {
           'audiofile': doc['audiofile'],
           'isfav': doc['isfav'],
           'language': doc['language'],
+          'createdTime': doc['createdTime'], // Include the createdTime field
           'reference': doc.reference, // Include the DocumentReference
         };
       }).toList();
+
+      // Sort the stories by 'createdTime', placing null values last
+      stories.sort((a, b) {
+        final timeA = a['createdTime'] as Timestamp?;
+        final timeB = b['createdTime'] as Timestamp?;
+
+        if (timeA == null && timeB == null) return 0; // Both null, equal
+        if (timeA == null) return 1; // Place null timeA after timeB
+        if (timeB == null) return -1; // Place null timeB after timeA
+
+        return timeB.compareTo(timeA); // Descending order
+      });
 
       return stories;
     } catch (e) {

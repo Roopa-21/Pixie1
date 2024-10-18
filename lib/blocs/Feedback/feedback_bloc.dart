@@ -18,7 +18,6 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
     try {
       emit(FeedbackLoading());
 
-      // Save feedback to Firebase
       await _firestore.collection('feedback').doc(event.userId).set({
         'rating': event.rating,
         'questionsLikedDisliked': event.questionsLikedDisliked,
@@ -41,7 +40,15 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
           await _firestore.collection('feedback').doc(event.userId).get();
 
       if (docSnapshot.exists) {
-        emit(FeedbackExists(docSnapshot.data()!));
+        final data = docSnapshot.data() as Map<String, dynamic>;
+        final questionsLikedDisliked =
+            _parseQuestionsMap(data['questionsLikedDisliked']);
+        final previousRating = data['rating'] as int;
+
+        emit(FeedbackUpdated(
+          rating: previousRating,
+          questionsLikedDisliked: questionsLikedDisliked,
+        ));
       } else {
         emit(FeedbackInitial());
       }
@@ -54,10 +61,10 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
       UpdateLikedDislikedEvent event, Emitter<FeedbackState> emit) {
     if (state is FeedbackUpdated) {
       final currentState = state as FeedbackUpdated;
-      final updatedMap = {...currentState.questionsLikedDisliked};
+      final updatedMap = Map<String, Map<String, bool>>.from(
+          currentState.questionsLikedDisliked);
 
-      // Ensure both liked and disliked are managed correctly
-      updatedMap[event.question] = {
+      updatedMap[event.question] = <String, bool>{
         'liked': event.liked,
         'disliked': !event.liked,
       };
@@ -70,26 +77,36 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   }
 
   void _updateRating(UpdateRatingEvent event, Emitter<FeedbackState> emit) {
-    if (state is FeedbackUpdated || state is FeedbackInitial) {
-      final currentState = state is FeedbackUpdated
-          ? state as FeedbackUpdated
-          : FeedbackUpdated(
-              rating: 0, questionsLikedDisliked: _initialQuestions());
+    if (state is FeedbackUpdated) {
+      final currentState = state as FeedbackUpdated;
 
       emit(FeedbackUpdated(
         rating: event.rating,
         questionsLikedDisliked: currentState.questionsLikedDisliked,
       ));
+    } else {
+      emit(FeedbackUpdated(
+        rating: event.rating,
+        questionsLikedDisliked: _initialQuestions(),
+      ));
     }
   }
 
   Map<String, Map<String, bool>> _initialQuestions() {
-    return {
-      'Story line': {'liked': false, 'disliked': false},
-      'Tone of narration': {'liked': false, 'disliked': false},
-      'Voice modulation': {'liked': false, 'disliked': false},
-      'Background music': {'liked': false, 'disliked': false},
-      'User journey': {'liked': false, 'disliked': false},
+    return <String, Map<String, bool>>{
+      'Story line': <String, bool>{'liked': false, 'disliked': false},
+      'Tone of narration': <String, bool>{'liked': false, 'disliked': false},
+      'Voice modulation': <String, bool>{'liked': false, 'disliked': false},
+      'Background music': <String, bool>{'liked': false, 'disliked': false},
+      'User journey': <String, bool>{'liked': false, 'disliked': false},
     };
+  }
+
+  Map<String, Map<String, bool>> _parseQuestionsMap(Map<String, dynamic> raw) {
+    return raw.map((key, value) {
+      final innerMap =
+          (value as Map<String, dynamic>).map((k, v) => MapEntry(k, v as bool));
+      return MapEntry(key, innerMap);
+    });
   }
 }
