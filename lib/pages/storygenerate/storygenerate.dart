@@ -64,7 +64,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
   bool audioloaded = false;
 
   bool callAppBar = false;
-
+   String? audioUrl='';
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -77,12 +77,13 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
           audioFile = state.audioFile;
           print('Audio File Path: ${audioFile!.path}');
 
-          final audioUrl = await _uploadAudioToStorage(audioFile!);
+           audioUrl = await _uploadAudioToStorage(audioFile!);
+
           if (audioUrl != null) {
             setState(() {
               audioloaded = true;
             });
-            await _updateStoryWithAudioUrl(audioUrl);
+            await _updateStoryWithAudioUrl(audioUrl!);
           }
         }
       },
@@ -186,6 +187,9 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
             ? NavBar2(
                 documentReference: _documentReference,
                 audioFile: audioFile!,
+                story: widget.story['story'] ?? 'No Story available',
+                title: widget.story['title'] ?? 'No title available',
+                firebaseAudioPath: audioUrl??'',
               )
             // : SizedBox.shrink()
             : const NavBarLoading(),

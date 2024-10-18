@@ -163,7 +163,10 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
           ),
         ],
       ),
-      bottomNavigationBar: NavBar3(
+      bottomNavigationBar:
+      
+      
+       NavBar3(
         documentReference: widget.storyDocRef,
         favstatus: storyData!['isfav'],
       ),

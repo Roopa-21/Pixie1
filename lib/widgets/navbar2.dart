@@ -8,13 +8,22 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/widgets/story_feedback.dart';
 
 class NavBar2 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
   final File audioFile;
+  final String story;
+  final String title;
+  final String firebaseAudioPath;
 
   const NavBar2(
-      {super.key, required this.documentReference, required this.audioFile});
+      {super.key,
+      required this.documentReference,
+      required this.audioFile,
+      required this.story,
+      required this.title,
+      required this.firebaseAudioPath});
 
   @override
   State<NavBar2> createState() => _NavBar2State();
@@ -32,28 +41,29 @@ class _NavBar2State extends State<NavBar2> {
   @override
   void initState() {
     super.initState();
-    player.setAsset('assets/images/audio.mp3');
+    player.setFilePath(widget.audioFile.path);
     // player.setUrl(
     //     'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3')
     player.positionStream.listen((p) {
       setState(() {
         position = p;
       });
-      player.durationStream.listen((d) {
-        setState(() {
-          duration = d!;
-        });
-      });
-      player.playerStateStream.listen((state) {
-        if (state.processingState == ProcessingState.completed) {
-          setState(() {
-            position = Duration.zero;
-          });
-          player.pause();
-          player.seek(position);
-        }
+    });
+    player.durationStream.listen((d) {
+      setState(() {
+        duration = d!;
       });
     });
+    player.playerStateStream.listen((state) {
+      if (state.processingState == ProcessingState.completed) {
+        setState(() {
+          position = Duration.zero;
+        });
+        player.pause();
+        player.seek(position);
+      }
+    });
+
     // _audioPlayer = AudioPlayer(); // Initialize the audio player
     // _setAudioSource(); // Load the audio source when the widget is initialized
 
@@ -230,7 +240,27 @@ class _NavBar2State extends State<NavBar2> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        enableDrag: false,
+                        context: context,
+                        builder: (context) {
+                          return GestureDetector(
+                            onTap: () => FocusScope.of(context).unfocus(),
+                            child: Padding(
+                              padding: MediaQuery.viewInsetsOf(context),
+                              child: StoryFeedback(
+                                story: widget.story,
+                                title: widget.title,
+                                path: widget.firebaseAudioPath,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                     icon: SvgPicture.asset(
                       'assets/images/dislike.svg',
                       width: 25,
