@@ -17,6 +17,9 @@ class FeedbackPage extends StatefulWidget {
 }
 
 class _FeedbackPageState extends State<FeedbackPage> {
+  int currentRating = 0;
+  late Map<String, Map<String, bool>> currentQuestionsLikedDisliked;
+
   @override
   void initState() {
     super.initState();
@@ -24,12 +27,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
     if (user != null) {
       context.read<FeedbackBloc>().add(CheckFeedbackEvent(user.uid));
     }
+    currentQuestionsLikedDisliked = _initialQuestions();
   }
 
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final deviceWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -37,47 +39,28 @@ class _FeedbackPageState extends State<FeedbackPage> {
         listener: (context, state) {
           if (state is FeedbackSubmitted) {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Feedback submitted!')));
+              const SnackBar(content: Text('Feedback submitted!')),
+            );
+            Navigator.pop(context);
           }
         },
         builder: (context, state) {
           if (state is FeedbackLoading) {
             return const Center(child: LoadingWidget());
-          } else if (state is FeedbackExists) {
-            final rawQuestionsMap = state.feedbackData['questionsLikedDisliked']
-                as Map<String, dynamic>;
-            Map<String, Map<String, bool>> _currentQuestionsLikedDisliked =
-                rawQuestionsMap.map((key, value) {
-              final innerMap = (value as Map<String, dynamic>).map((k, v) {
-                return MapEntry(k, v as bool); // Convert inner values to bool
-              });
-              return MapEntry(key, innerMap);
-            });
-
-            return _buildFeedbackForm(
-                state.feedbackData['rating'],
-                _currentQuestionsLikedDisliked,
-                theme,
-                deviceHeight,
-                deviceWidth);
           } else if (state is FeedbackUpdated) {
-            return _buildFeedbackForm(state.rating,
-                state.questionsLikedDisliked, theme, deviceHeight, deviceWidth);
-          } else {
-            return _buildFeedbackForm(
-                0, _initialQuestions(), theme, deviceHeight, deviceWidth);
+            currentRating = state.rating;
+            currentQuestionsLikedDisliked = state.questionsLikedDisliked;
           }
+          return _buildFeedbackForm(context, theme);
         },
       ),
     );
   }
 
-  Widget _buildFeedbackForm(
-      int rating,
-      Map<String, Map<String, bool>> questionsLikedDisliked,
-      ThemeData theme,
-      double deviceHeight,
-      double deviceWidth) {
+  Widget _buildFeedbackForm(BuildContext context, ThemeData theme) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: deviceHeight,
       width: deviceWidth,
@@ -85,218 +68,184 @@ class _FeedbackPageState extends State<FeedbackPage> {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            Color(0xffead4f9),
-            Color(0xfff7f1d1),
-          ],
+          colors: [Color(0xffead4f9), Color(0xfff7f1d1)],
         ),
       ),
       child: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back,
-                        size: 24, color: AppColors.buttonblue),
-                  ),
-                  const SizedBox(width: 20),
-                  ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                      colors: [
-                        AppColors.textColorGrey,
-                        AppColors.textColorSettings,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ).createShader(
-                      Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
-                    ),
-                    child: Text(
-                      "Feedback",
-                      style: theme.textTheme.headlineMedium!.copyWith(
-                          fontSize: 24, color: AppColors.textColorWhite),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildHeader(theme),
             const SizedBox(height: 30),
-            Text(
-              'Rate your experience',
-              style: theme.textTheme.bodyLarge!
-                  .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
+            _buildRatingRow(context, theme),
             const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) {
-                return IconButton(
-                  onPressed: () {
-                    context
-                        .read<FeedbackBloc>()
-                        .add(UpdateRatingEvent(index + 1));
-                    print(index + 1);
-                  },
-                  icon: Icon(
-                    rating > index
-                        ? Icons.star_rate_rounded
-                        : Icons.star_border_rounded,
-                    color: AppColors.kpurple,
-                    size: 50,
-                  ),
-                );
-              }),
-            ),
+            _buildQuestionsCard(theme, deviceWidth, deviceHeight),
             const SizedBox(height: 30),
-            Card(
-              child: Container(
-                width: deviceWidth * .9,
-                height: deviceHeight * .36,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
-                decoration: BoxDecoration(
-                    color: AppColors.kwhiteColor,
-                    borderRadius: BorderRadius.circular(16)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: questionsLikedDisliked.keys.map((question) {
-                    final liked =
-                        questionsLikedDisliked[question]?['liked'] ?? false;
-                    final disliked =
-                        questionsLikedDisliked[question]?['disliked'] ?? false;
-                    return questionRow(
-                      title: question,
-                      liked: liked,
-                      disliked: disliked,
-                      theme: theme,
-                      onLike: () {
-                        context.read<FeedbackBloc>().add(
-                            UpdateLikedDislikedEvent(
-                                question: question, liked: true));
-                      },
-                      onDislike: () {
-                        context.read<FeedbackBloc>().add(
-                            UpdateLikedDislikedEvent(
-                                question: question, liked: false));
-                      },
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton(
-              onPressed: () {
-                User? user = FirebaseAuth.instance.currentUser;
-                if (user != null) {
-                  context.read<FeedbackBloc>().add(
-                        SubmitFeedbackEvent(
-                          rating: rating,
-                          questionsLikedDisliked: questionsLikedDisliked,
-                          userId: user.uid,
-                        ),
-                      );
-                }
-              },
-              child: const Text('Submit Feedback'),
-            ),
-            const SizedBox(height: 20),
-            contactusbutton(theme)
+            _buildContactUsButton(theme),
+            const Spacer(),
+            _buildSubmitButton(context, theme),
+            const SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
 
-  Widget questionRow({
-    required String title,
+  Widget _buildHeader(ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back,
+                size: 24, color: AppColors.buttonblue),
+          ),
+          const SizedBox(width: 20),
+          Text(
+            "Feedback",
+            style: theme.textTheme.headlineMedium!.copyWith(
+              fontSize: 24,
+              color: AppColors.textColorblue,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRatingRow(BuildContext context, ThemeData theme) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (index) {
+        return IconButton(
+          onPressed: () {
+            setState(() => currentRating = index + 1);
+            context.read<FeedbackBloc>().add(UpdateRatingEvent(currentRating));
+          },
+          icon: Icon(
+            currentRating > index ? Icons.star : Icons.star_border,
+            color: AppColors.kpurple,
+            size: 50,
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildQuestionsCard(
+      ThemeData theme, double deviceWidth, double deviceHeight) {
+    return Card(
+      child: Container(
+        width: deviceWidth * 0.9,
+        height: deviceHeight * 0.36,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.kwhiteColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: currentQuestionsLikedDisliked.keys.map((question) {
+            final liked = currentQuestionsLikedDisliked[question]!['liked']!;
+            final disliked =
+                currentQuestionsLikedDisliked[question]!['disliked']!;
+            return _buildQuestionRow(
+              question: question,
+              liked: liked,
+              disliked: disliked,
+              theme: theme,
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuestionRow({
+    required String question,
     required bool liked,
     required bool disliked,
     required ThemeData theme,
-    required VoidCallback onLike,
-    required VoidCallback onDislike,
   }) {
     return Row(
       children: [
         Expanded(
           flex: 6,
           child: Text(
-            title,
+            question,
             style: theme.textTheme.bodyMedium!.copyWith(fontSize: 16),
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: IconButton(
-            onPressed: onLike,
-            icon: Icon(
-              liked ? Icons.thumb_up_alt : Icons.thumb_up_off_alt,
-              color: AppColors.kpurple,
-            ),
+        IconButton(
+          onPressed: () {
+            setState(() {
+              currentQuestionsLikedDisliked[question] = {
+                'liked': true,
+                'disliked': false
+              };
+            });
+            context
+                .read<FeedbackBloc>()
+                .add(UpdateLikedDislikedEvent(question: question, liked: true));
+          },
+          icon: Icon(
+            liked ? Icons.thumb_up : Icons.thumb_up_off_alt,
+            color: AppColors.kpurple,
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: IconButton(
-            onPressed: onDislike,
-            icon: Icon(
-              disliked ? Icons.thumb_down_alt : Icons.thumb_down_off_alt,
-              color: AppColors.kpurple,
-            ),
+        IconButton(
+          onPressed: () {
+            setState(() {
+              currentQuestionsLikedDisliked[question] = {
+                'liked': false,
+                'disliked': true
+              };
+            });
+            context.read<FeedbackBloc>().add(
+                UpdateLikedDislikedEvent(question: question, liked: false));
+          },
+          icon: Icon(
+            disliked ? Icons.thumb_down : Icons.thumb_down_off_alt,
+            color: AppColors.kpurple,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildSubmittedFeedback(
-      Map<String, dynamic> feedbackData, ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            'You have already submitted feedback. Thank you!',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyLarge!.copyWith(fontSize: 20),
-          ),
-          const SizedBox(height: 40),
-          ElevatedButton.icon(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.kpurple,
-              size: 20,
-            ),
-            label: Text(
-              "Back",
-              style: theme.textTheme.bodyLarge!
-                  .copyWith(fontSize: 20, color: AppColors.kpurple),
-            ),
-          )
-        ],
+  Widget _buildSubmitButton(BuildContext context, ThemeData theme) {
+    return SizedBox(
+      height: 50,
+      width: MediaQuery.of(context).size.width * .9,
+      child: ElevatedButton(
+        onPressed: () {
+          User? user = FirebaseAuth.instance.currentUser;
+          if (user != null) {
+            context.read<FeedbackBloc>().add(
+                  SubmitFeedbackEvent(
+                    rating: currentRating,
+                    questionsLikedDisliked: currentQuestionsLikedDisliked,
+                    userId: user.uid,
+                  ),
+                );
+          }
+        },
+        child: Text(
+          'Submit',
+          style: theme.textTheme.bodyLarge!
+              .copyWith(color: AppColors.textColorblue),
+        ),
       ),
     );
   }
 
-  Widget contactusbutton(ThemeData theme) {
+  Widget _buildContactUsButton(ThemeData theme) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * .6,
+      width: MediaQuery.of(context).size.width * 0.5,
       child: ElevatedButton(
-        onPressed: () async {
-          await openWhatsAppChat();
-        },
+        onPressed: openWhatsAppChat,
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(MediaQuery.of(context).size.width, 50),
+          minimumSize: const Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
@@ -309,9 +258,8 @@ class _FeedbackPageState extends State<FeedbackPage> {
             Text(
               "Contact us",
               style: theme.textTheme.bodyLarge!.copyWith(
-                color: AppColors.kpurple,
+                color: AppColors.textColorblack,
                 fontSize: 20,
-                fontWeight: FontWeight.w400,
               ),
             ),
             const SizedBox(width: 10),
@@ -333,7 +281,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 }
 
-// Function to open WhatsApp chat
 Future<void> openWhatsAppChat() async {
   const whatsappUrl = 'https://wa.me/+918547062699';
   final uri = Uri.parse(whatsappUrl);

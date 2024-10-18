@@ -19,8 +19,15 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
       // Fetch all stories for the user
       final stories = await _fetchStoryRepository.fetchStories(event.userId);
 
+      // Sort stories by createdTime in descending order (latest first)
+      final sortedStories = stories;
+
       // Store the original stories and emit them along with the default filter (empty)
-      emit(StoryLoaded(stories: stories, filteredStories: stories, filter: ''));
+      emit(StoryLoaded(
+        stories: sortedStories,
+        filteredStories: sortedStories,
+        filter: '',
+      ));
     } catch (e) {
       emit(StoryError('Failed to fetch stories: ${e.toString()}'));
     }
@@ -35,14 +42,31 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
 
       // Emit the updated state with both the original list and filtered list
       emit(StoryLoaded(
-        stories: loadedState.stories, // Keep the original stories
-        filteredStories: filteredStories, // Pass the filtered stories
+        stories: loadedState.stories,
+        filteredStories: filteredStories,
         filter: event.filter,
       ));
     } else {
       emit(StoryError('Cannot apply filter. No stories available.'));
     }
   }
+
+  // // Sort stories by createdTime in descending order (latest first)
+  // List<Map<String, dynamic>> _sortStoriesByTime(
+  //     List<Map<String, dynamic>> stories) {
+  //   stories.sort((a, b) {
+  //     final Timestamp? timeA = a['createdTime'] as Timestamp?;
+  //     final Timestamp? timeB = b['createdTime'] as Timestamp?;
+
+  //     // Convert Timestamp to DateTime (or assign a fallback value)
+  //     final DateTime dateTimeA = timeA?.toDate() ?? DateTime(1970, 1, 1);
+  //     final DateTime dateTimeB = timeB?.toDate() ?? DateTime(1970, 1, 1);
+
+  //     // Sort in descending order (latest first)
+  //     return dateTimeB.compareTo(dateTimeA);
+  //   });
+  //   return stories;
+  // }
 
   // Apply filter to the list of stories
   List<Map<String, dynamic>> _applyFilter(
@@ -51,8 +75,6 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
 
     return stories.where((story) {
       if (filter == 'English' || filter == 'Hindi') {
-        print(filter);
-        print(story['language']);
         return story['language']?.toLowerCase() == filter.toLowerCase();
       } else if (filter == 'Bedtime' || filter == 'Playtime') {
         return story['storytype']?.toLowerCase() == filter.toLowerCase();
@@ -76,7 +98,8 @@ class FetchStoryRepository {
       QuerySnapshot querySnapshot = await _firestore
           .collection('fav_storys')
           .where('user_ref', isEqualTo: userId)
-          .orderBy('createdTime', descending: true)
+          .orderBy('createdTime',
+              descending: true) // Already sorted by Firestore
           .get();
 
       // Parse the data into a list of maps and include the document reference

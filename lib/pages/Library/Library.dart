@@ -212,7 +212,7 @@ class _LibraryState extends State<Library> {
               theme: theme,
               title: story['title'],
               storytype: story['storytype'],
-              duration: '',
+              duration: _formatCreatedTime(story['createdTime']),
               image: '',
               storyRef: storyRef,
               ontap: () {
@@ -289,5 +289,28 @@ class _LibraryState extends State<Library> {
         ),
       ),
     );
+  }
+}
+
+String _formatCreatedTime(Timestamp? timestamp) {
+  if (timestamp == null) return 'Unknown Date'; // Handle null gracefully
+
+  final DateTime dateTime = timestamp.toDate();
+  final Duration difference = DateTime.now().difference(dateTime);
+
+  if (difference.inMinutes < 1) {
+    return 'Just now';
+  } else if (difference.inMinutes == 1) {
+    return '1 min ago';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} mins ago';
+  } else if (difference.inHours == 1) {
+    return '1 hr ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hrs ago';
+  } else if (difference.inDays == 1) {
+    return '1 day ago';
+  } else {
+    return '${difference.inDays} days ago';
   }
 }
