@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/navbar.dart';
@@ -118,24 +121,165 @@ class _HomePageState extends State<HomePage> {
                       child: SizedBox(
                         height: height * .21,
                         width: width,
-                        child: ListView.builder(
-                          itemCount: stories.length,
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot storyDoc = stories[index];
-                            Map<String, dynamic> storyData =
-                                storyDoc.data() as Map<String, dynamic>;
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 15),
+                                  child: ListView.builder(
+                                    itemCount: stories.length > 10
+                                        ? 11
+                                        : stories
+                                            .length, // Display 5 stories + 1 extra slot if > 5
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) {
+                                      if (index == 11) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            // Open dialog to display all stories
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title:
+                                                      const Text('All Stories'),
+                                                  content: SizedBox(
+                                                    height:
+                                                        300, // Adjust height as needed
+                                                    child: ListView.builder(
+                                                      itemCount: stories.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        DocumentSnapshot
+                                                            storyDoc =
+                                                            stories[index];
+                                                        Map<String, dynamic>
+                                                            storyData =
+                                                            storyDoc.data()
+                                                                as Map<String,
+                                                                    dynamic>;
 
-                            return storyCard(
-                              theme: theme,
-                              title: storyData['title'] ?? 'No Title',
-                              onTap: () {
-                                // Pass the DocumentReference to the Firebasestory page
-                                context.push('/Firebasestory',
-                                    extra: storyDoc.reference);
-                              },
-                            );
-                          },
+                                                        return ListTile(
+                                                          title: Text(storyData[
+                                                                  'title'] ??
+                                                              'No Title'),
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context); // Close dialog
+                                                            context.push(
+                                                                '/Firebasestory',
+                                                                extra: storyDoc
+                                                                    .reference);
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(
+                                                            context); // Close dialog
+                                                      },
+                                                      child:
+                                                          const Text('Close'),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: InkWell(
+                                            onTap: () {
+                                              context.go('/Library');
+                                              context.read<NavBarBloc>().add(
+                                                  const NavBarItemTapped(2));
+                                            },
+                                            child: Container(
+                                              margin: const EdgeInsets.only(
+                                                  right: 15, left: 0),
+                                              decoration: const BoxDecoration(
+                                                  color: AppColors.kwhiteColor,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft: Radius.circular(5),
+                                                    bottomLeft:
+                                                        Radius.circular(5),
+                                                    topRight:
+                                                        Radius.circular(26),
+                                                    bottomRight:
+                                                        Radius.circular(26),
+                                                  )),
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 20),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            context
+                                                                .go('/Library');
+                                                            context
+                                                                .read<
+                                                                    NavBarBloc>()
+                                                                .add(
+                                                                    const NavBarItemTapped(
+                                                                        2));
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons
+                                                                .arrow_forward_ios_rounded,
+                                                            color: AppColors
+                                                                .textColorblue,
+                                                          )),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      Text('View all',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: theme.textTheme
+                                                              .bodyMedium!
+                                                              .copyWith(
+                                                            color: AppColors
+                                                                .textColorblue,
+                                                          )),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+
+                                      // suggested stories
+                                      DocumentSnapshot storyDoc =
+                                          stories[index];
+                                      Map<String, dynamic> storyData = storyDoc
+                                          .data() as Map<String, dynamic>;
+
+                                      return storyCard(
+                                        theme: theme,
+                                        title: storyData['title'] ?? 'No Title',
+                                        onTap: () {
+                                          context.push('/Firebasestory',
+                                              extra: storyDoc.reference);
+                                        },
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
