@@ -121,10 +121,10 @@ class _FirebasestoryState extends State<Firebasestory> {
           ),
         ],
       ),
-      bottomNavigationBar: NavBar3(
-        documentReference: widget.storyDocRef,
-        favstatus: storyData!['isfav'],
-      ),
+      // bottomNavigationBar: NavBar3(
+      //   documentReference: widget.storyDocRef,
+      //   favstatus: storyData!['isfav'],
+      // ),
     );
   }
 }

@@ -93,21 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     profilelistCard(
                       title: 'About',
                       ontap: () async {
-                        // await showModalBottomSheet(
-                        //   isScrollControlled: true,
-                        //   backgroundColor: Colors.transparent,
-                        //   enableDrag: false,
-                        //   context: context,
-                        //   builder: (context) {
-                        //     return GestureDetector(
-                        //       onTap: () => FocusScope.of(context).unfocus(),
-                        //       child: Padding(
-                        //         padding: MediaQuery.viewInsetsOf(context),
-                        //         child: const StoryFeedback(),
-                        //       ),
-                        //     );
-                        //   },
-                        // );
+                        context.push('/aboutPage');
                       },
                       icon_path: 'assets/images/about.svg',
                       theme: theme,
