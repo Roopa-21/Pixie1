@@ -10,7 +10,6 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
-import 'package:pixieapp/widgets/navbar3.dart';
 
 class Firebasesuggestedstory extends StatefulWidget {
   final DocumentReference<Object?> storyDocRef;
@@ -26,7 +25,8 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
 
   String childName = "child_name";
   File? audioFile;
-  StoryRepository? storyRepository;
+  String? audioUrl;
+  StoryRepository storyRepository = StoryRepository();
 
   @override
   void initState() {
@@ -64,24 +64,26 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
   }
 
   // Fetch the story data from Firestore
+
   Future<void> _fetchStoryData() async {
     try {
       final docSnapshot = await widget.storyDocRef.get();
       if (docSnapshot.exists) {
+        Map<String, dynamic>? fetchedStoryData =
+            docSnapshot.data() as Map<String, dynamic>?;
+
+        File? generatedAudioFile = await storyRepository.speechToText(
+          text: fetchedStoryData?["title"]! + fetchedStoryData?["story"]!,
+          language: fetchedStoryData?["language"],
+        );
+
+        String? geaudioUrl = await _uploadAudioToStorage(generatedAudioFile);
         setState(() {
-          storyData = docSnapshot.data() as Map<String, dynamic>?;
-
-          //   audioUrl = _uploadAudioToStorage(audioFile!);
+          storyData = fetchedStoryData;
+          audioFile = generatedAudioFile;
+          audioUrl = geaudioUrl;
         });
-        print(
-            '***${storyData?["title"]! + storyData?["story"]! + storyData?["language"]}');
-        print('+++++${storyData?["story"]!}');
-        print('........${storyData?["language"]}');
-
-        audioFile = await storyRepository?.speechToText(
-            text: storyData?["title"]! + storyData?["story"]!,
-            language: storyData?["language"]);
-        print('Aaaa$audioFile');
+        print('Audio file generated: $audioFile');
       } else {
         print('Story document does not exist.');
       }
@@ -134,9 +136,9 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            expandedHeight: deviceHeight * 0.3,
+            expandedHeight: deviceHeight * 0.38,
             leadingWidth: deviceWidth,
-            collapsedHeight: deviceHeight * 0.1,
+            collapsedHeight: deviceHeight * 0.15,
             pinned: true,
             floating: false,
             backgroundColor: const Color(0xff644a98),
@@ -164,9 +166,17 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
               },
             ),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => context.pop(),
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.kwhiteColor.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(40.0),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => context.pop(),
+                ),
               ),
             ],
           ),
@@ -201,21 +211,12 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
           ),
         ],
       ),
-      bottomNavigationBar:
-      //  NavBar2(
-      //   documentReference: widget.storyDocRef,
-      //   audioFile: audioFile!,
-      //   story: storyData?["story"] ?? 'No Story available',
-      //   title: storyData?["title"] ?? 'No title available',
-      //   firebaseAudioPath:
-      //       'https://firebasestorage.googleapis.com/v0/b/pixie-38007.appspot.com/o/user_audio%2F1729173045688.mp3?alt=media&token=4c83fd6f-7d1f-47d8-b0e4-3a1e793ffe5f',
-      // ),
-         NavBar3(
+      bottomNavigationBar: NavBar2(
         documentReference: widget.storyDocRef,
-        favstatus: storyData!['isfav'],
-        language: storyData?["language"]??'',
-        text: storyData?["title"]! + storyData?["story"]!??'',
-
+        audioFile: audioFile!,
+        story: storyData?["story"] ?? 'No Story available',
+        title: storyData?["title"] ?? 'No title available',
+        firebaseAudioPath: audioUrl!,
       ),
     );
   }

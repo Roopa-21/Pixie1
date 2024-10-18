@@ -56,8 +56,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
       required double width,
       required bool selected,
       required VoidCallback ontap}) {
-    return 
-    InkWell(
+    return InkWell(
       onTap: ontap,
       child: Container(
           height: 50,
@@ -506,11 +505,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                               color: AppColors
                                                                   .textColorblack)),
                                                   selected: false,
-                                                   selectedColor:
-                                                                AppColors.kpurple,
-                                                                 checkmarkColor:
-                                                                AppColors
-                                                                    .kwhiteColor,
+                                                  selectedColor:
+                                                      AppColors.kpurple,
+                                                  checkmarkColor:
+                                                      AppColors.kwhiteColor,
                                                   shape: RoundedRectangleBorder(
                                                     side: BorderSide.none,
                                                     borderRadius:
