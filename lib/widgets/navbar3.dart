@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
@@ -9,8 +11,14 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart'
 class NavBar3 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
   final bool favstatus;
+  final String text;
+  final String language;
   const NavBar3(
-      {super.key, required this.documentReference, required this.favstatus});
+      {super.key,
+      required this.documentReference,
+      required this.favstatus,
+      required this.text,
+      required this.language});
 
   @override
   State<NavBar3> createState() => _NavBar3State();
@@ -62,7 +70,10 @@ class _NavBar3State extends State<NavBar3> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<StoryBloc>().add(SpeechToTextEvent(
+                        text: widget.text, language: widget.language));
+                  },
                   icon: SvgPicture.asset(
                     'assets/images/pausebutton.svg',
                     width: 60,
