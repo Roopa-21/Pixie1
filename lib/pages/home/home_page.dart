@@ -51,11 +51,14 @@ class _HomePageState extends State<HomePage> {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) return [];
 
+    final userRef =
+        FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+// Use the user reference in the where clause
     final snapshot = await FirebaseFirestore.instance
         .collection('fav_stories')
-        .where('user_ref', isEqualTo: user.uid)
+        .where('user_ref', isEqualTo: userRef)
         .get();
-
     return snapshot.docs;
   }
 
