@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,6 +17,7 @@ class NavBar2 extends StatefulWidget {
   final String story;
   final String title;
   final String firebaseAudioPath;
+  final bool suggestedStories;
 
   const NavBar2(
       {super.key,
@@ -23,7 +25,8 @@ class NavBar2 extends StatefulWidget {
       required this.audioFile,
       required this.story,
       required this.title,
-      required this.firebaseAudioPath});
+      required this.firebaseAudioPath,
+      required this.suggestedStories});
 
   @override
   State<NavBar2> createState() => _NavBar2State();
@@ -32,7 +35,7 @@ class NavBar2 extends StatefulWidget {
 class _NavBar2State extends State<NavBar2> {
   final player = AudioPlayer();
   late AudioPlayer _audioPlayer;
-
+  User? user = FirebaseAuth.instance.currentUser;
   bool _isPlaying = false;
   // Duration _currentPosition = Duration.zero; // Track current playback position
   // Duration _totalDuration = Duration.zero; // Track total duration of the audio
@@ -225,9 +228,15 @@ class _NavBar2State extends State<NavBar2> {
                           context
                               .read<AddCharacterBloc>()
                               .add(UpdatefavbuttonEvent(!state.fav));
-                          updateFirebase(
-                              docRef: widget.documentReference!,
-                              fav: !state.fav);
+                          widget.suggestedStories
+                              ? updateFirebaseSuggested(
+                                  docRef: widget.documentReference!,
+                                  fav: !state.fav,
+                                )
+                              : updateFirebase(
+                                  docRef: widget.documentReference!,
+                                  fav: !state.fav,
+                                );
                         },
                         icon: SvgPicture.asset(
                           state.fav == true
@@ -269,23 +278,30 @@ class _NavBar2State extends State<NavBar2> {
                   ),
                   IconButton(
                     onPressed: handlePlayPause,
-                    icon: SvgPicture.asset(
-                      player.playing
-                          ? 'assets/images/playgrad.svg'
-                          : 'assets/images/pausegrad.svg',
-                      fit: BoxFit.contain,
+                    icon: SizedBox(
                       width: 60,
                       height: 60,
+                      child: SvgPicture.asset(
+                        player.playing
+                            ? 'assets/images/playgrad.svg'
+                            : 'assets/images/pausegrad.svg',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      'assets/images/addToFavorites.svg',
-                      width: 25,
-                      height: 25,
-                    ),
-                  ),
+                  widget.suggestedStories
+                      ? SizedBox(
+                          width: 25,
+                          height: 25,
+                        )
+                      : IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(
+                            'assets/images/addToFavorites.svg',
+                            width: 25,
+                            height: 25,
+                          ),
+                        ),
                   IconButton(
                     onPressed: () {},
                     icon: SvgPicture.asset(
@@ -303,13 +319,40 @@ class _NavBar2State extends State<NavBar2> {
     );
   }
 
-  Future<void> updateFirebase(
-      {required bool fav, required DocumentReference<Object?> docRef}) async {
+  Future<void> updateFirebase({
+    required bool fav,
+    required DocumentReference<Object?> docRef,
+  }) async {
     if (fav) {
-      await docRef.update({'isfav': true});
+      await docRef.update({
+        'isfav': true,
+      });
       print('Story added to fav');
     } else {
       await docRef.update({'isfav': false});
+      print('Story removed from fav');
+    }
+  }
+
+  Future<void> updateFirebaseSuggested({
+    required bool fav,
+    required DocumentReference<Object?> docRef,
+  }) async {
+    if (fav) {
+      await docRef.update({
+        'isfav': true,
+        'noOfFavorites': FieldValue.arrayUnion([
+          FirebaseFirestore.instance.collection('users').doc(user?.uid),
+        ]),
+      });
+      print('Story added to fav');
+    } else {
+      await docRef.update({
+        'isfav': false,
+        'noOfFavorites': FieldValue.arrayRemove([
+          FirebaseFirestore.instance.collection('users').doc(user?.uid),
+        ]),
+      });
       print('Story removed from fav');
     }
   }
