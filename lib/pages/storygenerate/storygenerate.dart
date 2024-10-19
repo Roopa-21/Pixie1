@@ -64,7 +64,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
   bool audioloaded = false;
 
   bool callAppBar = false;
-   String? audioUrl='';
+  String? audioUrl = '';
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -77,7 +77,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
           audioFile = state.audioFile;
           print('Audio File Path: ${audioFile!.path}');
 
-           audioUrl = await _uploadAudioToStorage(audioFile!);
+          audioUrl = await _uploadAudioToStorage(audioFile!);
 
           if (audioUrl != null) {
             setState(() {
@@ -189,7 +189,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                 audioFile: audioFile!,
                 story: widget.story['story'] ?? 'No Story available',
                 title: widget.story['title'] ?? 'No title available',
-                firebaseAudioPath: audioUrl??'',
+                firebaseAudioPath: audioUrl ?? '',
               )
             // : SizedBox.shrink()
             : const NavBarLoading(),
@@ -209,14 +209,15 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) return null;
-
+      final userRef =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
       final docRef = await _firestore.collection('fav_storys').add({
         'storytype': type,
         'title': title,
         'audiofile': audiopath,
         'story': story,
         'isfav': fav,
-        'user_ref': user.uid,
+        'user_ref': userRef,
         'language': language,
         'createdTime': FieldValue.serverTimestamp(),
       });
