@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
     if (user == null) return [];
 
     final snapshot = await FirebaseFirestore.instance
-        .collection('fav_storys')
+        .collection('fav_stories')
         .where('user_ref', isEqualTo: user.uid)
         .get();
 
