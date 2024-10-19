@@ -73,7 +73,7 @@ class StoryRepository {
       // Write the audio file to the temporary directory
       final audioFile = File(audioFilePath);
       await audioFile.writeAsBytes(bytes);
-      print('.......$audioFile');
+      print('///$audioFile');
       return audioFile;
     } else {
       throw Exception('Failed to generate audio: ${response.body}');

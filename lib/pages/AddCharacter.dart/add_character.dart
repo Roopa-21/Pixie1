@@ -484,7 +484,6 @@ class _AddCharacterState extends State<AddCharacter> {
                                                 theme: theme,
                                                 onTap: () async {
                                                   await showModalBottomSheet(
-                                                  
                                                     isScrollControlled: true,
                                                     backgroundColor:
                                                         Colors.transparent,
