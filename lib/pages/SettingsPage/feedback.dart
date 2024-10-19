@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -220,13 +221,16 @@ class _FeedbackPageState extends State<FeedbackPage> {
       child: ElevatedButton(
         onPressed: () {
           User? user = FirebaseAuth.instance.currentUser;
+
           if (user != null) {
+            final userRef =
+                FirebaseFirestore.instance.collection('users').doc(user.uid);
             context.read<FeedbackBloc>().add(
                   SubmitFeedbackEvent(
-                    rating: currentRating,
-                    questionsLikedDisliked: currentQuestionsLikedDisliked,
-                    userId: user.uid,
-                  ),
+                      rating: currentRating,
+                      questionsLikedDisliked: currentQuestionsLikedDisliked,
+                      userId: user.uid,
+                      userref: userRef),
                 );
           }
         },

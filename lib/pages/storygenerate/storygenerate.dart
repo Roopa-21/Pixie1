@@ -209,14 +209,15 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
     try {
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) return null;
-
+      final userRef =
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
       final docRef = await _firestore.collection('fav_storys').add({
         'storytype': type,
         'title': title,
         'audiofile': audiopath,
         'story': story,
         'isfav': fav,
-        'user_ref': user.uid,
+        'user_ref': userRef,
         'language': language,
         'createdTime': FieldValue.serverTimestamp(),
       });

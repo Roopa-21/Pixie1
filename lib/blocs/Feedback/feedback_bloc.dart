@@ -22,7 +22,7 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
         'rating': event.rating,
         'questionsLikedDisliked': event.questionsLikedDisliked,
         'createdAt': FieldValue.serverTimestamp(),
-        'userRef': event.userId,
+        'userRef': event.userref,
       });
 
       emit(FeedbackSubmitted());

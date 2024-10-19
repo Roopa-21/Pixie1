@@ -29,9 +29,12 @@ class StoryFeedbackBloc extends Bloc<StoryFeedbackEvent, StoryFeedbackState> {
 
     on<SubmitFeedbackEvent>((event, emit) async {
       User? user = FirebaseAuth.instance.currentUser;
+
       if (user != null) {
+        final userRef =
+            FirebaseFirestore.instance.collection('users').doc(user!.uid);
         await _firestore.collection('story_feedback').add({
-          'user_ref': user.uid,
+          'user_ref': userRef,
           'rating': state.rating,
           'issues': state.issues,
           'created_time': FieldValue.serverTimestamp(),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FeedbackEvent extends Equatable {
@@ -11,15 +12,16 @@ class SubmitFeedbackEvent extends FeedbackEvent {
   final int rating;
   final Map<String, Map<String, bool>> questionsLikedDisliked;
   final String userId;
-
+  final DocumentReference<Map<String, dynamic>> userref;
   const SubmitFeedbackEvent({
+    required this.userref,
     required this.rating,
     required this.questionsLikedDisliked,
     required this.userId,
   });
 
   @override
-  List<Object?> get props => [rating, questionsLikedDisliked, userId];
+  List<Object?> get props => [rating, questionsLikedDisliked, userId, userref];
 }
 
 class CheckFeedbackEvent extends FeedbackEvent {
