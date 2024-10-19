@@ -30,6 +30,7 @@ class _FirebasestoryState extends State<Firebasestory> {
       }
     });
   }
+  
 
   // Function to add a new line after each full stop in the story text
   String formatStory(String story) {

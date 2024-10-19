@@ -66,6 +66,10 @@ class AboutPage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    Text(
+                      'Privacy Policy',
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ]),
             )));
   }
