@@ -185,11 +185,13 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         ),
         bottomNavigationBar: audioloaded
             ? NavBar2(
+
                 documentReference: _documentReference,
                 audioFile: audioFile!,
                 story: widget.story['story'] ?? 'No Story available',
                 title: widget.story['title'] ?? 'No title available',
                 firebaseAudioPath: audioUrl ?? '',
+                suggestedStories: false,
               )
             // : SizedBox.shrink()
             : const NavBarLoading(),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/widgets/add_charactor_story.dart';
 import 'package:pixieapp/widgets/add_favorites_bottomsheet.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -53,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage>
 
           dateOfBirth = DateFormat('dd/MM/yyyy').format(dobDateTime);
           favoriteThings =
-              List<String>.from(userDoc.data()?['fav_things'] ?? []);
+              List<String>.from(userDoc.data()?['storycharactors'] ?? []);
 
           List<dynamic> lovedOnes = userDoc.data()?['loved_once'] ?? [];
 
@@ -564,74 +565,91 @@ class _ProfilePageState extends State<ProfilePage>
                               ),
                             ],
                           ),
-                          child: Column(
-                            children: [
-                              ...favoriteThings.map((thing) {
+                          child: StreamBuilder<
+                                  DocumentSnapshot<Map<String, dynamic>>>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(user?.uid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                                var userDoc = snapshot.data?.data();
+                                List<String> favoriteThings = List<String>.from(
+                                    userDoc?['storycharactors'] ?? []);
                                 return Column(
                                   children: [
-                                    ListTile(
-                                      title: Text(thing),
-                                      trailing: InkWell(
-                                        onTap: () async {
-                                          favoriteThings.remove(thing);
-                                          await FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(user?.uid)
-                                              .update({
-                                            'fav_things': favoriteThings,
-                                          });
-                                          setState(() {});
-                                        },
-                                        child: Image.asset(
-                                          'assets/images/delete.png',
-                                          fit: BoxFit.cover,
+                                    ...favoriteThings.map((thing) {
+                                      return Column(
+                                        children: [
+                                          ListTile(
+                                            title: Text(thing),
+                                            trailing: InkWell(
+                                              onTap: () async {
+                                                favoriteThings.remove(thing);
+                                                await FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(user?.uid)
+                                                    .update({
+                                                  'storycharactors':
+                                                      favoriteThings,
+                                                });
+                                              },
+                                              child: Image.asset(
+                                                'assets/images/delete.png',
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          const Divider(
+                                            color: AppColors.kgreyColor,
+                                            thickness: 0.45,
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5555,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 5,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: InkWell(
+                                          onTap: () async {
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return const AddCharactorStory();
+                                              },
+                                            );
+                                          },
+                                          child: const Text(
+                                            'Add your own',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const Divider(
-                                      color: AppColors.kgreyColor,
-                                      thickness: 0.45,
-                                    ),
+                                    )
                                   ],
                                 );
-                              }),
-                              Container(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.5555,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await showModalBottomSheet(
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        enableDrag: false,
-                                        context: context,
-                                        builder: (context) {
-                                          return const AddFavoritesBottomsheet();
-                                        },
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Add your own',
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          )),
+                              })),
                     ],
                   ),
                   const SizedBox(

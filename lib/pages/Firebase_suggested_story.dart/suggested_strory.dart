@@ -63,7 +63,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
     }
   }
 
-  // Fetch the story data from Firestore
+
 
   Future<void> _fetchStoryData() async {
     try {
@@ -217,6 +217,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
         story: storyData?["story"] ?? 'No Story available',
         title: storyData?["title"] ?? 'No title available',
         firebaseAudioPath: audioUrl!,
+        suggestedStories: true,
       ),
     );
   }

@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/blocs/introduction/introduction_event.dart';
 import 'package:pixieapp/blocs/introduction/introduction_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/models/Child_data_model.dart';
+import 'package:pixieapp/widgets/add_charactor_story.dart';
 import 'package:pixieapp/widgets/widgets_index.dart';
 import '../../blocs/introduction/introduction_bloc.dart';
 
@@ -23,11 +27,12 @@ class _IntroductionPageState extends State<IntroductionPage> {
   // State field(s) for PageView widget.
   PageController? pageViewController;
   ClildDataModel childdata = ClildDataModel(
-      name: 'name',
-      gender: Gender.prefernottosay,
-      favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
-      dob: DateTime.now(),
-      lovedonce: []);
+    name: 'name',
+    gender: Gender.prefernottosay,
+    favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
+    dob: DateTime.now(),
+    lovedonce: [],
+  );
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
           pageViewController!.page != null
@@ -401,144 +406,306 @@ class _IntroductionPageState extends State<IntroductionPage> {
 
                               /******************************************** */
 
-                              Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                              BlocConsumer<AddCharacterBloc, AddCharacterState>(
+                                listener: (context, state) {
+                                  // TODO: implement listener
+                                },
+                                builder: (context, state) {
+                                  return Column(
                                     mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                          decoration: BoxDecoration(
-                                            color: const Color(
-                                                0xFFE8DEF8), // Background color
-                                            borderRadius:
-                                                BorderRadius.circular(40.0),
-                                          ),
-                                          child: IconButton(
-                                            onPressed: () {
-                                              context.pop();
-                                            },
-                                            icon: const Icon(
-                                              Icons.arrow_back,
-                                              color: AppColors.sliderColor,
-                                              size: 23,
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Container(
+                                              decoration: BoxDecoration(
+                                                color: const Color(
+                                                    0xFFE8DEF8), // Background color
+                                                borderRadius:
+                                                    BorderRadius.circular(40.0),
+                                              ),
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  context.pop();
+                                                },
+                                                icon: const Icon(
+                                                  Icons.arrow_back,
+                                                  color: AppColors.sliderColor,
+                                                  size: 23,
+                                                ),
+                                              )),
+                                          const SizedBox(width: 5),
+                                          customSlider(percent: 0),
+                                          customSlider(percent: 1),
+                                          customSlider(percent: 0),
+                                          const SizedBox(width: 10),
+                                          Transform.rotate(
+                                            angle: .2,
+                                            child: Image.asset(
+                                              'assets/images/star.png',
+                                              width: 70,
+                                              height: 80,
                                             ),
-                                          )),
-                                      const SizedBox(width: 5),
-                                      customSlider(percent: 0),
-                                      customSlider(percent: 1),
-                                      customSlider(percent: 0),
-                                      const SizedBox(width: 10),
-                                      Transform.rotate(
-                                        angle: .2,
-                                        child: Image.asset(
-                                          'assets/images/star.png',
-                                          width: 70,
-                                          height: 80,
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        'What are ${childdata.name}\'s favorite things?',
+                                        style: theme.textTheme.displaySmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblue,
+                                                fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height: 25),
+                                      Padding(
+                                        padding: const EdgeInsetsDirectional
+                                            .fromSTEB(15.0, 10.0, 15.0, 0.0),
+                                        child: Text(
+                                          'Select one',
+                                          style: theme.textTheme.displaySmall!
+                                              .copyWith(
+                                                  color: AppColors.kgreyColor,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 20),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  Text(
-                                    'What are ${childdata.name}\'s favorite things?',
-                                    style: theme.textTheme.displaySmall!
-                                        .copyWith(
-                                            color: AppColors.textColorblue,
-                                            fontWeight: FontWeight.w600),
-                                  ),
-                                  const SizedBox(height: 25),
-                                  StreamBuilder(
-                                      stream: FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc(user!.uid)
-                                          .snapshots(),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-
-                                        if (snapshot.hasError) {
-                                          return Center(
-                                              child: Text(
-                                                  'Error: ${snapshot.error}'));
-                                        }
-
-                                        if (snapshot.hasData) {
-                                          var userData = snapshot.data!.data()
-                                              as Map<String, dynamic>;
-
-                                          List<dynamic> addyourowns =
-                                              userData['fav_things'] ?? [];
-
-                                          if (addyourowns.isEmpty) {
+                                      const SizedBox(height: 25),
+                                      StreamBuilder<DocumentSnapshot>(
+                                        stream: FirebaseFirestore.instance
+                                            .collection('users')
+                                            .doc(user!.uid)
+                                            .snapshots(), // Listening for real-time updates to the user document
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
                                             return const Center(
-                                                child: Text(
-                                                    'No fav things found.'));
+                                                child: LoadingWidget());
                                           }
 
-                                          return Wrap(
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                                child: Text(
+                                                    'Error: ${snapshot.error}'));
+                                          }
+
+                                          if (snapshot.hasData) {
+                                            var userData = snapshot.data!.data()
+                                                as Map<String, dynamic>;
+
+                                            List<dynamic> charactors =
+                                                userData['storycharactors'] ??
+                                                    [];
+
+                                            if (charactors.isEmpty) {
+                                              return const Center(
+                                                  child: Text(
+                                                      'No character found.'));
+                                            }
+
+                                            return Wrap(
                                               children: List<Widget>.generate(
-                                                  addyourowns.length,
-                                                  (int index) {
-                                            var addyourown = addyourowns[index];
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: SizedBox(
-                                                height: 48,
-                                                child: ChoiceChip(
-                                                  elevation: 3,
-                                                  shadowColor: AppColors
-                                                      .kgreyColor
-                                                      .withOpacity(0.3),
-                                                  label: Text(addyourown,
-                                                      style: theme
-                                                          .textTheme.bodyMedium!
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: AppColors
-                                                                  .textColorblack)),
-                                                  selected: false,
-                                                  selectedColor:
-                                                      AppColors.kpurple,
-                                                  checkmarkColor:
-                                                      AppColors.kwhiteColor,
-                                                  shape: RoundedRectangleBorder(
-                                                    side: BorderSide.none,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            40),
+                                                  charactors.length,
+                                                  (int indexx) {
+                                                // Accessing each lesson by index
+                                                String charactorsitem = charactors[
+                                                    indexx]; // Get the lesson data for the current index
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: SizedBox(
+                                                    height: 48,
+                                                    child: ChoiceChip(
+                                                      side: const BorderSide(
+                                                          width: .4,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              152,
+                                                              152,
+                                                              152)),
+                                                      shadowColor: Colors.black,
+                                                      onSelected: (value) {
+                                                        // Trigger an event or do something with the selected lesson
+                                                        context
+                                                            .read<
+                                                                AddCharacterBloc>()
+                                                            .add(AddcharactorstoryEvent(
+                                                                charactorsitem,
+                                                                selectedindexcharactor:
+                                                                    indexx));
+                                                        // print(
+                                                        //     charactorsitem);
+                                                      },
+                                                      selectedColor:
+                                                          AppColors.kpurple,
+                                                      elevation: 3,
+                                                      checkmarkColor:
+                                                          AppColors.kwhiteColor,
+                                                      label: Text(
+                                                          charactorsitem
+                                                              .toString(),
+                                                          style: theme.textTheme
+                                                              .bodyMedium!
+                                                              .copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: state
+                                                                        .selectedindexcharactor ==
+                                                                    indexx
+                                                                ? AppColors
+                                                                    .kwhiteColor
+                                                                : AppColors
+                                                                    .kblackColor,
+                                                          ) // Display the lesson name or string representation
+
+                                                          ),
+                                                      selected: state
+                                                              .selectedindexcharactor ==
+                                                          indexx, // Set the selection based on index
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        side: BorderSide.none,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(40),
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              12),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
+                                                );
+                                              }),
                                             );
-                                          }));
-                                        }
-                                        return const Center(
-                                            child: Text('No favthings found.'));
-                                      }),
-                                  addbutton(
-                                      title: "Add your own",
-                                      width: 180,
-                                      theme: theme,
-                                      onTap: () async {
-                                        await showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.transparent,
-                                          enableDrag: false,
-                                          context: context,
-                                          builder: (context) {
-                                            return const AddFavoritesBottomsheet();
-                                          },
-                                        );
-                                      })
-                                ],
+                                          }
+
+                                          return const Center(
+                                              child:
+                                                  Text('No character found.'));
+                                        },
+                                      ),
+                                      addbutton(
+                                          title: "Add a character",
+                                          width: 180,
+                                          theme: theme,
+                                          onTap: () async {
+                                            await showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              enableDrag: false,
+                                              context: context,
+                                              builder: (context) {
+                                                return GestureDetector(
+                                                  onTap: () =>
+                                                      FocusScope.of(context)
+                                                          .unfocus(),
+                                                  child: Padding(
+                                                    padding:
+                                                        MediaQuery.viewInsetsOf(
+                                                            context),
+                                                    child:
+                                                        const AddCharactorStory(),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          }),
+
+                                      // StreamBuilder(
+                                      //     stream: FirebaseFirestore.instance
+                                      //         .collection('users')
+                                      //         .doc(user!.uid)
+                                      //         .snapshots(),
+                                      //     builder: (context, snapshot) {
+                                      //       if (snapshot.connectionState ==
+                                      //           ConnectionState.waiting) {
+                                      //         return const Center(
+                                      //             child:
+                                      //                 CircularProgressIndicator());
+                                      //       }
+
+                                      //       if (snapshot.hasError) {
+                                      //         return Center(
+                                      //             child: Text(
+                                      //                 'Error: ${snapshot.error}'));
+                                      //       }
+
+                                      //       if (snapshot.hasData) {
+                                      //         var userData = snapshot.data!.data()
+                                      //             as Map<String, dynamic>;
+
+                                      //         List<dynamic> addyourowns =
+                                      //             userData['fav_things'] ?? [];
+
+                                      //         if (addyourowns.isEmpty) {
+                                      //           return const Center(
+                                      //               child: Text(
+                                      //                   'No fav things found.'));
+                                      //         }
+
+                                      //         return Wrap(
+                                      //             children: List<Widget>.generate(
+                                      //                 addyourowns.length,
+                                      //                 (int index) {
+                                      //           var addyourown = addyourowns[index];
+                                      //           return Padding(
+                                      //             padding:
+                                      //                 const EdgeInsets.all(5.0),
+                                      //             child: SizedBox(
+                                      //               height: 48,
+                                      //               child: ChoiceChip(
+                                      //                 elevation: 3,
+                                      //                 shadowColor: AppColors
+                                      //                     .kgreyColor
+                                      //                     .withOpacity(0.3),
+                                      //                 label: Text(addyourown,
+                                      //                     style: theme
+                                      //                         .textTheme.bodyMedium!
+                                      //                         .copyWith(
+                                      //                             fontWeight:
+                                      //                                 FontWeight
+                                      //                                     .w400,
+                                      //                             color: AppColors
+                                      //                                 .textColorblack)),
+                                      //                 selected: false,
+                                      //                 selectedColor:
+                                      //                     AppColors.kpurple,
+                                      //                 checkmarkColor:
+                                      //                     AppColors.kwhiteColor,
+                                      //                 shape: RoundedRectangleBorder(
+                                      //                   side: BorderSide.none,
+                                      //                   borderRadius:
+                                      //                       BorderRadius.circular(
+                                      //                           40),
+                                      //                 ),
+                                      //               ),
+                                      //             ),
+                                      //           );
+                                      //         }));
+                                      //       }
+                                      //       return const Center(
+                                      //           child: Text('No favthings found.'));
+                                      //     }),
+                                      // addbutton(
+                                      //     title: "Add your own",
+                                      //     width: 180,
+                                      //     theme: theme,
+                                      //     onTap: () async {
+                                      //       await showModalBottomSheet(
+                                      //         isScrollControlled: true,
+                                      //         backgroundColor: Colors.transparent,
+                                      //         enableDrag: false,
+                                      //         context: context,
+                                      //         builder: (context) {
+                                      //           return const AddFavoritesBottomsheet();
+                                      //         },
+                                      //       );
+                                      //     })
+                                    ],
+                                  );
+                                },
                               ),
 
                               /**************************************************** */

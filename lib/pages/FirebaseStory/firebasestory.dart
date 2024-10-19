@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/navbar3.dart';
 
@@ -16,6 +19,9 @@ class Firebasestory extends StatefulWidget {
 
 class _FirebasestoryState extends State<Firebasestory> {
   Map<String, dynamic>? storyData;
+    File? audioFile;
+  String? audioUrl;
+  StoryRepository storyRepository = StoryRepository();
 
   @override
   void didChangeDependencies() {
