@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "245008050907-g82r1g8nmpfgcu8hc4a5ljatqeld3f74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.digi9.pixie",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
           "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -31,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com",
+              "client_id": "245008050907-8k212fi53ud4jvdo67b6gmhpqmi4f3st.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.pixieapp"
+                "bundle_id": "com.mycompany.pixie"
               }
             }
           ]
@@ -50,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "245008050907-r2r2l2fsvk2fc7fs232uqpe1qoa3nld4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pixie",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
           "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -67,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com",
+              "client_id": "245008050907-8k212fi53ud4jvdo67b6gmhpqmi4f3st.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.pixieapp"
+                "bundle_id": "com.mycompany.pixie"
               }
             }
           ]
@@ -85,6 +101,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "245008050907-44uafcarmeqla3pfm7fgijlfrdsc7u90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pixieapp",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
         {
           "client_id": "245008050907-tq6l147ip6blcahrgq7a2nbag3jgasb5.apps.googleusercontent.com",
           "client_type": 1,
@@ -111,10 +135,126 @@
               "client_type": 3
             },
             {
-              "client_id": "245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com",
+              "client_id": "245008050907-8k212fi53ud4jvdo67b6gmhpqmi4f3st.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.pixieapp"
+                "bundle_id": "com.mycompany.pixie"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245008050907:android:f9ccb2444e0877997abafe",
+        "android_client_info": {
+          "package_name": "com.fabletronic.pixie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245008050907-8k212fi53ud4jvdo67b6gmhpqmi4f3st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.pixie"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245008050907:android:96c7daeac0ccaa3c7abafe",
+        "android_client_info": {
+          "package_name": "com.mycompany.dashboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245008050907-8k212fi53ud4jvdo67b6gmhpqmi4f3st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.pixie"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245008050907:android:674c767658cecbd97abafe",
+        "android_client_info": {
+          "package_name": "com.mycompany.pixie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245008050907-0emmn0mts7rsr24uquoa6rdvock5rf63.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.pixie",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245008050907-4uh0291v52jld7ig8d1u6g3q936dq89f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "245008050907-8k212fi53ud4jvdo67b6gmhpqmi4f3st.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.pixie"
               }
             }
           ]

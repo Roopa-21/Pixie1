@@ -1,4 +1,4 @@
-package com.example.pixieapp
+package com.fabletronic.pixie
 
 import io.flutter.embedding.android.FlutterActivity
 

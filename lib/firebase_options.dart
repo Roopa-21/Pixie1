@@ -64,9 +64,11 @@ class DefaultFirebaseOptions {
     messagingSenderId: '245008050907',
     projectId: 'pixie-38007',
     storageBucket: 'pixie-38007.appspot.com',
-    androidClientId: '245008050907-tq6l147ip6blcahrgq7a2nbag3jgasb5.apps.googleusercontent.com',
-    iosClientId: '245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com',
-    iosBundleId: 'com.example.pixieapp',
+    androidClientId:
+        '245008050907-tq6l147ip6blcahrgq7a2nbag3jgasb5.apps.googleusercontent.com',
+    iosClientId:
+        '245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com',
+    iosBundleId: 'com.fabletronic.pixie',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,9 +77,11 @@ class DefaultFirebaseOptions {
     messagingSenderId: '245008050907',
     projectId: 'pixie-38007',
     storageBucket: 'pixie-38007.appspot.com',
-    androidClientId: '245008050907-tq6l147ip6blcahrgq7a2nbag3jgasb5.apps.googleusercontent.com',
-    iosClientId: '245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com',
-    iosBundleId: 'com.example.pixieapp',
+    androidClientId:
+        '245008050907-tq6l147ip6blcahrgq7a2nbag3jgasb5.apps.googleusercontent.com',
+    iosClientId:
+        '245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l.apps.googleusercontent.com',
+    iosBundleId: 'com.fabletronic.pixie',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
@@ -89,5 +93,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'pixie-38007.appspot.com',
     measurementId: 'G-NSVSPMJWE1',
   );
-
 }
