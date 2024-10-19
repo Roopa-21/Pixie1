@@ -27,5 +27,7 @@ class IntroductionBloc extends Bloc<IntroductionEvent, IntroductionState> {
       emit(RelationUpdated(
           relation: event.relation, relationName: event.relationName));
     });
+
+    
   }
 }
