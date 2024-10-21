@@ -18,6 +18,7 @@ class NavBar2 extends StatefulWidget {
   final String title;
   final String firebaseAudioPath;
   final bool suggestedStories;
+  final bool firebaseStories;
 
   const NavBar2(
       {super.key,
@@ -26,7 +27,8 @@ class NavBar2 extends StatefulWidget {
       required this.story,
       required this.title,
       required this.firebaseAudioPath,
-      required this.suggestedStories});
+      required this.suggestedStories,
+      required this.firebaseStories});
 
   @override
   State<NavBar2> createState() => _NavBar2State();
@@ -37,16 +39,16 @@ class _NavBar2State extends State<NavBar2> {
   late AudioPlayer _audioPlayer;
   User? user = FirebaseAuth.instance.currentUser;
   bool _isPlaying = false;
-  // Duration _currentPosition = Duration.zero; // Track current playback position
-  // Duration _totalDuration = Duration.zero; // Track total duration of the audio
+
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
   @override
   void initState() {
     super.initState();
-    player.setFilePath(widget.audioFile!.path);
-    // player.setUrl(
-    //     'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3')
+
+    widget.firebaseStories
+        ? player.setUrl(widget.firebaseAudioPath)
+        : player.setFilePath(widget.audioFile!.path);
     player.positionStream.listen((p) {
       setState(() {
         position = p;
@@ -66,36 +68,6 @@ class _NavBar2State extends State<NavBar2> {
         player.seek(position);
       }
     });
-
-    // _audioPlayer = AudioPlayer(); // Initialize the audio player
-    // _setAudioSource(); // Load the audio source when the widget is initialized
-
-    // // Listen to the current playback position
-    // _audioPlayer.positionStream.listen((position) {
-    //   setState(() {
-    //     _currentPosition = position;
-    //   });
-    // });
-
-    // // Listen to total duration of the audio
-    // _audioPlayer.durationStream.listen((duration) {
-    //   setState(() {
-    //     _totalDuration = duration ?? Duration.zero;
-    //   });
-    // });
-
-    // Add a listener to handle audio completion
-    // _audioPlayer.playerStateStream.listen((playerState) {
-    //   final processingState = playerState.processingState;
-    //   if (processingState == ProcessingState.completed) {
-    //     _audioPlayer.pause(); // Pause the audio after it finishes
-    //     _audioPlayer.seek(Duration.zero); // Reset the audio to the start
-    //     // setState(() {
-    //     //   _isPlaying = false; // Reset the play/pause state
-    //     // });
-    //   }
-    // }
-    // );
   }
 
   @override

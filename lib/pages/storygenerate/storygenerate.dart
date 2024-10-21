@@ -124,19 +124,22 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                 },
               ),
               actions: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.kwhiteColor.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(40.0),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () async {
-                      context.read<AddCharacterBloc>().add(ResetStateEvent());
-                      context.go('/HomePage');
-                    },
+                Padding(
+                  padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.kwhiteColor.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () async {
+                        context.read<AddCharacterBloc>().add(ResetStateEvent());
+                        context.go('/HomePage');
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -192,6 +195,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                 title: widget.story['title'] ?? 'No title available',
                 firebaseAudioPath: audioUrl ?? '',
                 suggestedStories: false,
+                firebaseStories: false,
               )
             // : SizedBox.shrink()
             : const NavBarLoading(),
