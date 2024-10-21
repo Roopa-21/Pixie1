@@ -9,7 +9,7 @@ class FetchStoryRepository1 {
   Future<List<Map<String, dynamic>>> fetchStories(String userId) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
-          .collection('fav_storys')
+          .collection('fav_stories')
           .where('user_ref', isEqualTo: userId)
           .get();
 
