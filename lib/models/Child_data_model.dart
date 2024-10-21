@@ -1,17 +1,19 @@
-
 class ClildDataModel {
   String name;
   Gender gender;
   List<String> favthings;
   DateTime dob;
   List<Lovedonces> lovedonce;
-  
+  List<Lovedonces> moreLovedOnce;
+
   ClildDataModel(
       {required this.name,
       required this.gender,
       required this.favthings,
       required this.dob,
-      required this.lovedonce});
+      required this.lovedonce,
+      required this.moreLovedOnce
+      });
 }
 
 enum Gender {

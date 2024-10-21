@@ -211,7 +211,8 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
           ),
         ],
       ),
-      bottomNavigationBar: NavBar2(
+      bottomNavigationBar:
+       NavBar2(
         documentReference: widget.storyDocRef,
         audioFile: audioFile!,
         story: storyData?["story"] ?? 'No Story available',

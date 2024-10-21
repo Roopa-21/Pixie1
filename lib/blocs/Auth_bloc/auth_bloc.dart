@@ -83,6 +83,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'fav_things': [],
           'dob': DateTime.now(),
           'loved_once': [],
+          'moreLovedOnes':[],
           'photoURL': photoURL,
           'newUser': true
         });
@@ -159,6 +160,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'fav_things': [],
         'dob': DateTime.now(),
         'loved_once': [],
+        'moreLovedOnes':[],
         'displayName': "displayName",
         'photoURL': "photoURL",
         'newUser': true
@@ -239,6 +241,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'fav_things': [],
           'dob': DateTime.now(),
           'loved_once': [],
+'moreLovedOnes':[],
           'photoURL': photoURL,
           'createdAt': Timestamp.now(),
           'userId': userId,
@@ -258,6 +261,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'fav_things': [],
           'dob': DateTime.now(),
           'loved_once': [],
+          'moreLovedOnes':[],
         });
       }
 

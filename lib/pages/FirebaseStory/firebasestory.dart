@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
+import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:pixieapp/widgets/navbar3.dart';
 
 class Firebasestory extends StatefulWidget {
@@ -19,7 +20,7 @@ class Firebasestory extends StatefulWidget {
 
 class _FirebasestoryState extends State<Firebasestory> {
   Map<String, dynamic>? storyData;
-    File? audioFile;
+  File? audioFile;
   String? audioUrl;
   StoryRepository storyRepository = StoryRepository();
 
@@ -36,7 +37,6 @@ class _FirebasestoryState extends State<Firebasestory> {
       }
     });
   }
-  
 
   // Function to add a new line after each full stop in the story text
   String formatStory(String story) {
@@ -128,6 +128,16 @@ class _FirebasestoryState extends State<Firebasestory> {
           ),
         ],
       ),
+
+      // bottomNavigationBar: NavBar2(
+      //   documentReference: widget.storyDocRef,
+      //   story: storyData?["story"] ?? 'No Story available',
+      //   title: storyData?["title"] ?? 'No title available',
+      //   firebaseAudioPath: '',
+      //   audioFile: NetworkAudio,
+      //   suggestedStories: false,
+      // ),
+
       // bottomNavigationBar: NavBar3(
       //   documentReference: widget.storyDocRef,
       //   favstatus: storyData!['isfav'],
