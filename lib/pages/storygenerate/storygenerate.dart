@@ -75,10 +75,11 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
       listener: (context, state) async {
         if (state is StoryAudioSuccess) {
           audioFile = state.audioFile;
+          print(';;;;;;;;;;;$audioFile');
           print('Audio File Path: ${audioFile!.path}');
 
           audioUrl = await _uploadAudioToStorage(audioFile!);
-
+          print('::::$audioUrl');
           if (audioUrl != null) {
             setState(() {
               audioloaded = true;
@@ -185,7 +186,6 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         ),
         bottomNavigationBar: audioloaded
             ? NavBar2(
-
                 documentReference: _documentReference,
                 audioFile: audioFile!,
                 story: widget.story['story'] ?? 'No Story available',

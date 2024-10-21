@@ -908,8 +908,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   if (moreLovedOnes == null ||
                                                       moreLovedOnes.isEmpty) {
                                                     return const Center(
-                                                        child: Text(
-                                                            "No loved ones found"));
+                                                        child: Text(""));
                                                   }
 
                                                   return Column(
@@ -1087,17 +1086,30 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                 onPressed: () async {
                                   if (currentpage_index == 2) {
                                     childdata.lovedonce.add(Lovedonces(
-                                        relation: "Mother", name: mother.text));
+                                        relation: "Mother",
+                                        name: mother.text.isNotEmpty
+                                            ? mother.text
+                                            : "Add Mother Name"));
                                     childdata.lovedonce.add(Lovedonces(
-                                        relation: "Father", name: father.text));
+                                        relation: "Father",
+                                        name: father.text.isNotEmpty
+                                            ? father.text
+                                            : "Add Father Name"));
                                     childdata.lovedonce.add(Lovedonces(
                                         relation: "GrandMother",
-                                        name: GrandMother.text));
+                                        name: GrandMother.text.isNotEmpty
+                                            ? GrandMother.text
+                                            : "Add GrandMother Name"));
                                     childdata.lovedonce.add(Lovedonces(
                                         relation: "GrandFather",
-                                        name: GrandFather.text));
+                                        name: GrandFather.text.isNotEmpty
+                                            ? GrandFather.text
+                                            : "Add GrandFatherName"));
                                     childdata.lovedonce.add(Lovedonces(
-                                        relation: "Pet Dog", name: pet.text));
+                                        relation: "Pet Dog",
+                                        name: pet.text.isNotEmpty
+                                            ? pet.text
+                                            : "Add Pet Name"));
                                     List<Map<String, dynamic>> lovedOnceList =
                                         childdata.lovedonce
                                             .map((lovedonce) =>
