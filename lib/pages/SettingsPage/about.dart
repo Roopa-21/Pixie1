@@ -25,13 +25,13 @@ class AboutPage extends StatelessWidget {
               ),
             ),
             child: SafeArea(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: Row(
+              child: Padding(
+                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      Row(
                         children: [
                           IconButton(
                             onPressed: () {
@@ -65,12 +65,30 @@ class AboutPage extends StatelessWidget {
                           ),
                         ],
                       ),
-                    ),
-                    Text(
-                      'Privacy Policy',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ]),
+                      Text(
+                        'Privacy Policy',
+                        style: theme.textTheme.bodyMedium!.copyWith(
+                            color: AppColors.textColorblack,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text('''
+
+1. Introduction
+
+Pixie respects your privacy and is committed to protecting the personal information of our app users. This Privacy Policy outlines our practices regarding the collection, use, and safeguarding of your personal information through our mobile applications.
+
+2. Information Collection
+
+2.1 Personal Information: We collect personal information such as your name, email address when you register, or interact with our app.
+
+3.Contact Us
+
+For queries,
+Contact number: + 91-9643221767
+Email id: fabletronic@gmail.com.
+'''),
+                    ]),
+              ),
             )));
   }
 }

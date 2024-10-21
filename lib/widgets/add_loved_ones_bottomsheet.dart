@@ -268,7 +268,8 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
     );
 
     await FirebaseFirestore.instance.collection('users').doc(userId).update({
-      'loved_once': FieldValue.arrayUnion([lovedOne.toMap()])
+      'loved_once': FieldValue.arrayUnion([lovedOne.toMap()]),
+      'moreLovedOnes': FieldValue.arrayUnion([lovedOne.toMap()])
     });
   }
 }

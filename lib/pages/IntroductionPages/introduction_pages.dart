@@ -32,6 +32,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
     dob: DateTime.now(),
     lovedonce: [],
+    moreLovedOnce: [],
   );
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
@@ -870,6 +871,117 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                             relation:
                                                                 "Pet Dog"));
                                                   });
+                                                },
+                                              ),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              StreamBuilder<DocumentSnapshot>(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection('users')
+                                                    .doc(user?.uid)
+                                                    .snapshots(),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const Center(
+                                                        child:
+                                                            CircularProgressIndicator());
+                                                  }
+
+                                                  if (!snapshot.hasData ||
+                                                      snapshot.data == null) {
+                                                    return const Center(
+                                                        child: Text(
+                                                            "No data found"));
+                                                  }
+
+                                                  var data = snapshot.data!
+                                                          .data()
+                                                      as Map<String, dynamic>;
+                                                  var moreLovedOnes =
+                                                      data['moreLovedOnes']
+                                                          as List<dynamic>?;
+
+                                                  if (moreLovedOnes == null ||
+                                                      moreLovedOnes.isEmpty) {
+                                                    return const Center(
+                                                        child: Text(
+                                                            "No loved ones found"));
+                                                  }
+
+                                                  return Column(
+                                                    children: moreLovedOnes
+                                                        .map((lovedOne) {
+                                                      String relationName =
+                                                          lovedOne[
+                                                                  'relation'] ??
+                                                              '';
+                                                      String name =
+                                                          lovedOne['name'] ??
+                                                              '';
+
+                                                      return Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                bottom: 20.0),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              relationName,
+                                                              style: theme
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                color: AppColors
+                                                                    .textColorblack,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                color: AppColors
+                                                                    .kwhiteColor,
+                                                              ),
+                                                              width:
+                                                                  deviceWidth *
+                                                                      0.5555,
+                                                              height: 48,
+                                                              child: Center(
+                                                                child: Text(
+                                                                  name,
+                                                                  style: theme
+                                                                      .textTheme
+                                                                      .bodyMedium!
+                                                                      .copyWith(
+                                                                          color: AppColors
+                                                                              .textColorblack,
+                                                                          fontWeight:
+                                                                              FontWeight.w400),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    }).toList(),
+                                                  );
                                                 },
                                               ),
                                               const SizedBox(

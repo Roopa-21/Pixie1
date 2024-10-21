@@ -13,7 +13,7 @@ import 'package:pixieapp/widgets/story_feedback.dart';
 
 class NavBar2 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
-  final File audioFile;
+  final File? audioFile;
   final String story;
   final String title;
   final String firebaseAudioPath;
@@ -22,7 +22,7 @@ class NavBar2 extends StatefulWidget {
   const NavBar2(
       {super.key,
       required this.documentReference,
-      required this.audioFile,
+      this.audioFile,
       required this.story,
       required this.title,
       required this.firebaseAudioPath,
@@ -44,7 +44,7 @@ class _NavBar2State extends State<NavBar2> {
   @override
   void initState() {
     super.initState();
-    player.setFilePath(widget.audioFile.path);
+    player.setFilePath(widget.audioFile!.path);
     // player.setUrl(
     //     'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3')
     player.positionStream.listen((p) {
@@ -109,7 +109,7 @@ class _NavBar2State extends State<NavBar2> {
   Future<void> _setAudioSource() async {
     try {
       // Use the file path directly
-      await _audioPlayer.setFilePath(widget.audioFile.path);
+      await _audioPlayer.setFilePath(widget.audioFile!.path);
       print("Audio source set successfully.");
     } catch (e) {
       print("Error loading audio file: $e");
@@ -281,16 +281,20 @@ class _NavBar2State extends State<NavBar2> {
                     icon: SizedBox(
                       width: 60,
                       height: 60,
-                      child: SvgPicture.asset(
-                        player.playing
-                            ? 'assets/images/playgrad.svg'
-                            : 'assets/images/pausegrad.svg',
-                        fit: BoxFit.cover,
-                      ),
+                      child: player.playing
+                          ? const Icon(
+                              Icons.pause_circle_filled_sharp,
+                              color: AppColors.kpurple,
+                              size: 60,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/pausegrad.svg',
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   widget.suggestedStories
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 25,
                           height: 25,
                         )
