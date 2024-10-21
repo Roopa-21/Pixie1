@@ -725,6 +725,17 @@ class _ProfilePageState extends State<ProfilePage>
                       color: AppColors.textColorblack,
                       fontWeight: FontWeight.w400,
                     ),
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.only(left: 15),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      fillColor: AppColors.kwhiteColor,
+                      focusColor: AppColors.textColorblue,
+                    ),
                   ),
                 ),
                 IconButton(

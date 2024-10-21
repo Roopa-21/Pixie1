@@ -14,6 +14,7 @@ import 'package:pixieapp/pages/Firebase_suggested_story.dart/suggested_strory.da
 import 'package:pixieapp/pages/IntroductionPages/introduction_pages.dart';
 import 'package:pixieapp/pages/Library/Library.dart';
 import 'package:pixieapp/pages/Otp_Verification/otp_verification.dart';
+import 'package:pixieapp/pages/SearchStories/search_page.dart';
 import 'package:pixieapp/pages/SettingsPage/about.dart';
 import 'package:pixieapp/pages/SettingsPage/feedback.dart';
 import 'package:pixieapp/pages/SettingsPage/profile_page.dart';
@@ -156,6 +157,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/AllStories',
       builder: (context, state) => const AllStories(),
+    ),
+      GoRoute(
+      path: '/searchPage',
+      builder: (context, state) => const SearchPage(),
     ),
     GoRoute(
       path: '/questionIntroPage',
