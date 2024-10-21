@@ -166,16 +166,19 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
               },
             ),
             actions: [
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.kwhiteColor.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(40.0),
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => context.pop(),
+              Padding(
+            padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.kwhiteColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(40.0),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => context.pop(),
+                  ),
                 ),
               ),
             ],
@@ -219,6 +222,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
         title: storyData?["title"] ?? 'No title available',
         firebaseAudioPath: audioUrl!,
         suggestedStories: true,
+        firebaseStories: false,
       ),
     );
   }

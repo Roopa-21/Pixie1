@@ -61,9 +61,9 @@ class _FirebasestoryState extends State<Firebasestory> {
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            expandedHeight: deviceHeight * 0.3,
+            expandedHeight: deviceHeight * 0.38,
             leadingWidth: deviceWidth,
-            collapsedHeight: deviceHeight * 0.1,
+            collapsedHeight: deviceHeight * 0.15,
             pinned: true,
             floating: false,
             backgroundColor: const Color(0xff644a98),
@@ -91,9 +91,20 @@ class _FirebasestoryState extends State<Firebasestory> {
               },
             ),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: () => context.pop(),
+              Padding(
+                padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.kwhiteColor.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(40.0),
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => context.pop(),
+                  ),
+                ),
               ),
             ],
           ),
@@ -129,14 +140,13 @@ class _FirebasestoryState extends State<Firebasestory> {
         ],
       ),
 
-      // bottomNavigationBar: NavBar2(
-      //   documentReference: widget.storyDocRef,
-      //   story: storyData?["story"] ?? 'No Story available',
-      //   title: storyData?["title"] ?? 'No title available',
-      //   firebaseAudioPath: '',
-      //   audioFile: NetworkAudio,
-      //   suggestedStories: false,
-      // ),
+      bottomNavigationBar: NavBar2(
+          documentReference: widget.storyDocRef,
+          story: storyData?["story"] ?? 'No Story available',
+          title: storyData?["title"] ?? 'No title available',
+          firebaseAudioPath: storyData?["audiofile"] ?? 'No fileaudio found',
+          suggestedStories: false,
+          firebaseStories: true),
 
       // bottomNavigationBar: NavBar3(
       //   documentReference: widget.storyDocRef,
