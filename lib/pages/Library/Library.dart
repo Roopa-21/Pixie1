@@ -25,7 +25,8 @@ class _LibraryState extends State<Library> {
 
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      context.read<FetchStoryBloc>().add(FetchStories(user.uid));
+      context.read<FetchStoryBloc>().add(FetchStories(
+          FirebaseFirestore.instance.collection('users').doc(user?.uid)));
     }
   }
 
@@ -58,10 +59,39 @@ class _LibraryState extends State<Library> {
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Text(
-                      "My Stories",
-                      style: theme.textTheme.headlineMedium!
-                          .copyWith(fontSize: 24),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [
+                          AppColors.textColorGrey,
+                          AppColors.textColorSettings,
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ).createShader(
+                        Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "My Stories",
+                            style: theme.textTheme.headlineMedium!.copyWith(
+                                fontSize: 24,
+                                color: AppColors.textColorWhite,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              context.go('/searchPage');
+                            },
+                            icon: SvgPicture.asset(
+                              'assets/images/search.svg',
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -250,12 +280,22 @@ class _LibraryState extends State<Library> {
             Expanded(
               flex: 2,
               child: Container(
+                padding: EdgeInsets.all(10),
                 height: 70,
                 width: 100,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                  color: AppColors.kwhiteColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.kgreyColor.withOpacity(0.4),
+                      blurRadius: 7,
+                      spreadRadius: 0.5,
+                      offset: Offset(0, 5),
+                    )
+                  ],
                 ),
+                child: Image.asset('assets/images/star.png'),
               ),
             ),
             const SizedBox(width: 10),
@@ -284,7 +324,18 @@ class _LibraryState extends State<Library> {
               ),
             ),
             const SizedBox(width: 10),
-            const Expanded(flex: 1, child: Icon(Icons.ios_share_rounded)),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  'assets/images/share.svg',
+                  width: 25,
+                  height: 25,
+                  color: AppColors.kblackColor,
+                ),
+              ),
+            ),
           ],
         ),
       ),

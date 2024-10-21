@@ -6,10 +6,11 @@ class FetchStoryRepository1 {
   FetchStoryRepository1({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  Future<List<Map<String, dynamic>>> fetchStories(String userId) async {
+  Future<List<Map<String, dynamic>>> fetchStories(
+      DocumentReference userId) async {
     try {
       QuerySnapshot querySnapshot = await _firestore
-          .collection('fav_storys')
+          .collection('fav_stories')
           .where('user_ref', isEqualTo: userId)
           .get();
 

@@ -53,7 +53,7 @@ class _CreateAccountState extends State<CreateAccount> {
       },
       builder: (context, state) {
         return Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           body: Container(
             width: width,
             height: height,
