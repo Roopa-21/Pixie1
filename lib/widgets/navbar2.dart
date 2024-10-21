@@ -13,20 +13,22 @@ import 'package:pixieapp/widgets/story_feedback.dart';
 
 class NavBar2 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
-  final File audioFile;
+  final File? audioFile;
   final String story;
   final String title;
   final String firebaseAudioPath;
   final bool suggestedStories;
+  final bool firebaseStories;
 
   const NavBar2(
       {super.key,
       required this.documentReference,
-      required this.audioFile,
+      this.audioFile,
       required this.story,
       required this.title,
       required this.firebaseAudioPath,
-      required this.suggestedStories});
+      required this.suggestedStories,
+      required this.firebaseStories});
 
   @override
   State<NavBar2> createState() => _NavBar2State();
@@ -37,16 +39,16 @@ class _NavBar2State extends State<NavBar2> {
   late AudioPlayer _audioPlayer;
   User? user = FirebaseAuth.instance.currentUser;
   bool _isPlaying = false;
-  // Duration _currentPosition = Duration.zero; // Track current playback position
-  // Duration _totalDuration = Duration.zero; // Track total duration of the audio
+
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
   @override
   void initState() {
     super.initState();
-    player.setFilePath(widget.audioFile.path);
-    // player.setUrl(
-    //     'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3')
+
+    widget.firebaseStories
+        ? player.setUrl(widget.firebaseAudioPath)
+        : player.setFilePath(widget.audioFile!.path);
     player.positionStream.listen((p) {
       setState(() {
         position = p;
@@ -66,36 +68,6 @@ class _NavBar2State extends State<NavBar2> {
         player.seek(position);
       }
     });
-
-    // _audioPlayer = AudioPlayer(); // Initialize the audio player
-    // _setAudioSource(); // Load the audio source when the widget is initialized
-
-    // // Listen to the current playback position
-    // _audioPlayer.positionStream.listen((position) {
-    //   setState(() {
-    //     _currentPosition = position;
-    //   });
-    // });
-
-    // // Listen to total duration of the audio
-    // _audioPlayer.durationStream.listen((duration) {
-    //   setState(() {
-    //     _totalDuration = duration ?? Duration.zero;
-    //   });
-    // });
-
-    // Add a listener to handle audio completion
-    // _audioPlayer.playerStateStream.listen((playerState) {
-    //   final processingState = playerState.processingState;
-    //   if (processingState == ProcessingState.completed) {
-    //     _audioPlayer.pause(); // Pause the audio after it finishes
-    //     _audioPlayer.seek(Duration.zero); // Reset the audio to the start
-    //     // setState(() {
-    //     //   _isPlaying = false; // Reset the play/pause state
-    //     // });
-    //   }
-    // }
-    // );
   }
 
   @override
@@ -109,7 +81,7 @@ class _NavBar2State extends State<NavBar2> {
   Future<void> _setAudioSource() async {
     try {
       // Use the file path directly
-      await _audioPlayer.setFilePath(widget.audioFile.path);
+      await _audioPlayer.setFilePath(widget.audioFile!.path);
       print("Audio source set successfully.");
     } catch (e) {
       print("Error loading audio file: $e");
@@ -281,16 +253,20 @@ class _NavBar2State extends State<NavBar2> {
                     icon: SizedBox(
                       width: 60,
                       height: 60,
-                      child: SvgPicture.asset(
-                        player.playing
-                            ? 'assets/images/playgrad.svg'
-                            : 'assets/images/pausegrad.svg',
-                        fit: BoxFit.cover,
-                      ),
+                      child: player.playing
+                          ? const Icon(
+                              Icons.pause_circle_filled_sharp,
+                              color: AppColors.kpurple,
+                              size: 60,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/pausegrad.svg',
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   widget.suggestedStories
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 25,
                           height: 25,
                         )

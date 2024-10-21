@@ -73,19 +73,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         String? phone = userCredential.user!.phoneNumber;
         String? displayName = userCredential.user!.displayName;
         String? photoURL = userCredential.user!.photoURL;
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
-          'phone': phone,
-          'createdAt': DateTime.now(),
-          'userId': userId,
-          'displayName': displayName,
-          'child_name': '',
-          'gender': '',
-          'fav_things': [],
-          'dob': DateTime.now(),
-          'loved_once': [],
-          'photoURL': photoURL,
-          'newUser': true
-        });
+
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .get();
+        if (!userDoc.exists) {
+          await FirebaseFirestore.instance.collection('users').doc(userId).set({
+            'phone': phone,
+            'createdAt': DateTime.now(),
+            'userId': userId,
+            'displayName': displayName,
+            'child_name': '',
+            'gender': '',
+            'fav_things': [],
+            'dob': DateTime.now(),
+            'loved_once': [],
+            'moreLovedOnes': [],
+            'photoURL': photoURL,
+            'newUser': true
+          });
+        }
         emit(AuthAuthenticated(userId: userId));
         // emit(LoginScreenLoadedState());
       } catch (e) {
@@ -159,6 +167,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         'fav_things': [],
         'dob': DateTime.now(),
         'loved_once': [],
+        'moreLovedOnes': [],
         'displayName': "displayName",
         'photoURL': "photoURL",
         'newUser': true
@@ -239,6 +248,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'fav_things': [],
           'dob': DateTime.now(),
           'loved_once': [],
+          'moreLovedOnes': [],
           'photoURL': photoURL,
           'createdAt': Timestamp.now(),
           'userId': userId,
@@ -258,6 +268,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'fav_things': [],
           'dob': DateTime.now(),
           'loved_once': [],
+          'moreLovedOnes': [],
         });
       }
 

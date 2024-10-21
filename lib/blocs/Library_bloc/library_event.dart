@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FetchStoryEvent extends Equatable {
@@ -8,7 +9,7 @@ abstract class FetchStoryEvent extends Equatable {
 }
 
 class FetchStories extends FetchStoryEvent {
-  final String userId;
+  final DocumentReference userId;
 
   const FetchStories(this.userId);
 

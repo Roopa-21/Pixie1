@@ -23,7 +23,8 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
       gender: Gender.prefernottosay,
       favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
       dob: DateTime.now(),
-      lovedonce: []);
+      lovedonce: [],
+      moreLovedOnce: []);
 
   @override
   Widget build(BuildContext context) {
