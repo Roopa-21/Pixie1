@@ -273,12 +273,15 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
                                     child: Image.asset(
                                         "assets/images/googleimg.png")),
                               ),
-                              Text(
-                                "Login with Google",
-                                style: theme.textTheme.bodyMedium!.copyWith(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.backgrountdarkpurple),
+                              FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Text(
+                                  "Login with Google",
+                                  style: theme.textTheme.bodyMedium!.copyWith(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.backgrountdarkpurple),
+                                ),
                               ),
                               const SizedBox()
                             ],

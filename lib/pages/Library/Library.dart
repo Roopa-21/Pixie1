@@ -238,7 +238,8 @@ class _LibraryState extends State<Library> {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: storylistCard(
+            child: 
+            storylistCard(
               theme: theme,
               title: story['title'],
               storytype: story['storytype'],
