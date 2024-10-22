@@ -104,7 +104,32 @@ class _SearchPageState extends State<SearchPage> {
                     return const Center(child: Text('Error'));
                   } else if (state is StoryLoaded) {
                     final stories = state.filteredStories;
-
+                    if (stories.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Couldn't find",
+                              style: theme.textTheme.headlineMedium!.copyWith(
+                                  fontSize: 24,
+                                  color: AppColors.textColorblack,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'Try again using a different spelling\n or keyword.',
+                              style: theme.textTheme.bodySmall!.copyWith(
+                                  color: AppColors.kblackColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                     return ListView.builder(
                       itemCount: stories.length,
                       itemBuilder: (context, index) {
@@ -164,7 +189,7 @@ class _SearchPageState extends State<SearchPage> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 height: 70,
                 width: 100,
                 decoration: BoxDecoration(
@@ -175,7 +200,7 @@ class _SearchPageState extends State<SearchPage> {
                       color: AppColors.kgreyColor.withOpacity(0.4),
                       blurRadius: 7,
                       spreadRadius: 0.5,
-                      offset: Offset(0, 5),
+                      offset: const Offset(0, 5),
                     )
                   ],
                 ),
