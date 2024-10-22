@@ -210,12 +210,19 @@ class _NavBar2State extends State<NavBar2> {
                                   fav: !state.fav,
                                 );
                         },
-                        icon: SvgPicture.asset(
+                        // icon: SvgPicture.asset(
+                        //   state.fav == true
+                        //       ? 'assets/images/Heart_filled.svg'
+                        //       : 'assets/images/likee.svg',
+                        //   width: state.fav == true ? 40 : 25,
+                        //   height: state.fav == true ? 40 : 25,
+                        // ),
+                        icon: Icon(
                           state.fav == true
-                              ? 'assets/images/Heart_filled.svg'
-                              : 'assets/images/likee.svg',
-                          width: state.fav == true ? 40 : 25,
-                          height: state.fav == true ? 40 : 25,
+                              ? Icons.thumb_up
+                              : Icons.thumb_up_off_alt,
+                          size: 30,
+                          color: AppColors.kpurple,
                         ),
                       ),
                     ),
@@ -242,10 +249,15 @@ class _NavBar2State extends State<NavBar2> {
                         },
                       );
                     },
-                    icon: SvgPicture.asset(
-                      'assets/images/dislike.svg',
-                      width: 25,
-                      height: 25,
+                    // icon: SvgPicture.asset(
+                    //   'assets/images/dislike.svg',
+                    //   width: 25,
+                    //   height: 25,
+                    // ),
+                    icon: const Icon(
+                      Icons.thumb_down_off_alt,
+                      color: AppColors.kpurple,
+                      size: 30,
                     ),
                   ),
                   IconButton(
