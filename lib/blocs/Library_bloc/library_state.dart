@@ -18,6 +18,7 @@ class StoryLoading extends StoryState {
   const StoryLoading() : super(error: '', filter: '');
 }
 
+
 class StoryLoaded extends StoryState {
   final List<Map<String, dynamic>> stories;
   final List<Map<String, dynamic>> filteredStories;
