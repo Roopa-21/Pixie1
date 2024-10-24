@@ -45,7 +45,7 @@
     <true/>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
-    
+
     <!-- URL Scheme for Google Sign-In -->
     <key>CFBundleURLTypes</key>
     <array>
@@ -54,7 +54,6 @@
             <string>Editor</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <!-- Replace with the REVERSED_CLIENT_ID from your GoogleService-Info.plist -->
                 <string>com.googleusercontent.apps.245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l</string>
             </array>
         </dict>
@@ -63,6 +62,15 @@
     <!-- Additional configuration to ensure support for Google Sign-In -->
     <key>GoogleSignInReversedClientId</key>
     <string>com.googleusercontent.apps.245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l</string>
-    
+
+    <!-- Required Permissions -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>We use your microphone to enable voice features, such as audio input or recording, for a more interactive user experience.</string>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+
+    <!-- Minimum macOS version requirement for Apple Silicon compatibility -->
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
 </dict>
 </plist>
