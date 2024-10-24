@@ -10,6 +10,7 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
   FetchStoryBloc(this._fetchStoryRepository) : super(const StoryInitial()) {
     on<FetchStories>(_onFetchStories);
     on<AddfilterEvent>(_onAddFilter);
+    on<SearchStoryEvent>(_onSearchStories);
   }
 
   Future<void> _onFetchStories(
@@ -47,9 +48,14 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
         filter: event.filter,
       ));
     } else {
-      emit(StoryError('Cannot apply filter. No stories available.'));
+      emit(const StoryError('Cannot apply filter. No stories available.'));
     }
   }
+
+
+  
+ 
+
 
   // // Sort stories by createdTime in descending order (latest first)
   // List<Map<String, dynamic>> _sortStoriesByTime(
@@ -83,6 +89,25 @@ class FetchStoryBloc extends Bloc<FetchStoryEvent, StoryState> {
       }
       return true;
     }).toList();
+  }
+   void _onSearchStories(SearchStoryEvent event, Emitter<StoryState> emit) {
+    if (state is StoryLoaded) {
+      final loadedState = state as StoryLoaded;
+
+      // Apply search filter to the original list of stories
+      final filteredStories = loadedState.stories.where((story) {
+        final title = story['title']?.toLowerCase() ?? '';
+        return title.contains(event.query.toLowerCase());
+      }).toList();
+
+      emit(StoryLoaded(
+        stories: loadedState.stories,
+        filteredStories: filteredStories,
+        filter: loadedState.filter,
+      ));
+    } else {
+      emit(const StoryError('Cannot search. No stories available.'));
+    }
   }
 }
 

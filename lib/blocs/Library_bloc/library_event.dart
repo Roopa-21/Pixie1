@@ -25,3 +25,10 @@ class AddfilterEvent extends FetchStoryEvent {
   @override
   List<Object?> get props => [filter];
 }
+
+class SearchStoryEvent extends FetchStoryEvent {
+  final String query;
+
+  const SearchStoryEvent(this.query);
+
+}

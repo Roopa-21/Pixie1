@@ -134,7 +134,7 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                           minLines: 3,
                           maxLines: 10,
                           decoration: InputDecoration(
-                            hintText: 'Add your own issue',
+                            hintText: 'Type in case other',
                             filled: true,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
@@ -197,7 +197,7 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                                 context.pop();
                               },
                               child: Text(
-                                'Submit Feedback',
+                                'Submit',
                                 style: theme.textTheme.bodyMedium!
                                     .copyWith(color: AppColors.textColorWhite),
                               ),
