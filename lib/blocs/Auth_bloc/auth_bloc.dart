@@ -250,25 +250,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'loved_once': [],
           'moreLovedOnes': [],
           'photoURL': photoURL,
-          'createdAt': Timestamp.now(),
+          'createdAt': DateTime.now(),
           'userId': userId,
           'newUser': true
-        });
-      }
-
-      if (!userDoc.exists) {
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
-          'email': email,
-          'displayName': 'displayName',
-          'photoURL': 'photoURL',
-          'createdAt': Timestamp.now,
-          'userId': userId,
-          'child_name': '',
-          'gender': '',
-          'fav_things': [],
-          'dob': DateTime.now(),
-          'loved_once': [],
-          'moreLovedOnes': [],
         });
       }
 

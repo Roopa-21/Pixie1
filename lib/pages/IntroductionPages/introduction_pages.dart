@@ -116,6 +116,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(255, 236, 215, 244),
         key: scaffoldKey,
         body: BlocConsumer<IntroductionBloc, IntroductionState>(
