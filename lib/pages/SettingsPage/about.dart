@@ -26,21 +26,21 @@ class AboutPage extends StatelessWidget {
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          IconButton(
-                            onPressed: () {
+                          InkWell(
+                            onTap: () {
                               context.pop();
                             },
-                            icon: const Icon(
+                            child: const Icon(
                               Icons.arrow_back,
                               color: AppColors.sliderColor,
-                              size: 23,
+                              size: 25,
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -65,6 +65,7 @@ class AboutPage extends StatelessWidget {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 20),
                       Text(
                         'Privacy Policy',
                         style: theme.textTheme.bodyMedium!.copyWith(

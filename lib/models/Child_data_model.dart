@@ -12,15 +12,10 @@ class ClildDataModel {
       required this.favthings,
       required this.dob,
       required this.lovedonce,
-      required this.moreLovedOnce
-      });
+      required this.moreLovedOnce});
 }
 
-enum Gender {
-  male,
-  female,
-  prefernottosay,
-}
+enum Gender { male, female, prefernottosay, notselected }
 
 class Lovedonces {
   String relation;

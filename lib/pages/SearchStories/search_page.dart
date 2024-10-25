@@ -7,6 +7,7 @@ import 'package:pixieapp/blocs/Library_bloc/library_event.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/widgets/widgets_index.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -99,7 +100,7 @@ class _SearchPageState extends State<SearchPage> {
               child: BlocBuilder<FetchStoryBloc, StoryState>(
                 builder: (context, state) {
                   if (state is StoryLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: LoadingWidget());
                   } else if (state is StoryError) {
                     return const Center(child: Text('Error'));
                   } else if (state is StoryLoaded) {

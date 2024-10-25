@@ -215,34 +215,34 @@ class _LoginpageState extends State<Loginpage> {
                   Material(
                     elevation: 5,
                     borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      width: MediaQuery.of(context).size.width * .8,
-                      height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: SizedBox(
-                                width: 40,
-                                child: Image.asset(
-                                    "assets/images/smartphone.png")),
-                          ),
-                          TextButton(
-                            onPressed: () => context.push('/CreateAccount'),
-                            child: Text(
+                    child: InkWell(
+                      onTap: () => context.push('/CreateAccount'),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        width: MediaQuery.of(context).size.width * .8,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                  width: 40,
+                                  child: Image.asset(
+                                      "assets/images/smartphone.png")),
+                            ),
+                            Text(
                               "Login with Mobile number",
                               style: theme.textTheme.bodyMedium!.copyWith(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.backgrountdarkpurple),
                             ),
-                          ),
-                          const SizedBox()
-                        ],
+                            const SizedBox()
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -250,34 +250,36 @@ class _LoginpageState extends State<Loginpage> {
                   Material(
                     elevation: 5,
                     borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12)),
-                      width: MediaQuery.of(context).size.width * .8,
-                      height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: SizedBox(
-                                width: 40,
-                                child:
-                                    Image.asset("assets/images/googleimg.png")),
-                          ),
-                          TextButton(
-                            onPressed: () {},
-                            child: Text(
+                    child: InkWell(
+                      onTap: () => context
+                          .read<AuthBloc>()
+                          .add(AuthGoogleSignInRequested()),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12)),
+                        width: MediaQuery.of(context).size.width * .8,
+                        height: 50,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                  width: 40,
+                                  child: Image.asset(
+                                      "assets/images/googleimg.png")),
+                            ),
+                            Text(
                               "Login with Google",
                               style: theme.textTheme.bodyMedium!.copyWith(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.backgrountdarkpurple),
                             ),
-                          ),
-                          const SizedBox()
-                        ],
+                            const SizedBox()
+                          ],
+                        ),
                       ),
                     ),
                   ),

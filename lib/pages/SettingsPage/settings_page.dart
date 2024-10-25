@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
+import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/const/colors.dart';
@@ -105,6 +107,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         context
                             .read<AddCharacterBloc>()
                             .add(const PageChangeEvent(0));
+                        context
+                            .read<NavBarBloc>()
+                            .add(const NavBarItemTapped(0));
+                        context.go("/CreateAccount");
                       },
                       icon_path: 'assets/images/logout.svg',
                       theme: theme,

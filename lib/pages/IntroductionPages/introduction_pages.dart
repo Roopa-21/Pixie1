@@ -170,6 +170,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
                             20.0, 10.0, 20.0, 0.0),
                         child: SafeArea(
                           child: PageView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            allowImplicitScrolling: false,
                             controller: pageViewController ??=
                                 PageController(initialPage: 0),
                             onPageChanged: (index) {
@@ -1064,14 +1066,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                     width: MediaQuery.sizeOf(context).width * 1.0,
                     height: 140.0,
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12)),
-                        border: Border(
-                            top: BorderSide(
-                                color: Color.fromARGB(255, 255, 213, 213),
-                                strokeAlign: 1)),
-                        color: Color.fromARGB(145, 255, 255, 255)),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12)),
+                    ),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,

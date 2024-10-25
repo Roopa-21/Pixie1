@@ -10,6 +10,7 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart'
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavBar2 extends StatefulWidget {
   final DocumentReference<Object?>? documentReference;
@@ -39,6 +40,7 @@ class _NavBar2State extends State<NavBar2> {
   late AudioPlayer _audioPlayer;
   User? user = FirebaseAuth.instance.currentUser;
   bool _isPlaying = false;
+  bool showfeedback = true;
 
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
@@ -59,7 +61,7 @@ class _NavBar2State extends State<NavBar2> {
         duration = d!;
       });
     });
-    player.playerStateStream.listen((state) {
+    player.playerStateStream.listen((state) async {
       if (state.processingState == ProcessingState.completed) {
         setState(() {
           position = Duration.zero;
@@ -123,9 +125,37 @@ class _NavBar2State extends State<NavBar2> {
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
-  void handlePlayPause() {
+  void handlePlayPause({required AddCharacterState state}) async {
     if (player.playing) {
       player.pause();
+      if (state.showfeedback) {
+        await showModalBottomSheet(
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          enableDrag: false,
+          context: context,
+          builder: (context) {
+            return GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Padding(
+                padding: MediaQuery.viewInsetsOf(context),
+                child: StoryFeedback(
+                  story: widget.story,
+                  title: widget.title,
+                  path: widget.firebaseAudioPath,
+                  textfield: false,
+                ),
+              ),
+            );
+          },
+        );
+      }
+      setState(() {
+        showfeedback = false;
+      });
+      context
+          .read<AddCharacterBloc>()
+          .add(const ShowfeedbackEvent(showfeedback: false));
     } else {
       player.play();
     }
@@ -151,49 +181,59 @@ class _NavBar2State extends State<NavBar2> {
         ),
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 30, right: 30, top: 25, bottom: 20),
+              const EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    formatDuration(position),
-                    style: theme.textTheme.bodyMedium!.copyWith(
-                      color: AppColors.textColorblue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        formatDuration(position),
+                        style: theme.textTheme.bodyMedium!.copyWith(
+                          color: AppColors.textColorblue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        formatDuration(duration),
+                        style: theme.textTheme.bodyMedium!.copyWith(
+                          color: AppColors.textColorblue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    child: Slider(
-                      min: 0,
-                      max: duration.inSeconds.toDouble(),
-                      value: position.inSeconds.toDouble(),
-                      onChanged: handleSeek,
-                      activeColor: AppColors.kpurple,
-                      inactiveColor: AppColors.kwhiteColor,
-                    ),
-                  ),
-                  Text(
-                    formatDuration(duration),
-                    style: theme.textTheme.bodyMedium!.copyWith(
-                      color: AppColors.textColorblue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value: position.inSeconds.toDouble(),
+                          onChanged: handleSeek,
+                          activeColor: AppColors.kpurple,
+                          inactiveColor: AppColors.kwhiteColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  BlocBuilder<AddCharacterBloc, AddCharacterState>(
-                    builder: (context, state) => Padding(
+              BlocBuilder<AddCharacterBloc, AddCharacterState>(
+                builder: (context, state) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: IconButton(
                         onPressed: () {
@@ -226,79 +266,86 @@ class _NavBar2State extends State<NavBar2> {
                         ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        enableDrag: false,
-                        context: context,
-                        builder: (context) {
-                          return GestureDetector(
-                            onTap: () => FocusScope.of(context).unfocus(),
-                            child: Padding(
-                              padding: MediaQuery.viewInsetsOf(context),
-                              child: StoryFeedback(
-                                story: widget.story,
-                                title: widget.title,
-                                path: widget.firebaseAudioPath,
+                    IconButton(
+                      onPressed: () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          enableDrag: false,
+                          context: context,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () => FocusScope.of(context).unfocus(),
+                              child: Padding(
+                                padding: MediaQuery.viewInsetsOf(context),
+                                child: StoryFeedback(
+                                  story: widget.story,
+                                  title: widget.title,
+                                  path: widget.firebaseAudioPath,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    // icon: SvgPicture.asset(
-                    //   'assets/images/dislike.svg',
-                    //   width: 25,
-                    //   height: 25,
-                    // ),
-                    icon: const Icon(
-                      Icons.thumb_down_off_alt,
-                      color: AppColors.kpurple,
-                      size: 30,
+                            );
+                          },
+                        );
+                      },
+                      // icon: SvgPicture.asset(
+                      //   'assets/images/dislike.svg',
+                      //   width: 25,
+                      //   height: 25,
+                      // ),
+                      icon: const Icon(
+                        Icons.thumb_down_off_alt,
+                        color: AppColors.kpurple,
+                        size: 30,
+                      ),
                     ),
-                  ),
-                  IconButton(
-                    onPressed: handlePlayPause,
-                    icon: SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: player.playing
-                          ? const Icon(
-                              Icons.pause_circle_filled_sharp,
-                              color: AppColors.kpurple,
-                              size: 60,
-                            )
-                          : SvgPicture.asset(
-                              'assets/images/pausegrad.svg',
-                              fit: BoxFit.cover,
-                            ),
+                    IconButton(
+                      onPressed: () {
+                        handlePlayPause(state: state);
+                      },
+                      icon: SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: player.playing
+                            ? const Icon(
+                                Icons.pause_circle_filled_sharp,
+                                color: AppColors.kpurple,
+                                size: 60,
+                              )
+                            : SvgPicture.asset(
+                                'assets/images/pausegrad.svg',
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
-                  ),
-                  widget.suggestedStories
-                      ? const SizedBox(
-                          width: 25,
-                          height: 25,
-                        )
-                      : IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            'assets/images/addToFavorites.svg',
+                    widget.suggestedStories
+                        ? const SizedBox(
                             width: 25,
                             height: 25,
+                          )
+                        : IconButton(
+                            onPressed: () {},
+                            icon: SvgPicture.asset(
+                              'assets/images/addToFavorites.svg',
+                              width: 25,
+                              height: 25,
+                            ),
                           ),
-                        ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset(
-                      'assets/images/share.svg',
-                      width: 25,
-                      height: 25,
+                    IconButton(
+                      onPressed: () {
+                        shareOnWhatsApp(
+                            appUrl:
+                                "https://apps.apple.com/in/app/instagram/id389801252",
+                            audioFileUrl: widget.firebaseAudioPath);
+                      },
+                      icon: SvgPicture.asset(
+                        'assets/images/share.svg',
+                        width: 25,
+                        height: 25,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -343,5 +390,18 @@ class _NavBar2State extends State<NavBar2> {
       });
       print('Story removed from fav');
     }
+  }
+}
+
+void shareOnWhatsApp(
+    {required String audioFileUrl, required String appUrl}) async {
+  final whatsappUrl = Uri.parse(
+    "https://wa.me/?text=Hey!%20Listen%20to%20this%20amazing%20story%20on%20Pixie.%20Download%20the%20app%20for%20more%20similar%20stories:%20$appUrl%20\n\n"
+    "You%20can%20also%20listen%20to%20the%20audio%20directly:%20$audioFileUrl",
+  );
+  if (await canLaunchUrl(whatsappUrl)) {
+    await launchUrl(whatsappUrl);
+  } else {
+    print("Could not launch WhatsApp.");
   }
 }

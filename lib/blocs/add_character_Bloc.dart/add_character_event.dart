@@ -55,6 +55,15 @@ class AddlessonEvent extends AddCharacterEvent {
   List<Object?> get props => [lesson, selectedindexlesson];
 }
 
+class ShowfeedbackEvent extends AddCharacterEvent {
+  final bool showfeedback;
+
+  const ShowfeedbackEvent({required this.showfeedback});
+
+  @override
+  List<Object?> get props => [showfeedback];
+}
+
 class AddcharactorstoryEvent extends AddCharacterEvent {
   final String charactorname;
   final int selectedindexcharactor;
