@@ -16,7 +16,7 @@ class QuestionsIntroPage extends StatelessWidget {
           width: devicewidth,
           height: deviceheight,
           child: Image.asset(
-            'assets/images/background.png',
+            'assets/images/background.jpeg',
             fit: BoxFit.cover,
           ),
         ),

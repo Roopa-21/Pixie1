@@ -16,6 +16,7 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
             genre: 'Funny',
             musicAndSpeed: 'notselected',
             fav: false,
+            showfeedback: true,
             charactorname: null)) {
     // Handle page change events
     on<PageChangeEvent>((event, emit) {
@@ -63,10 +64,18 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
     on<UpdateMusicandspeedEvent>((event, emit) {
       emit(state.copyWith(musicAndSpeed: event.musicandspeed));
     });
-    // Handle update favbutton event
+    //  Handle update favbutton event
     on<UpdatefavbuttonEvent>((event, emit) {
       emit(state.copyWith(fav: event.fav));
     });
+    // Handle update feedback popup
+    on<ShowfeedbackEvent>((event, emit) {
+      emit(state.copyWith(showfeedback: event.showfeedback));
+    });
+    // // Handle update favbutton event
+    // on<UpdatefavbuttonEvent>((event, emit) {
+    //   emit(state.copyWith(fav: event.fav));
+    // });
 
     // Handle ResetStateEvent to reset bloc state to initial values
     on<ResetStateEvent>((event, emit) {
@@ -79,6 +88,7 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
           selectedindexcharactor: -1,
           genre: 'Funny',
           musicAndSpeed: 'notselected',
+          showfeedback: true,
           fav: false));
     });
   }

@@ -63,7 +63,7 @@ class _FirebasestoryState extends State<Firebasestory> {
             automaticallyImplyLeading: false,
             expandedHeight: deviceHeight * 0.38,
             leadingWidth: deviceWidth,
-            collapsedHeight: deviceHeight * 0.15,
+            collapsedHeight: deviceHeight * 0.08,
             pinned: true,
             floating: false,
             backgroundColor: const Color(0xff644a98),
@@ -74,7 +74,7 @@ class _FirebasestoryState extends State<Firebasestory> {
 
                 return FlexibleSpaceBar(
                   centerTitle: true,
-                  titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+                  titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
                   title: Text(
                     storyData?["title"] ?? "No data",
                     style: theme.textTheme.titleMedium!.copyWith(

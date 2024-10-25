@@ -9,10 +9,12 @@ import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/widgets/navbar_loading_audio.dart';
+import 'package:pixieapp/widgets/story_feedback.dart';
 
 class StoryGeneratePage extends StatefulWidget {
   final Map<String, String> story;
@@ -96,7 +98,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
               automaticallyImplyLeading: false,
               expandedHeight: deviceHeight * 0.38,
               leadingWidth: deviceWidth,
-              collapsedHeight: deviceHeight * 0.15,
+              collapsedHeight: deviceHeight * 0.08,
               pinned: true,
               floating: false,
               backgroundColor: const Color(0xff644a98),
@@ -107,7 +109,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
                   return FlexibleSpaceBar(
                     centerTitle: true,
-                    titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+                    titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
                     title: Text(
                       widget.story["title"] ?? "No data",
                       style: theme.textTheme.titleMedium!.copyWith(
@@ -133,12 +135,43 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                       color: AppColors.kwhiteColor.withOpacity(0.4),
                       borderRadius: BorderRadius.circular(40.0),
                     ),
-                    child: IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () async {
-                        context.read<AddCharacterBloc>().add(ResetStateEvent());
-                        context.go('/HomePage');
-                      },
+                    child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
+                      builder: (context, state) => IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () async {
+                          if (state.showfeedback) {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              enableDrag: false,
+                              context: context,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () => FocusScope.of(context).unfocus(),
+                                  child: Padding(
+                                    padding: MediaQuery.viewInsetsOf(context),
+                                    child: StoryFeedback(
+                                      story: widget.story['story'] ??
+                                          'No Story available',
+                                      title: widget.story['title'] ??
+                                          'No title available',
+                                      path: audioUrl ?? '',
+                                      textfield: false,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+
+                          context.read<AddCharacterBloc>().add(
+                              const ShowfeedbackEvent(showfeedback: false));
+                          context
+                              .read<AddCharacterBloc>()
+                              .add(ResetStateEvent());
+                          context.go('/HomePage');
+                        },
+                      ),
                     ),
                   ),
                 ),
