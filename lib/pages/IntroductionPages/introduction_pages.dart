@@ -27,8 +27,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
   // State field(s) for PageView widget.
   PageController? pageViewController;
   ClildDataModel childdata = ClildDataModel(
-    name: 'name',
-    gender: Gender.prefernottosay,
+    name: '',
+    gender: Gender.notselected,
     favthings: ["Motorbike", "Robot", "Monkey", "Race cars"],
     dob: DateTime.now(),
     lovedonce: [],
@@ -116,6 +116,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(255, 236, 215, 244),
         key: scaffoldKey,
         body: BlocConsumer<IntroductionBloc, IntroductionState>(
@@ -1151,11 +1152,52 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                       print("Error updating user data: $e");
                                     }
                                   } else {
-                                    await pageViewController?.nextPage(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.ease,
-                                    );
+                                    if (currentpage_index == 0 &&
+                                        childdata.name.trim().isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor:
+                                              AppColors.snackBarBackground,
+                                          content: Text(
+                                            "Please enter Child name.",
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                                    color:
+                                                        AppColors.textColorblue,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                          ),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    } else if (currentpage_index == 0 &&
+                                        childdata.gender ==
+                                            Gender.notselected) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          backgroundColor:
+                                              AppColors.snackBarBackground,
+                                          content: Text(
+                                            "Please select gender",
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                                    color:
+                                                        AppColors.textColorblue,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                          ),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    } else {
+                                      await pageViewController?.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        curve: Curves.ease,
+                                      );
+                                    }
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

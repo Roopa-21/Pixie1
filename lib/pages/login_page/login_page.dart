@@ -69,10 +69,13 @@ class _LoginpageState extends State<Loginpage> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset('assets/images/createaccountsmily.png'),
-                  Text(
-                    'Login to your account',
-                    style: theme.textTheme.displayLarge!
-                        .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
+                  FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Text(
+                      'Login to your account',
+                      style: theme.textTheme.displayLarge!
+                          .copyWith(fontSize: 34, fontWeight: FontWeight.w700),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(
