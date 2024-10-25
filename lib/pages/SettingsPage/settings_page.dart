@@ -9,6 +9,7 @@ import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/widgets/logout_bottom_sheet.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
@@ -102,15 +103,22 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     profilelistCard(
                       title: 'Logout',
-                      ontap: () {
-                        context.read<AuthBloc>().add(AuthLogOutRequested());
-                        context
-                            .read<AddCharacterBloc>()
-                            .add(const PageChangeEvent(0));
-                        context
-                            .read<NavBarBloc>()
-                            .add(const NavBarItemTapped(0));
-                        context.go("/CreateAccount");
+                      ontap: () async {
+                        await showModalBottomSheet(
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          enableDrag: false,
+                          context: context,
+                          builder: (context) {
+                            return GestureDetector(
+                              onTap: () => FocusScope.of(context).unfocus(),
+                              child: Padding(
+                                padding: MediaQuery.viewInsetsOf(context),
+                                child: const LogoutBottomSheet(),
+                              ),
+                            );
+                          },
+                        );
                       },
                       icon_path: 'assets/images/logout.svg',
                       theme: theme,

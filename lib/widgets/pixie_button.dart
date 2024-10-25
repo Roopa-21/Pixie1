@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pixieapp/const/colors.dart';
 
 class PixieButton extends StatelessWidget {
   const PixieButton({
@@ -18,12 +17,19 @@ class PixieButton extends StatelessWidget {
     final theme = Theme.of(context);
 
     final devicewidth = MediaQuery.of(context).size.width;
-    final deviceheight = MediaQuery.of(context).size.height;
 
     return Container(
-      height: 170,
+      height: 120,
       width: devicewidth,
       decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Color.fromARGB(255, 250, 175, 175), // Border color
+              width: .5, // Border thickness
+            ),
+          ),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           image: DecorationImage(
               image: AssetImage("assets/images/Frame 1261154616.png"),
               fit: BoxFit.cover)),
@@ -31,26 +37,23 @@ class PixieButton extends StatelessWidget {
         onTap: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 75),
-              child: Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width * .9,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    colors: [color1, color2],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+            Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width * .9,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: [color1, color2],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                child: Center(
-                  child: Text(text,
-                      style: theme.textTheme.bodyMedium!
-                          .copyWith(color: Colors.white)),
-                ),
+              ),
+              child: Center(
+                child: Text(text,
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(color: Colors.white)),
               ),
             ),
           ],
