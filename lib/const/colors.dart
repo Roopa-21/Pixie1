@@ -44,4 +44,6 @@ class AppColors {
   static const bottomSheetBackground = Color.fromARGB(255, 242, 242, 247);
 
   static const likeButtonColor = Color(0xffF47C25);
+
+  static const snackBarBackground = Color.fromARGB(255, 231, 201, 249);
 }
