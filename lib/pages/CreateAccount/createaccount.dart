@@ -50,6 +50,15 @@ class _CreateAccountState extends State<CreateAccount> {
             SnackBar(content: Text(state.message)),
           );
         }
+        if (state is AuthAuthenticated) {
+          Navigator.of(context).pop();
+          context.push('/questionIntroPage');
+        } else if (state is AuthError) {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
       },
       builder: (context, state) {
         return Scaffold(
