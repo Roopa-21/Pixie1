@@ -63,8 +63,6 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
     }
   }
 
-
-
   Future<void> _fetchStoryData() async {
     try {
       final docSnapshot = await widget.storyDocRef.get();
@@ -138,7 +136,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
             automaticallyImplyLeading: false,
             expandedHeight: deviceHeight * 0.38,
             leadingWidth: deviceWidth,
-            collapsedHeight: deviceHeight * 0.15,
+            collapsedHeight: deviceHeight * 0.08,
             pinned: true,
             floating: false,
             backgroundColor: const Color(0xff644a98),
@@ -149,7 +147,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
 
                 return FlexibleSpaceBar(
                   centerTitle: true,
-                  titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
+                  titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
                   title: Text(
                     formatText(storyData?["title"] ?? "No data"),
                     style: theme.textTheme.titleMedium!.copyWith(
@@ -167,7 +165,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
             ),
             actions: [
               Padding(
-            padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                padding: EdgeInsets.only(right: deviceHeight * 0.024),
                 child: Container(
                   width: 40,
                   height: 40,
@@ -214,8 +212,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
           ),
         ],
       ),
-      bottomNavigationBar:
-       NavBar2(
+      bottomNavigationBar: NavBar2(
         documentReference: widget.storyDocRef,
         audioFile: audioFile!,
         story: storyData?["story"] ?? 'No Story available',

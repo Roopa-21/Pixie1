@@ -54,20 +54,42 @@
             <string>Editor</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>com.googleusercontent.apps.245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l</string>
+                <string>com.googleusercontent.apps.245008050907-drcb7ukkf7lqkn66063l7n3p5pmaddat</string>
             </array>
         </dict>
     </array>
 
-    <!-- Additional configuration to ensure support for Google Sign-In -->
+    <!-- Additional configuration for Google Sign-In -->
     <key>GoogleSignInReversedClientId</key>
-    <string>com.googleusercontent.apps.245008050907-iiu40acl4l0t1u30ck6of0u1lsl96m8l</string>
+    <string>com.googleusercontent.apps.245008050907-drcb7ukkf7lqkn66063l7n3p5pmaddat</string>
 
-    <!-- Required Permissions -->
+    <!-- Firebase Phone Authentication - Permissions -->
     <key>NSMicrophoneUsageDescription</key>
     <string>We use your microphone to enable voice features, such as audio input or recording, for a more interactive user experience.</string>
+
+    <!-- Required for Firebase Phone Authentication -->
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera to scan QR codes and verify your identity during the sign-up process.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>We require access to your photo library to upload profile pictures and attachments.</string>
+
+    <!-- Permissions required for phone number verification -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>We use your location to offer location-based services and verify your phone number.</string>
+
+    <!-- Allow arbitrary loads for Firebase -->
     <key>NSAllowsArbitraryLoads</key>
     <true/>
+
+    <!-- Firebase API Key and Configuration -->
+    <key>FirebaseAPIKey</key>
+    <string>[YOUR-FIREBASE-API-KEY]</string>
+    <key>FirebaseAuthDomain</key>
+    <string>[YOUR-FIREBASE-AUTH-DOMAIN]</string>
+    <key>FirebaseDatabaseURL</key>
+    <string>[YOUR-DATABASE-URL]</string>
+    <key>FirebaseProjectID</key>
+    <string>[YOUR-PROJECT-ID]</string>
 
     <!-- Minimum macOS version requirement for Apple Silicon compatibility -->
     <key>LSMinimumSystemVersion</key>

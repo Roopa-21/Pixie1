@@ -12,11 +12,13 @@ class StoryFeedback extends StatefulWidget {
   final String story;
   final String title;
   final String path;
+  final bool textfield;
   const StoryFeedback(
       {super.key,
       required this.story,
       required this.title,
-      required this.path});
+      required this.path,
+      this.textfield = true});
 
   @override
   State<StoryFeedback> createState() => _StoryFeedbackState();
@@ -106,7 +108,7 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                         Wrap(
                           children: [
                             for (var issue in [
-                              'Story line',
+                              'Narration speed',
                               'Pronunciation',
                               'Voice modulation',
                               'Background music',
@@ -129,41 +131,43 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        TextField(
-                          controller: textcontroller,
-                          minLines: 3,
-                          maxLines: 10,
-                          decoration: InputDecoration(
-                            hintText: 'Type in case other',
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: Colors.grey,
-                                width: .5,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: Colors.grey,
-                                width: .5,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                color: AppColors.kpurple,
-                                width: .5,
-                              ),
-                            ),
-                          ),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.kblackColor,
-                          ),
-                        ),
+                        widget.textfield
+                            ? TextField(
+                                controller: textcontroller,
+                                minLines: 3,
+                                maxLines: 10,
+                                decoration: InputDecoration(
+                                  hintText: 'Type in case other',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.grey,
+                                      width: .5,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors.grey,
+                                      width: .5,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.kpurple,
+                                      width: .5,
+                                    ),
+                                  ),
+                                ),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: AppColors.kblackColor,
+                                ),
+                              )
+                            : const SizedBox(),
                         const SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 22),
@@ -175,7 +179,8 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                                   foregroundColor: AppColors.kpurple,
                                   backgroundColor: AppColors.kpurple),
                               onPressed: () {
-                                if (textcontroller.text.isNotEmpty) {
+                                if (textcontroller.text.isNotEmpty &&
+                                    widget.textfield == true) {
                                   context.read<StoryFeedbackBloc>().add(
                                       AddCustomIssueEvent(textcontroller.text));
                                   context.read<StoryFeedbackBloc>().add(
@@ -183,12 +188,14 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                                           audiopath: widget.path,
                                           story: widget.story,
                                           story_title: widget.title));
+                                  context.pop();
                                 } else {
                                   context.read<StoryFeedbackBloc>().add(
                                       StoryFeedbackEvent.SubmitFeedbackEvent(
                                           audiopath: widget.path,
                                           story: widget.story,
                                           story_title: widget.title));
+                                  context.pop();
                                 }
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(

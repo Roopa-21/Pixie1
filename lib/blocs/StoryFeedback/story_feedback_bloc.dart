@@ -35,14 +35,16 @@ class StoryFeedbackBloc extends Bloc<StoryFeedbackEvent, StoryFeedbackState> {
             FirebaseFirestore.instance.collection('users').doc(user!.uid);
         await _firestore.collection('story_feedback').add({
           'user_ref': userRef,
-          'rating': state.rating,
-          'issues': state.issues,
-          'created_time': FieldValue.serverTimestamp(),
-          "story_title": event.story_title,
-          "story": event.story,
-          "audio_path": event.audiopath
+          'rating': state.rating ?? 0,
+          'issues': state.issues ?? "Not added",
+          'created_time': FieldValue.serverTimestamp() ?? DateTime.now(),
+          "story_title": event.story_title ?? "Not added",
+          "story": event.story ?? "Not added",
+          "audio_path": event.audiopath ?? ''
         });
       }
+      emit(state.copyWith(issues: []));
+      emit(state.copyWith(rating: 0));
     });
   }
 }
