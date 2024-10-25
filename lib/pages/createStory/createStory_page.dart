@@ -105,81 +105,103 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                           children: [
                             Expanded(
                               child: SingleChildScrollView(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width: double.infinity,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                .388,
-                                        child: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Image.asset(
-                                                  'assets/images/Ellipse 13 (2).png',
-                                                  fit: BoxFit.cover,
-                                                ),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              .388,
+                                      child: Stack(
+                                        children: [
+                                          Positioned.fill(
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Image.asset(
+                                                'assets/images/Ellipse 13 (2).png',
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
-                                            SafeArea(
-                                              child: Center(
-                                                child: Column(
-                                                  children: [
-                                                    Image.asset(
-                                                      'assets/images/star.png',
-                                                      width:
-                                                          devicewidth * 0.1388,
-                                                      height:
-                                                          devicewidth * 0.1388,
+                                          ),
+                                          SafeArea(
+                                            child: Center(
+                                              child: Column(
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/images/star.png',
+                                                    width: devicewidth * 0.1388,
+                                                    height:
+                                                        devicewidth * 0.1387,
+                                                  ),
+                                                  ShaderMask(
+                                                    shaderCallback: (bounds) =>
+                                                        const LinearGradient(
+                                                      colors: [
+                                                        Color.fromARGB(
+                                                            90, 97, 42, 206),
+                                                        Color.fromARGB(
+                                                            100, 97, 42, 206),
+                                                        Color.fromARGB(
+                                                            90, 97, 42, 206),
+                                                        Color.fromARGB(
+                                                            70, 97, 42, 206),
+                                                        Color.fromARGB(
+                                                            80, 147, 117, 206),
+                                                        Color.fromARGB(
+                                                            80, 147, 112, 206),
+                                                        Color.fromARGB(
+                                                            110, 147, 152, 205),
+                                                      ],
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                    ).createShader(
+                                                      Rect.fromLTWH(
+                                                          0.0,
+                                                          0.0,
+                                                          bounds.width,
+                                                          bounds.height),
                                                     ),
-                                                    ShaderMask(
-                                                      shaderCallback: (bounds) =>
-                                                          const LinearGradient(
-                                                        colors: [
-                                                          Color.fromARGB(
-                                                              90, 97, 42, 206),
-                                                          Color.fromARGB(
-                                                              100, 97, 42, 206),
-                                                          Color.fromARGB(
-                                                              90, 97, 42, 206),
-                                                          Color.fromARGB(
-                                                              70, 97, 42, 206),
-                                                          Color.fromARGB(80,
-                                                              147, 117, 206),
-                                                          Color.fromARGB(80,
-                                                              147, 112, 206),
-                                                          Color.fromARGB(110,
-                                                              147, 152, 205),
-                                                        ],
-                                                        begin: Alignment
-                                                            .centerLeft,
-                                                        end: Alignment
-                                                            .centerRight,
-                                                      ).createShader(
-                                                        Rect.fromLTWH(
-                                                            0.0,
-                                                            0.0,
-                                                            bounds.width,
-                                                            bounds.height),
-                                                      ),
-                                                      child: Transform.rotate(
-                                                        angle: -.05,
-                                                        child: Stack(
-                                                          children: [
-                                                            Align(
-                                                              alignment:
-                                                                  Alignment
+                                                    child: Transform.rotate(
+                                                      angle: -.05,
+                                                      child: Stack(
+                                                        children: [
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: Text(
+                                                              'Your ',
+                                                              softWrap: true,
+                                                              textAlign:
+                                                                  TextAlign
                                                                       .center,
+                                                              style: theme
+                                                                  .textTheme
+                                                                  .displayMedium!
+                                                                  .copyWith(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 96,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    top: 95.0),
+                                                            child: FittedBox(
+                                                              fit: BoxFit
+                                                                  .fitWidth,
                                                               child: Text(
-                                                                'Your ',
-                                                                softWrap: true,
+                                                                '  selections',
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
@@ -187,219 +209,190 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                                                     .textTheme
                                                                     .displayMedium!
                                                                     .copyWith(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  fontSize: 96,
-                                                                ),
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w400,
+                                                                        fontSize:
+                                                                            96),
                                                               ),
                                                             ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      top:
-                                                                          95.0),
-                                                              child: FittedBox(
-                                                                fit: BoxFit
-                                                                    .fitWidth,
-                                                                child: Text(
-                                                                  '  selections',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: theme
-                                                                      .textTheme
-                                                                      .displayMedium!
-                                                                      .copyWith(
-                                                                          color: Colors
-                                                                              .white,
-                                                                          fontWeight: FontWeight
-                                                                              .w400,
-                                                                          fontSize:
-                                                                              96),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                      cardForOptions(
-                                        context,
-                                        'Music and speed ',
-                                        builderstate.musicAndSpeed,
-                                        ontap: () async {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child:
-                                                      const MusicAndSpeedBottomsheet(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      cardForOptions(
-                                        context,
-                                        'Characters',
-                                        builderstate.charactorname ??
-                                            'Not added',
-                                        ontap: () async {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child:
-                                                      const CharacterBottomsheet(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      cardForOptions(
-                                        context,
-                                        'Loved ones',
-                                        builderstate.lovedOnce?.relation ??
-                                            "Not added",
-                                        ontap: () async {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child:
-                                                      const LovedonceBottomsheet(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      cardForOptions(
-                                        context,
-                                        'Lesson',
-                                        builderstate.lessons ?? 'Not added',
-                                        ontap: () async {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child:
-                                                      const LessonBottomsheet(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      cardForOptions(
-                                        context,
-                                        'Genre',
-                                        builderstate.genre,
-                                        ontap: () async {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child:
-                                                      const GenreBottomsheet(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      cardForOptions(
-                                        context,
-                                        'Language',
-                                        builderstate.language.name,
-                                        ontap: () async {
-                                          await showModalBottomSheet(
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                            enableDrag: false,
-                                            context: context,
-                                            builder: (context) {
-                                              return GestureDetector(
-                                                onTap: () =>
-                                                    FocusScope.of(context)
-                                                        .unfocus(),
-                                                child: Padding(
-                                                  padding:
-                                                      MediaQuery.viewInsetsOf(
-                                                          context),
-                                                  child:
-                                                      const LaguageBottomsheet(),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    cardForOptions(
+                                      context,
+                                      'Music and speed ',
+                                      builderstate.musicAndSpeed,
+                                      ontap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child:
+                                                    const MusicAndSpeedBottomsheet(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    cardForOptions(
+                                      context,
+                                      'Characters',
+                                      builderstate.charactorname ?? 'Not added',
+                                      ontap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child:
+                                                    const CharacterBottomsheet(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    cardForOptions(
+                                      context,
+                                      'Loved ones',
+                                      builderstate.lovedOnce?.relation ??
+                                          "Not added",
+                                      ontap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child:
+                                                    const LovedonceBottomsheet(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    cardForOptions(
+                                      context,
+                                      'Lesson',
+                                      builderstate.lessons ?? 'Not added',
+                                      ontap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child:
+                                                    const LessonBottomsheet(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    cardForOptions(
+                                      context,
+                                      'Genre',
+                                      builderstate.genre,
+                                      ontap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child: const GenreBottomsheet(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    cardForOptions(
+                                      context,
+                                      'Language',
+                                      builderstate.language.name,
+                                      ontap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          backgroundColor: Colors.transparent,
+                                          enableDrag: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return GestureDetector(
+                                              onTap: () =>
+                                                  FocusScope.of(context)
+                                                      .unfocus(),
+                                              child: Padding(
+                                                padding:
+                                                    MediaQuery.viewInsetsOf(
+                                                        context),
+                                                child:
+                                                    const LaguageBottomsheet(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

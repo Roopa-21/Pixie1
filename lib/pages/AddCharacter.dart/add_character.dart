@@ -13,7 +13,6 @@ import 'package:pixieapp/models/Child_data_model.dart';
 import 'package:pixieapp/models/story_model.dart';
 import 'package:pixieapp/widgets/add_charactor_story.dart';
 import 'package:pixieapp/widgets/add_lesson_bottom_sheet.dart';
-import 'package:pixieapp/widgets/add_loved_ones_bottomsheet.dart';
 import 'package:pixieapp/widgets/widgets_index.dart';
 
 class AddCharacter extends StatefulWidget {
@@ -356,10 +355,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                               stream: FirebaseFirestore.instance
                                                   .collection('users')
                                                   .doc(user!.uid)
-                                                  .snapshots(), // Listening for real-time updates to the user document
+                                                  .snapshots(), // Real-time updates
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
+                                                        ConnectionState
+                                                            .waiting &&
+                                                    !snapshot.hasData) {
                                                   return const Center(
                                                       child: LoadingWidget());
                                                 }
@@ -374,13 +375,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   var userData = snapshot.data!
                                                           .data()
                                                       as Map<String, dynamic>;
-
-                                                  List<dynamic> charactors =
+                                                  List<dynamic> characters =
                                                       userData[
                                                               'storycharactors'] ??
                                                           [];
 
-                                                  if (charactors.isEmpty) {
+                                                  if (characters.isEmpty) {
                                                     return const Center(
                                                         child: Text(
                                                             'No character found.'));
@@ -389,52 +389,52 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   return Wrap(
                                                     children:
                                                         List<Widget>.generate(
-                                                            charactors.length,
-                                                            (int indexx) {
-                                                      // Accessing each lesson by index
-                                                      String charactorsitem =
-                                                          charactors[
-                                                              indexx]; // Get the lesson data for the current index
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child: SizedBox(
-                                                          height: 48,
-                                                          child: ChoiceChip(
-                                                            side: const BorderSide(
-                                                                width: .4,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        152,
-                                                                        152,
-                                                                        152)),
-                                                            shadowColor:
-                                                                Colors.black,
-                                                            onSelected:
-                                                                (value) {
-                                                              // Trigger an event or do something with the selected lesson
-                                                              context
-                                                                  .read<
-                                                                      AddCharacterBloc>()
-                                                                  .add(AddcharactorstoryEvent(
-                                                                      charactorsitem,
-                                                                      selectedindexcharactor:
-                                                                          indexx));
-                                                              // print(
-                                                              //     charactorsitem);
-                                                            },
-                                                            selectedColor:
-                                                                AppColors
-                                                                    .kpurple,
-                                                            elevation: 3,
-                                                            checkmarkColor:
-                                                                AppColors
-                                                                    .kwhiteColor,
-                                                            label: Text(
-                                                                charactorsitem
-                                                                    .toString(),
+                                                      characters.length,
+                                                      (int index) {
+                                                        String characterItem =
+                                                            characters[index];
+
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: SizedBox(
+                                                            height: 48,
+                                                            child: ChoiceChip(
+                                                              key: ValueKey(
+                                                                  characterItem), // Use key to reduce rebuilds
+                                                              side: const BorderSide(
+                                                                  width: .4,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          152,
+                                                                          152,
+                                                                          152)),
+                                                              shadowColor:
+                                                                  Colors.black,
+                                                              onSelected:
+                                                                  (value) {
+                                                                context
+                                                                    .read<
+                                                                        AddCharacterBloc>()
+                                                                    .add(
+                                                                      AddcharactorstoryEvent(
+                                                                        characterItem,
+                                                                        selectedindexcharactor:
+                                                                            index,
+                                                                      ),
+                                                                    );
+                                                              },
+                                                              selectedColor:
+                                                                  AppColors
+                                                                      .kpurple,
+                                                              elevation: 3,
+                                                              checkmarkColor:
+                                                                  AppColors
+                                                                      .kwhiteColor,
+                                                              label: Text(
+                                                                characterItem,
                                                                 style: theme
                                                                     .textTheme
                                                                     .bodyMedium!
@@ -442,34 +442,33 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w400,
-                                                                  color: state.selectedindexcharactor ==
-                                                                          indexx
+                                                                  color: state
+                                                                              .selectedindexcharactor ==
+                                                                          index
                                                                       ? AppColors
                                                                           .kwhiteColor
                                                                       : AppColors
                                                                           .kblackColor,
-                                                                ) // Display the lesson name or string representation
-
                                                                 ),
-                                                            selected: state
-                                                                    .selectedindexcharactor ==
-                                                                indexx, // Set the selection based on index
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              side: BorderSide
-                                                                  .none,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          40),
+                                                              ),
+                                                              selected: state
+                                                                      .selectedindexcharactor ==
+                                                                  index,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            40),
+                                                              ),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(12),
                                                             ),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(12),
                                                           ),
-                                                        ),
-                                                      );
-                                                    }),
+                                                        );
+                                                      },
+                                                    ),
                                                   );
                                                 }
 
@@ -694,7 +693,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   .snapshots(), // Listening for real-time updates to the user document
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
+                                                        ConnectionState
+                                                            .waiting &&
+                                                    !snapshot.hasData) {
                                                   return const Center(
                                                       child: LoadingWidget());
                                                 }
@@ -710,7 +711,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .data()
                                                       as Map<String, dynamic>;
 
-                                                  // Deserialize the loved_once list
+                                                  // Deserialize the loved ones list
                                                   List<
                                                       Lovedonces> lovedonce = userData[
                                                               'loved_once'] !=
@@ -741,17 +742,33 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           child: BlocBuilder<
                                                               AddCharacterBloc,
                                                               AddCharacterState>(
+                                                            buildWhen: (previous,
+                                                                    current) =>
+                                                                previous
+                                                                    .selectedindex !=
+                                                                current
+                                                                    .selectedindex,
                                                             builder: (context,
                                                                 state) {
+                                                              // Extract current loved one
+                                                              Lovedonces
+                                                                  lovedOne =
+                                                                  lovedonce[
+                                                                      index];
+
                                                               return ChoiceChip(
-                                                                side: const BorderSide(
-                                                                    width: .4,
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            152,
-                                                                            152,
-                                                                            152)),
+                                                                key: ValueKey(
+                                                                    lovedOne), // Avoid unnecessary widget rebuilds
+                                                                side:
+                                                                    const BorderSide(
+                                                                  width: 0.4,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          152,
+                                                                          152,
+                                                                          152),
+                                                                ),
                                                                 shadowColor:
                                                                     Colors
                                                                         .black,
@@ -762,8 +779,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                           AddCharacterBloc>()
                                                                       .add(
                                                                         AddLovedOnceEvent(
-                                                                          lovedonce[
-                                                                              index],
+                                                                          lovedOne,
                                                                           selectedindex:
                                                                               index,
                                                                         ),
@@ -777,18 +793,16 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                     AppColors
                                                                         .kwhiteColor,
                                                                 label: Text(
-                                                                  (lovedonce[index].relation == "Mother" ||
-                                                                          lovedonce[index].relation ==
+                                                                  (lovedOne.relation == "Mother" ||
+                                                                          lovedOne.relation ==
                                                                               "Father" ||
-                                                                          lovedonce[index].relation ==
+                                                                          lovedOne.relation ==
                                                                               "GrandFather" ||
-                                                                          lovedonce[index].relation ==
+                                                                          lovedOne.relation ==
                                                                               "GrandMother")
-                                                                      ? lovedonce[
-                                                                              index]
+                                                                      ? lovedOne
                                                                           .relation
-                                                                      : lovedonce[
-                                                                              index]
+                                                                      : lovedOne
                                                                           .name,
                                                                   style:
                                                                       TextStyle(
@@ -949,10 +963,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                               stream: FirebaseFirestore.instance
                                                   .collection('users')
                                                   .doc(user!.uid)
-                                                  .snapshots(), // Listening for real-time updates to the user document
+                                                  .snapshots(), // Listening for real-time updates
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState ==
-                                                    ConnectionState.waiting) {
+                                                        ConnectionState
+                                                            .waiting &&
+                                                    !snapshot.hasData) {
                                                   return const Center(
                                                       child: LoadingWidget());
                                                 }
@@ -968,7 +984,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .data()
                                                       as Map<String, dynamic>;
 
-                                                  // Assuming 'lessons' is a List of strings for simplicity.
+                                                  // Retrieve the lessons list from user data
                                                   List<dynamic> lessons =
                                                       userData['lessons'] ?? [];
 
@@ -981,73 +997,95 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   return Wrap(
                                                     children:
                                                         List<Widget>.generate(
-                                                            lessons.length,
-                                                            (int index) {
-                                                      // Accessing each lesson by index
-                                                      var lesson = lessons[
-                                                          index]; // Get the lesson data for the current index
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child: ChoiceChip(
-                                                          onSelected: (value) {
-                                                            // Trigger an event or do something with the selected lesson
-                                                            context
-                                                                .read<
-                                                                    AddCharacterBloc>()
-                                                                .add(AddlessonEvent(
-                                                                    lesson,
-                                                                    selectedindexlesson:
-                                                                        index));
+                                                      lessons.length,
+                                                      (int index) {
+                                                        var lesson = lessons[
+                                                            index]; // Access lesson by index
 
-                                                            // Print the lesson to check the data
-                                                          },
-                                                          side:
-                                                              const BorderSide(
-                                                                  width: .4,
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: BlocBuilder<
+                                                              AddCharacterBloc,
+                                                              AddCharacterState>(
+                                                            buildWhen: (previous,
+                                                                    current) =>
+                                                                previous
+                                                                    .selectedindexlesson !=
+                                                                current
+                                                                    .selectedindexlesson,
+                                                            builder: (context,
+                                                                state) {
+                                                              return ChoiceChip(
+                                                                key: ValueKey(
+                                                                    lesson), // Optimize widget reuse
+                                                                onSelected:
+                                                                    (value) {
+                                                                  context
+                                                                      .read<
+                                                                          AddCharacterBloc>()
+                                                                      .add(
+                                                                        AddlessonEvent(
+                                                                          lesson,
+                                                                          selectedindexlesson:
+                                                                              index,
+                                                                        ),
+                                                                      );
+                                                                },
+                                                                side:
+                                                                    const BorderSide(
+                                                                  width: 0.4,
                                                                   color: Color
                                                                       .fromARGB(
                                                                           255,
                                                                           152,
                                                                           152,
-                                                                          152)),
-                                                          shadowColor:
-                                                              Colors.black,
-                                                          selectedColor:
-                                                              AppColors.kpurple,
-                                                          elevation: 3,
-                                                          checkmarkColor:
-                                                              AppColors
-                                                                  .kwhiteColor,
-                                                          label: Text(
-                                                            lesson
-                                                                .toString(), // Display the lesson name or string representation
-                                                            style: TextStyle(
-                                                              color: state.selectedindexlesson ==
-                                                                      index
-                                                                  ? AppColors
-                                                                      .kwhiteColor
-                                                                  : AppColors
-                                                                      .kblackColor,
-                                                            ),
+                                                                          152),
+                                                                ),
+                                                                shadowColor:
+                                                                    Colors
+                                                                        .black,
+                                                                selectedColor:
+                                                                    AppColors
+                                                                        .kpurple,
+                                                                elevation: 3,
+                                                                checkmarkColor:
+                                                                    AppColors
+                                                                        .kwhiteColor,
+                                                                label: Text(
+                                                                  lesson
+                                                                      .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: state.selectedindexlesson ==
+                                                                            index
+                                                                        ? AppColors
+                                                                            .kwhiteColor
+                                                                        : AppColors
+                                                                            .kblackColor,
+                                                                  ),
+                                                                ),
+                                                                selected: state
+                                                                        .selectedindexlesson ==
+                                                                    index,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50),
+                                                                ),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        12),
+                                                              );
+                                                            },
                                                           ),
-                                                          selected: state
-                                                                  .selectedindexlesson ==
-                                                              index, // Set the selection based on index
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        50),
-                                                          ),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(12),
-                                                        ),
-                                                      );
-                                                    }),
+                                                        );
+                                                      },
+                                                    ),
                                                   );
                                                 }
 
