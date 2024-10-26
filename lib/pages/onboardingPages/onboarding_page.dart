@@ -15,17 +15,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   final List<Map<String, String>> onboardData = [
     {
-      "title": "Your personalised storyteller",
+      "title": "Your personalised\n storyteller",
       "description":
           "Pixie magically creates personalized audio adventures starring your child, tailored to their unique interests and imagination.",
     },
     {
-      "title": "Screen free entertainment",
+      "title": "Screen free\n entertainment",
       "description":
           "Worried about your child's screentime? Pixie brings back that love of stories without the screen.",
     },
     {
-      "title": "Supercharge young minds",
+      "title": "Supercharge young\n minds",
       "description":
           "Ignite imagination, sharpen focus, and boost memory through magical storytelling.",
     },
@@ -146,12 +146,10 @@ class OnboardContent extends StatelessWidget {
     final deviceheight = MediaQuery.of(context).size.height;
     final devicewidth = MediaQuery.of(context).size.width;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           width: devicewidth,
-          height: deviceheight * 0.5,
+          height: deviceheight * 0.46,
           child: Image.asset(
             'assets/images/onboarding_image.png',
             fit: BoxFit.cover,
@@ -163,6 +161,8 @@ class OnboardContent extends StatelessWidget {
             right: deviceheight * 0.0589,
           ),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FittedBox(
                 fit: BoxFit.fitWidth,
@@ -170,19 +170,32 @@ class OnboardContent extends StatelessWidget {
                   title,
                   style: theme.textTheme.displaySmall!.copyWith(
                       color: AppColors.textColorblue,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 34),
                   textAlign: TextAlign.center,
                 ),
               ),
             ],
           ),
         ),
-        SizedBox(height: deviceheight * 0.0242),
-        Text(
-          description,
-          style: theme.textTheme.bodyLarge!.copyWith(
-              color: AppColors.textColorGrey, fontWeight: FontWeight.w400),
-          textAlign: TextAlign.center,
+        SizedBox(height: deviceheight * 0.01),
+        Padding(
+          padding: EdgeInsets.only(
+            left: deviceheight * 0.029,
+            right: deviceheight * 0.029,
+          ),
+          child: Flexible(
+            child: Text(
+              description,
+              style: theme.textTheme.bodyLarge!.copyWith(
+                  color: AppColors.textColorGrey,
+                  fontWeight: FontWeight.w400,
+                  height: devicewidth * 0.0035,
+                  fontSize: 20),
+              textAlign: TextAlign.center,
+              softWrap: true,
+            ),
+          ),
         ),
       ],
     );

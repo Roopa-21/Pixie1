@@ -86,9 +86,7 @@ class _MyAppState extends State<MyApp> {
         routerConfig: _router, // Use the router here
         debugShowCheckedModeBanner: false,
         title: 'Pixie App',
-        theme: ThemeData(
-          fontFamily: 'SF-Pro-Rounded',
-        ),
+        theme: ThemeData(fontFamily: 'SF-Pro-Rounded'),
       ),
     );
   }

@@ -263,7 +263,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       builderstate.charactorname ?? 'Not added',
                                       ontap: () async {
                                         await showModalBottomSheet(
-                                          isScrollControlled: true,
+                                          isScrollControlled: false,
                                           backgroundColor: Colors.transparent,
                                           enableDrag: false,
                                           context: context,

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -333,10 +334,24 @@ class _NavBar2State extends State<NavBar2> {
                           ),
                     IconButton(
                       onPressed: () {
-                        shareOnWhatsApp(
-                            appUrl:
-                                "https://apps.apple.com/in/app/instagram/id389801252",
-                            audioFileUrl: widget.firebaseAudioPath);
+                        FirebaseAuth.instance
+                            .signInAnonymously()
+                            .then((userCredential) {
+                          FirebaseStorage.instance
+                              .ref('path/to/audio/file.mp3')
+                              .getDownloadURL()
+                              .then((downloadUrl) {
+                            shareOnWhatsApp(
+                              appUrl:
+                                  "https://apps.apple.com/in/app/instagram/id389801252",
+                              audioFileUrl: downloadUrl,
+                            );
+                          }).catchError((error) {
+                            print("Failed to get download URL: $error");
+                          });
+                        }).catchError((error) {
+                          print("Anonymous sign-in failed: $error");
+                        });
                       },
                       icon: SvgPicture.asset(
                         'assets/images/share.svg',

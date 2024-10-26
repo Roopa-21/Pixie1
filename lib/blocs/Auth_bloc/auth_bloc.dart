@@ -64,6 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<OnPhoneAuthErrorEvent>((event, emit) {
       emit(LoginScreenErrorState(error: event.error.toString()));
     });
+
     on<OnPhoneAuthVerificationCompletedEvent>((event, emit) async {
       try {
         UserCredential userCredential =
@@ -155,24 +156,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Get user id
       String userId = userCredential.user!.uid;
 
-      // Create user collection in Firestore
-
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
-        'email': event.email,
-        'phone': '',
-        'createdAt': DateTime.now(),
-        'userId': userId,
-        'child_name': '',
-        'gender': '',
-        'fav_things': [],
-        'dob': DateTime.now(),
-        'loved_once': [],
-        'moreLovedOnes': [],
-        'displayName': "displayName",
-        'photoURL': "photoURL",
-        'newUser': true
-      });
-
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (!userDoc.exists) {
+        await FirebaseFirestore.instance.collection('users').doc(userId).set({
+          'email': event.email,
+          'phone': '',
+          'createdAt': DateTime.now(),
+          'userId': userId,
+          'child_name': '',
+          'gender': '',
+          'fav_things': [],
+          'dob': DateTime.now(),
+          'loved_once': [],
+          'moreLovedOnes': [],
+          'displayName': "displayName",
+          'photoURL': "photoURL",
+          'newUser': true
+        });
+      }
       // Emit authenticated state after successful sign-up and Firestore operation
       emit(AuthAuthenticated(userId: userId));
     } catch (e) {
@@ -250,25 +254,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'loved_once': [],
           'moreLovedOnes': [],
           'photoURL': photoURL,
-          'createdAt': Timestamp.now(),
+          'createdAt': DateTime.now(),
           'userId': userId,
           'newUser': true
-        });
-      }
-
-      if (!userDoc.exists) {
-        await FirebaseFirestore.instance.collection('users').doc(userId).set({
-          'email': email,
-          'displayName': 'displayName',
-          'photoURL': 'photoURL',
-          'createdAt': Timestamp.now,
-          'userId': userId,
-          'child_name': '',
-          'gender': '',
-          'fav_things': [],
-          'dob': DateTime.now(),
-          'loved_once': [],
-          'moreLovedOnes': [],
         });
       }
 

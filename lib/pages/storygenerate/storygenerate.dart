@@ -259,6 +259,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         'user_ref': userRef,
         'language': language,
         'createdTime': FieldValue.serverTimestamp(),
+        
       });
 
       print('Story added to favorites');

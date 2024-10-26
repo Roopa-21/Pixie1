@@ -39,7 +39,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             const SizedBox(height: 25),
             TextField(
               controller: lessoncontroller,
-              autofocus: true,
+              autofocus: false,
               decoration: const InputDecoration(
                 hintText: "Add a lesson",
                 hintStyle: TextStyle(color: Color.fromARGB(255, 199, 199, 199)),
