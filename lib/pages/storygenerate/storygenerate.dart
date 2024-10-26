@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,9 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/widgets/navbar_loading_audio.dart';
+import 'package:pixieapp/widgets/record_listen_navbar.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
+
 
 class StoryGeneratePage extends StatefulWidget {
   final Map<String, String> story;
@@ -67,6 +70,33 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
   bool callAppBar = false;
   String? audioUrl = '';
+  final ScrollController _scrollController = ScrollController();
+  Timer? _scrollTimer;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _startAutoScroll());
+  }
+
+  void _startAutoScroll() {
+    _scrollTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 50),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollTimer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -77,11 +107,11 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
       listener: (context, state) async {
         if (state is StoryAudioSuccess) {
           audioFile = state.audioFile;
-          print(';;;;;;;;;;;$audioFile');
-          print('Audio File Path: ${audioFile!.path}');
+          // print(';;;;;;;;;;;$audioFile');
+          //  print('Audio File Path: ${audioFile!.path}');
 
           audioUrl = await _uploadAudioToStorage(audioFile!);
-          print('::::$audioUrl');
+          // print('::::$audioUrl');
           if (audioUrl != null) {
             setState(() {
               audioloaded = true;
@@ -91,148 +121,172 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              expandedHeight: deviceHeight * 0.38,
-              leadingWidth: deviceWidth,
-              collapsedHeight: deviceHeight * 0.08,
-              pinned: true,
-              floating: false,
-              backgroundColor: const Color(0xff644a98),
-              flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  var top = constraints.biggest.height;
-                  bool isCollapsed = top <= kToolbarHeight + 30;
+          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+          body: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                expandedHeight: deviceHeight * 0.38,
+                leadingWidth: deviceWidth,
+                collapsedHeight: deviceHeight * 0.08,
+                pinned: true,
+                floating: false,
+                backgroundColor: const Color(0xff644a98),
+                flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    var top = constraints.biggest.height;
+                    bool isCollapsed = top <= kToolbarHeight + 30;
 
-                  return FlexibleSpaceBar(
-                    centerTitle: true,
-                    titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
-                    title: Text(
-                      widget.story["title"] ?? "No data",
-                      style: theme.textTheme.titleMedium!.copyWith(
-                        color: AppColors.textColorWhite,
-                        fontWeight: FontWeight.bold,
-                        fontSize: isCollapsed ? 5 : 20,
+                    return FlexibleSpaceBar(
+                      centerTitle: true,
+                      titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
+                      title: Text(
+                        widget.story["title"] ?? "No data",
+                        style: theme.textTheme.titleMedium!.copyWith(
+                          color: AppColors.textColorWhite,
+                          fontWeight: FontWeight.bold,
+                          fontSize: isCollapsed ? 15 : 20,
+                        ),
                       ),
-                    ),
-                    background: Image.asset(
-                      'assets/images/appbarbg.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  );
-                },
-              ),
-              actions: [
-                Padding(
-                  padding: EdgeInsets.only(right: deviceHeight * 0.024),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.kwhiteColor.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(40.0),
-                    ),
-                    child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
-                      builder: (context, state) => IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () async {
-                          if (state.showfeedback) {
-                            await showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              enableDrag: false,
-                              context: context,
-                              builder: (context) {
-                                return GestureDetector(
-                                  onTap: () => FocusScope.of(context).unfocus(),
-                                  child: Padding(
-                                    padding: MediaQuery.viewInsetsOf(context),
-                                    child: StoryFeedback(
-                                      story: widget.story['story'] ??
-                                          'No Story available',
-                                      title: widget.story['title'] ??
-                                          'No title available',
-                                      path: audioUrl ?? '',
-                                      textfield: false,
+                      background: Image.asset(
+                        'assets/images/appbarbg.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
+                actions: [
+                  Padding(
+                    padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: AppColors.kwhiteColor.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(40.0),
+                      ),
+                      child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
+                        builder: (context, state) => IconButton(
+                          icon: const Icon(Icons.close),
+                          onPressed: () async {
+                            if (state.showfeedback) {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                enableDrag: false,
+                                context: context,
+                                builder: (context) {
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        FocusScope.of(context).unfocus(),
+                                    child: Padding(
+                                      padding: MediaQuery.viewInsetsOf(context),
+                                      child: StoryFeedback(
+                                        story: widget.story['story'] ??
+                                            'No Story available',
+                                        title: widget.story['title'] ??
+                                            'No title available',
+                                        path: audioUrl ?? '',
+                                        textfield: false,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            );
-                          }
+                                  );
+                                },
+                              );
+                            }
 
-                          context.read<AddCharacterBloc>().add(
-                              const ShowfeedbackEvent(showfeedback: false));
-                          context
-                              .read<AddCharacterBloc>()
-                              .add(ResetStateEvent());
-                          context.go('/HomePage');
-                        },
+                            context.read<AddCharacterBloc>().add(
+                                const ShowfeedbackEvent(showfeedback: false));
+                            context
+                                .read<AddCharacterBloc>()
+                                .add(ResetStateEvent());
+                            context.go('/HomePage');
+                          },
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  top: 5,
-                  left: deviceHeight * 0.0294,
-                  right: deviceHeight * 0.0294,
-                  bottom: deviceHeight * 0.0294,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    DefaultTextStyle(
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                        color: AppColors.textColorGrey,
-                        fontWeight: FontWeight.w400,
+                ],
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 5,
+                    left: deviceHeight * 0.0294,
+                    right: deviceHeight * 0.0294,
+                    bottom: deviceHeight * 0.0294,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [
+                            const Color(0xffAC8BEC),
+                            const Color(0XFF9E00FF).withOpacity(0.3),
+                            const Color(0xff00FFF0),
+                            const Color(0x80612ACE),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ).createShader(
+                          Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                        ),
+                        child: AnimatedTextKit(
+                          onFinished: () {
+                            setState(() {
+                              callAppBar = true;
+                              _scrollTimer?.cancel();
+                            });
+                          },
+                          isRepeatingAnimation: false,
+                          pause: const Duration(milliseconds: 100),
+                          animatedTexts: [
+                            TyperAnimatedText(
+                              widget.story["story"] ?? "No data",
+                              textStyle: theme.textTheme.bodyMedium!.copyWith(
+                                  color: AppColors.textColorWhite,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w400),
+                              speed: const Duration(milliseconds: 20),
+                            ),
+                          ],
+                          onNext: (index, isLast) {
+                            if (_scrollController.hasClients) {
+                              _scrollController.animateTo(
+                                _scrollController.position.maxScrollExtent,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.easeInOut,
+                              );
+                            }
+                          },
+                          onTap: () {
+                            print("Tap Event");
+                          },
+                        ),
                       ),
-                      child: AnimatedTextKit(
-                        onFinished: () {
-                          setState(() {
-                            callAppBar = true;
-                          });
-                        },
-                        isRepeatingAnimation: false,
-                        pause: const Duration(milliseconds: 100),
-                        animatedTexts: [
-                          TyperAnimatedText(
-                            widget.story["story"] ?? "No data",
-                            textStyle: theme.textTheme.bodyMedium!.copyWith(
-                                fontSize: 24, fontWeight: FontWeight.w400),
-                            speed: const Duration(milliseconds: 20),
-                          ),
-                        ],
-                        onTap: () {
-                          print("Tap Event");
-                        },
-                      ),
-                    ),
-                  ],
+                      // 
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: audioloaded
-            ? NavBar2(
-                documentReference: _documentReference,
-                audioFile: audioFile!,
-                story: widget.story['story'] ?? 'No Story available',
-                title: widget.story['title'] ?? 'No title available',
-                firebaseAudioPath: audioUrl ?? '',
-                suggestedStories: false,
-                firebaseStories: false,
-              )
-            // : SizedBox.shrink()
-            : const NavBarLoading(),
-      ),
+            ],
+          ),
+          bottomNavigationBar: callAppBar
+              ? const RecordListenNavbar()
+              // NavBar2(
+              //     documentReference: _documentReference,
+              //     audioFile: audioFile!,
+              //     story: widget.story['story'] ?? 'No Story available',
+              //     title: widget.story['title'] ?? 'No title available',
+              //     firebaseAudioPath: audioUrl ?? '',
+              //     suggestedStories: false,
+              //     firebaseStories: false,
+              //   )
+              : const SizedBox.shrink()
+          // : const NavBarLoading(),
+          ),
     );
   }
 
@@ -259,7 +313,6 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         'user_ref': userRef,
         'language': language,
         'createdTime': FieldValue.serverTimestamp(),
-        
       });
 
       print('Story added to favorites');
