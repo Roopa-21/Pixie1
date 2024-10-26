@@ -25,7 +25,12 @@ class _CharacterBottomsheetState extends State<CharacterBottomsheet> {
       setState(() {
         character = characterlist;
       });
-    }); // Fetch character when the widget is initialized
+    });
+    fetchSuggestedCharacters().then((suggestedcharacterlist) {
+      setState(() {
+        character.addAll(suggestedcharacterlist);
+      });
+    });
   }
 
   // Function to get character from Firestore
@@ -36,7 +41,7 @@ class _CharacterBottomsheetState extends State<CharacterBottomsheet> {
 
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
       builder: (context, state) => Container(
-        height: MediaQuery.of(context).size.height * .7,
+        height: MediaQuery.of(context).size.height * .6,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           color: AppColors.bottomSheetBackground,
@@ -48,52 +53,60 @@ class _CharacterBottomsheetState extends State<CharacterBottomsheet> {
         child: Padding(
           padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Select a Character',
                   style: theme.textTheme.displayMedium?.copyWith(
                       color: AppColors.textColorblue,
-                      fontWeight: FontWeight.w600)),
-              const SizedBox(height: 25),
-              Wrap(
-                children: List<Widget>.generate(character.length, (int index) {
-                  var charectoritem = character[
-                      index]; // Get the lesson data for the current index
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ChoiceChip(
-                      onSelected: (value) {
-                        // Trigger an event or do something with the selected lesson
-                        context.read<AddCharacterBloc>().add(
-                            AddcharactorstoryEvent(charectoritem,
-                                selectedindexcharactor: index));
-                        context.pop();
-                      },
-                      side: const BorderSide(
-                          width: .4, color: Color.fromARGB(255, 152, 152, 152)),
-                      shadowColor: Colors.black,
-                      selectedColor: AppColors.kpurple,
-                      elevation: 3,
-                      checkmarkColor: AppColors.kwhiteColor,
-                      label: Text(
-                        charectoritem.toString(),
-                        style: TextStyle(
-                          color: state.selectedindexcharactor == index
-                              ? AppColors.kwhiteColor
-                              : AppColors.kblackColor,
+                      fontWeight: FontWeight.w400)),
+              const SizedBox(height: 10),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    children:
+                        List<Widget>.generate(character.length, (int index) {
+                      var charectoritem = character[
+                          index]; // Get the lesson data for the current index
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: ChoiceChip(
+                          onSelected: (value) {
+                            // Trigger an event or do something with the selected lesson
+                            context.read<AddCharacterBloc>().add(
+                                AddcharactorstoryEvent(charectoritem,
+                                    selectedindexcharactor: index));
+                            context.pop();
+                          },
+                          side: const BorderSide(
+                              width: .4,
+                              color: Color.fromARGB(255, 152, 152, 152)),
+                          shadowColor: Colors.black,
+                          selectedColor: AppColors.kpurple,
+                          elevation: 3,
+                          checkmarkColor: AppColors.kwhiteColor,
+                          label: Text(
+                            charectoritem.toString(),
+                            style: TextStyle(
+                              color: state.selectedindexcharactor == index
+                                  ? AppColors.kwhiteColor
+                                  : AppColors.kblackColor,
+                            ),
+                          ),
+                          selected: state.selectedindexcharactor ==
+                              index, // Set the selection based on index
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: const EdgeInsets.all(16),
                         ),
-                      ),
-                      selected: state.selectedindexcharactor ==
-                          index, // Set the selection based on index
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                    ),
-                  );
-                }),
+                      );
+                    }),
+                  ),
+                ),
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -132,5 +145,30 @@ class _CharacterBottomsheetState extends State<CharacterBottomsheet> {
       }
       return [];
     }
+  }
+}
+
+/// Function to fetch the `suggested_characters` list from the `admin_data` collection
+Future<List<String>> fetchSuggestedCharacters() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  try {
+    // Fetch the first document from the `admin_data` collection
+    QuerySnapshot querySnapshot =
+        await firestore.collection('admin_data').limit(1).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Access the first document
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+      // Extract `suggested_characters` and ensure it is a list of strings
+      List<dynamic> characters = data['suggested_characters'] ?? [];
+      return characters.map((e) => e.toString()).toList();
+    } else {
+      print('No document found in admin_data.');
+      return [];
+    }
+  } catch (e) {
+    print('Error fetching suggested characters: $e');
+    return [];
   }
 }

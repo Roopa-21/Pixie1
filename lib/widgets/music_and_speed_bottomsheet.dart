@@ -25,7 +25,7 @@ class _MusicAndSpeedBottomsheetState extends State<MusicAndSpeedBottomsheet> {
     final theme = Theme.of(context);
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
         builder: (context, state) => Container(
-              height: MediaQuery.of(context).size.height * .5,
+              // height: MediaQuery.of(context).size.height * .7,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: AppColors.bottomSheetBackground,
@@ -35,10 +35,11 @@ class _MusicAndSpeedBottomsheetState extends State<MusicAndSpeedBottomsheet> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 10),
                     Text(
                       'Music and speed of the story suitable for',
                       style: theme.textTheme.displaySmall!.copyWith(
@@ -69,7 +70,7 @@ class _MusicAndSpeedBottomsheetState extends State<MusicAndSpeedBottomsheet> {
                               .add(const UpdateMusicandspeedEvent('Playtime'));
                           context.pop();
                         }),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),

@@ -16,7 +16,7 @@ class _NameCharacterBottomsheetState extends State<NameCharacterBottomsheet> {
     final deviceheight = MediaQuery.of(context).size.height;
     final devicewidth = MediaQuery.of(context).size.width;
     return Container(
-      height: MediaQuery.of(context).size.height * .8,
+      height: MediaQuery.of(context).size.height * .6,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
           color: AppColors.bottomSheetBackground,

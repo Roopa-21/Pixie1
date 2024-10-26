@@ -25,10 +25,13 @@ class _LessonBottomsheetState extends State<LessonBottomsheet> {
       setState(() {
         lessons = lessonslist;
       });
-    }); // Fetch lessons when the widget is initialized
+    });
+    fetchSuggestedLessons().then((suggestedlessonslist) {
+      setState(() {
+        lessons.addAll(suggestedlessonslist);
+      });
+    });
   }
-
-  // Function to get lessons from Firestore
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +39,7 @@ class _LessonBottomsheetState extends State<LessonBottomsheet> {
 
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
       builder: (context, state) => Container(
-        height: MediaQuery.of(context).size.height * .7,
+        height: MediaQuery.of(context).size.height * .6,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           color: AppColors.bottomSheetBackground,
@@ -48,51 +51,65 @@ class _LessonBottomsheetState extends State<LessonBottomsheet> {
         child: Padding(
           padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Select a loved one',
-                  style: theme.textTheme.displayMedium?.copyWith(
-                      color: AppColors.textColorblue,
-                      fontWeight: FontWeight.w600)),
-              const SizedBox(height: 25),
-              Wrap(
-                children: List<Widget>.generate(lessons.length, (int index) {
-                  var lesson = lessons[
-                      index]; // Get the lesson data for the current index
-                  return Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: ChoiceChip(
-                      onSelected: (value) {
-                        // Trigger an event or do something with the selected lesson
-                        context.read<AddCharacterBloc>().add(
-                            AddlessonEvent(lesson, selectedindexlesson: index));
-                        context.pop();
-                      },
-                      side: const BorderSide(
-                          width: .4, color: Color.fromARGB(255, 152, 152, 152)),
-                      shadowColor: Colors.black,
-                      selectedColor: AppColors.kpurple,
-                      elevation: 3,
-                      checkmarkColor: AppColors.kwhiteColor,
-                      label: Text(
-                        lesson.toString(), // Display the lesson name
-                        style: TextStyle(
-                          color: state.selectedindexlesson == index
-                              ? AppColors.kwhiteColor
-                              : AppColors.kblackColor,
-                        ),
-                      ),
-                      selected: state.selectedindexlesson ==
-                          index, // Set the selection based on index
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      padding: const EdgeInsets.all(16),
-                    ),
-                  );
-                }),
+              Text(
+                'Add a lesson to the story..',
+                style: theme.textTheme.displayMedium?.copyWith(
+                  color: AppColors.textColorblue,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
+              const SizedBox(height: 10),
+              // Wrapping the Wrap widget inside a Flexible + SingleChildScrollView
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    spacing: 0.0, // Space between chips
+                    runSpacing: 0.0, // Space between rows
+                    children:
+                        List<Widget>.generate(lessons.length, (int index) {
+                      var lesson = lessons[index]; // Get the lesson data
+                      return Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: ChoiceChip(
+                          onSelected: (value) {
+                            context.read<AddCharacterBloc>().add(
+                                  AddlessonEvent(
+                                    lesson,
+                                    selectedindexlesson: index,
+                                  ),
+                                );
+                            context.pop();
+                          },
+                          side: const BorderSide(
+                            width: .4,
+                            color: Color.fromARGB(255, 152, 152, 152),
+                          ),
+                          shadowColor: Colors.black,
+                          selectedColor: AppColors.kpurple,
+                          elevation: 3,
+                          checkmarkColor: AppColors.kwhiteColor,
+                          label: Text(
+                            lesson.toString(),
+                            style: TextStyle(
+                              color: state.selectedindexlesson == index
+                                  ? AppColors.kwhiteColor
+                                  : AppColors.kblackColor,
+                            ),
+                          ),
+                          selected: state.selectedindexlesson == index,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          padding: const EdgeInsets.all(16),
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20)
             ],
           ),
         ),
@@ -104,32 +121,49 @@ class _LessonBottomsheetState extends State<LessonBottomsheet> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      // Handle the case where the user is not authenticated
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("User is not authenticated")),
       );
       return [];
     } else {
       try {
-        // Fetch the user document from Firestore
         DocumentSnapshot userDoc = await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
             .get();
 
-        // Extract lessons from the user document
         var userData = userDoc.data() as Map<String, dynamic>?;
-        if (userData != null) {
-          return userData['lessons'] ?? [];
-        }
+        return userData?['lessons'] ?? [];
       } catch (e) {
-        // Handle error if something goes wrong
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Failed to load lessons: $e")),
         );
         return [];
       }
-      return [];
+    }
+  }
+
+  Future<List<String>> fetchSuggestedLessons() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    List<String> lessonStrings = [];
+    try {
+      QuerySnapshot querySnapshot =
+          await firestore.collection('admin_data').limit(1).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+        List<dynamic> fetchedLessons = data['suggested_lessons'] ?? [];
+        lessonStrings = fetchedLessons.map((e) => e.toString()).toList();
+
+        return lessonStrings;
+      } else {
+        print('No document found in admin_data.');
+        return lessonStrings;
+      }
+    } catch (e) {
+      print('Error fetching suggested lessons: $e');
+      return lessonStrings;
     }
   }
 }

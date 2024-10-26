@@ -134,7 +134,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                                     'assets/images/star.png',
                                                     width: devicewidth * 0.1388,
                                                     height:
-                                                        devicewidth * 0.1387,
+                                                        devicewidth * 0.1386,
                                                   ),
                                                   ShaderMask(
                                                     shaderCallback: (bounds) =>

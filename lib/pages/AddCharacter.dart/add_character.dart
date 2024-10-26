@@ -41,6 +41,8 @@ class _AddCharacterState extends State<AddCharacter> {
       relative_name: "jayan",
       topic: "Bedtime");
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  List<String> suggestedCharactersList = [];
+  List<String> suggestedLeassonsList = [];
 
   @override
   void initState() {
@@ -49,7 +51,16 @@ class _AddCharacterState extends State<AddCharacter> {
     fetchLovedOnes().then((lovedOnes) {
       setState(() {
         lovedOnceList = lovedOnes;
-        finalstorydatas.age = '10';
+      });
+    });
+    fetchSuggestedCharacters().then((suggestedlist) {
+      setState(() {
+        suggestedCharactersList = suggestedlist;
+      });
+    });
+    fetchSuggestedLessons().then((suggestedlist) {
+      setState(() {
+        suggestedLeassonsList = suggestedlist;
       });
     });
   }
@@ -167,6 +178,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                       child: SingleChildScrollView(
                                         primary: true,
                                         child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             const SizedBox(height: 25),
                                             Text(
@@ -178,7 +191,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .textColorblue,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontSize: width * .08),
+                                                      fontSize: 34),
                                             ),
                                             const SizedBox(height: 25),
                                             choicechipbutton(
@@ -221,7 +234,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .textColorblue,
                                                       fontWeight:
                                                           FontWeight.w400,
-                                                      fontSize: width * .08),
+                                                      fontSize: 34),
                                             ),
                                             const SizedBox(height: 25),
                                             choicechipbutton(
@@ -385,7 +398,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         child: Text(
                                                             'No character found.'));
                                                   }
-
+                                                  characters.addAll(
+                                                      suggestedCharactersList);
                                                   return Wrap(
                                                     children:
                                                         List<Widget>.generate(
@@ -401,6 +415,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           child: SizedBox(
                                                             height: 48,
                                                             child: ChoiceChip(
+                                                              showCheckmark:
+                                                                  false,
+
                                                               key: ValueKey(
                                                                   characterItem), // Use key to reduce rebuilds
                                                               side: const BorderSide(
@@ -430,26 +447,48 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                   AppColors
                                                                       .kpurple,
                                                               elevation: 3,
-                                                              checkmarkColor:
-                                                                  AppColors
-                                                                      .kwhiteColor,
-                                                              label: Text(
-                                                                characterItem,
-                                                                style: theme
-                                                                    .textTheme
-                                                                    .bodyMedium!
-                                                                    .copyWith(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                  color: state
-                                                                              .selectedindexcharactor ==
-                                                                          index
-                                                                      ? AppColors
-                                                                          .kwhiteColor
-                                                                      : AppColors
-                                                                          .kblackColor,
-                                                                ),
+
+                                                              label: Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .check,
+                                                                      size: 15,
+                                                                      color: state.selectedindexcharactor ==
+                                                                              index
+                                                                          ? AppColors
+                                                                              .kwhiteColor
+                                                                          : Colors
+                                                                              .transparent),
+                                                                  const SizedBox(
+                                                                      width: 5),
+                                                                  Text(
+                                                                    characterItem,
+                                                                    style: theme
+                                                                        .textTheme
+                                                                        .bodyMedium!
+                                                                        .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      color: state.selectedindexcharactor ==
+                                                                              index
+                                                                          ? AppColors
+                                                                              .kwhiteColor
+                                                                          : AppColors
+                                                                              .kblackColor,
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                               selected: state
                                                                       .selectedindexcharactor ==
@@ -463,7 +502,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                                               ),
                                                               padding:
                                                                   const EdgeInsets
-                                                                      .all(12),
+                                                                      .only(
+                                                                      top: 14,
+                                                                      bottom:
+                                                                          14,
+                                                                      left: 10,
+                                                                      right:
+                                                                          27),
                                                             ),
                                                           ),
                                                         );
@@ -514,7 +559,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   .2,
                                               decoration: BoxDecoration(
                                                   color: AppColors.kwhiteColor
-                                                      .withOpacity(0.4),
+                                                      .withOpacity(0.5),
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                     12,
@@ -572,25 +617,32 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                   width * .04),
                                                     ),
                                                     const SizedBox(height: 5),
-                                                    const TextField(
-                                                      decoration: InputDecoration(
-                                                          hintText:
-                                                              'Enter character name',
-                                                          hintStyle: TextStyle(
-                                                              color: AppColors
-                                                                  .kgreyColor),
-                                                          border:
-                                                              UnderlineInputBorder(),
-                                                          focusedBorder: UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: AppColors
-                                                                      .kpurple)),
-                                                          enabledBorder: UnderlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  color: AppColors
-                                                                      .kgreyColor)),
-                                                          fillColor: Colors
-                                                              .transparent),
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              .67,
+                                                      child: const TextField(
+                                                        decoration: InputDecoration(
+                                                            hintText:
+                                                                'Enter character name',
+                                                            hintStyle: TextStyle(
+                                                                color: AppColors
+                                                                    .kgreyColorlite),
+                                                            border:
+                                                                UnderlineInputBorder(),
+                                                            focusedBorder: UnderlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: AppColors
+                                                                        .kpurple)),
+                                                            enabledBorder: UnderlineInputBorder(
+                                                                borderSide: BorderSide(
+                                                                    color: AppColors
+                                                                        .kgreyColor)),
+                                                            fillColor: Colors
+                                                                .transparent),
+                                                      ),
                                                     )
                                                   ],
                                                 ),
@@ -664,7 +716,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   .copyWith(
                                                       color: AppColors
                                                           .textColorblue,
-                                                      fontSize: width * .08,
+                                                      fontSize: 34,
                                                       fontWeight:
                                                           FontWeight.w400),
                                             ),
@@ -757,6 +809,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                       index];
 
                                                               return ChoiceChip(
+                                                                showCheckmark:
+                                                                    false,
                                                                 key: ValueKey(
                                                                     lovedOne), // Avoid unnecessary widget rebuilds
                                                                 side:
@@ -792,27 +846,50 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                 checkmarkColor:
                                                                     AppColors
                                                                         .kwhiteColor,
-                                                                label: Text(
-                                                                  (lovedOne.relation == "Mother" ||
-                                                                          lovedOne.relation ==
-                                                                              "Father" ||
-                                                                          lovedOne.relation ==
-                                                                              "GrandFather" ||
-                                                                          lovedOne.relation ==
-                                                                              "GrandMother")
-                                                                      ? lovedOne
-                                                                          .relation
-                                                                      : lovedOne
-                                                                          .name,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: state.selectedindex ==
-                                                                            index
-                                                                        ? AppColors
-                                                                            .kwhiteColor
-                                                                        : AppColors
-                                                                            .kblackColor,
-                                                                  ),
+                                                                label: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        size:
+                                                                            15,
+                                                                        color: state.selectedindex ==
+                                                                                index
+                                                                            ? AppColors.kwhiteColor
+                                                                            : Colors.transparent),
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            5),
+                                                                    Text(
+                                                                      (lovedOne.relation == "Mother" ||
+                                                                              lovedOne.relation ==
+                                                                                  "Father" ||
+                                                                              lovedOne.relation ==
+                                                                                  "GrandFather" ||
+                                                                              lovedOne.relation ==
+                                                                                  "GrandMother")
+                                                                          ? lovedOne
+                                                                              .relation
+                                                                          : lovedOne
+                                                                              .name,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: state.selectedindex ==
+                                                                                index
+                                                                            ? AppColors.kwhiteColor
+                                                                            : AppColors.kblackColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                                 selected: state
                                                                         .selectedindex ==
@@ -826,8 +903,14 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                 ),
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .all(
-                                                                        12),
+                                                                        .only(
+                                                                        top: 14,
+                                                                        bottom:
+                                                                            14,
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            27),
                                                               );
                                                             },
                                                           ),
@@ -937,7 +1020,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   .copyWith(
                                                       color: AppColors
                                                           .textColorblue,
-                                                      fontSize: width * .08,
+                                                      fontSize: 34,
                                                       fontWeight:
                                                           FontWeight.w400),
                                             ),
@@ -993,7 +1076,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         child: Text(
                                                             'No lessons found.'));
                                                   }
-
+                                                  lessons.addAll(
+                                                      suggestedLeassonsList);
+                                                  lessons.insert(
+                                                      0, "Surprise me");
+                                                  lessons.insert(
+                                                      1, "No lesson");
                                                   return Wrap(
                                                     children:
                                                         List<Widget>.generate(
@@ -1018,6 +1106,11 @@ class _AddCharacterState extends State<AddCharacter> {
                                                             builder: (context,
                                                                 state) {
                                                               return ChoiceChip(
+                                                                showCheckmark:
+                                                                    false,
+                                                                disabledColor:
+                                                                    Colors
+                                                                        .white,
                                                                 key: ValueKey(
                                                                     lesson), // Optimize widget reuse
                                                                 onSelected:
@@ -1053,18 +1146,41 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                 checkmarkColor:
                                                                     AppColors
                                                                         .kwhiteColor,
-                                                                label: Text(
-                                                                  lesson
-                                                                      .toString(),
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: state.selectedindexlesson ==
-                                                                            index
-                                                                        ? AppColors
-                                                                            .kwhiteColor
-                                                                        : AppColors
-                                                                            .kblackColor,
-                                                                  ),
+                                                                label: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        size:
+                                                                            15,
+                                                                        color: state.selectedindexlesson ==
+                                                                                index
+                                                                            ? AppColors.kwhiteColor
+                                                                            : Colors.transparent),
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            5),
+                                                                    Text(
+                                                                      lesson
+                                                                          .toString(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: state.selectedindexlesson ==
+                                                                                index
+                                                                            ? AppColors.kwhiteColor
+                                                                            : AppColors.kblackColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                                 selected: state
                                                                         .selectedindexlesson ==
@@ -1078,8 +1194,14 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                 ),
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .all(
-                                                                        12),
+                                                                        .only(
+                                                                        top: 14,
+                                                                        bottom:
+                                                                            14,
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            27),
                                                               );
                                                             },
                                                           ),
@@ -1183,7 +1305,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   .copyWith(
                                                       color: AppColors
                                                           .textColorblue,
-                                                      fontSize: width * .08,
+                                                      fontSize: 34,
                                                       fontWeight:
                                                           FontWeight.w400),
                                             ),
@@ -1205,6 +1327,20 @@ class _AddCharacterState extends State<AddCharacter> {
                                               ),
                                             ),
                                             const SizedBox(height: 25),
+                                            choicechipbutton(
+                                                theme: theme,
+                                                title: "Surprise me",
+                                                ontap: () async {
+                                                  context
+                                                      .read<AddCharacterBloc>()
+                                                      .add(
+                                                          const UpdateGenreEvent(
+                                                              'Surprise me'));
+                                                },
+                                                selected:
+                                                    state.genre == "Surprise me"
+                                                        ? true
+                                                        : false),
                                             choicechipbutton(
                                                 theme: theme,
                                                 title: "Funny",
@@ -1301,14 +1437,14 @@ class _AddCharacterState extends State<AddCharacter> {
                       ),
                       SizedBox(
                         width: MediaQuery.sizeOf(context).width * 1.0,
-                        height: MediaQuery.sizeOf(context).height * .16,
+                        height: MediaQuery.sizeOf(context).height * .1,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width * .85,
+                              width: MediaQuery.of(context).size.width * .9,
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
@@ -1589,8 +1725,8 @@ class _AddCharacterState extends State<AddCharacter> {
             width: width,
             height: height,
             decoration: BoxDecoration(
-                border:
-                    Border.all(color: const Color.fromARGB(255, 178, 178, 178)),
+                border: Border.all(
+                    color: const Color(0xff7f7f7f33).withOpacity(.20)),
                 borderRadius: BorderRadius.circular(40)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1640,4 +1776,64 @@ Future<List<Lovedonces>> fetchLovedOnes() async {
 
   // Convert to a list of Lovedonces objects
   return lovedOnceData.map((item) => Lovedonces.fromMap(item)).toList();
+}
+
+/// Function to fetch the `suggested_characters` list from the `admin_data` collection
+Future<List<String>> fetchSuggestedCharacters() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  try {
+    // Fetch the first document from the `admin_data` collection
+    QuerySnapshot querySnapshot =
+        await firestore.collection('admin_data').limit(1).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Access the first document
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+      // Extract `suggested_characters` and ensure it is a list of strings
+      List<dynamic> characters = data['suggested_characters'] ?? [];
+      return characters.map((e) => e.toString()).toList();
+    } else {
+      print('No document found in admin_data.');
+      return [];
+    }
+  } catch (e) {
+    print('Error fetching suggested characters: $e');
+    return [];
+  }
+}
+
+/// Function to fetch the `suggested_lessons` list from the `admin_data` collection
+Future<List<String>> fetchSuggestedLessons() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  List<String> lessonStrings = [];
+  try {
+    // Fetch the first document from the `admin_data` collection
+    QuerySnapshot querySnapshot =
+        await firestore.collection('admin_data').limit(1).get();
+
+    // Default values that should always be first
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Access the first document
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+      // Extract `suggested_lessons` and ensure it is a list of strings
+      List<dynamic> fetchedLessons = data['suggested_lessons'] ?? [];
+      List<String> lessonStrings =
+          fetchedLessons.map((e) => e.toString()).toList();
+
+      // Prepend the default values, followed by the fetched lessons
+      return lessonStrings; // Ensures "Surprise me", "No lesson" come first
+    } else {
+      print('No document found in admin_data.');
+
+      return lessonStrings;
+    }
+
+    // Return only the default values if no data is found
+  } catch (e) {
+    print('Error fetching suggested lessons: $e');
+    return lessonStrings; // Return default values on error
+  }
 }

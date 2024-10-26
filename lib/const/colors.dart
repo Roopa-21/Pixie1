@@ -26,6 +26,7 @@ class AppColors {
   static const kpurple = Color(0xff612ACE);
   static const kblackColor = Colors.black;
   static const kgreyColor = Color(0xff838383);
+  static const kgreyColorlite = Color(0xffC8C3C3);
   static const secondaryBackgroundColor = Color.fromRGBO(255, 255, 255, 0.74);
   static const choicechipSelected = Color(0xFF612ACE);
   static const choicechipUnSelected = Color.fromARGB(255, 255, 255, 255);

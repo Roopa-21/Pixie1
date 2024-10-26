@@ -34,7 +34,7 @@ class _LovedonceBottomsheetState extends State<LovedonceBottomsheet> {
     final theme = Theme.of(context);
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
         builder: (context, state) => Container(
-              height: MediaQuery.of(context).size.height * .7,
+              height: MediaQuery.of(context).size.height * .6,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: AppColors.bottomSheetBackground,
@@ -50,49 +50,56 @@ class _LovedonceBottomsheetState extends State<LovedonceBottomsheet> {
                     Text('Select a loved one',
                         style: theme.textTheme.displayMedium?.copyWith(
                             color: AppColors.textColorblue,
-                            fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 25),
-                    Wrap(
-                        children: List<Widget>.generate(lovedOnceList.length,
-                            (int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: ChoiceChip(
-                          onSelected: (value) {
-                            context.read<AddCharacterBloc>().add(
-                                AddLovedOnceEvent(lovedOnceList[index],
-                                    selectedindex: index));
-                            context.pop();
-                          },
-                          side: const BorderSide(
-                              width: .4,
-                              color: Color.fromARGB(255, 152, 152, 152)),
-                          shadowColor: Colors.black,
-                          selectedColor: AppColors.kpurple,
-                          elevation: 3,
-                          checkmarkColor: AppColors.kwhiteColor,
-                          label: Text(
-                            (lovedOnceList[index].relation == "Mother" ||
-                                    lovedOnceList[index].relation == "Father" ||
-                                    lovedOnceList[index].relation ==
-                                        "GrandFather" ||
-                                    lovedOnceList[index].relation ==
-                                        "GrandMother")
-                                ? lovedOnceList[index].relation
-                                : lovedOnceList[index].name,
-                            style: TextStyle(
-                                color: state.selectedindex == index
-                                    ? AppColors.kwhiteColor
-                                    : AppColors.kblackColor),
-                          ),
-                          selected: state.selectedindex == index ? true : false,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: const EdgeInsets.all(16),
-                        ),
-                      );
-                    })),
+                            fontWeight: FontWeight.w400)),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Wrap(
+                            children: List<Widget>.generate(
+                                lovedOnceList.length, (int index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: ChoiceChip(
+                              onSelected: (value) {
+                                context.read<AddCharacterBloc>().add(
+                                    AddLovedOnceEvent(lovedOnceList[index],
+                                        selectedindex: index));
+                                context.pop();
+                              },
+                              side: const BorderSide(
+                                  width: .4,
+                                  color: Color.fromARGB(255, 152, 152, 152)),
+                              shadowColor: Colors.black,
+                              selectedColor: AppColors.kpurple,
+                              elevation: 3,
+                              checkmarkColor: AppColors.kwhiteColor,
+                              label: Text(
+                                (lovedOnceList[index].relation == "Mother" ||
+                                        lovedOnceList[index].relation ==
+                                            "Father" ||
+                                        lovedOnceList[index].relation ==
+                                            "GrandFather" ||
+                                        lovedOnceList[index].relation ==
+                                            "GrandMother")
+                                    ? lovedOnceList[index].relation
+                                    : lovedOnceList[index].name,
+                                style: TextStyle(
+                                    color: state.selectedindex == index
+                                        ? AppColors.kwhiteColor
+                                        : AppColors.kblackColor),
+                              ),
+                              selected:
+                                  state.selectedindex == index ? true : false,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.all(16),
+                            ),
+                          );
+                        })),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

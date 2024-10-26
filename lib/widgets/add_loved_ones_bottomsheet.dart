@@ -48,7 +48,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
         return Stack(
           children: [
             Container(
-              height: deviceHeight * 0.8,
+              // height: deviceHeight * 0.8,
               width: deviceWidth,
               decoration: const BoxDecoration(
                 color: AppColors.bottomSheetBackground,
@@ -126,6 +126,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                         elevation: 2,
                         borderRadius: BorderRadius.circular(10),
                         child: TextField(
+                          autofocus: true,
                           controller: nameofRelation,
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: AppColors.textColorblue,
@@ -161,7 +162,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                       ),
                       const SizedBox(height: 10),
                       Padding(
-                        padding: const EdgeInsets.only(top: 28),
+                        padding: const EdgeInsets.only(top: 28, bottom: 25),
                         child: SizedBox(
                           width: MediaQuery.sizeOf(context).width * 0.85,
                           height: 60,
