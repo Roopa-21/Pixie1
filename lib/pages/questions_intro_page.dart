@@ -21,22 +21,45 @@ class QuestionsIntroPage extends StatelessWidget {
           ),
         ),
         Positioned(
-            left: deviceheight * 0.1179,
-            top: deviceheight * 0.2064,
+            left: deviceheight * 0.10,
+            top: deviceheight * 0.22,
             child: Stack(children: [
-              Image.asset(
-                'assets/images/tooltip.png',
-                fit: BoxFit.cover,
+              Transform.rotate(
+                angle: .05,
+                child: Image.asset(
+                  'assets/images/tooltip.png',
+                  fit: BoxFit.cover,
+                ),
               ),
               Positioned.fill(
-                  top: deviceheight * 0.0442,
+                  top: deviceheight * 0.03,
                   left: deviceheight * 0.0147,
                   right: deviceheight * 0.0147,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Text(
-                      'Just 3 steps before we can create stories together',
-                      textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    child: ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [
+                          AppColors.textColorSettings,
+                          AppColors.textColorGrey,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(
+                        Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+                      ),
+                      child: Transform.rotate(
+                        angle: .06,
+                        child: Text(
+                            'Just 3 steps before we can create stories together',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textColorWhite)),
+                      ),
                     ),
                   ))
             ])),
@@ -45,7 +68,7 @@ class QuestionsIntroPage extends StatelessWidget {
             left: 0,
             bottom: 0,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,7 +81,7 @@ class QuestionsIntroPage extends StatelessWidget {
                         fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 30,
                   ),
                   SizedBox(
                     width: MediaQuery.sizeOf(context).width * 0.85,
