@@ -26,7 +26,7 @@ class _LaguageBottomsheetState extends State<LaguageBottomsheet> {
     final theme = Theme.of(context);
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
         builder: (context, state) => Container(
-              height: MediaQuery.of(context).size.height * .7,
+              // height: MediaQuery.of(context).size.height * .7,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: AppColors.bottomSheetBackground,
@@ -36,6 +36,7 @@ class _LaguageBottomsheetState extends State<LaguageBottomsheet> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,6 +70,7 @@ class _LaguageBottomsheetState extends State<LaguageBottomsheet> {
                               .add(const LanguageChangeEvent(Language.Hindi));
                           context.pop();
                         }),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),

@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/pages/AddCharacter.dart/add_character.dart';
-import 'package:pixieapp/pages/home/home_page.dart';
 
 class AddLessonBottomSheet extends StatefulWidget {
   const AddLessonBottomSheet({super.key});
@@ -20,7 +18,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      height: MediaQuery.of(context).size.height * .7,
+      // height: MediaQuery.of(context).size.height * .7,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
           color: AppColors.bottomSheetBackground,
@@ -29,6 +27,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
       child: Padding(
         padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,6 +89,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
                         fontWeight: FontWeight.w500)),
               ),
             ),
+            const SizedBox(height: 25),
           ],
         ),
       ),
@@ -125,25 +125,44 @@ Future<void> _addLesson({
       final userDocRef =
           FirebaseFirestore.instance.collection('users').doc(userId);
 
-      // Add the new lesson to the existing array using arrayUnion
-      await userDocRef.update({
-        'lessons': FieldValue.arrayUnion([capitalizedLesson]),
-      });
-      context.pop();
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //   content: Text("Lesson added successfully!"),
-      //   backgroundColor: Colors.green,
-      // ));
+      // Fetch the existing lessons
+      DocumentSnapshot snapshot = await userDocRef.get();
+      List<dynamic> existingLessons =
+          (snapshot.data() as Map<String, dynamic>?)?['lessons'] ?? [];
+
+      // Ensure the lesson is not duplicated
+      if (!existingLessons.contains(capitalizedLesson)) {
+        // Add the new lesson at the first position
+        existingLessons.insert(0, capitalizedLesson);
+
+        // Update Firestore with the new ordered lessons list
+        await userDocRef.update({'lessons': existingLessons});
+
+        // Navigate back or show a success message
+        context.pop();
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   content: Text("Lesson added successfully!"),
+        //   backgroundColor: Colors.green,
+        // ));
+      } else {
+        // Show a message if the lesson already exists
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Lesson already exists"),
+          backgroundColor: Colors.orange,
+        ));
+      }
     } catch (e) {
+      // Handle errors
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Failed to add lesson: $e"),
         backgroundColor: Colors.red,
       ));
     }
   } else {
-    // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    //   content: Text("Please enter a lesson"),
-    //   backgroundColor: Colors.orange,
-    // ));
+    // Show a message if the lesson is empty
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Please enter a lesson"),
+      backgroundColor: Colors.orange,
+    ));
   }
 }

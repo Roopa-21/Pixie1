@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +6,6 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/models/Child_data_model.dart';
-import 'package:pixieapp/widgets/LovedonceBottomsheet.dart';
 
 class GenreBottomsheet extends StatefulWidget {
   const GenreBottomsheet({
@@ -27,7 +23,7 @@ class _GenreBottomsheetState extends State<GenreBottomsheet> {
     final theme = Theme.of(context);
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
         builder: (context, state) => Container(
-              height: MediaQuery.of(context).size.height * .7,
+              height: MediaQuery.of(context).size.height * .72,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: AppColors.bottomSheetBackground,
@@ -40,7 +36,7 @@ class _GenreBottomsheetState extends State<GenreBottomsheet> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 10),
                     Text(
                       'Genre of the story',
                       style: theme.textTheme.displaySmall!.copyWith(
@@ -50,7 +46,7 @@ class _GenreBottomsheetState extends State<GenreBottomsheet> {
                     ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(
-                          0.0, 10.0, 15.0, 0.0),
+                          0.0, 10.0, 10.0, 0.0),
                       child: Text(
                         'Select one',
                         style: theme.textTheme.displaySmall!.copyWith(
@@ -59,7 +55,17 @@ class _GenreBottomsheetState extends State<GenreBottomsheet> {
                             fontSize: width * .05),
                       ),
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 10),
+                    choicechipbutton(
+                        theme: theme,
+                        title: "Surprise me",
+                        ontap: () async {
+                          context
+                              .read<AddCharacterBloc>()
+                              .add(const UpdateGenreEvent('Surprise me'));
+                          context.pop();
+                        },
+                        selected: state.genre == "Surprise me" ? true : false),
                     choicechipbutton(
                         theme: theme,
                         title: "Funny",

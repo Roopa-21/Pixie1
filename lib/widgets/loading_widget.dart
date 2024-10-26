@@ -8,7 +8,7 @@ class LoadingWidget extends StatelessWidget {
     return Center(
         child: Container(
       width: MediaQuery.of(context).size.width * .7,
-      height: MediaQuery.of(context).size.height * .2,
+      height: MediaQuery.of(context).size.height * .13,
       decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/animations/pixieloading_crop.gif'),

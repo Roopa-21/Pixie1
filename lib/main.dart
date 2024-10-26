@@ -22,7 +22,7 @@ import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-   SystemChrome.setPreferredOrientations([
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
@@ -86,7 +86,9 @@ class _MyAppState extends State<MyApp> {
         routerConfig: _router, // Use the router here
         debugShowCheckedModeBanner: false,
         title: 'Pixie App',
-        theme: ThemeData(),
+        theme: ThemeData(
+          fontFamily: 'SF-Pro-Rounded',
+        ),
       ),
     );
   }

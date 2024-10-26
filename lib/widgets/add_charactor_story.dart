@@ -21,7 +21,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
     final theme = Theme.of(context);
 
     return Container(
-      height: MediaQuery.of(context).size.height * .8,
+      // height: MediaQuery.of(context).size.height * .8,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         color: AppColors.bottomSheetBackground,
@@ -67,7 +67,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
             // Character TextField
             TextField(
               controller: _characterController,
-              autofocus: false,
+              autofocus: true,
               decoration: InputDecoration(
                 hintText: "Type your response",
                 hintStyle: theme.textTheme.bodyMedium?.copyWith(
@@ -165,34 +165,30 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
               (snapshot.data() as Map<String, dynamic>?)?['storycharactors'] ??
                   [];
 
-          // Add the new character if it's not already in the list
+          // Check if the character already exists
           if (!storyCharacters.contains(capitalizedCharacter)) {
-            storyCharacters.add(capitalizedCharacter);
+            // Add the new character as the first element in the list
+            storyCharacters.insert(0, capitalizedCharacter);
           } else {
-            // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            //   content: Text('Character already exists!'),
-            // ));
-            return;
+            return; // Exit if the character already exists
           }
 
-          // Update Firestore with the new list, creating the 'storycharactors' field if it doesn't exist
-          transaction.set(userDoc, {'storycharactors': storyCharacters},
-              SetOptions(merge: true));
+          // Update Firestore with the new list
+          transaction.set(
+            userDoc,
+            {'storycharactors': storyCharacters},
+            SetOptions(merge: true),
+          );
         });
 
-        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        //   content: Text('Character added successfully!'),
-        // ));
-
-        // Go back once data is added
+        // Navigate back after successfully adding the character
         Navigator.of(context).pop();
       }
     } catch (e) {
-      // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //   content: Text('Failed to add character: ${e.toString()}'),
-      // ));
+      // Handle any errors gracefully
+      print('Failed to add character: ${e.toString()}');
     } finally {
-      // Hide loading indicator
+      // Hide the loading indicator
       setState(() {
         _isLoading = false;
       });
