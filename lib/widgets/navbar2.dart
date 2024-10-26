@@ -169,7 +169,8 @@ class _NavBar2State extends State<NavBar2> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
+    return 
+    Padding(
       padding: const EdgeInsets.only(left: 2, right: 2),
       child: Container(
         width: MediaQuery.of(context).size.width,
