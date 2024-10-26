@@ -58,6 +58,7 @@ dependencies:
   intl: ^0.19.0
   path_provider: ^2.1.4
   url_launcher: ^6.3.1
+  animations: ^2.0.11
 
 dev_dependencies:
 
@@ -113,18 +114,7 @@ flutter:
         - asset: assets/fonts/SF-Pro-Rounded-Thin.ttf
           weight: 400
 
-    - family: Notosans
-      fonts:
-        - asset: assets/fonts/NotoSans_Condensed-Bold.ttf
-          weight: 600
-        - asset: assets/fonts/NotoSans_Condensed-Medium.ttf
-          weight: 400
-        
-
-    - family: Jellee-Roman
-      fonts:
-        - asset: assets/fonts/Jellee-Roman.ttf
-        # - asset: assets/fonts/SF-Pro-Rounded-Medium.ttf    
+      
         
         
   # fonts:

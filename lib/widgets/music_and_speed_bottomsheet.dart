@@ -25,7 +25,7 @@ class _MusicAndSpeedBottomsheetState extends State<MusicAndSpeedBottomsheet> {
     final theme = Theme.of(context);
     return BlocBuilder<AddCharacterBloc, AddCharacterState>(
         builder: (context, state) => Container(
-              height: MediaQuery.of(context).size.height * .7,
+              height: MediaQuery.of(context).size.height * .5,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                   color: AppColors.bottomSheetBackground,

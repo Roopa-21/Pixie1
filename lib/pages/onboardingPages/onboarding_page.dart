@@ -164,15 +164,13 @@ class OnboardContent extends StatelessWidget {
           ),
           child: Column(
             children: [
-              FittedBox(
-                fit: BoxFit.fitWidth,
-                child: Text(
-                  title,
-                  style: theme.textTheme.displaySmall!.copyWith(
-                      color: AppColors.textColorblue,
-                      fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.center,
-                ),
+              Text(
+                title,
+                style: theme.textTheme.displaySmall!.copyWith(
+                    color: AppColors.textColorblue,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 34),
+                textAlign: TextAlign.center,
               ),
             ],
           ),

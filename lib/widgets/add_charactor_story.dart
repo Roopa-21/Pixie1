@@ -21,7 +21,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
     final theme = Theme.of(context);
 
     return Container(
-      height: MediaQuery.of(context).size.height * .8,
+      // height: MediaQuery.of(context).size.height * .8,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         color: AppColors.bottomSheetBackground,

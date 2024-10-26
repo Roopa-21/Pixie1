@@ -486,7 +486,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     isScrollControlled: true,
                                                     backgroundColor:
                                                         Colors.transparent,
-                                                    enableDrag: false,
+                                                    enableDrag: true,
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
@@ -850,7 +850,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     isScrollControlled: true,
                                                     backgroundColor:
                                                         Colors.transparent,
-                                                    enableDrag: false,
+                                                    enableDrag: true,
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
@@ -1103,7 +1103,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     isScrollControlled: true,
                                                     backgroundColor:
                                                         Colors.transparent,
-                                                    enableDrag: false,
+                                                    enableDrag: true,
                                                     context: context,
                                                     builder: (context) {
                                                       return GestureDetector(
@@ -1358,6 +1358,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                       onPressed: () async {
                                         User? user =
                                             FirebaseAuth.instance.currentUser;
+                                       
                                         if (user == null) return;
 
                                         DocumentSnapshot doc =
@@ -1368,6 +1369,7 @@ class _AddCharacterState extends State<AddCharacter> {
 
                                         storydata.child_name =
                                             doc['child_name'];
+                                       
                                         if (state.currentPageIndex == 4) {
                                           context.push('/CreateStoryPage',
                                               extra: storydata);
@@ -1429,7 +1431,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                             Language.Hindi) &&
                                                     (state.musicAndSpeed ==
                                                             "Bedtime" ||
-                                                        state.language ==
+                                                        state.musicAndSpeed ==
                                                             "Playtime"))
                                                 ? AppColors.textColorblue
                                                 : AppColors.textColorWhite,
