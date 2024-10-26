@@ -20,7 +20,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      height: MediaQuery.of(context).size.height * .7,
+      //height: MediaQuery.of(context).size.height * .7,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
           color: AppColors.bottomSheetBackground,
@@ -40,7 +40,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
             const SizedBox(height: 25),
             TextField(
               controller: lessoncontroller,
-              autofocus: true,
+              autofocus: false,
               decoration: const InputDecoration(
                 hintText: "Add a lesson",
                 hintStyle: TextStyle(color: Color.fromARGB(255, 199, 199, 199)),
