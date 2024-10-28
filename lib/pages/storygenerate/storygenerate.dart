@@ -154,7 +154,8 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
                   return FlexibleSpaceBar(
                     centerTitle: true,
-                    titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
+                    titlePadding: EdgeInsets.only(
+                        left: 16, bottom: 10, right: deviceWidth * 0.13),
                     title: Text(
                       widget.story["title"] ?? "No data",
                       style: theme.textTheme.titleMedium!.copyWith(
@@ -172,7 +173,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
               ),
               actions: [
                 Padding(
-                  padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                  padding: EdgeInsets.only(right: deviceWidth * 0.01),
                   child: Container(
                     width: 40,
                     height: 40,
@@ -301,17 +302,17 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
             : const SizedBox.shrink(),
 
         // audioloaded
-      
-            // NavBar2(
-            //     documentReference: _documentReference,
-            //     audioFile: audioFile!,
-            //     story: widget.story['story'] ?? 'No Story available',
-            //     title: widget.story['title'] ?? 'No title available',
-            //     firebaseAudioPath: audioUrl ?? '',
-            //     suggestedStories: false,
-            //     firebaseStories: false,
-            //   )
-      
+
+        // NavBar2(
+        //     documentReference: _documentReference,
+        //     audioFile: audioFile!,
+        //     story: widget.story['story'] ?? 'No Story available',
+        //     title: widget.story['title'] ?? 'No title available',
+        //     firebaseAudioPath: audioUrl ?? '',
+        //     suggestedStories: false,
+        //     firebaseStories: false,
+        //   )
+
         // : const NavBarLoading(),
       ),
     );

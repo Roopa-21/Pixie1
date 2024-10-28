@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                                                 .length, // Display 5 stories + 1 extra slot if > 5
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
-                                          if (index == 11) {
+                                          if (index == 10) {
                                             return GestureDetector(
                                               onTap: () {
                                                 // Open dialog to display all stories
@@ -318,7 +318,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       }),
                   const SizedBox(height: 20),
-                  _buildSectionTitle('Suggested Stories', theme),
+                  _buildSectionTitle('Suggested stories', theme),
                   const SizedBox(height: 10),
                   _buildStoriesSection(
                     _fetchSuggestedStories,

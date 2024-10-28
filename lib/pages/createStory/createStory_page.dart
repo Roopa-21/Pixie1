@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
@@ -114,15 +115,18 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       width: double.infinity,
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              .388,
+                                              .348,
                                       child: Stack(
                                         children: [
                                           Positioned.fill(
                                             child: Align(
                                               alignment: Alignment.center,
-                                              child: Image.asset(
-                                                'assets/images/Ellipse 13 (2).png',
-                                                fit: BoxFit.cover,
+                                              child: SizedBox(
+                                                width: devicewidth,
+                                                child: Image.asset(
+                                                  'assets/images/Ellipse 13 (2).png',
+                                                  fit: BoxFit.cover,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -130,98 +134,133 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                             child: Center(
                                               child: Column(
                                                 children: [
-                                                  Image.asset(
-                                                    'assets/images/star.png',
-                                                    width: devicewidth * 0.1388,
-                                                    height:
-                                                        devicewidth * 0.1386,
-                                                  ),
-                                                  ShaderMask(
-                                                    shaderCallback: (bounds) =>
-                                                        const LinearGradient(
-                                                      colors: [
-                                                        Color.fromARGB(
-                                                            90, 97, 42, 206),
-                                                        Color.fromARGB(
-                                                            100, 97, 42, 206),
-                                                        Color.fromARGB(
-                                                            90, 97, 42, 206),
-                                                        Color.fromARGB(
-                                                            70, 97, 42, 206),
-                                                        Color.fromARGB(
-                                                            80, 147, 117, 206),
-                                                        Color.fromARGB(
-                                                            80, 147, 112, 206),
-                                                        Color.fromARGB(
-                                                            110, 147, 152, 205),
-                                                      ],
-                                                      begin:
-                                                          Alignment.centerLeft,
-                                                      end:
-                                                          Alignment.centerRight,
-                                                    ).createShader(
-                                                      Rect.fromLTWH(
-                                                          0.0,
-                                                          0.0,
-                                                          bounds.width,
-                                                          bounds.height),
-                                                    ),
-                                                    child: Transform.rotate(
-                                                      angle: -.05,
-                                                      child: Stack(
-                                                        children: [
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Text(
-                                                              'Your ',
-                                                              softWrap: true,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: theme
-                                                                  .textTheme
-                                                                  .displayMedium!
-                                                                  .copyWith(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontSize: 96,
-                                                              ),
+                                                  Stack(
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            top: devicewidth *
+                                                                0.05),
+                                                        child: ShaderMask(
+                                                          shaderCallback:
+                                                              (bounds) =>
+                                                                  const LinearGradient(
+                                                            colors: [
+                                                              Color.fromARGB(90,
+                                                                  97, 42, 206),
+                                                              Color.fromARGB(
+                                                                  100,
+                                                                  97,
+                                                                  42,
+                                                                  206),
+                                                              Color.fromARGB(90,
+                                                                  97, 42, 206),
+                                                              Color.fromARGB(70,
+                                                                  97, 42, 206),
+                                                              Color.fromARGB(
+                                                                  80,
+                                                                  147,
+                                                                  117,
+                                                                  206),
+                                                              Color.fromARGB(
+                                                                  80,
+                                                                  147,
+                                                                  112,
+                                                                  206),
+                                                              Color.fromARGB(
+                                                                  110,
+                                                                  147,
+                                                                  152,
+                                                                  205),
+                                                            ],
+                                                            begin: Alignment
+                                                                .centerLeft,
+                                                            end: Alignment
+                                                                .centerRight,
+                                                          ).createShader(
+                                                            Rect.fromLTWH(
+                                                                0.0,
+                                                                0.0,
+                                                                bounds.width,
+                                                                bounds.height),
+                                                          ),
+                                                          child:
+                                                              Transform.rotate(
+                                                            angle: -.05,
+                                                            child: Stack(
+                                                              children: [
+                                                                Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  child: Text(
+                                                                    'Your ',
+                                                                    softWrap:
+                                                                        true,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: theme
+                                                                        .textTheme
+                                                                        .displayMedium!
+                                                                        .copyWith(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontSize:
+                                                                          96,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          top:
+                                                                              95.0),
+                                                                  child:
+                                                                      FittedBox(
+                                                                    fit: BoxFit
+                                                                        .fitWidth,
+                                                                    child: Text(
+                                                                      '  selections',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: theme.textTheme.displayMedium!.copyWith(
+                                                                          color: Colors
+                                                                              .white,
+                                                                          fontWeight: FontWeight
+                                                                              .w400,
+                                                                          fontSize:
+                                                                              96),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    top: 95.0),
-                                                            child: FittedBox(
-                                                              fit: BoxFit
-                                                                  .fitWidth,
-                                                              child: Text(
-                                                                '  selections',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: theme
-                                                                    .textTheme
-                                                                    .displayMedium!
-                                                                    .copyWith(
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w400,
-                                                                        fontSize:
-                                                                            96),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
-                                                    ),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            left: devicewidth *
+                                                                0.08),
+                                                        child: Align(
+                                                          alignment: Alignment
+                                                              .topCenter,
+                                                          child: Image.asset(
+                                                            'assets/images/star.png',
+                                                            width: devicewidth *
+                                                                0.1388,
+                                                            height:
+                                                                devicewidth *
+                                                                    0.1386,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
@@ -234,6 +273,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       context,
                                       'Music and speed ',
                                       builderstate.musicAndSpeed,
+                                      color: const Color.fromARGB(
+                                          255, 245, 198, 248),
                                       ontap: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: true,
@@ -261,6 +302,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       context,
                                       'Characters',
                                       builderstate.charactorname ?? 'Not added',
+                                      color: const Color.fromARGB(
+                                          255, 251, 219, 194),
                                       ontap: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: false,
@@ -289,6 +332,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       'Loved ones',
                                       builderstate.lovedOnce?.relation ??
                                           "Not added",
+                                      color: const Color.fromARGB(
+                                          255, 245, 198, 248),
                                       ontap: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: true,
@@ -316,6 +361,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       context,
                                       'Lesson',
                                       builderstate.lessons ?? 'Not added',
+                                      color: const Color.fromARGB(
+                                          255, 251, 219, 194),
                                       ontap: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: true,
@@ -343,6 +390,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       context,
                                       'Genre',
                                       builderstate.genre,
+                                      color: const Color.fromARGB(
+                                          255, 245, 198, 248),
                                       ontap: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: true,
@@ -369,6 +418,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                                       context,
                                       'Language',
                                       builderstate.language.name,
+                                      color: const Color.fromARGB(
+                                          255, 251, 219, 194),
                                       ontap: () async {
                                         await showModalBottomSheet(
                                           isScrollControlled: true,
@@ -429,14 +480,20 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
   }
 
   Widget cardForOptions(BuildContext context, String title, String value,
-      {required VoidCallback ontap}) {
+      {required VoidCallback ontap, required Color color}) {
     final devicewidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
     return Container(
-      margin: EdgeInsets.only(bottom: devicewidth * 0.04),
+      margin: EdgeInsets.only(bottom: devicewidth * 0.03),
       padding: EdgeInsets.symmetric(
           vertical: devicewidth * 0.07, horizontal: devicewidth * 0.05),
       decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: color,
+            width: 5,
+          ),
+        ),
         color: const Color.fromARGB(188, 236, 236, 236),
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [
@@ -467,7 +524,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
             ),
           ),
           IconButton(
-              icon: const Icon(Icons.edit, color: AppColors.iconColor),
+              icon: SvgPicture.asset("assets/images/edit_createstorypage.svg"),
+              iconSize: 24,
               onPressed: ontap),
         ],
       ),

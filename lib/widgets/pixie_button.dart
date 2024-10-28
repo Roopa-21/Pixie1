@@ -43,6 +43,12 @@ class PixieButton extends StatelessWidget {
               height: 50,
               width: MediaQuery.of(context).size.width * .9,
               decoration: BoxDecoration(
+                border: const Border(
+                  bottom: BorderSide(
+                    color: Color(0xffb857ab),
+                    width: 3,
+                  ),
+                ),
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
                   colors: [color1, color2],
@@ -52,8 +58,10 @@ class PixieButton extends StatelessWidget {
               ),
               child: Center(
                 child: Text(text,
-                    style: theme.textTheme.bodyMedium!
-                        .copyWith(color: Colors.white)),
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w400)),
               ),
             ),
           ],

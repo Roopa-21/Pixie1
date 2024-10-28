@@ -169,12 +169,12 @@ class _NavBar2State extends State<NavBar2> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return 
-    Padding(
+    return Padding(
       padding: const EdgeInsets.only(left: 2, right: 2),
       child: Container(
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
+          color: Colors.transparent,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12), topRight: Radius.circular(12)),
           image: DecorationImage(
@@ -190,7 +190,7 @@ class _NavBar2State extends State<NavBar2> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.max,

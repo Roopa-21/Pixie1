@@ -112,9 +112,9 @@ class NavBar extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.bodyMedium!.copyWith(
-            fontWeight: FontWeight.w600,
-            fontSize: 13,
-          ),
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              color: isSelected ? AppColors.kpurple : AppColors.kblackColor),
         ),
       ],
     );
