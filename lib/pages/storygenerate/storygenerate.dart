@@ -14,6 +14,7 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart'
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/widgets/audio_record_navbar.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/widgets/navbar_loading_audio.dart';
@@ -51,14 +52,14 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
     if (_documentReference == null) {
       final docRef = await _addStoryToFirebase(
-        audiopath: '', // Temporary empty audio path
-        fav: false,
-        story: widget.story["story"] ?? "No data",
-        title: widget.story["title"] ?? "No data",
-        type: queryParams['storytype']!,
-        language: queryParams['language']!,
-        createdTime: DateTime.now(),
-      );
+          audiopath: '', // Temporary empty audio path
+          fav: false,
+          story: widget.story["story"] ?? "No data",
+          title: widget.story["title"] ?? "No data",
+          type: queryParams['storytype']!,
+          language: queryParams['language']!,
+          createdTime: DateTime.now(),
+          audioRecordUrl: '');
 
       setState(() {
         _documentReference = docRef;
@@ -69,6 +70,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
   File? audioFile;
   bool audioloaded = false;
   bool apiAudioNavBar = false;
+  bool ownAudioNavBar = false;
   bool callAppBar = false;
   String? audioUrl = '';
   final ScrollController _scrollController = ScrollController();
@@ -129,6 +131,11 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
             if (state is ListenStateUpdated) {
               setState(() {
                 apiAudioNavBar = state.isListening;
+              });
+            }
+            if (state is ReadAndRecordStateUpdated) {
+              setState(() {
+                ownAudioNavBar = state.isRecording;
               });
             }
           },
@@ -287,9 +294,29 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
             ),
           ],
         ),
-        bottomNavigationBar: audioloaded
+      
+        bottomNavigationBar: 
+        
+    //     audioloaded
+    // ? (apiAudioNavBar 
+    //     ? NavBar2(
+    //         documentReference: _documentReference,
+    //         audioFile: audioFile!,
+    //         story: widget.story['story'] ?? 'No Story available',
+    //         title: widget.story['title'] ?? 'No title available',
+    //         firebaseAudioPath: audioUrl ?? '',
+    //         suggestedStories: false,
+    //         firebaseStories: false,
+    //       )
+    //     : (ownAudioNavBar 
+    //         ? const BottomNavRecord() 
+    //         : const RecordListenNavbar()))
+    // : const SizedBox.shrink(),
+
+
+         audioloaded
             ? (apiAudioNavBar
-                ? NavBar2(
+                ? (NavBar2(
                     documentReference: _documentReference,
                     audioFile: audioFile!,
                     story: widget.story['story'] ?? 'No Story available',
@@ -297,7 +324,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                     firebaseAudioPath: audioUrl ?? '',
                     suggestedStories: false,
                     firebaseStories: false,
-                  )
+                  ))
                 : const RecordListenNavbar())
             : const SizedBox.shrink(),
 
@@ -326,6 +353,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
     required String type,
     required String language,
     required DateTime createdTime,
+    required String audioRecordUrl,
   }) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
@@ -341,6 +369,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         'user_ref': userRef,
         'language': language,
         'createdTime': FieldValue.serverTimestamp(),
+        'audioRecordUrl': audioRecordUrl
       });
 
       print('Story added to favorites');
