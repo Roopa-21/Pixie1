@@ -8,7 +8,6 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
-import 'package:pixieapp/widgets/navbar3.dart';
 
 class Firebasestory extends StatefulWidget {
   final DocumentReference<Object?> storyDocRef;
@@ -74,7 +73,8 @@ class _FirebasestoryState extends State<Firebasestory> {
 
                 return FlexibleSpaceBar(
                   centerTitle: true,
-                  titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
+                  titlePadding: EdgeInsets.only(
+                      left: 16, bottom: 10, right: deviceWidth * 0.13),
                   title: Text(
                     storyData?["title"] ?? "No data",
                     style: theme.textTheme.titleMedium!.copyWith(
@@ -92,7 +92,7 @@ class _FirebasestoryState extends State<Firebasestory> {
             ),
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                padding: EdgeInsets.only(right: deviceWidth * 0.01),
                 child: Container(
                   width: 40,
                   height: 40,
@@ -119,27 +119,19 @@ class _FirebasestoryState extends State<Firebasestory> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AnimatedTextKit(
-                    isRepeatingAnimation: false,
-                    pause: const Duration(milliseconds: 1000),
-                    animatedTexts: [
-                      TyperAnimatedText(
-                        formatStory(storyData?["story"] ?? "No data"),
-                        textStyle: theme.textTheme.bodyMedium!.copyWith(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        speed: const Duration(milliseconds: 20),
-                      ),
-                    ],
-                  ),
+                  Text(
+                    storyData?["story"] ?? "No data",
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                        color: AppColors.textColorblack,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400),
+                  )
                 ],
               ),
             ),
           ),
         ],
       ),
-
       bottomNavigationBar: NavBar2(
           documentReference: widget.storyDocRef,
           story: storyData?["story"] ?? 'No Story available',
@@ -147,11 +139,6 @@ class _FirebasestoryState extends State<Firebasestory> {
           firebaseAudioPath: storyData?["audiofile"] ?? 'No fileaudio found',
           suggestedStories: false,
           firebaseStories: true),
-
-      // bottomNavigationBar: NavBar3(
-      //   documentReference: widget.storyDocRef,
-      //   favstatus: storyData!['isfav'],
-      // ),
     );
   }
 }

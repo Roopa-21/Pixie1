@@ -146,8 +146,9 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
                 bool isCollapsed = top <= kToolbarHeight + 30;
 
                 return FlexibleSpaceBar(
-                  centerTitle: true,
-                  titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
+                  centerTitle: false,
+                  titlePadding: EdgeInsets.only(
+                      left: 16, bottom: 10, right: deviceWidth * 0.13),
                   title: Text(
                     formatText(storyData?["title"] ?? "No data"),
                     style: theme.textTheme.titleMedium!.copyWith(
@@ -165,7 +166,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
             ),
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                padding: EdgeInsets.only(right: deviceWidth * 0.01),
                 child: Container(
                   width: 40,
                   height: 40,

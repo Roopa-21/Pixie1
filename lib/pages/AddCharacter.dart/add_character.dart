@@ -298,7 +298,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   BorderRadius.circular(40.0),
                                             ),
                                             child: IconButton(
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 pageViewController
                                                     ?.previousPage(
                                                   duration: const Duration(
@@ -316,6 +316,302 @@ class _AddCharacterState extends State<AddCharacter> {
                                         customSlider(percent: 0),
                                         customSlider(percent: 1),
                                         customSlider(percent: 0),
+                                        customSlider(percent: 0),
+                                        customSlider(percent: 0),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: height * .03),
+                                            Text(
+                                              'Add a loved one to the story..',
+                                              style: theme
+                                                  .textTheme.displaySmall!
+                                                  .copyWith(
+                                                      color: AppColors
+                                                          .textColorblue,
+                                                      fontSize: 34,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsetsDirectional
+                                                      .fromSTEB(
+                                                      0.0, 10.0, 15.0, 0.0),
+                                              child: Text(
+                                                'Select one',
+                                                style: theme
+                                                    .textTheme.displaySmall!
+                                                    .copyWith(
+                                                        color: AppColors
+                                                            .kgreyColor,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 25),
+                                            StreamBuilder<DocumentSnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('users')
+                                                  .doc(user!.uid)
+                                                  .snapshots(), // Listening for real-time updates to the user document
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                        ConnectionState
+                                                            .waiting &&
+                                                    !snapshot.hasData) {
+                                                  return const Center(
+                                                      child: LoadingWidget());
+                                                }
+
+                                                if (snapshot.hasError) {
+                                                  return Center(
+                                                      child: Text(
+                                                          'Error: ${snapshot.error}'));
+                                                }
+
+                                                if (snapshot.hasData) {
+                                                  var userData = snapshot.data!
+                                                          .data()
+                                                      as Map<String, dynamic>;
+
+                                                  // Deserialize the loved ones list
+                                                  List<
+                                                      Lovedonces> lovedonce = userData[
+                                                              'loved_once'] !=
+                                                          null
+                                                      ? List<Lovedonces>.from(
+                                                          userData['loved_once']
+                                                              .map((item) =>
+                                                                  Lovedonces
+                                                                      .fromMap(
+                                                                          item)))
+                                                      : [];
+
+                                                  if (lovedonce.isEmpty) {
+                                                    return const Center(
+                                                        child: Text(
+                                                            'No loved one found.'));
+                                                  }
+
+                                                  return Wrap(
+                                                    children:
+                                                        List<Widget>.generate(
+                                                      lovedonce.length,
+                                                      (int index) {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(5.0),
+                                                          child: BlocBuilder<
+                                                              AddCharacterBloc,
+                                                              AddCharacterState>(
+                                                            buildWhen: (previous,
+                                                                    current) =>
+                                                                previous
+                                                                    .selectedindex !=
+                                                                current
+                                                                    .selectedindex,
+                                                            builder: (context,
+                                                                state) {
+                                                              // Extract current loved one
+                                                              Lovedonces
+                                                                  lovedOne =
+                                                                  lovedonce[
+                                                                      index];
+
+                                                              return ChoiceChip(
+                                                                showCheckmark:
+                                                                    false,
+                                                                key: ValueKey(
+                                                                    lovedOne), // Avoid unnecessary widget rebuilds
+                                                                side:
+                                                                    const BorderSide(
+                                                                  width: 0.4,
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          152,
+                                                                          152,
+                                                                          152),
+                                                                ),
+                                                                shadowColor:
+                                                                    Colors
+                                                                        .black,
+                                                                onSelected:
+                                                                    (value) {
+                                                                  context
+                                                                      .read<
+                                                                          AddCharacterBloc>()
+                                                                      .add(
+                                                                        AddLovedOnceEvent(
+                                                                          lovedOne,
+                                                                          selectedindex:
+                                                                              index,
+                                                                        ),
+                                                                      );
+                                                                },
+                                                                selectedColor:
+                                                                    AppColors
+                                                                        .kpurple,
+                                                                elevation: 5,
+                                                                checkmarkColor:
+                                                                    AppColors
+                                                                        .kwhiteColor,
+                                                                label: Row(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        size:
+                                                                            15,
+                                                                        color: state.selectedindex ==
+                                                                                index
+                                                                            ? AppColors.kwhiteColor
+                                                                            : Colors.transparent),
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            5),
+                                                                    Text(
+                                                                      (lovedOne.relation == "Mother" ||
+                                                                              lovedOne.relation ==
+                                                                                  "Father" ||
+                                                                              lovedOne.relation ==
+                                                                                  "GrandFather" ||
+                                                                              lovedOne.relation ==
+                                                                                  "GrandMother")
+                                                                          ? lovedOne
+                                                                              .relation
+                                                                          : lovedOne
+                                                                              .name,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: state.selectedindex ==
+                                                                                index
+                                                                            ? AppColors.kwhiteColor
+                                                                            : AppColors.kblackColor,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                selected: state
+                                                                        .selectedindex ==
+                                                                    index,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              50),
+                                                                ),
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        top: 14,
+                                                                        bottom:
+                                                                            14,
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            27),
+                                                              );
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
+                                                }
+                                                return const Center(
+                                                    child: Text(
+                                                        'No loved one found.'));
+                                              },
+                                            ),
+                                            addbutton(
+                                                title: "Add a loved one",
+                                                width: 200,
+                                                theme: theme,
+                                                onTap: () async {
+                                                  await showModalBottomSheet(
+                                                    isScrollControlled: true,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    enableDrag: true,
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return GestureDetector(
+                                                        onTap: () =>
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .unfocus(),
+                                                        child: Padding(
+                                                          padding: MediaQuery
+                                                              .viewInsetsOf(
+                                                                  context),
+                                                          child:
+                                                              const AddLovedOnesBottomSheet(),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                })
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFFE8DEF8),
+                                              borderRadius:
+                                                  BorderRadius.circular(40.0),
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                pageViewController
+                                                    ?.previousPage(
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  curve: Curves.ease,
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.arrow_back,
+                                                color: AppColors.sliderColor,
+                                                size: 23,
+                                              ),
+                                            )),
+                                        const SizedBox(width: 5),
+                                        customSlider(percent: 0),
+                                        customSlider(percent: 0),
+                                        customSlider(percent: 1),
                                         customSlider(percent: 0),
                                         customSlider(percent: 0),
                                       ],
@@ -687,316 +983,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                         const SizedBox(width: 5),
                                         customSlider(percent: 0),
                                         customSlider(percent: 0),
-                                        customSlider(percent: 1),
-                                        customSlider(percent: 0),
-                                        customSlider(percent: 0),
-                                        TextButton(
-                                            onPressed: () {
-                                              pageViewController!.jumpToPage(4);
-                                            },
-                                            child: const Text("Skip to end",
-                                                style: TextStyle(
-                                                    color: AppColors
-                                                        .textColorblue)))
-                                      ],
-                                    ),
-                                    Expanded(
-                                      child: SingleChildScrollView(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SizedBox(height: height * .03),
-                                            Text(
-                                              'Add a loved one to the story..',
-                                              style: theme
-                                                  .textTheme.displaySmall!
-                                                  .copyWith(
-                                                      color: AppColors
-                                                          .textColorblue,
-                                                      fontSize: 34,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                      0.0, 10.0, 15.0, 0.0),
-                                              child: Text(
-                                                'Select one',
-                                                style: theme
-                                                    .textTheme.displaySmall!
-                                                    .copyWith(
-                                                        color: AppColors
-                                                            .kgreyColor,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 20),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 25),
-                                            StreamBuilder<DocumentSnapshot>(
-                                              stream: FirebaseFirestore.instance
-                                                  .collection('users')
-                                                  .doc(user!.uid)
-                                                  .snapshots(), // Listening for real-time updates to the user document
-                                              builder: (context, snapshot) {
-                                                if (snapshot.connectionState ==
-                                                        ConnectionState
-                                                            .waiting &&
-                                                    !snapshot.hasData) {
-                                                  return const Center(
-                                                      child: LoadingWidget());
-                                                }
-
-                                                if (snapshot.hasError) {
-                                                  return Center(
-                                                      child: Text(
-                                                          'Error: ${snapshot.error}'));
-                                                }
-
-                                                if (snapshot.hasData) {
-                                                  var userData = snapshot.data!
-                                                          .data()
-                                                      as Map<String, dynamic>;
-
-                                                  // Deserialize the loved ones list
-                                                  List<
-                                                      Lovedonces> lovedonce = userData[
-                                                              'loved_once'] !=
-                                                          null
-                                                      ? List<Lovedonces>.from(
-                                                          userData['loved_once']
-                                                              .map((item) =>
-                                                                  Lovedonces
-                                                                      .fromMap(
-                                                                          item)))
-                                                      : [];
-
-                                                  if (lovedonce.isEmpty) {
-                                                    return const Center(
-                                                        child: Text(
-                                                            'No loved one found.'));
-                                                  }
-
-                                                  return Wrap(
-                                                    children:
-                                                        List<Widget>.generate(
-                                                      lovedonce.length,
-                                                      (int index) {
-                                                        return Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(5.0),
-                                                          child: BlocBuilder<
-                                                              AddCharacterBloc,
-                                                              AddCharacterState>(
-                                                            buildWhen: (previous,
-                                                                    current) =>
-                                                                previous
-                                                                    .selectedindex !=
-                                                                current
-                                                                    .selectedindex,
-                                                            builder: (context,
-                                                                state) {
-                                                              // Extract current loved one
-                                                              Lovedonces
-                                                                  lovedOne =
-                                                                  lovedonce[
-                                                                      index];
-
-                                                              return ChoiceChip(
-                                                                showCheckmark:
-                                                                    false,
-                                                                key: ValueKey(
-                                                                    lovedOne), // Avoid unnecessary widget rebuilds
-                                                                side:
-                                                                    const BorderSide(
-                                                                  width: 0.4,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          152,
-                                                                          152,
-                                                                          152),
-                                                                ),
-                                                                shadowColor:
-                                                                    Colors
-                                                                        .black,
-                                                                onSelected:
-                                                                    (value) {
-                                                                  context
-                                                                      .read<
-                                                                          AddCharacterBloc>()
-                                                                      .add(
-                                                                        AddLovedOnceEvent(
-                                                                          lovedOne,
-                                                                          selectedindex:
-                                                                              index,
-                                                                        ),
-                                                                      );
-                                                                },
-                                                                selectedColor:
-                                                                    AppColors
-                                                                        .kpurple,
-                                                                elevation: 5,
-                                                                checkmarkColor:
-                                                                    AppColors
-                                                                        .kwhiteColor,
-                                                                label: Row(
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    Icon(
-                                                                        Icons
-                                                                            .check,
-                                                                        size:
-                                                                            15,
-                                                                        color: state.selectedindex ==
-                                                                                index
-                                                                            ? AppColors.kwhiteColor
-                                                                            : Colors.transparent),
-                                                                    const SizedBox(
-                                                                        width:
-                                                                            5),
-                                                                    Text(
-                                                                      (lovedOne.relation == "Mother" ||
-                                                                              lovedOne.relation ==
-                                                                                  "Father" ||
-                                                                              lovedOne.relation ==
-                                                                                  "GrandFather" ||
-                                                                              lovedOne.relation ==
-                                                                                  "GrandMother")
-                                                                          ? lovedOne
-                                                                              .relation
-                                                                          : lovedOne
-                                                                              .name,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: state.selectedindex ==
-                                                                                index
-                                                                            ? AppColors.kwhiteColor
-                                                                            : AppColors.kblackColor,
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                selected: state
-                                                                        .selectedindex ==
-                                                                    index,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              50),
-                                                                ),
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        top: 14,
-                                                                        bottom:
-                                                                            14,
-                                                                        left:
-                                                                            10,
-                                                                        right:
-                                                                            27),
-                                                              );
-                                                            },
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                }
-                                                return const Center(
-                                                    child: Text(
-                                                        'No loved one found.'));
-                                              },
-                                            ),
-                                            addbutton(
-                                                title: "Add a loved one",
-                                                width: 200,
-                                                theme: theme,
-                                                onTap: () async {
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    enableDrag: true,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return GestureDetector(
-                                                        onTap: () =>
-                                                            FocusScope.of(
-                                                                    context)
-                                                                .unfocus(),
-                                                        child: Padding(
-                                                          padding: MediaQuery
-                                                              .viewInsetsOf(
-                                                                  context),
-                                                          child:
-                                                              const AddLovedOnesBottomSheet(),
-                                                        ),
-                                                      );
-                                                    },
-                                                  );
-                                                })
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFE8DEF8),
-                                              borderRadius:
-                                                  BorderRadius.circular(40.0),
-                                            ),
-                                            child: IconButton(
-                                              onPressed: () async {
-                                                pageViewController
-                                                    ?.previousPage(
-                                                  duration: const Duration(
-                                                      milliseconds: 300),
-                                                  curve: Curves.ease,
-                                                );
-                                              },
-                                              icon: const Icon(
-                                                Icons.arrow_back,
-                                                color: AppColors.sliderColor,
-                                                size: 23,
-                                              ),
-                                            )),
-                                        const SizedBox(width: 5),
-                                        customSlider(percent: 0),
-                                        customSlider(percent: 0),
                                         customSlider(percent: 0),
                                         customSlider(percent: 1),
                                         customSlider(percent: 0),
                                         TextButton(
                                             onPressed: () {
-                                              pageViewController!.jumpToPage(4);
+                                              context.push('/CreateStoryPage',
+                                                  extra: storydata);
                                             },
                                             child: const Text("Skip to end",
                                                 style: TextStyle(
@@ -1450,16 +1443,22 @@ class _AddCharacterState extends State<AddCharacter> {
                                     MainAxisAlignment.spaceAround,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  state.currentPageIndex == 2 ||
-                                          state.currentPageIndex == 3
+                                  state.currentPageIndex == 1 ||
+                                          state.currentPageIndex == 3 ||
+                                          state.currentPageIndex == 4
                                       ? Expanded(
                                           child: ElevatedButton(
                                             onPressed: () async {
-                                              pageViewController?.nextPage(
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                                curve: Curves.ease,
-                                              );
+                                              if (state.currentPageIndex == 4) {
+                                                context.push('/CreateStoryPage',
+                                                    extra: storydata);
+                                              } else {
+                                                pageViewController?.nextPage(
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                  curve: Curves.ease,
+                                                );
+                                              }
                                             },
                                             style: ElevatedButton.styleFrom(
                                               minimumSize: Size(
@@ -1494,7 +1493,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                       onPressed: () async {
                                         User? user =
                                             FirebaseAuth.instance.currentUser;
-                                       
+
                                         if (user == null) return;
 
                                         DocumentSnapshot doc =
@@ -1505,7 +1504,7 @@ class _AddCharacterState extends State<AddCharacter> {
 
                                         storydata.child_name =
                                             doc['child_name'];
-                                       
+
                                         if (state.currentPageIndex == 4) {
                                           context.push('/CreateStoryPage',
                                               extra: storydata);
@@ -1525,7 +1524,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                               curve: Curves.ease,
                                             );
                                           } else if (state.currentPageIndex ==
-                                                  1 &&
+                                                  2 &&
                                               state.charactorname != null) {
                                             pageViewController?.nextPage(
                                               duration: const Duration(
@@ -1533,7 +1532,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                               curve: Curves.ease,
                                             );
                                           } else if (state.currentPageIndex ==
-                                                  2 &&
+                                                  1 &&
                                               state.lovedOnce != null) {
                                             pageViewController?.nextPage(
                                               duration: const Duration(
@@ -1582,10 +1581,10 @@ class _AddCharacterState extends State<AddCharacter> {
                                                             "Bedtime" ||
                                                         state.musicAndSpeed ==
                                                             "Playtime")) ||
-                                                (state.currentPageIndex == 1 &&
+                                                (state.currentPageIndex == 2 &&
                                                     state.charactorname !=
                                                         null) ||
-                                                (state.currentPageIndex == 2 &&
+                                                (state.currentPageIndex == 1 &&
                                                     state.lovedOnce != null) ||
                                                 (state.currentPageIndex == 3 &&
                                                     state.lessons != null) ||
@@ -1608,11 +1607,11 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           state.musicAndSpeed ==
                                                               "Playtime")) ||
                                                   (state.currentPageIndex ==
-                                                          1 &&
+                                                          2 &&
                                                       state.charactorname !=
                                                           null) ||
                                                   (state.currentPageIndex ==
-                                                          2 &&
+                                                          1 &&
                                                       state.lovedOnce !=
                                                           null) ||
                                                   (state.currentPageIndex ==
