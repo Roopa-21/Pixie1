@@ -11,13 +11,14 @@ import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
+import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
+import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/widgets/navbar_loading_audio.dart';
 import 'package:pixieapp/widgets/record_listen_navbar.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
-
 
 class StoryGeneratePage extends StatefulWidget {
   final Map<String, String> story;
@@ -67,7 +68,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
   File? audioFile;
   bool audioloaded = false;
-
+  bool apiAudioNavBar = false;
   bool callAppBar = false;
   String? audioUrl = '';
   final ScrollController _scrollController = ScrollController();
@@ -103,190 +104,216 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final theme = Theme.of(context);
 
-    return BlocListener<StoryBloc, StoryState>(
-      listener: (context, state) async {
-        if (state is StoryAudioSuccess) {
-          audioFile = state.audioFile;
-          // print(';;;;;;;;;;;$audioFile');
-          //  print('Audio File Path: ${audioFile!.path}');
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<StoryBloc, StoryState>(
+          listener: (context, state) async {
+            if (state is StoryAudioSuccess) {
+              audioFile = state.audioFile;
+              // print(';;;;;;;;;;;//');
+              //  print('Audio File Path: ${audioFile!.path}');
 
-          audioUrl = await _uploadAudioToStorage(audioFile!);
-          // print('::::$audioUrl');
-          if (audioUrl != null) {
-            setState(() {
-              audioloaded = true;
-            });
-            await _updateStoryWithAudioUrl(audioUrl!);
-          }
-        }
-      },
+              audioUrl = await _uploadAudioToStorage(audioFile!);
+              // print('::::');
+              if (audioUrl != null) {
+                setState(() {
+                  audioloaded = true;
+                });
+                await _updateStoryWithAudioUrl(audioUrl!);
+              }
+            }
+          },
+        ),
+        BlocListener<BottomNavBloc, BottomNavState>(
+          listener: (context, state) {
+            if (state is ListenStateUpdated) {
+              setState(() {
+                apiAudioNavBar = state.isListening;
+              });
+            }
+          },
+        ),
+      ],
       child: Scaffold(
-          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-          body: CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              SliverAppBar(
-                automaticallyImplyLeading: false,
-                expandedHeight: deviceHeight * 0.38,
-                leadingWidth: deviceWidth,
-                collapsedHeight: deviceHeight * 0.08,
-                pinned: true,
-                floating: false,
-                backgroundColor: const Color(0xff644a98),
-                flexibleSpace: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    var top = constraints.biggest.height;
-                    bool isCollapsed = top <= kToolbarHeight + 30;
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        body: CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              expandedHeight: deviceHeight * 0.38,
+              leadingWidth: deviceWidth,
+              collapsedHeight: deviceHeight * 0.08,
+              pinned: true,
+              floating: false,
+              backgroundColor: const Color(0xff644a98),
+              flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  var top = constraints.biggest.height;
+                  bool isCollapsed = top <= kToolbarHeight + 30;
 
-                    return FlexibleSpaceBar(
-                      centerTitle: true,
-                      titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
-                      title: Text(
-                        widget.story["title"] ?? "No data",
-                        style: theme.textTheme.titleMedium!.copyWith(
-                          color: AppColors.textColorWhite,
-                          fontWeight: FontWeight.bold,
-                          fontSize: isCollapsed ? 15 : 20,
-                        ),
+                  return FlexibleSpaceBar(
+                    centerTitle: true,
+                    titlePadding: const EdgeInsets.only(left: 16, bottom: 10),
+                    title: Text(
+                      widget.story["title"] ?? "No data",
+                      style: theme.textTheme.titleMedium!.copyWith(
+                        color: AppColors.textColorWhite,
+                        fontWeight: FontWeight.bold,
+                        fontSize: isCollapsed ? 15 : 20,
                       ),
-                      background: Image.asset(
-                        'assets/images/appbarbg.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
-                ),
-                actions: [
-                  Padding(
-                    padding: EdgeInsets.only(right: deviceHeight * 0.024),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: AppColors.kwhiteColor.withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(40.0),
-                      ),
-                      child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
-                        builder: (context, state) => IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () async {
-                            if (state.showfeedback) {
-                              await showModalBottomSheet(
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                enableDrag: false,
-                                context: context,
-                                builder: (context) {
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        FocusScope.of(context).unfocus(),
-                                    child: Padding(
-                                      padding: MediaQuery.viewInsetsOf(context),
-                                      child: StoryFeedback(
-                                        story: widget.story['story'] ??
-                                            'No Story available',
-                                        title: widget.story['title'] ??
-                                            'No title available',
-                                        path: audioUrl ?? '',
-                                        textfield: false,
-                                      ),
+                    ),
+                    background: Image.asset(
+                      'assets/images/appbarbg.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+              actions: [
+                Padding(
+                  padding: EdgeInsets.only(right: deviceHeight * 0.024),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.kwhiteColor.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(40.0),
+                    ),
+                    child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
+                      builder: (context, state) => IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () async {
+                          if (state.showfeedback) {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              enableDrag: false,
+                              context: context,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () => FocusScope.of(context).unfocus(),
+                                  child: Padding(
+                                    padding: MediaQuery.viewInsetsOf(context),
+                                    child: StoryFeedback(
+                                      story: widget.story['story'] ??
+                                          'No Story available',
+                                      title: widget.story['title'] ??
+                                          'No title available',
+                                      path: audioUrl ?? '',
+                                      textfield: false,
                                     ),
-                                  );
-                                },
-                              );
-                            }
+                                  ),
+                                );
+                              },
+                            );
+                          }
 
-                            context.read<AddCharacterBloc>().add(
-                                const ShowfeedbackEvent(showfeedback: false));
-                            context
-                                .read<AddCharacterBloc>()
-                                .add(ResetStateEvent());
-                            context.go('/HomePage');
-                          },
-                        ),
+                          context.read<AddCharacterBloc>().add(
+                              const ShowfeedbackEvent(showfeedback: false));
+                          context
+                              .read<AddCharacterBloc>()
+                              .add(ResetStateEvent());
+                          context.go('/HomePage');
+                        },
                       ),
                     ),
                   ),
-                ],
-              ),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 5,
-                    left: deviceHeight * 0.0294,
-                    right: deviceHeight * 0.0294,
-                    bottom: deviceHeight * 0.0294,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ShaderMask(
-                        shaderCallback: (bounds) => LinearGradient(
-                          colors: [
-                            const Color(0xffAC8BEC),
-                            const Color(0XFF9E00FF).withOpacity(0.3),
-                            const Color(0xff00FFF0),
-                            const Color(0x80612ACE),
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ).createShader(
-                          Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
-                        ),
-                        child: AnimatedTextKit(
-                          onFinished: () {
-                            setState(() {
-                              callAppBar = true;
-                              _scrollTimer?.cancel();
-                            });
-                          },
-                          isRepeatingAnimation: false,
-                          pause: const Duration(milliseconds: 100),
-                          animatedTexts: [
-                            TyperAnimatedText(
-                              widget.story["story"] ?? "No data",
-                              textStyle: theme.textTheme.bodyMedium!.copyWith(
-                                  color: AppColors.textColorWhite,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w400),
-                              speed: const Duration(milliseconds: 20),
-                            ),
-                          ],
-                          onNext: (index, isLast) {
-                            if (_scrollController.hasClients) {
-                              _scrollController.animateTo(
-                                _scrollController.position.maxScrollExtent,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.easeInOut,
-                              );
-                            }
-                          },
-                          onTap: () {
-                            print("Tap Event");
-                          },
-                        ),
+                ),
+              ],
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 5,
+                  left: deviceHeight * 0.0294,
+                  right: deviceHeight * 0.0294,
+                  bottom: deviceHeight * 0.0294,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ShaderMask(
+                      shaderCallback: (bounds) => LinearGradient(
+                        colors: [
+                          const Color(0xffAC8BEC),
+                          const Color(0XFF9E00FF).withOpacity(0.3),
+                          const Color(0xff00FFF0),
+                          const Color(0x80612ACE),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ).createShader(
+                        Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
                       ),
-                      // 
-                    ],
-                  ),
+                      child: AnimatedTextKit(
+                        onFinished: () {
+                          setState(() {
+                            callAppBar = true;
+                            _scrollTimer?.cancel();
+                          });
+                        },
+                        isRepeatingAnimation: false,
+                        pause: const Duration(milliseconds: 100),
+                        animatedTexts: [
+                          TyperAnimatedText(
+                            widget.story["story"] ?? "No data",
+                            textStyle: theme.textTheme.bodyMedium!.copyWith(
+                                color: AppColors.textColorWhite,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w400),
+                            speed: const Duration(milliseconds: 20),
+                          ),
+                        ],
+                        onNext: (index, isLast) {
+                          if (_scrollController.hasClients) {
+                            _scrollController.animateTo(
+                              _scrollController.position.maxScrollExtent,
+                              duration: const Duration(milliseconds: 100),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                        onTap: () {
+                          print("Tap Event");
+                        },
+                      ),
+                    ),
+                    //
+                  ],
                 ),
               ),
-            ],
-          ),
-          bottomNavigationBar: callAppBar
-              ? const RecordListenNavbar()
-              // NavBar2(
-              //     documentReference: _documentReference,
-              //     audioFile: audioFile!,
-              //     story: widget.story['story'] ?? 'No Story available',
-              //     title: widget.story['title'] ?? 'No title available',
-              //     firebaseAudioPath: audioUrl ?? '',
-              //     suggestedStories: false,
-              //     firebaseStories: false,
-              //   )
-              : const SizedBox.shrink()
-          // : const NavBarLoading(),
-          ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: audioloaded
+            ? (apiAudioNavBar
+                ? NavBar2(
+                    documentReference: _documentReference,
+                    audioFile: audioFile!,
+                    story: widget.story['story'] ?? 'No Story available',
+                    title: widget.story['title'] ?? 'No title available',
+                    firebaseAudioPath: audioUrl ?? '',
+                    suggestedStories: false,
+                    firebaseStories: false,
+                  )
+                : const RecordListenNavbar())
+            : const SizedBox.shrink(),
+
+        // audioloaded
+      
+            // NavBar2(
+            //     documentReference: _documentReference,
+            //     audioFile: audioFile!,
+            //     story: widget.story['story'] ?? 'No Story available',
+            //     title: widget.story['title'] ?? 'No title available',
+            //     firebaseAudioPath: audioUrl ?? '',
+            //     suggestedStories: false,
+            //     firebaseStories: false,
+            //   )
+      
+        // : const NavBarLoading(),
+      ),
     );
   }
 
