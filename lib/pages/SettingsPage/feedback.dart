@@ -77,6 +77,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
           children: [
             _buildHeader(theme),
             const SizedBox(height: 30),
+            Text(
+              'Rate your experience',
+              style: theme.textTheme.displaySmall!.copyWith(
+                  color: AppColors.textColorblack,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 25),
+            ),
+            const SizedBox(height: 30),
             _buildRatingRow(context, theme),
             const SizedBox(height: 30),
             _buildQuestionsCard(theme, deviceWidth, deviceHeight),
@@ -102,11 +110,23 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 size: 24, color: AppColors.buttonblue),
           ),
           const SizedBox(width: 20),
-          Text(
-            "Feedback",
-            style: theme.textTheme.headlineMedium!.copyWith(
-              fontSize: 24,
-              color: AppColors.textColorblue,
+          ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              colors: [
+                AppColors.textColorGrey,
+                AppColors.textColorSettings,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ).createShader(
+              Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
+            ),
+            child: Text(
+              "Feedback",
+              style: theme.textTheme.headlineMedium!.copyWith(
+                fontSize: 24,
+                color: AppColors.textColorWhite,
+              ),
             ),
           ),
         ],
@@ -189,9 +209,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 .read<FeedbackBloc>()
                 .add(UpdateLikedDislikedEvent(question: question, liked: true));
           },
-          icon: Icon(
-            liked ? Icons.thumb_up : Icons.thumb_up_off_alt,
-            color: AppColors.kpurple,
+          icon: SvgPicture.asset(
+            liked
+                ? 'assets/images/afterLike.svg'
+                : 'assets/images/beforeLike.svg',
+            width: 30,
+            height: 30,
           ),
         ),
         IconButton(
@@ -205,9 +228,12 @@ class _FeedbackPageState extends State<FeedbackPage> {
             context.read<FeedbackBloc>().add(
                 UpdateLikedDislikedEvent(question: question, liked: false));
           },
-          icon: Icon(
-            disliked ? Icons.thumb_down : Icons.thumb_down_off_alt,
-            color: AppColors.kpurple,
+          icon: SvgPicture.asset(
+            disliked
+                ? 'assets/images/afterDislike.svg'
+                : 'assets/images/beforeDislike.svg',
+            width: 30,
+            height: 30,
           ),
         ),
       ],

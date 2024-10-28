@@ -29,7 +29,11 @@ class RecordListenNavbar extends StatelessWidget {
             height: 50,
             width: 150,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context
+                    .read<BottomNavBloc>()
+                    .add(UpdateReadAndRecordStateEvent(isRecording: true));
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -50,10 +54,9 @@ class RecordListenNavbar extends StatelessWidget {
             width: 150,
             child: ElevatedButton(
               onPressed: () {
-                 context
-                  .read<BottomNavBloc>()
-                  .add(UpdateListenStateEvent(isListening: true));
-
+                context
+                    .read<BottomNavBloc>()
+                    .add(UpdateListenStateEvent(isListening: true));
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
