@@ -15,7 +15,7 @@ class ClildDataModel {
       required this.moreLovedOnce});
 }
 
-enum Gender { male, female, prefernottosay, notselected }
+enum Gender { he, she, prefernottosay, notselected }
 
 class Lovedonces {
   String relation;

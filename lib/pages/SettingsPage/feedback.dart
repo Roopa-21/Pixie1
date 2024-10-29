@@ -9,6 +9,7 @@ import 'package:pixieapp/blocs/Feedback/feedback_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/widgets_index.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -76,13 +77,13 @@ class _FeedbackPageState extends State<FeedbackPage> {
         child: Column(
           children: [
             _buildHeader(theme),
-            const SizedBox(height: 30),
+            const SizedBox(height: 40),
             Text(
               'Rate your experience',
-              style: theme.textTheme.displaySmall!.copyWith(
-                  color: AppColors.textColorblack,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 25),
+              style: theme.textTheme.headlineMedium!.copyWith(
+                color: AppColors.textColorblack,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             const SizedBox(height: 30),
             _buildRatingRow(context, theme),
@@ -101,13 +102,19 @@ class _FeedbackPageState extends State<FeedbackPage> {
 
   Widget _buildHeader(ThemeData theme) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back,
-                size: 24, color: AppColors.buttonblue),
+          InkWell(
+            onTap: () {
+              context.pop();
+            },
+            child: const Icon(
+              Icons.arrow_back,
+              color: AppColors.sliderColor,
+              size: 25,
+            ),
           ),
           const SizedBox(width: 20),
           ShaderMask(
@@ -124,9 +131,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
             child: Text(
               "Feedback",
               style: theme.textTheme.headlineMedium!.copyWith(
-                fontSize: 24,
-                color: AppColors.textColorWhite,
-              ),
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textColorWhite),
             ),
           ),
         ],
@@ -241,10 +248,19 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 
   Widget _buildSubmitButton(BuildContext context, ThemeData theme) {
-    return SizedBox(
-      height: 50,
-      width: MediaQuery.of(context).size.width * .9,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 20.0,
+        right: 20.0,
+      ),
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(MediaQuery.of(context).size.width, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: AppColors.kwhiteColor,
+        ),
         onPressed: () {
           User? user = FirebaseAuth.instance.currentUser;
 
@@ -262,8 +278,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
         },
         child: Text(
           'Submit',
-          style: theme.textTheme.bodyLarge!
-              .copyWith(color: AppColors.textColorblue),
+          style: theme.textTheme.bodyLarge!.copyWith(
+            color: AppColors.textColorblue,
+            fontSize: 20,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
@@ -290,6 +309,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
               style: theme.textTheme.bodyLarge!.copyWith(
                 color: AppColors.textColorblack,
                 fontSize: 20,
+                fontWeight: FontWeight.w400,
               ),
             ),
             const SizedBox(width: 10),
@@ -303,7 +323,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   Map<String, Map<String, bool>> _initialQuestions() {
     return {
       'Story line': {'liked': false, 'disliked': false},
-      'Tone of narration': {'liked': false, 'disliked': false},
+      'Pronunciation': {'liked': false, 'disliked': false},
       'Voice modulation': {'liked': false, 'disliked': false},
       'Background music': {'liked': false, 'disliked': false},
       'User journey': {'liked': false, 'disliked': false},

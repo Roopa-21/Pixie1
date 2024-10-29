@@ -38,6 +38,8 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
                     fontWeight: FontWeight.w400)),
             const SizedBox(height: 25),
             TextField(
+              style: theme.textTheme.bodyMedium,
+              cursorColor: AppColors.kpurple,
               controller: lessoncontroller,
               autofocus: false,
               decoration: const InputDecoration(
@@ -66,7 +68,6 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
               ),
-              style: const TextStyle(color: Colors.black),
             ),
             const SizedBox(height: 10),
             SizedBox(

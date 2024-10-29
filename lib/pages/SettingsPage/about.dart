@@ -26,7 +26,8 @@ class AboutPage extends StatelessWidget {
             ),
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0, vertical: 15.0),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -60,6 +61,7 @@ class AboutPage extends StatelessWidget {
                               "About",
                               style: theme.textTheme.headlineMedium!.copyWith(
                                   fontSize: 24,
+                                  fontWeight: FontWeight.w400,
                                   color: AppColors.textColorWhite),
                             ),
                           ),

@@ -195,7 +195,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 BorderRadius.circular(40.0),
                                           ),
                                           child: IconButton(
-                                            onPressed: () {
+                                            onPressed: () async {
                                               context.pop();
                                             },
                                             icon: const Icon(
@@ -242,23 +242,26 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 .copyWith(
                                                     color: AppColors
                                                         .textColorblack,
+                                                    fontSize: 20,
                                                     fontWeight:
                                                         FontWeight.w400),
                                           ),
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            "First Name",
-                                            style: theme
-                                                .textTheme.headlineSmall!
-                                                .copyWith(
-                                                    color: AppColors
-                                                        .textColorblack,
-                                                    fontWeight:
-                                                        FontWeight.w400),
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0, bottom: 10),
+                                            child: Text(
+                                              "First name",
+                                              style: theme
+                                                  .textTheme.headlineSmall!
+                                                  .copyWith(
+                                                      color: AppColors
+                                                          .textColorblack,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            ),
                                           ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
+
                                           Container(
                                             decoration: BoxDecoration(
                                               color: AppColors.kwhiteColor,
@@ -266,6 +269,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   BorderRadius.circular(12.0),
                                             ),
                                             child: TextField(
+                                              style: theme.textTheme.bodyMedium,
                                               controller: nameController,
                                               cursorColor:
                                                   AppColors.textColorblue,
@@ -276,42 +280,56 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                         name: value));
                                               },
                                               decoration: InputDecoration(
-                                                contentPadding:
-                                                    const EdgeInsets.only(
-                                                        left: 15),
-                                                border: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide.none,
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide.none,
+                                                ),
                                                 errorBorder: InputBorder.none,
                                                 focusedErrorBorder:
                                                     InputBorder.none,
                                                 disabledBorder:
                                                     InputBorder.none,
-                                                enabledBorder: InputBorder.none,
                                                 fillColor:
                                                     AppColors.kwhiteColor,
                                                 hintText: 'Your child\'s name',
                                                 hintStyle: theme
                                                     .textTheme.bodyMedium
                                                     ?.copyWith(
-                                                        color: AppColors
-                                                            .textColorGrey,
-                                                        fontWeight:
-                                                            FontWeight.w400),
+                                                  color:
+                                                      AppColors.textColorGrey,
+                                                ),
                                                 focusColor:
                                                     AppColors.textColorblue,
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            "Pronoun",
-                                            style: theme
-                                                .textTheme.headlineSmall!
-                                                .copyWith(
-                                                    color: AppColors
-                                                        .textColorblack,
-                                                    fontWeight:
-                                                        FontWeight.w400),
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0, bottom: 10.0),
+                                            child: Text(
+                                              "Pronoun",
+                                              style: theme
+                                                  .textTheme.headlineSmall!
+                                                  .copyWith(
+                                                      color: AppColors
+                                                          .textColorblack,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                            ),
                                           ),
                                           Row(
                                             mainAxisAlignment:
@@ -325,11 +343,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                         .read<
                                                             IntroductionBloc>()
                                                         .add(GenderChanged(
-                                                            gender:
-                                                                Gender.male));
+                                                            gender: Gender.he));
                                                   },
                                                   selected: childdata.gender ==
-                                                          Gender.male
+                                                          Gender.he
                                                       ? true
                                                       : false),
                                               SizedBox(
@@ -343,10 +360,10 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                             IntroductionBloc>()
                                                         .add(GenderChanged(
                                                             gender:
-                                                                Gender.female));
+                                                                Gender.she));
                                                   },
                                                   selected: childdata.gender ==
-                                                          Gender.female
+                                                          Gender.she
                                                       ? true
                                                       : false),
                                             ],
@@ -376,24 +393,37 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                     color: AppColors
                                                         .textColorblack,
                                                     fontWeight:
-                                                        FontWeight.w400),
+                                                        FontWeight.w500),
                                           ),
                                           SizedBox(
                                             height: 200,
-                                            child: CupertinoDatePicker(
-                                              maximumYear: DateTime.now().year,
-                                              minimumYear: 2000,
-                                              initialDateTime: selectedDate,
-                                              maximumDate: selectedDate,
-                                              mode:
-                                                  CupertinoDatePickerMode.date,
-                                              onDateTimeChanged:
-                                                  (DateTime newDate) {
-                                                context
-                                                    .read<IntroductionBloc>()
-                                                    .add(DobChanged(
-                                                        dob: newDate));
-                                              },
+                                            child: CupertinoTheme(
+                                              data: CupertinoThemeData(
+                                                textTheme: CupertinoTextThemeData(
+                                                    dateTimePickerTextStyle:
+                                                        TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: AppColors
+                                                                .textColorblue)),
+                                              ),
+                                              child: CupertinoDatePicker(
+                                                maximumYear:
+                                                    DateTime.now().year,
+                                                minimumYear: 2000,
+                                                initialDateTime: selectedDate,
+                                                maximumDate: selectedDate,
+                                                mode: CupertinoDatePickerMode
+                                                    .date,
+                                                onDateTimeChanged:
+                                                    (DateTime newDate) {
+                                                  context
+                                                      .read<IntroductionBloc>()
+                                                      .add(DobChanged(
+                                                          dob: newDate));
+                                                },
+                                              ),
                                             ),
                                           ),
                                           // CupertinoButton(
@@ -431,8 +461,13 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                     BorderRadius.circular(40.0),
                                               ),
                                               child: IconButton(
-                                                onPressed: () {
-                                                  context.pop();
+                                                onPressed: () async {
+                                                  pageViewController
+                                                      ?.previousPage(
+                                                    duration: const Duration(
+                                                        milliseconds: 300),
+                                                    curve: Curves.ease,
+                                                  );
                                                 },
                                                 icon: const Icon(
                                                   Icons.arrow_back,
@@ -462,20 +497,25 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 color: AppColors.textColorblue,
                                                 fontWeight: FontWeight.w600),
                                       ),
-                                      const SizedBox(height: 25),
-                                      Padding(
-                                        padding: const EdgeInsetsDirectional
-                                            .fromSTEB(15.0, 10.0, 15.0, 0.0),
-                                        child: Text(
-                                          'Select one',
-                                          style: theme.textTheme.displaySmall!
-                                              .copyWith(
-                                                  color: AppColors.kgreyColor,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 20),
-                                        ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        "We can feature them in stories",
+                                        style: theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                                color: AppColors.textColorblack,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 20),
                                       ),
-                                      const SizedBox(height: 25),
+                                      const SizedBox(height: 30),
+                                      Text(
+                                        'Select one',
+                                        style: theme.textTheme.displaySmall!
+                                            .copyWith(
+                                                color: AppColors.kgreyColor,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 20),
+                                      ),
+                                      const SizedBox(height: 15),
                                       StreamBuilder<DocumentSnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection('users')
@@ -728,7 +768,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           ),
                                           child: IconButton(
                                             onPressed: () {
-                                              context.pop();
+                                              pageViewController?.previousPage(
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                                curve: Curves.ease,
+                                              );
                                             },
                                             icon: const Icon(
                                               Icons.arrow_back,
@@ -774,22 +818,24 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 .copyWith(
                                                     color: AppColors
                                                         .textColorblack,
+                                                    fontSize: 20,
                                                     fontWeight:
                                                         FontWeight.w400),
                                           ),
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            "Answer atleast one",
-                                            style: theme
-                                                .textTheme.headlineSmall!
-                                                .copyWith(
-                                                    color:
-                                                        AppColors.textColorGrey,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 30.0, bottom: 15.0),
+                                            child: Text(
+                                              "Answer atleast one",
+                                              style: theme
+                                                  .textTheme.headlineSmall!
+                                                  .copyWith(
+                                                      color: AppColors
+                                                          .textColorGrey,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 20),
+                                            ),
                                           ),
                                           Column(
                                             children: [
@@ -830,7 +876,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               ),
                                               Relations(
                                                 theme: theme,
-                                                relationName: 'GrandMother',
+                                                relationName: 'Grand mother',
                                                 controller: GrandMother,
                                                 onChanged: (GM) {
                                                   setState(() {
@@ -838,7 +884,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                         Lovedonces(
                                                             name: GM,
                                                             relation:
-                                                                "GrandMother"));
+                                                                "Grand mother"));
                                                   });
                                                 },
                                               ),
@@ -847,7 +893,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               ),
                                               Relations(
                                                 theme: theme,
-                                                relationName: 'GrandFather',
+                                                relationName: 'Grand father',
                                                 controller: GrandFather,
                                                 onChanged: (GF) {
                                                   setState(() {
@@ -855,7 +901,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                         Lovedonces(
                                                             name: GF,
                                                             relation:
-                                                                "GrandFather"));
+                                                                "Grand father"));
                                                   });
                                                 },
                                               ),
@@ -864,7 +910,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               ),
                                               Relations(
                                                 theme: theme,
-                                                relationName: 'Pet Dog',
+                                                relationName: 'Female friend',
                                                 controller: pet,
                                                 onChanged: (pett) {
                                                   setState(() {
@@ -872,7 +918,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                         Lovedonces(
                                                             name: pett,
                                                             relation:
-                                                                "Pet Dog"));
+                                                                "Female friend"));
                                                   });
                                                 },
                                               ),
@@ -986,9 +1032,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                   );
                                                 },
                                               ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
                                               GestureDetector(
                                                 onTap: () async {
                                                   await showModalBottomSheet(
@@ -1041,7 +1084,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                                 'Add a loved one',
                                                                 style: theme
                                                                     .textTheme
-                                                                    .bodyLarge!
+                                                                    .bodyMedium!
                                                                     .copyWith(
                                                                         fontWeight:
                                                                             FontWeight.w500)),
@@ -1065,7 +1108,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   ),
                   Container(
                     width: MediaQuery.sizeOf(context).width * 1.0,
-                    height: 140.0,
+                    height: 120.0,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(12),
@@ -1077,7 +1120,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 28),
+                          padding: const EdgeInsets.only(top: 20),
                           child: SizedBox(
                             width: MediaQuery.sizeOf(context).width * 0.85,
                             height: 60,
@@ -1095,20 +1138,20 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                             ? father.text
                                             : "Add Father Name"));
                                     childdata.lovedonce.add(Lovedonces(
-                                        relation: "GrandMother",
+                                        relation: "Grand mother",
                                         name: GrandMother.text.isNotEmpty
                                             ? GrandMother.text
                                             : "Add GrandMother Name"));
                                     childdata.lovedonce.add(Lovedonces(
-                                        relation: "GrandFather",
+                                        relation: "Grand father",
                                         name: GrandFather.text.isNotEmpty
                                             ? GrandFather.text
                                             : "Add GrandFather Name"));
                                     childdata.lovedonce.add(Lovedonces(
-                                        relation: "Pet Dog",
+                                        relation: "Female friend",
                                         name: pet.text.isNotEmpty
                                             ? pet.text
-                                            : "Add Pet Name"));
+                                            : "Add Friend Name"));
                                     List<Map<String, dynamic>> lovedOnceList =
                                         childdata.lovedonce
                                             .map((lovedonce) =>
@@ -1131,7 +1174,12 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           'phone': '',
 
                                           'child_name': childdata.name,
-                                          'gender': childdata.gender.name,
+                                          'gender': childdata.gender ==
+                                                  Gender.he
+                                              ? 'He'
+                                              : childdata.gender == Gender.she
+                                                  ? 'She'
+                                                  : 'Prefer not to say',
                                           'fav_things': childdata.favthings,
                                           'dob': childdata.dob,
                                           'loved_once': lovedOnceList,
@@ -1313,7 +1361,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   ),
                   const SizedBox(width: 10),
                   Text(title,
-                      style: theme.textTheme.bodyLarge!
+                      style: theme.textTheme.bodyMedium!
                           .copyWith(fontWeight: FontWeight.w500)),
                 ])),
       ),
@@ -1345,7 +1393,9 @@ class Relations extends StatelessWidget {
         Text(
           relationName,
           style: theme.textTheme.bodyMedium!.copyWith(
-              color: AppColors.textColorblack, fontWeight: FontWeight.w400),
+              color: AppColors.textColorblack,
+              fontWeight: FontWeight.w400,
+              fontSize: 16),
         ),
         Container(
           decoration: BoxDecoration(
@@ -1355,21 +1405,32 @@ class Relations extends StatelessWidget {
           width: deviceWidth * 0.5555,
           height: 48,
           child: TextField(
+            style: theme.textTheme.bodyMedium,
             controller: controller,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             cursorColor: AppColors.textColorblue,
             onChanged: (value) {},
             decoration: InputDecoration(
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
               errorBorder: InputBorder.none,
               focusedErrorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              hintText: '''Type $relationName's name''',
+              hintText: 'Type ${relationName.toLowerCase()}\'s name',
               hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.textColorGrey,
+                color: AppColors.textColorDimGrey,
                 fontWeight: FontWeight.w400,
+                fontSize: 14,
               ),
             ),
           ),

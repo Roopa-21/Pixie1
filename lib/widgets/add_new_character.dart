@@ -31,7 +31,8 @@ class _AddNewCharacterState extends State<AddNewCharacter> {
                     color: AppColors.textColorblue,
                     fontWeight: FontWeight.w600)),
             const SizedBox(height: 25),
-            const TextField(
+            TextField(
+              style: theme.textTheme.bodyMedium,
               autofocus: true,
               decoration: InputDecoration(
                 hintText: "Character name",
@@ -59,7 +60,6 @@ class _AddNewCharacterState extends State<AddNewCharacter> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
               ),
-              style: TextStyle(color: Colors.black),
             ),
           ],
         ),

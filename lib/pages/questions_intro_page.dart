@@ -73,12 +73,16 @@ class QuestionsIntroPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Share a few details now! You can update them anytime in your profile!',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.headlineSmall!.copyWith(
-                        color: AppColors.textColorblack,
-                        fontWeight: FontWeight.w400),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                    child: Text(
+                      'Share a few details now! You can update them anytime in your profile!',
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.headlineSmall!.copyWith(
+                          color: AppColors.textColorblack,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
                   const SizedBox(
                     height: 30,
