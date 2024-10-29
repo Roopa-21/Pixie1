@@ -212,7 +212,7 @@ class _LibraryState extends State<Library> {
         ),
         child: Text(
           title,
-          style: theme.textTheme.bodySmall!.copyWith(
+          style: theme.textTheme.bodyMedium!.copyWith(
               color: selected ? AppColors.kwhiteColor : AppColors.kblackColor,
               fontSize: 13,
               fontWeight: FontWeight.w400),
@@ -238,8 +238,7 @@ class _LibraryState extends State<Library> {
 
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: 
-            storylistCard(
+            child: storylistCard(
               theme: theme,
               title: story['title'],
               storytype: story['storytype'],
@@ -309,16 +308,21 @@ class _LibraryState extends State<Library> {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyLarge,
+                    style: theme.textTheme.bodyMedium!
+                        .copyWith(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
                   Row(
                     children: [
-                      Text(storytype, style: theme.textTheme.bodyMedium),
+                      Text(storytype,
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500, fontSize: 16)),
                       const Text(
                         ' - ',
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(fontWeight: FontWeight.w400),
                       ),
-                      Text(duration, style: theme.textTheme.bodyMedium),
+                      Text(duration,
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500, fontSize: 16)),
                     ],
                   ),
                 ],

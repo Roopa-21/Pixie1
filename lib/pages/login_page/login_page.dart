@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -87,6 +88,7 @@ class _LoginpageState extends State<Loginpage> {
                     ),
                     const SizedBox(height: 30),
                     TextField(
+                      style: theme.textTheme.bodyMedium,
                       cursorColor: AppColors.kpurple,
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -122,7 +124,6 @@ class _LoginpageState extends State<Loginpage> {
                           ),
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
                     ),
                     const SizedBox(height: 10),
                     BlocProvider(
@@ -130,6 +131,7 @@ class _LoginpageState extends State<Loginpage> {
                       child: BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                         return TextField(
+                          style: theme.textTheme.bodyMedium,
                           cursorColor: AppColors.kpurple,
                           controller: _passwordController,
                           decoration: InputDecoration(
@@ -175,7 +177,6 @@ class _LoginpageState extends State<Loginpage> {
                           obscureText: state is PasswordVisibilityState
                               ? state.isPasswordVisible
                               : false,
-                          style: const TextStyle(color: Colors.black),
                         );
                       }),
                     ),
@@ -289,6 +290,30 @@ class _LoginpageState extends State<Loginpage> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    RichText(
+                        text: TextSpan(
+                            text: 'Don\'t  have an account? ',
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.backgrountdarkpurple),
+                            children: [
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.push('/CreateAccount');
+                              },
+                            text: 'Sign Up',
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.underline,
+                                color: AppColors.backgrountdarkpurple),
+                          )
+                        ])),
                   ],
                 ),
               ),

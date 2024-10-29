@@ -48,7 +48,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
         return Stack(
           children: [
             Container(
-              // height: deviceHeight * 0.8,
+              height: deviceHeight * 0.8,
               width: deviceWidth,
               decoration: const BoxDecoration(
                 color: AppColors.bottomSheetBackground,
@@ -81,7 +81,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                       ),
                       Text(
                         'Add a loved one',
-                        style: theme.textTheme.displayMedium?.copyWith(
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textColorblue,
                           fontWeight: FontWeight.w400,
                         ),
@@ -94,7 +94,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                           });
                         },
                         child: Container(
-                          height: 43,
+                          height: 50,
                           padding: const EdgeInsets.symmetric(
                               vertical: 12, horizontal: 16),
                           decoration: BoxDecoration(
@@ -126,10 +126,9 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                         elevation: 2,
                         borderRadius: BorderRadius.circular(10),
                         child: TextField(
-                          autofocus: true,
+                          autofocus: false,
                           controller: nameofRelation,
                           style: theme.textTheme.bodyMedium?.copyWith(
-                            color: AppColors.textColorblue,
                             fontWeight: FontWeight.w400,
                             decoration: TextDecoration.none,
                           ),
@@ -160,51 +159,48 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 28, bottom: 25),
-                        child: SizedBox(
-                          width: MediaQuery.sizeOf(context).width * 0.85,
-                          height: 60,
-                          child: ElevatedButton(
-                            onPressed: isSubmitting
-                                ? null
-                                : () async {
-                                    if (selectedRelation != null &&
-                                        nameofRelation.text.isNotEmpty) {
+                      const SizedBox(height: 30),
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.9,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: isSubmitting
+                              ? null
+                              : () async {
+                                  if (selectedRelation != null &&
+                                      nameofRelation.text.isNotEmpty) {
+                                    setState(() {
+                                      isSubmitting = true;
+                                    });
+                                    User? user =
+                                        FirebaseAuth.instance.currentUser;
+                                    if (user != null) {
+                                      // Add relation to Firestore
+                                      await addRelationToFirebase(
+                                          user.uid,
+                                          selectedRelation!,
+                                          nameofRelation.text);
                                       setState(() {
-                                        isSubmitting = true;
+                                        isSubmitting = false;
                                       });
-                                      User? user =
-                                          FirebaseAuth.instance.currentUser;
-                                      if (user != null) {
-                                        // Add relation to Firestore
-                                        await addRelationToFirebase(
-                                            user.uid,
-                                            selectedRelation!,
-                                            nameofRelation.text);
-                                        setState(() {
-                                          isSubmitting = false;
-                                        });
-                                        Navigator.pop(context);
-                                      }
+                                      Navigator.pop(context);
                                     }
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              foregroundColor: AppColors.kwhiteColor,
-                              backgroundColor: AppColors.buttonblue,
+                                  }
+                                },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: isSubmitting
-                                ? const LoadingWidget()
-                                : Text("Add",
-                                    style: theme.textTheme.bodyLarge!.copyWith(
-                                        color: AppColors.textColorWhite,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400)),
+                            foregroundColor: AppColors.kwhiteColor,
+                            backgroundColor: AppColors.buttonblue,
                           ),
+                          child: isSubmitting
+                              ? const LoadingWidget()
+                              : Text("Add",
+                                  style: theme.textTheme.bodyLarge!.copyWith(
+                                      color: AppColors.textColorWhite,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w400)),
                         ),
                       ),
                     ],
@@ -214,7 +210,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
             ),
             if (isExpanded)
               Positioned(
-                top: deviceHeight * 0.25,
+                top: deviceHeight * 0.2,
                 left: 16,
                 right: 16,
                 child: Material(

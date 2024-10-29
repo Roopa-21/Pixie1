@@ -214,20 +214,23 @@ class _SearchPageState extends State<SearchPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodyLarge,
-                  ),
+                  Text(title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.bodyMedium!
+                          .copyWith(fontWeight: FontWeight.w500, fontSize: 16)),
                   Row(
                     children: [
-                      Text(storytype, style: theme.textTheme.bodyMedium),
+                      Text(storytype,
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500, fontSize: 16)),
                       const Text(
                         ' - ',
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(fontWeight: FontWeight.w400),
                       ),
-                      Text(duration, style: theme.textTheme.bodyMedium),
+                      Text(duration,
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.w500, fontSize: 16)),
                     ],
                   ),
                 ],

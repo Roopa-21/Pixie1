@@ -70,13 +70,13 @@ class _ProfilePageState extends State<ProfilePage>
                 case 'Father':
                   fatherName = name;
                   break;
-                case 'GrandMother':
+                case 'Grand mother':
                   grandMotherName = name;
                   break;
-                case 'GrandFather':
+                case 'Grand father':
                   grandFatherName = name;
                   break;
-                case 'Pet Dog':
+                case 'Female friend':
                   petDogName = name;
                   break;
                 default:
@@ -92,24 +92,43 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   void _editName() {
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Edit Name"),
+          backgroundColor: AppColors.kwhiteColor,
+          title: Text(
+            "Edit Name",
+            style: theme.textTheme.bodyMedium,
+          ),
           content: TextField(
+            style: theme.textTheme.bodyMedium,
             controller: _nameController,
-            decoration: const InputDecoration(hintText: "Update name"),
+            cursorColor: AppColors.textColorblue,
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.kpurple)),
+              hintText: "Update your name",
+              hintStyle: theme.textTheme.bodyMedium,
+            ),
           ),
           actions: [
             TextButton(
-              child: const Text("Cancel"),
+              child: Text(
+                "Cancel",
+                style: theme.textTheme.bodyMedium,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text("Save"),
+              child: Text(
+                "Save",
+                style: theme.textTheme.bodyMedium,
+              ),
               onPressed: () async {
                 await FirebaseFirestore.instance
                     .collection('users')
@@ -181,11 +200,16 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   void editGender() {
+    final theme = Theme.of(context);
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Update Pronoun"),
+          backgroundColor: AppColors.kwhiteColor,
+          title: Text(
+            "Update Pronoun",
+            style: theme.textTheme.bodyMedium,
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -256,7 +280,10 @@ class _ProfilePageState extends State<ProfilePage>
           ),
           actions: [
             TextButton(
-              child: const Text("Cancel"),
+              child: Text(
+                "Cancel",
+                style: theme.textTheme.bodyMedium,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -334,25 +361,45 @@ class _ProfilePageState extends State<ProfilePage>
   }
 
   void _editFamilyName(String relation) {
+    print('....$relation');
+    final theme = Theme.of(context);
     _familyController.clear();
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Edit name"),
+          backgroundColor: AppColors.kwhiteColor,
+          title: Text(
+            "Edit name",
+            style: theme.textTheme.bodyMedium,
+          ),
           content: TextField(
+            style: theme.textTheme.bodyMedium,
+            cursorColor: AppColors.kpurple,
             controller: _familyController,
-            decoration: const InputDecoration(hintText: "Update name"),
+            decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(color: AppColors.kpurple)),
+              hintText: "Update name",
+              hintStyle: theme.textTheme.bodyMedium,
+            ),
           ),
           actions: [
             TextButton(
-              child: const Text("Cancel"),
+              child: Text(
+                "Cancel",
+                style: theme.textTheme.bodyMedium,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text("Save"),
+              child: Text(
+                "Save",
+                style: theme.textTheme.bodyMedium,
+              ),
               onPressed: () async {
                 DocumentSnapshot userDoc = await FirebaseFirestore.instance
                     .collection('users')
@@ -385,13 +432,13 @@ class _ProfilePageState extends State<ProfilePage>
                     case 'Father':
                       fatherName = _familyController.text;
                       break;
-                    case 'GrandMother':
+                    case 'Grand mother':
                       grandMotherName = _familyController.text;
                       break;
-                    case 'GrandFather':
+                    case 'Grand father':
                       grandFatherName = _familyController.text;
                       break;
-                    case 'Pet Dog':
+                    case 'Female friend':
                       petDogName = _familyController.text;
                       break;
                   }
@@ -437,19 +484,21 @@ class _ProfilePageState extends State<ProfilePage>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Row(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                child: 
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    IconButton(
-                      onPressed: () {
+                    InkWell(
+                      onTap: () {
                         context.pop();
                       },
-                      icon: const Icon(
+                      child: const Icon(
                         Icons.arrow_back,
                         color: AppColors.sliderColor,
-                        size: 23,
+                        size: 25,
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -467,7 +516,9 @@ class _ProfilePageState extends State<ProfilePage>
                       child: Text(
                         "Profile",
                         style: theme.textTheme.headlineMedium!.copyWith(
-                            fontSize: 24, color: AppColors.textColorWhite),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColorWhite),
                       ),
                     ),
                   ],
@@ -516,7 +567,7 @@ class _ProfilePageState extends State<ProfilePage>
       child: Center(
         child: Text(
           title,
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color:
                   isSelected ? AppColors.kwhiteColor : AppColors.textColorblack,
               fontWeight: FontWeight.w400),
@@ -586,7 +637,10 @@ class _ProfilePageState extends State<ProfilePage>
                                       return Column(
                                         children: [
                                           ListTile(
-                                            title: Text(thing),
+                                            title: Text(
+                                              thing,
+                                              style: theme.textTheme.bodyMedium,
+                                            ),
                                             trailing: InkWell(
                                               onTap: () async {
                                                 favoriteThings.remove(thing);
@@ -600,6 +654,8 @@ class _ProfilePageState extends State<ProfilePage>
                                               },
                                               child: Image.asset(
                                                 'assets/images/delete.png',
+                                                width: 20,
+                                                height: 20,
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
@@ -661,7 +717,7 @@ class _ProfilePageState extends State<ProfilePage>
                     },
                     child: Text(
                       "Delete my account",
-                      style: theme.textTheme.bodyLarge!.copyWith(
+                      style: theme.textTheme.bodyMedium!.copyWith(
                           color: AppColors.textColorblue,
                           fontWeight: FontWeight.w400),
                     ),
@@ -670,23 +726,26 @@ class _ProfilePageState extends State<ProfilePage>
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(MediaQuery.of(context).size.width, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                backgroundColor: Colors.white,
               ),
-              backgroundColor: Colors.white,
-            ),
-            child: Text(
-              "Save",
-              style: theme.textTheme.bodyLarge!.copyWith(
-                color: AppColors.textColorblue,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
+              child: Text(
+                "Save",
+                style: theme.textTheme.bodyLarge!.copyWith(
+                  color: AppColors.textColorblue,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),
@@ -703,8 +762,8 @@ class _ProfilePageState extends State<ProfilePage>
       children: [
         Text(
           title,
-          style: theme.textTheme.bodyMedium!.copyWith(
-              color: AppColors.textColorblack, fontWeight: FontWeight.w400),
+          style:
+              theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w400),
         ),
         Container(
           padding: const EdgeInsets.only(left: 10),
@@ -722,7 +781,6 @@ class _ProfilePageState extends State<ProfilePage>
                     controller: TextEditingController(text: detailAnswer),
                     enabled: false,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppColors.textColorblack,
                       fontWeight: FontWeight.w400,
                     ),
                     decoration: const InputDecoration(
@@ -757,38 +815,41 @@ class _ProfilePageState extends State<ProfilePage>
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          detailsChild('Mother', motherName ?? 'Add Mother Name',
-              () => _editFamilyName('Mother')),
+          detailsChild(
+              'Mother', motherName ?? ' ', () => _editFamilyName('Mother')),
           const SizedBox(height: 20),
-          detailsChild('Father', fatherName ?? 'Add Father Name',
-              () => _editFamilyName('Father')),
+          detailsChild(
+              'Father', fatherName ?? ' ', () => _editFamilyName('Father')),
           const SizedBox(height: 20),
-          detailsChild('Grandmother', grandMotherName ?? 'Add Grandmother Name',
-              () => _editFamilyName('GrandMother')),
+          detailsChild('Grand mother', grandMotherName ?? ' ',
+              () => _editFamilyName('Grand mother')),
           const SizedBox(height: 20),
-          detailsChild('GrandFather', grandFatherName ?? 'Add GrandFather Name',
-              () => _editFamilyName('GrandFather')),
+          detailsChild('Grand father', grandFatherName ?? '',
+              () => _editFamilyName('Grand father')),
           const SizedBox(height: 20),
-          detailsChild('PetDog', petDogName ?? 'Add Petog Name',
-              () => _editFamilyName('Pet Dog')),
+          detailsChild('Female friend', petDogName ?? '',
+              () => _editFamilyName('Female friend')),
           const Spacer(),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(deviceWidth, 50),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(deviceWidth, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                backgroundColor: AppColors.kwhiteColor,
               ),
-              backgroundColor: Colors.white,
-            ),
-            child: Text(
-              "Save",
-              style: theme.textTheme.bodyLarge!.copyWith(
-                color: AppColors.textColorblue,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
+              child: Text(
+                "Save",
+                style: theme.textTheme.bodyLarge!.copyWith(
+                  color: AppColors.textColorblue,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),

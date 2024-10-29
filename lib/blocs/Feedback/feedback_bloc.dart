@@ -95,7 +95,7 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   Map<String, Map<String, bool>> _initialQuestions() {
     return <String, Map<String, bool>>{
       'Story line': <String, bool>{'liked': false, 'disliked': false},
-      'Tone of narration': <String, bool>{'liked': false, 'disliked': false},
+      'Pronunciation': <String, bool>{'liked': false, 'disliked': false},
       'Voice modulation': <String, bool>{'liked': false, 'disliked': false},
       'Background music': <String, bool>{'liked': false, 'disliked': false},
       'User journey': <String, bool>{'liked': false, 'disliked': false},

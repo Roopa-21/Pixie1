@@ -429,6 +429,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                       index];
 
                                                               return ChoiceChip(
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .kwhiteColor,
                                                                 showCheckmark:
                                                                     false,
                                                                 key: ValueKey(
@@ -491,18 +494,20 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                             5),
                                                                     Text(
                                                                       (lovedOne.relation == "Mother" ||
-                                                                              lovedOne.relation ==
-                                                                                  "Father" ||
-                                                                              lovedOne.relation ==
-                                                                                  "GrandFather" ||
-                                                                              lovedOne.relation ==
-                                                                                  "GrandMother")
-                                                                          ? lovedOne
-                                                                              .relation
-                                                                          : lovedOne
-                                                                              .name,
-                                                                      style:
-                                                                          TextStyle(
+                                                                              lovedOne.relation == "Father" ||
+                                                                              lovedOne.relation == "Grand father" ||
+                                                                              lovedOne.relation == "Grand mother" ||
+                                                                              lovedOne.relation == 'Female friend')
+                                                                          ? lovedOne.relation
+                                                                          : lovedOne.name,
+                                                                      style: theme
+                                                                          .textTheme
+                                                                          .bodyMedium!
+                                                                          .copyWith(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
                                                                         color: state.selectedindex ==
                                                                                 index
                                                                             ? AppColors.kwhiteColor
@@ -708,104 +713,103 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(5.0),
-                                                          child: SizedBox(
-                                                            height: 48,
-                                                            child: ChoiceChip(
-                                                              showCheckmark:
-                                                                  false,
+                                                          child: ChoiceChip(
+                                                            backgroundColor:
+                                                                AppColors
+                                                                    .kwhiteColor,
+                                                            showCheckmark:
+                                                                false,
 
-                                                              key: ValueKey(
-                                                                  characterItem), // Use key to reduce rebuilds
-                                                              side: const BorderSide(
-                                                                  width: .4,
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          152,
-                                                                          152,
-                                                                          152)),
-                                                              shadowColor:
-                                                                  Colors.black,
-                                                              onSelected:
-                                                                  (value) {
-                                                                context
-                                                                    .read<
-                                                                        AddCharacterBloc>()
-                                                                    .add(
-                                                                      AddcharactorstoryEvent(
-                                                                        characterItem,
-                                                                        selectedindexcharactor:
-                                                                            index,
-                                                                      ),
-                                                                    );
-                                                              },
-                                                              selectedColor:
-                                                                  AppColors
-                                                                      .kpurple,
-                                                              elevation: 3,
-
-                                                              label: Row(
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Icon(
-                                                                      Icons
-                                                                          .check,
-                                                                      size: 15,
-                                                                      color: state.selectedindexcharactor ==
-                                                                              index
-                                                                          ? AppColors
-                                                                              .kwhiteColor
-                                                                          : Colors
-                                                                              .transparent),
-                                                                  const SizedBox(
-                                                                      width: 5),
-                                                                  Text(
-                                                                    characterItem,
-                                                                    style: theme
-                                                                        .textTheme
-                                                                        .bodyMedium!
-                                                                        .copyWith(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      color: state.selectedindexcharactor ==
-                                                                              index
-                                                                          ? AppColors
-                                                                              .kwhiteColor
-                                                                          : AppColors
-                                                                              .kblackColor,
+                                                            key: ValueKey(
+                                                                characterItem), // Use key to reduce rebuilds
+                                                            side: const BorderSide(
+                                                                width: .4,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        152,
+                                                                        152,
+                                                                        152)),
+                                                            shadowColor:
+                                                                Colors.black,
+                                                            onSelected:
+                                                                (value) {
+                                                              context
+                                                                  .read<
+                                                                      AddCharacterBloc>()
+                                                                  .add(
+                                                                    AddcharactorstoryEvent(
+                                                                      characterItem,
+                                                                      selectedindexcharactor:
+                                                                          index,
                                                                     ),
+                                                                  );
+                                                            },
+                                                            selectedColor:
+                                                                AppColors
+                                                                    .kpurple,
+                                                            elevation: 3,
+
+                                                            label: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Icon(
+                                                                    Icons.check,
+                                                                    size: 15,
+                                                                    color: state.selectedindexcharactor ==
+                                                                            index
+                                                                        ? AppColors
+                                                                            .kwhiteColor
+                                                                        : Colors
+                                                                            .transparent),
+                                                                const SizedBox(
+                                                                    width: 5),
+                                                                Text(
+                                                                  characterItem,
+                                                                  style: theme
+                                                                      .textTheme
+                                                                      .bodyMedium!
+                                                                      .copyWith(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    color: state.selectedindexcharactor ==
+                                                                            index
+                                                                        ? AppColors
+                                                                            .kwhiteColor
+                                                                        : AppColors
+                                                                            .kblackColor,
                                                                   ),
-                                                                ],
-                                                              ),
-                                                              selected: state
-                                                                      .selectedindexcharactor ==
-                                                                  index,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            40),
-                                                              ),
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      top: 14,
-                                                                      bottom:
-                                                                          14,
-                                                                      left: 10,
-                                                                      right:
-                                                                          27),
+                                                                ),
+                                                              ],
                                                             ),
+                                                            selected: state
+                                                                    .selectedindexcharactor ==
+                                                                index,
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          40),
+                                                            ),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    top: 14,
+                                                                    bottom: 14,
+                                                                    left: 10,
+                                                                    right: 27),
                                                           ),
                                                         );
                                                       },
@@ -1099,6 +1103,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                             builder: (context,
                                                                 state) {
                                                               return ChoiceChip(
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .kwhiteColor,
                                                                 showCheckmark:
                                                                     false,
                                                                 disabledColor:
@@ -1165,8 +1172,14 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                     Text(
                                                                       lesson
                                                                           .toString(),
-                                                                      style:
-                                                                          TextStyle(
+                                                                      style: theme
+                                                                          .textTheme
+                                                                          .bodyMedium!
+                                                                          .copyWith(
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontWeight:
+                                                                            FontWeight.w400,
                                                                         color: state.selectedindexlesson ==
                                                                                 index
                                                                             ? AppColors.kwhiteColor
@@ -1681,7 +1694,7 @@ class _AddCharacterState extends State<AddCharacter> {
                 Expanded(
                   flex: 3,
                   child: Text(title,
-                      style: theme.textTheme.bodyLarge!.copyWith(
+                      style: theme.textTheme.bodyMedium!.copyWith(
                           color: selected == true
                               ? AppColors.textColorWhite
                               : AppColors.textColorblack,
@@ -1738,8 +1751,8 @@ class _AddCharacterState extends State<AddCharacter> {
                   ),
                   const SizedBox(width: 10),
                   Text(title,
-                      style: theme.textTheme.bodyLarge!
-                          .copyWith(fontWeight: FontWeight.w500)),
+                      style: theme.textTheme.bodyMedium!
+                          .copyWith(fontWeight: FontWeight.w400)),
                 ])),
       ),
     );

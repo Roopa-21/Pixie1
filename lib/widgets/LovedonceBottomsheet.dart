@@ -78,9 +78,9 @@ class _LovedonceBottomsheetState extends State<LovedonceBottomsheet> {
                                         lovedOnceList[index].relation ==
                                             "Father" ||
                                         lovedOnceList[index].relation ==
-                                            "GrandFather" ||
+                                            "Grand father" ||
                                         lovedOnceList[index].relation ==
-                                            "GrandMother")
+                                            "Grand mother")
                                     ? lovedOnceList[index].relation
                                     : lovedOnceList[index].name,
                                 style: TextStyle(

@@ -12,7 +12,7 @@ class RecordListenNavbar extends StatelessWidget {
     final theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.only(bottom: 40),
-      height: 200,
+      height: 180,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -35,6 +35,7 @@ class RecordListenNavbar extends StatelessWidget {
                     .add(UpdateReadAndRecordStateEvent(isRecording: true));
               },
               style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.kwhiteColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
@@ -59,6 +60,7 @@ class RecordListenNavbar extends StatelessWidget {
                     .add(UpdateListenStateEvent(isListening: true));
               },
               style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.kwhiteColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

@@ -66,7 +66,9 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
 
             // Character TextField
             TextField(
+              style: theme.textTheme.bodyMedium,
               controller: _characterController,
+              cursorColor: AppColors.textColorblue,
               autofocus: true,
               decoration: InputDecoration(
                 hintText: "Type your response",
@@ -92,7 +94,6 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
               ),
-              style: const TextStyle(color: Colors.black),
             ),
 
             const SizedBox(height: 10),

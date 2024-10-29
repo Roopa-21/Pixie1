@@ -96,6 +96,7 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
+                      style: theme.textTheme.bodyMedium,
                       cursorColor: AppColors.kpurple,
                       controller: _emailController,
                       decoration: const InputDecoration(
@@ -131,11 +132,11 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
                           ),
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
                       validator: _validateEmail,
                     ),
                     const SizedBox(height: 10),
                     TextFormField(
+                      style: theme.textTheme.bodyMedium,
                       cursorColor: AppColors.kpurple,
                       controller: _passwordController,
                       decoration: const InputDecoration(
@@ -171,7 +172,6 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
                           ),
                         ),
                       ),
-                      style: const TextStyle(color: Colors.black),
                       obscureText: true,
                     ),
                     const SizedBox(height: 10),

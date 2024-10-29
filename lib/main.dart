@@ -13,6 +13,7 @@ import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
 import 'package:pixieapp/blocs/introduction/introduction_bloc.dart';
+import 'package:pixieapp/const/textstyle.dart';
 import 'package:pixieapp/firebase_options.dart';
 import 'package:pixieapp/repositories/library_repository.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
@@ -90,7 +91,7 @@ class _MyAppState extends State<MyApp> {
         routerConfig: _router, // Use the router here
         debugShowCheckedModeBanner: false,
         title: 'Pixie App',
-        theme: ThemeData(fontFamily: 'SF-Pro-Rounded'),
+        theme: appTheme(context),
       ),
     );
   }
