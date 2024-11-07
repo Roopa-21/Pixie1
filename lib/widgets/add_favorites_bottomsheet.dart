@@ -84,6 +84,7 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
                 ),
                 const SizedBox(height: 16),
                 TextField(
+                  textCapitalization: TextCapitalization.sentences,
                   controller: addyourown,
                   cursorColor: AppColors.textColorblue,
                   decoration: InputDecoration(
@@ -110,8 +111,6 @@ class _AddFavoritesBottomsheetState extends State<AddFavoritesBottomsheet> {
                         // context.pop();
                         await _addYourOwn(
                             context: context, addyourown: addyourown.text);
-                            
-                       
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -169,7 +168,6 @@ Future<void> _addYourOwn({
         'fav_things': FieldValue.arrayUnion([capitalizedLesson]),
       });
       context.pop();
-      
     } catch (e) {
       print(e);
     }

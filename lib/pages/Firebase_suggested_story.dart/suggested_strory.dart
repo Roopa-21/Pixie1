@@ -139,7 +139,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
             collapsedHeight: deviceHeight * 0.08,
             pinned: true,
             floating: false,
-            backgroundColor: const Color(0xff644a98),
+            backgroundColor: const Color(0xff644a98).withOpacity(.99),
             flexibleSpace: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
                 var top = constraints.biggest.height;

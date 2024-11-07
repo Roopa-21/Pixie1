@@ -38,6 +38,7 @@ class _AddLessonBottomSheetState extends State<AddLessonBottomSheet> {
                     fontWeight: FontWeight.w400)),
             const SizedBox(height: 25),
             TextField(
+              textCapitalization: TextCapitalization.sentences,
               style: theme.textTheme.bodyMedium,
               cursorColor: AppColors.kpurple,
               controller: lessoncontroller,

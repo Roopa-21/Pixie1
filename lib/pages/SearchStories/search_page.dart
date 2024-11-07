@@ -73,6 +73,7 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: TextField(
+                textCapitalization: TextCapitalization.sentences,
                 controller: _searchcontroller,
                 decoration: InputDecoration(
                     prefixIcon: Padding(

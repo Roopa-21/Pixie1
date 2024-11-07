@@ -126,6 +126,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                         elevation: 2,
                         borderRadius: BorderRadius.circular(10),
                         child: TextField(
+                          textCapitalization: TextCapitalization.sentences,
                           autofocus: false,
                           controller: nameofRelation,
                           style: theme.textTheme.bodyMedium?.copyWith(

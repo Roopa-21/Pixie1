@@ -133,6 +133,8 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                         const SizedBox(height: 10),
                         widget.textfield
                             ? TextField(
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                                 controller: textcontroller,
                                 minLines: 3,
                                 maxLines: 10,

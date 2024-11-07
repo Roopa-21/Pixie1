@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -494,7 +496,7 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
             width: 5,
           ),
         ),
-        color: const Color.fromARGB(188, 236, 236, 236),
+        color: const Color.fromARGB(178, 241, 236, 236),
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [
           BoxShadow(
@@ -548,7 +550,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                     '',
             relativeName:
                 context.read<AddCharacterBloc>().state.lovedOnce?.name ?? '',
-            genre: context.read<AddCharacterBloc>().state.genre,
+            genre: generselection(
+                gener: context.read<AddCharacterBloc>().state.genre),
             lessons: context.read<AddCharacterBloc>().state.lessons ?? '',
             length: context.read<AddCharacterBloc>().state.musicAndSpeed ==
                     'Bedtime'
@@ -562,5 +565,24 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
         SnackBar(content: Text('Error fetching child details: $e')),
       );
     }
+  }
+}
+
+String generselection({required String gener}) {
+  if (gener == "Surprise me") {
+    List<String> genreList = [
+      'Funny',
+      'Horror',
+      'Adventure',
+      'Action',
+      'Sci-fi'
+    ];
+    // Create an instance of the Random class
+    Random random = Random();
+
+    print(genreList[random.nextInt(genreList.length)]);
+    return genreList[random.nextInt(genreList.length)];
+  } else {
+    return gener;
   }
 }

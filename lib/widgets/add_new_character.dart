@@ -32,6 +32,7 @@ class _AddNewCharacterState extends State<AddNewCharacter> {
                     fontWeight: FontWeight.w600)),
             const SizedBox(height: 25),
             TextField(
+              textCapitalization: TextCapitalization.sentences,
               style: theme.textTheme.bodyMedium,
               autofocus: true,
               decoration: InputDecoration(

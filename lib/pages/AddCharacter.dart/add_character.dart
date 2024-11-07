@@ -924,6 +924,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                   .width *
                                                               .67,
                                                       child: const TextField(
+                                                        textCapitalization:
+                                                            TextCapitalization
+                                                                .sentences,
                                                         decoration: InputDecoration(
                                                             hintText:
                                                                 'Enter character name',
@@ -1416,20 +1419,20 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     state.genre == "Sci-fi"
                                                         ? true
                                                         : false),
-                                            choicechipbutton(
-                                                theme: theme,
-                                                title: "Mystery",
-                                                ontap: () async {
-                                                  context
-                                                      .read<AddCharacterBloc>()
-                                                      .add(
-                                                          const UpdateGenreEvent(
-                                                              'Mystery'));
-                                                },
-                                                selected:
-                                                    state.genre == "Mystery"
-                                                        ? true
-                                                        : false),
+                                            // choicechipbutton(
+                                            //     theme: theme,
+                                            //     title: "Mystery",
+                                            //     ontap: () async {
+                                            //       context
+                                            //           .read<AddCharacterBloc>()
+                                            //           .add(
+                                            //               const UpdateGenreEvent(
+                                            //                   'Mystery'));
+                                            //     },
+                                            //     selected:
+                                            //         state.genre == "Mystery"
+                                            //             ? true
+                                            //             : false),
                                           ],
                                         ),
                                       ),

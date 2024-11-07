@@ -66,6 +66,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
 
             // Character TextField
             TextField(
+              textCapitalization: TextCapitalization.sentences,
               style: theme.textTheme.bodyMedium,
               controller: _characterController,
               cursorColor: AppColors.textColorblue,
