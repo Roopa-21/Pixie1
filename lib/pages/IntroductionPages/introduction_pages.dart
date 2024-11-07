@@ -34,6 +34,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     lovedonce: [],
     moreLovedOnce: [],
   );
+  List<String> suggestedCharactersList = [];
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
           pageViewController!.page != null
@@ -84,6 +85,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
   @override
   void initState() {
     favThings();
+    fetchSuggestedCharacters().then((suggestedlist) {
+      setState(() {
+        suggestedCharactersList = suggestedlist;
+      });
+    });
     super.initState();
   }
 
@@ -515,15 +521,16 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 20),
                                       ),
-                                      const SizedBox(height: 15),
+                                      const SizedBox(height: 25),
                                       StreamBuilder<DocumentSnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection('users')
                                             .doc(user!.uid)
-                                            .snapshots(), // Listening for real-time updates to the user document
+                                            .snapshots(), // Real-time updates
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
+                                                  ConnectionState.waiting &&
+                                              !snapshot.hasData) {
                                             return const Center(
                                                 child: LoadingWidget());
                                           }
@@ -537,30 +544,31 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           if (snapshot.hasData) {
                                             var userData = snapshot.data!.data()
                                                 as Map<String, dynamic>;
-
-                                            List<dynamic> charactors =
+                                            List<dynamic> characters =
                                                 userData['storycharactors'] ??
                                                     [];
 
-                                            if (charactors.isEmpty) {
-                                              return const Center(
-                                                  child: Text(
-                                                      'No character found.'));
-                                            }
+                                            characters.addAll(
+                                                suggestedCharactersList);
 
                                             return Wrap(
                                               children: List<Widget>.generate(
-                                                  charactors.length,
-                                                  (int indexx) {
-                                                // Accessing each lesson by index
-                                                String charactorsitem = charactors[
-                                                    indexx]; // Get the lesson data for the current index
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(5.0),
-                                                  child: SizedBox(
-                                                    height: 48,
+                                                characters.length,
+                                                (int index) {
+                                                  String characterItem =
+                                                      characters[index];
+
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            5.0),
                                                     child: ChoiceChip(
+                                                      backgroundColor:
+                                                          AppColors.kwhiteColor,
+                                                      showCheckmark: false,
+
+                                                      key: ValueKey(
+                                                          characterItem), // Use key to reduce rebuilds
                                                       side: const BorderSide(
                                                           width: .4,
                                                           color: Color.fromARGB(
@@ -570,57 +578,80 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                               152)),
                                                       shadowColor: Colors.black,
                                                       onSelected: (value) {
-                                                        // Trigger an event or do something with the selected lesson
                                                         context
                                                             .read<
                                                                 AddCharacterBloc>()
-                                                            .add(AddcharactorstoryEvent(
-                                                                charactorsitem,
+                                                            .add(
+                                                              AddcharactorstoryEvent(
+                                                                characterItem,
                                                                 selectedindexcharactor:
-                                                                    indexx));
-                                                        // print(
-                                                        //     charactorsitem);
+                                                                    index,
+                                                              ),
+                                                            );
                                                       },
                                                       selectedColor:
                                                           AppColors.kpurple,
                                                       elevation: 3,
-                                                      checkmarkColor:
-                                                          AppColors.kwhiteColor,
-                                                      label: Text(
-                                                          charactorsitem
-                                                              .toString(),
-                                                          style: theme.textTheme
-                                                              .bodyMedium!
-                                                              .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color: state
-                                                                        .selectedindexcharactor ==
-                                                                    indexx
-                                                                ? AppColors
-                                                                    .kwhiteColor
-                                                                : AppColors
-                                                                    .kblackColor,
-                                                          ) // Display the lesson name or string representation
 
+                                                      label: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Icon(Icons.check,
+                                                              size: 15,
+                                                              color: state.selectedindexcharactor ==
+                                                                      index
+                                                                  ? AppColors
+                                                                      .kwhiteColor
+                                                                  : Colors
+                                                                      .transparent),
+                                                          const SizedBox(
+                                                              width: 5),
+                                                          Text(
+                                                            characterItem,
+                                                            style: theme
+                                                                .textTheme
+                                                                .bodyMedium!
+                                                                .copyWith(
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: state.selectedindexcharactor ==
+                                                                      index
+                                                                  ? AppColors
+                                                                      .kwhiteColor
+                                                                  : AppColors
+                                                                      .kblackColor,
+                                                            ),
                                                           ),
+                                                        ],
+                                                      ),
                                                       selected: state
                                                               .selectedindexcharactor ==
-                                                          indexx, // Set the selection based on index
+                                                          index,
                                                       shape:
                                                           RoundedRectangleBorder(
-                                                        side: BorderSide.none,
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(40),
                                                       ),
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              12),
+                                                          const EdgeInsets.only(
+                                                              top: 14,
+                                                              bottom: 14,
+                                                              left: 10,
+                                                              right: 27),
                                                     ),
-                                                  ),
-                                                );
-                                              }),
+                                                  );
+                                                },
+                                              ),
                                             );
                                           }
 
@@ -630,7 +661,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                         },
                                       ),
                                       addbutton(
-                                          title: "Add a character",
+                                          title: "Add your own",
                                           width: 180,
                                           theme: theme,
                                           onTap: () async {
@@ -650,7 +681,9 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                         MediaQuery.viewInsetsOf(
                                                             context),
                                                     child:
-                                                        const AddCharactorStory(),
+                                                        const AddCharactorStory(
+                                                      titleown: true,
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -990,14 +1023,18 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                                   .textTheme
                                                                   .bodyMedium!
                                                                   .copyWith(
-                                                                color: AppColors
-                                                                    .textColorblack,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                              ),
+                                                                      color: AppColors
+                                                                          .textColorblack,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontSize:
+                                                                          16),
                                                             ),
                                                             Container(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left: 10),
                                                               decoration:
                                                                   BoxDecoration(
                                                                 borderRadius:
@@ -1011,7 +1048,9 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                                   deviceWidth *
                                                                       0.5555,
                                                               height: 48,
-                                                              child: Center(
+                                                              child: Align(
+                                                                alignment: Alignment
+                                                                    .centerLeft,
                                                                 child: Text(
                                                                   name,
                                                                   style: theme
@@ -1457,4 +1496,28 @@ class FormListFieldController<T> extends FormFieldController<List<T>> {
 
   @override
   void reset() => value = List<T>.from(_initialListValue ?? []);
+}
+
+Future<List<String>> fetchSuggestedCharacters() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  try {
+    // Fetch the first document from the `admin_data` collection
+    QuerySnapshot querySnapshot =
+        await firestore.collection('admin_data').limit(1).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Access the first document
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+      // Extract `suggested_characters` and ensure it is a list of strings
+      List<dynamic> characters = data['suggested_characters'] ?? [];
+      return characters.map((e) => e.toString()).toList();
+    } else {
+      print('No document found in admin_data.');
+      return [];
+    }
+  } catch (e) {
+    print('Error fetching suggested characters: $e');
+    return [];
+  }
 }

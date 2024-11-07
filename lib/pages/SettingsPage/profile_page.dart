@@ -487,8 +487,7 @@ class _ProfilePageState extends State<ProfilePage>
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: 
-                Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
@@ -693,7 +692,9 @@ class _ProfilePageState extends State<ProfilePage>
                                               enableDrag: false,
                                               context: context,
                                               builder: (context) {
-                                                return const AddCharactorStory();
+                                                return const AddCharactorStory(
+                                                  titleown: true,
+                                                );
                                               },
                                             );
                                           },
