@@ -10,6 +10,7 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
+import 'package:pixieapp/widgets/playlist_bottomsheet.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -321,7 +322,24 @@ class _NavBar2State extends State<NavBar2> {
                             height: 25,
                           )
                         : IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                enableDrag: true,
+                                context: context,
+                                builder: (context) {
+                                  return GestureDetector(
+                                    onTap: () =>
+                                        FocusScope.of(context).unfocus(),
+                                    child: Padding(
+                                      padding: MediaQuery.viewInsetsOf(context),
+                                      child: const PlaylistBottomsheet(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                             icon: SvgPicture.asset(
                               'assets/images/addToFavorites.svg',
                               width: 25,

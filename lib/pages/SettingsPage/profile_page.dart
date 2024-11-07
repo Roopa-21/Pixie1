@@ -695,7 +695,9 @@ class _ProfilePageState extends State<ProfilePage>
                                               enableDrag: false,
                                               context: context,
                                               builder: (context) {
-                                                return const AddCharactorStory();
+                                                return const AddCharactorStory(
+                                                  titleown: true,
+                                                );
                                               },
                                             );
                                           },

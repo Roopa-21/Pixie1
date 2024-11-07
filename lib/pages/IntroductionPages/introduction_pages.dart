@@ -34,6 +34,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
     lovedonce: [],
     moreLovedOnce: [],
   );
+  List<String> suggestedCharactersList = [];
   int get pageViewCurrentIndex => pageViewController != null &&
           pageViewController!.hasClients &&
           pageViewController!.page != null
@@ -84,6 +85,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
   @override
   void initState() {
     favThings();
+    fetchSuggestedCharacters().then((suggestedlist) {
+      setState(() {
+        suggestedCharactersList = suggestedlist;
+      });
+    });
     super.initState();
   }
 
@@ -1405,4 +1411,28 @@ class FormListFieldController<T> extends FormFieldController<List<T>> {
 
   @override
   void reset() => value = List<T>.from(_initialListValue ?? []);
+}
+
+Future<List<String>> fetchSuggestedCharacters() async {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  try {
+    // Fetch the first document from the `admin_data` collection
+    QuerySnapshot querySnapshot =
+        await firestore.collection('admin_data').limit(1).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      // Access the first document
+      var data = querySnapshot.docs.first.data() as Map<String, dynamic>;
+
+      // Extract `suggested_characters` and ensure it is a list of strings
+      List<dynamic> characters = data['suggested_characters'] ?? [];
+      return characters.map((e) => e.toString()).toList();
+    } else {
+      print('No document found in admin_data.');
+      return [];
+    }
+  } catch (e) {
+    print('Error fetching suggested characters: $e');
+    return [];
+  }
 }

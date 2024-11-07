@@ -6,7 +6,9 @@ import 'package:pixieapp/widgets/widgets_index.dart';
 import 'package:go_router/go_router.dart';
 
 class AddCharactorStory extends StatefulWidget {
-  const AddCharactorStory({super.key});
+  final bool titleown;
+
+  const AddCharactorStory({super.key, required this.titleown});
 
   @override
   State<AddCharactorStory> createState() => _AddCharactorStoryState();
@@ -55,7 +57,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
               ),
             ),
             Text(
-              'Add a character',
+              widget.titleown ? 'Add your own' : 'Add a character',
               style: theme.textTheme.displayMedium?.copyWith(
                 color: AppColors.textColorblue,
                 fontSize: 34,

@@ -694,13 +694,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                               'storycharactors'] ??
                                                           [];
 
-                                                  if (characters.isEmpty) {
-                                                    return const Center(
-                                                        child: Text(
-                                                            'No character found.'));
-                                                  }
                                                   characters.addAll(
                                                       suggestedCharactersList);
+
                                                   return Wrap(
                                                     children:
                                                         List<Widget>.generate(
@@ -844,12 +840,13 @@ class _AddCharacterState extends State<AddCharacter> {
                                                               .viewInsetsOf(
                                                                   context),
                                                           child:
-                                                              const AddCharactorStory(),
+                                                              const AddCharactorStory(titleown: false,),
                                                         ),
                                                       );
                                                     },
                                                   );
-                                                }),
+                                                }
+                                                ),
                                             const SizedBox(height: 40),
                                             Container(
                                               width: double.infinity,
@@ -1071,11 +1068,6 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   List<dynamic> lessons =
                                                       userData['lessons'] ?? [];
 
-                                                  if (lessons.isEmpty) {
-                                                    return const Center(
-                                                        child: Text(
-                                                            'No lessons found.'));
-                                                  }
                                                   lessons.addAll(
                                                       suggestedLeassonsList);
                                                   lessons.insert(
