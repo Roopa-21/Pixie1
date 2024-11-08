@@ -194,7 +194,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       fontSize: 34),
                                             ),
                                             const SizedBox(height: 25),
-                                            choicechipbutton(
+                                            choicechipbutton2(
                                                 theme: theme,
                                                 title: "Bedtime",
                                                 selected: state.musicAndSpeed ==
@@ -208,7 +208,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           const UpdateMusicandspeedEvent(
                                                               'Bedtime'));
                                                 }),
-                                            choicechipbutton(
+                                            choicechipbutton2(
                                                 theme: theme,
                                                 title: "Playtime",
                                                 selected: state.musicAndSpeed ==
@@ -237,7 +237,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       fontSize: 34),
                                             ),
                                             const SizedBox(height: 25),
-                                            choicechipbutton(
+                                            choicechipbutton2(
                                                 theme: theme,
                                                 title: "English",
                                                 selected: state.language ==
@@ -257,7 +257,7 @@ class _AddCharacterState extends State<AddCharacter> {
 
                                                   print(storydata.language);
                                                 }),
-                                            choicechipbutton(
+                                            choicechipbutton2(
                                                 theme: theme,
                                                 title: "Hindi",
                                                 selected: state.language ==
@@ -840,13 +840,14 @@ class _AddCharacterState extends State<AddCharacter> {
                                                               .viewInsetsOf(
                                                                   context),
                                                           child:
-                                                              const AddCharactorStory(titleown: false,),
+                                                              const AddCharactorStory(
+                                                            titleown: false,
+                                                          ),
                                                         ),
                                                       );
                                                     },
                                                   );
-                                                }
-                                                ),
+                                                }),
                                             const SizedBox(height: 40),
                                             Container(
                                               width: double.infinity,
@@ -1329,6 +1330,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                             ),
                                             const SizedBox(height: 25),
                                             choicechipbutton(
+                                                image:
+                                                    "assets/images/surpriceme1.png",
                                                 theme: theme,
                                                 title: "Surprise me",
                                                 ontap: () async {
@@ -1343,6 +1346,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         ? true
                                                         : false),
                                             choicechipbutton(
+                                                image:
+                                                    "assets/images/FUNNY1.png",
                                                 theme: theme,
                                                 title: "Funny",
                                                 ontap: () async {
@@ -1356,6 +1361,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     ? true
                                                     : false),
                                             choicechipbutton(
+                                                image:
+                                                    "assets/images/HORROR1.png",
                                                 theme: theme,
                                                 title: "Horror",
                                                 ontap: () async {
@@ -1370,6 +1377,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         ? true
                                                         : false),
                                             choicechipbutton(
+                                                image:
+                                                    "assets/images/adventure1.png",
                                                 theme: theme,
                                                 title: "Adventure",
                                                 ontap: () async {
@@ -1384,6 +1393,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         ? true
                                                         : false),
                                             choicechipbutton(
+                                                image:
+                                                    "assets/images/Action1.png",
                                                 theme: theme,
                                                 title: "Action",
                                                 ontap: () async {
@@ -1398,6 +1409,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         ? true
                                                         : false),
                                             choicechipbutton(
+                                                image:
+                                                    "assets/images/ScI-Fi1.png",
                                                 theme: theme,
                                                 title: "Sci-fi",
                                                 ontap: () async {
@@ -1649,11 +1662,76 @@ class _AddCharacterState extends State<AddCharacter> {
         ));
   }
 
-  Widget choicechipbutton(
-          {required ThemeData theme,
-          required String title,
-          required VoidCallback ontap,
-          required bool selected}) =>
+  Widget choicechipbutton({
+    required ThemeData theme,
+    required String title,
+    required VoidCallback ontap,
+    required bool selected,
+    required String image,
+  }) =>
+      Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
+        child: SizedBox(
+          width: MediaQuery.sizeOf(context).width * 0.9,
+          height: 48,
+          child: ElevatedButton(
+            iconAlignment: IconAlignment.start,
+            onPressed: ontap,
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
+              foregroundColor: selected == true
+                  ? AppColors.buttonblue
+                  : AppColors.buttonwhite,
+              backgroundColor: selected == true
+                  ? AppColors.buttonblue
+                  : AppColors.buttonwhite,
+            ),
+            child: Row(
+              children: [
+                const Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.check,
+                      color: AppColors.kwhiteColor,
+                      size: 18,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    children: [
+                      Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(image: AssetImage(image))),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(title,
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              color: selected == true
+                                  ? AppColors.textColorWhite
+                                  : AppColors.textColorblack,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+  Widget choicechipbutton2({
+    required ThemeData theme,
+    required String title,
+    required VoidCallback ontap,
+    required bool selected,
+  }) =>
       Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         child: SizedBox(

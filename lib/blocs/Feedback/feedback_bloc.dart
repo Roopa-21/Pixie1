@@ -18,7 +18,13 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
     try {
       emit(FeedbackLoading());
 
-      await _firestore.collection('feedback').doc(event.userId).set({
+      // await _firestore.collection('feedback').doc(event.userId).set({
+      //   'rating': event.rating,
+      //   'questionsLikedDisliked': event.questionsLikedDisliked,
+      //   'createdAt': FieldValue.serverTimestamp(),
+      //   'userRef': event.userref,
+      // });
+      await _firestore.collection('feedback').add({
         'rating': event.rating,
         'questionsLikedDisliked': event.questionsLikedDisliked,
         'createdAt': FieldValue.serverTimestamp(),
