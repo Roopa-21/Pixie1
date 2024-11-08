@@ -164,34 +164,35 @@ class _IntroductionPageState extends State<IntroductionPage> {
                   ],
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: SizedBox(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
                       width: deviceWidth,
-                      height: deviceHeight,
+                      height: deviceHeight * .9,
                       child: Padding(
                         padding: const EdgeInsetsDirectional.fromSTEB(
-                            20.0, 10.0, 20.0, 0.0),
-                        child: SafeArea(
-                          child: PageView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            allowImplicitScrolling: false,
-                            controller: pageViewController ??=
-                                PageController(initialPage: 0),
-                            onPageChanged: (index) {
-                              setState(() {
-                                currentpage_index = index;
-                              });
-                            },
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                            20.0, 10.0, 20.0, 0),
+                        child: PageView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          allowImplicitScrolling: false,
+                          controller: pageViewController ??=
+                              PageController(initialPage: 0),
+                          onPageChanged: (index) {
+                            setState(() {
+                              currentpage_index = index;
+                            });
+                          },
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 25),
+                                  child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Container(
@@ -212,7 +213,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           )),
                                       const SizedBox(width: 5),
                                       customSlider(percent: 1),
-                                      customSlider(percent: 0),
+                                      // customSlider(percent: 0),
                                       customSlider(percent: 0),
                                       const SizedBox(width: 10),
                                       Transform.rotate(
@@ -225,174 +226,37 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                       )
                                     ],
                                   ),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Whom are you creating stories for?",
-                                            style: theme.textTheme.displaySmall!
-                                                .copyWith(
-                                                    color:
-                                                        AppColors.textColorblue,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            "This helps Pixie personalise the stories",
-                                            style: theme
-                                                .textTheme.headlineSmall!
-                                                .copyWith(
-                                                    color: AppColors
-                                                        .textColorblack,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                          ),
-
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0, bottom: 10),
-                                            child: Text(
-                                              "First name",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: AppColors
-                                                          .textColorblack,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                            ),
-                                          ),
-
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.kwhiteColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                            ),
-                                            child: TextField(
-                                              style: theme.textTheme.bodyMedium,
-                                              controller: nameController,
-                                              cursorColor:
-                                                  AppColors.textColorblue,
-                                              onChanged: (value) {
-                                                context
-                                                    .read<IntroductionBloc>()
-                                                    .add(TextChanged(
-                                                        name: value));
-                                              },
-                                              decoration: InputDecoration(
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                focusedBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                enabledBorder:
-                                                    OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  borderSide: BorderSide.none,
-                                                ),
-                                                errorBorder: InputBorder.none,
-                                                focusedErrorBorder:
-                                                    InputBorder.none,
-                                                disabledBorder:
-                                                    InputBorder.none,
-                                                fillColor:
-                                                    AppColors.kwhiteColor,
-                                                hintText: 'Your child\'s name',
-                                                hintStyle: theme
-                                                    .textTheme.bodyMedium
-                                                    ?.copyWith(
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Whom are you creating stories for?",
+                                          style: theme.textTheme.displaySmall!
+                                              .copyWith(
                                                   color:
-                                                      AppColors.textColorGrey,
-                                                ),
-                                                focusColor:
-                                                    AppColors.textColorblue,
-                                              ),
-                                            ),
-                                          ),
+                                                      AppColors.textColorblue,
+                                                  fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          "This helps Pixie personalise the stories",
+                                          style: theme.textTheme.headlineSmall!
+                                              .copyWith(
+                                                  color:
+                                                      AppColors.textColorblack,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w400),
+                                        ),
 
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 20.0, bottom: 10.0),
-                                            child: Text(
-                                              "Pronoun",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: AppColors
-                                                          .textColorblack,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              _buildPronounButton(
-                                                  text: "He",
-                                                  width: deviceWidth * 0.4305,
-                                                  ontap: () {
-                                                    context
-                                                        .read<
-                                                            IntroductionBloc>()
-                                                        .add(GenderChanged(
-                                                            gender: Gender.he));
-                                                  },
-                                                  selected: childdata.gender ==
-                                                          Gender.he
-                                                      ? true
-                                                      : false),
-                                              SizedBox(
-                                                  width: deviceWidth * 0.0277),
-                                              _buildPronounButton(
-                                                  text: "She",
-                                                  width: deviceWidth * 0.4305,
-                                                  ontap: () {
-                                                    context
-                                                        .read<
-                                                            IntroductionBloc>()
-                                                        .add(GenderChanged(
-                                                            gender:
-                                                                Gender.she));
-                                                  },
-                                                  selected: childdata.gender ==
-                                                          Gender.she
-                                                      ? true
-                                                      : false),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 10),
-                                          _buildPronounButton(
-                                              text: "Prefer not to say",
-                                              width: deviceWidth * 0.8888,
-                                              ontap: () {
-                                                context
-                                                    .read<IntroductionBloc>()
-                                                    .add(GenderChanged(
-                                                        gender: Gender
-                                                            .prefernottosay));
-                                              },
-                                              selected: childdata.gender ==
-                                                      Gender.prefernottosay
-                                                  ? true
-                                                  : false),
-                                          const SizedBox(height: 20),
-                                          const SizedBox(height: 20),
-                                          Text(
-                                            "Date of Birth",
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 20.0, bottom: 10),
+                                          child: Text(
+                                            "First name",
                                             style: theme
                                                 .textTheme.headlineSmall!
                                                 .copyWith(
@@ -401,396 +265,497 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                     fontWeight:
                                                         FontWeight.w500),
                                           ),
-                                          SizedBox(
-                                            height: 200,
-                                            child: CupertinoTheme(
-                                              data: CupertinoThemeData(
-                                                textTheme: CupertinoTextThemeData(
-                                                    dateTimePickerTextStyle:
-                                                        TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color: AppColors
-                                                                .textColorblue)),
+                                        ),
+
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.kwhiteColor,
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                          ),
+                                          child: TextField(
+                                            textCapitalization:
+                                                TextCapitalization.sentences,
+                                            style: theme.textTheme.bodyMedium,
+                                            controller: nameController,
+                                            cursorColor:
+                                                AppColors.textColorblue,
+                                            onChanged: (value) {
+                                              context
+                                                  .read<IntroductionBloc>()
+                                                  .add(
+                                                      TextChanged(name: value));
+                                            },
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                borderSide: BorderSide.none,
                                               ),
-                                              child: CupertinoDatePicker(
-                                                maximumYear:
-                                                    DateTime.now().year,
-                                                minimumYear: 2000,
-                                                initialDateTime: selectedDate,
-                                                maximumDate: selectedDate,
-                                                mode: CupertinoDatePickerMode
-                                                    .date,
-                                                onDateTimeChanged:
-                                                    (DateTime newDate) {
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                              errorBorder: InputBorder.none,
+                                              focusedErrorBorder:
+                                                  InputBorder.none,
+                                              disabledBorder: InputBorder.none,
+                                              fillColor: AppColors.kwhiteColor,
+                                              hintText: 'Your child\'s name',
+                                              hintStyle: theme
+                                                  .textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: AppColors.textColorGrey,
+                                              ),
+                                              focusColor:
+                                                  AppColors.textColorblue,
+                                            ),
+                                          ),
+                                        ),
+
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 20.0, bottom: 10.0),
+                                          child: Text(
+                                            "Pronoun",
+                                            style: theme
+                                                .textTheme.headlineSmall!
+                                                .copyWith(
+                                                    color: AppColors
+                                                        .textColorblack,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                          ),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            _buildPronounButton(
+                                                text: "He",
+                                                width: deviceWidth * 0.4305,
+                                                ontap: () {
                                                   context
                                                       .read<IntroductionBloc>()
-                                                      .add(DobChanged(
-                                                          dob: newDate));
+                                                      .add(GenderChanged(
+                                                          gender: Gender.he));
                                                 },
-                                              ),
+                                                selected: childdata.gender ==
+                                                        Gender.he
+                                                    ? true
+                                                    : false),
+                                            SizedBox(
+                                                width: deviceWidth * 0.0277),
+                                            _buildPronounButton(
+                                                text: "She",
+                                                width: deviceWidth * 0.4305,
+                                                ontap: () {
+                                                  context
+                                                      .read<IntroductionBloc>()
+                                                      .add(GenderChanged(
+                                                          gender: Gender.she));
+                                                },
+                                                selected: childdata.gender ==
+                                                        Gender.she
+                                                    ? true
+                                                    : false),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        _buildPronounButton(
+                                            text: "Prefer not to say",
+                                            width: deviceWidth * 0.8888,
+                                            ontap: () {
+                                              context
+                                                  .read<IntroductionBloc>()
+                                                  .add(GenderChanged(
+                                                      gender: Gender
+                                                          .prefernottosay));
+                                            },
+                                            selected: childdata.gender ==
+                                                    Gender.prefernottosay
+                                                ? true
+                                                : false),
+                                        const SizedBox(height: 20),
+                                        const SizedBox(height: 20),
+                                        Text(
+                                          "Date of Birth",
+                                          style: theme.textTheme.headlineSmall!
+                                              .copyWith(
+                                                  color:
+                                                      AppColors.textColorblack,
+                                                  fontWeight: FontWeight.w500),
+                                        ),
+                                        SizedBox(
+                                          height: 300,
+                                          child: CupertinoTheme(
+                                            data: const CupertinoThemeData(
+                                              textTheme: CupertinoTextThemeData(
+                                                  dateTimePickerTextStyle:
+                                                      TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          color: AppColors
+                                                              .textColorblue)),
                                             ),
-                                          ),
-                                          // CupertinoButton(
-                                          //   child: Text('Done'),
-                                          //   onPressed: () =>
-                                          //       Navigator.of(context).pop(),
-                                          // ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-
-                              /******************************************** */
-
-                              BlocConsumer<AddCharacterBloc, AddCharacterState>(
-                                listener: (context, state) {
-                                  // TODO: implement listener
-                                },
-                                builder: (context, state) {
-                                  return Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Container(
-                                              decoration: BoxDecoration(
-                                                color: const Color(
-                                                    0xFFE8DEF8), // Background color
-                                                borderRadius:
-                                                    BorderRadius.circular(40.0),
-                                              ),
-                                              child: IconButton(
-                                                onPressed: () async {
-                                                  pageViewController
-                                                      ?.previousPage(
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                    curve: Curves.ease,
-                                                  );
-                                                },
-                                                icon: const Icon(
-                                                  Icons.arrow_back,
-                                                  color: AppColors.sliderColor,
-                                                  size: 23,
-                                                ),
-                                              )),
-                                          const SizedBox(width: 5),
-                                          customSlider(percent: 0),
-                                          customSlider(percent: 1),
-                                          customSlider(percent: 0),
-                                          const SizedBox(width: 10),
-                                          Transform.rotate(
-                                            angle: .2,
-                                            child: Image.asset(
-                                              'assets/images/star.png',
-                                              width: 70,
-                                              height: 80,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        'What are ${childdata.name}\'s favorite things?',
-                                        style: theme.textTheme.displaySmall!
-                                            .copyWith(
-                                                color: AppColors.textColorblue,
-                                                fontWeight: FontWeight.w600),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        "We can feature them in stories",
-                                        style: theme.textTheme.headlineSmall!
-                                            .copyWith(
-                                                color: AppColors.textColorblack,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 20),
-                                      ),
-                                      const SizedBox(height: 30),
-                                      Text(
-                                        'Select one',
-                                        style: theme.textTheme.displaySmall!
-                                            .copyWith(
-                                                color: AppColors.kgreyColor,
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: 20),
-                                      ),
-                                      const SizedBox(height: 25),
-                                      StreamBuilder<DocumentSnapshot>(
-                                        stream: FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(user!.uid)
-                                            .snapshots(), // Real-time updates
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                                  ConnectionState.waiting &&
-                                              !snapshot.hasData) {
-                                            return const Center(
-                                                child: LoadingWidget());
-                                          }
-
-                                          if (snapshot.hasError) {
-                                            return Center(
-                                                child: Text(
-                                                    'Error: ${snapshot.error}'));
-                                          }
-
-                                          if (snapshot.hasData) {
-                                            var userData = snapshot.data!.data()
-                                                as Map<String, dynamic>;
-                                            List<dynamic> characters =
-                                                userData['storycharactors'] ??
-                                                    [];
-
-                                            characters.addAll(
-                                                suggestedCharactersList);
-
-                                            return Wrap(
-                                              children: List<Widget>.generate(
-                                                characters.length,
-                                                (int index) {
-                                                  String characterItem =
-                                                      characters[index];
-
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    child: ChoiceChip(
-                                                      backgroundColor:
-                                                          AppColors.kwhiteColor,
-                                                      showCheckmark: false,
-
-                                                      key: ValueKey(
-                                                          characterItem), // Use key to reduce rebuilds
-                                                      side: const BorderSide(
-                                                          width: .4,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              152,
-                                                              152,
-                                                              152)),
-                                                      shadowColor: Colors.black,
-                                                      onSelected: (value) {
-                                                        context
-                                                            .read<
-                                                                AddCharacterBloc>()
-                                                            .add(
-                                                              AddcharactorstoryEvent(
-                                                                characterItem,
-                                                                selectedindexcharactor:
-                                                                    index,
-                                                              ),
-                                                            );
-                                                      },
-                                                      selectedColor:
-                                                          AppColors.kpurple,
-                                                      elevation: 3,
-
-                                                      label: Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Icon(Icons.check,
-                                                              size: 15,
-                                                              color: state.selectedindexcharactor ==
-                                                                      index
-                                                                  ? AppColors
-                                                                      .kwhiteColor
-                                                                  : Colors
-                                                                      .transparent),
-                                                          const SizedBox(
-                                                              width: 5),
-                                                          Text(
-                                                            characterItem,
-                                                            style: theme
-                                                                .textTheme
-                                                                .bodyMedium!
-                                                                .copyWith(
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              color: state.selectedindexcharactor ==
-                                                                      index
-                                                                  ? AppColors
-                                                                      .kwhiteColor
-                                                                  : AppColors
-                                                                      .kblackColor,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      selected: state
-                                                              .selectedindexcharactor ==
-                                                          index,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(40),
-                                                      ),
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 14,
-                                                              bottom: 14,
-                                                              left: 10,
-                                                              right: 27),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            );
-                                          }
-
-                                          return const Center(
-                                              child:
-                                                  Text('No character found.'));
-                                        },
-                                      ),
-                                      addbutton(
-                                          title: "Add your own",
-                                          width: 180,
-                                          theme: theme,
-                                          onTap: () async {
-                                            await showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              enableDrag: false,
-                                              context: context,
-                                              builder: (context) {
-                                                return GestureDetector(
-                                                  onTap: () =>
-                                                      FocusScope.of(context)
-                                                          .unfocus(),
-                                                  child: Padding(
-                                                    padding:
-                                                        MediaQuery.viewInsetsOf(
-                                                            context),
-                                                    child:
-                                                        const AddCharactorStory(
-                                                      titleown: true,
-                                                    ),
-                                                  ),
-                                                );
+                                            child: CupertinoDatePicker(
+                                              maximumYear: DateTime.now().year,
+                                              minimumYear: 2000,
+                                              initialDateTime: selectedDate,
+                                              maximumDate: selectedDate,
+                                              mode:
+                                                  CupertinoDatePickerMode.date,
+                                              onDateTimeChanged:
+                                                  (DateTime newDate) {
+                                                context
+                                                    .read<IntroductionBloc>()
+                                                    .add(DobChanged(
+                                                        dob: newDate));
                                               },
-                                            );
-                                          }),
+                                            ),
+                                          ),
+                                        ),
+                                        // CupertinoButton(
+                                        //   child: Text('Done'),
+                                        //   onPressed: () =>
+                                        //       Navigator.of(context).pop(),
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
 
-                                      // StreamBuilder(
-                                      //     stream: FirebaseFirestore.instance
-                                      //         .collection('users')
-                                      //         .doc(user!.uid)
-                                      //         .snapshots(),
-                                      //     builder: (context, snapshot) {
-                                      //       if (snapshot.connectionState ==
-                                      //           ConnectionState.waiting) {
-                                      //         return const Center(
-                                      //             child:
-                                      //                 CircularProgressIndicator());
-                                      //       }
+                            /******************************************** */
 
-                                      //       if (snapshot.hasError) {
-                                      //         return Center(
-                                      //             child: Text(
-                                      //                 'Error: ${snapshot.error}'));
-                                      //       }
+                            // BlocConsumer<AddCharacterBloc, AddCharacterState>(
+                            //   listener: (context, state) {
+                            //     // TODO: implement listener
+                            //   },
+                            //   builder: (context, state) {
+                            //     return Column(
+                            //       mainAxisSize: MainAxisSize.max,
+                            //       crossAxisAlignment:
+                            //           CrossAxisAlignment.start,
+                            //       children: [
+                            //         Row(
+                            //           mainAxisSize: MainAxisSize.max,
+                            //           children: [
+                            //             Container(
+                            //                 decoration: BoxDecoration(
+                            //                   color: const Color(
+                            //                       0xFFE8DEF8), // Background color
+                            //                   borderRadius:
+                            //                       BorderRadius.circular(40.0),
+                            //                 ),
+                            //                 child: IconButton(
+                            //                   onPressed: () async {
+                            //                     pageViewController
+                            //                         ?.previousPage(
+                            //                       duration: const Duration(
+                            //                           milliseconds: 300),
+                            //                       curve: Curves.ease,
+                            //                     );
+                            //                   },
+                            //                   icon: const Icon(
+                            //                     Icons.arrow_back,
+                            //                     color: AppColors.sliderColor,
+                            //                     size: 23,
+                            //                   ),
+                            //                 )),
+                            //             const SizedBox(width: 5),
+                            //             customSlider(percent: 0),
+                            //             customSlider(percent: 1),
+                            //             customSlider(percent: 0),
+                            //             const SizedBox(width: 10),
+                            //             Transform.rotate(
+                            //               angle: .2,
+                            //               child: Image.asset(
+                            //                 'assets/images/star.png',
+                            //                 width: 70,
+                            //                 height: 80,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //         Text(
+                            //           'What are ${childdata.name}\'s favorite things?',
+                            //           style: theme.textTheme.displaySmall!
+                            //               .copyWith(
+                            //                   color: AppColors.textColorblue,
+                            //                   fontWeight: FontWeight.w600),
+                            //         ),
+                            //         const SizedBox(height: 8),
+                            //         Text(
+                            //           "We can feature them in stories",
+                            //           style: theme.textTheme.headlineSmall!
+                            //               .copyWith(
+                            //                   color: AppColors.textColorblack,
+                            //                   fontWeight: FontWeight.w400,
+                            //                   fontSize: 20),
+                            //         ),
+                            //         const SizedBox(height: 30),
+                            //         Text(
+                            //           'Select one',
+                            //           style: theme.textTheme.displaySmall!
+                            //               .copyWith(
+                            //                   color: AppColors.kgreyColor,
+                            //                   fontWeight: FontWeight.w400,
+                            //                   fontSize: 20),
+                            //         ),
+                            //         const SizedBox(height: 15),
+                            //         StreamBuilder<DocumentSnapshot>(
+                            //           stream: FirebaseFirestore.instance
+                            //               .collection('users')
+                            //               .doc(user!.uid)
+                            //               .snapshots(), // Listening for real-time updates to the user document
+                            //           builder: (context, snapshot) {
+                            //             if (snapshot.connectionState ==
+                            //                 ConnectionState.waiting) {
+                            //               return const Center(
+                            //                   child: LoadingWidget());
+                            //             }
 
-                                      //       if (snapshot.hasData) {
-                                      //         var userData = snapshot.data!.data()
-                                      //             as Map<String, dynamic>;
+                            //             if (snapshot.hasError) {
+                            //               return Center(
+                            //                   child: Text(
+                            //                       'Error: ${snapshot.error}'));
+                            //             }
 
-                                      //         List<dynamic> addyourowns =
-                                      //             userData['fav_things'] ?? [];
+                            //             if (snapshot.hasData) {
+                            //               var userData = snapshot.data!.data()
+                            //                   as Map<String, dynamic>;
 
-                                      //         if (addyourowns.isEmpty) {
-                                      //           return const Center(
-                                      //               child: Text(
-                                      //                   'No fav things found.'));
-                                      //         }
+                            //               List<dynamic> charactors =
+                            //                   userData['storycharactors'] ??
+                            //                       [];
 
-                                      //         return Wrap(
-                                      //             children: List<Widget>.generate(
-                                      //                 addyourowns.length,
-                                      //                 (int index) {
-                                      //           var addyourown = addyourowns[index];
-                                      //           return Padding(
-                                      //             padding:
-                                      //                 const EdgeInsets.all(5.0),
-                                      //             child: SizedBox(
-                                      //               height: 48,
-                                      //               child: ChoiceChip(
-                                      //                 elevation: 3,
-                                      //                 shadowColor: AppColors
-                                      //                     .kgreyColor
-                                      //                     .withOpacity(0.3),
-                                      //                 label: Text(addyourown,
-                                      //                     style: theme
-                                      //                         .textTheme.bodyMedium!
-                                      //                         .copyWith(
-                                      //                             fontWeight:
-                                      //                                 FontWeight
-                                      //                                     .w400,
-                                      //                             color: AppColors
-                                      //                                 .textColorblack)),
-                                      //                 selected: false,
-                                      //                 selectedColor:
-                                      //                     AppColors.kpurple,
-                                      //                 checkmarkColor:
-                                      //                     AppColors.kwhiteColor,
-                                      //                 shape: RoundedRectangleBorder(
-                                      //                   side: BorderSide.none,
-                                      //                   borderRadius:
-                                      //                       BorderRadius.circular(
-                                      //                           40),
-                                      //                 ),
-                                      //               ),
-                                      //             ),
-                                      //           );
-                                      //         }));
-                                      //       }
-                                      //       return const Center(
-                                      //           child: Text('No favthings found.'));
-                                      //     }),
-                                      // addbutton(
-                                      //     title: "Add your own",
-                                      //     width: 180,
-                                      //     theme: theme,
-                                      //     onTap: () async {
-                                      //       await showModalBottomSheet(
-                                      //         isScrollControlled: true,
-                                      //         backgroundColor: Colors.transparent,
-                                      //         enableDrag: false,
-                                      //         context: context,
-                                      //         builder: (context) {
-                                      //           return const AddFavoritesBottomsheet();
-                                      //         },
-                                      //       );
-                                      //     })
-                                    ],
-                                  );
-                                },
-                              ),
+                            //               if (charactors.isEmpty) {
+                            //                 return const Center(
+                            //                     child: Text(
+                            //                         'No character found.'));
+                            //               }
 
-                              /**************************************************** */
+                            //               return Wrap(
+                            //                 children: List<Widget>.generate(
+                            //                     charactors.length,
+                            //                     (int indexx) {
+                            //                   // Accessing each lesson by index
+                            //                   String charactorsitem = charactors[
+                            //                       indexx]; // Get the lesson data for the current index
+                            //                   return Padding(
+                            //                     padding:
+                            //                         const EdgeInsets.all(5.0),
+                            //                     child: SizedBox(
+                            //                       height: 48,
+                            //                       child: ChoiceChip(
+                            //                         side: const BorderSide(
+                            //                             width: .4,
+                            //                             color: Color.fromARGB(
+                            //                                 255,
+                            //                                 152,
+                            //                                 152,
+                            //                                 152)),
+                            //                         shadowColor: Colors.black,
+                            //                         onSelected: (value) {
+                            //                           // Trigger an event or do something with the selected lesson
+                            //                           context
+                            //                               .read<
+                            //                                   AddCharacterBloc>()
+                            //                               .add(AddcharactorstoryEvent(
+                            //                                   charactorsitem,
+                            //                                   selectedindexcharactor:
+                            //                                       indexx));
+                            //                           // print(
+                            //                           //     charactorsitem);
+                            //                         },
+                            //                         selectedColor:
+                            //                             AppColors.kpurple,
+                            //                         elevation: 3,
+                            //                         checkmarkColor:
+                            //                             AppColors.kwhiteColor,
+                            //                         label: Text(
+                            //                             charactorsitem
+                            //                                 .toString(),
+                            //                             style: theme.textTheme
+                            //                                 .bodyMedium!
+                            //                                 .copyWith(
+                            //                               fontWeight:
+                            //                                   FontWeight.w400,
+                            //                               color: state
+                            //                                           .selectedindexcharactor ==
+                            //                                       indexx
+                            //                                   ? AppColors
+                            //                                       .kwhiteColor
+                            //                                   : AppColors
+                            //                                       .kblackColor,
+                            //                             ) // Display the lesson name or string representation
 
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
+                            //                             ),
+                            //                         selected: state
+                            //                                 .selectedindexcharactor ==
+                            //                             indexx, // Set the selection based on index
+                            //                         shape:
+                            //                             RoundedRectangleBorder(
+                            //                           side: BorderSide.none,
+                            //                           borderRadius:
+                            //                               BorderRadius
+                            //                                   .circular(40),
+                            //                         ),
+                            //                         padding:
+                            //                             const EdgeInsets.all(
+                            //                                 12),
+                            //                       ),
+                            //                     ),
+                            //                   );
+                            //                 }),
+                            //               );
+                            //             }
+
+                            //             return const Center(
+                            //                 child:
+                            //                     Text('No character found.'));
+                            //           },
+                            //         ),
+                            //         addbutton(
+                            //             title: "Add a character",
+                            //             width: 180,
+                            //             theme: theme,
+                            //             onTap: () async {
+                            //               await showModalBottomSheet(
+                            //                 isScrollControlled: true,
+                            //                 backgroundColor:
+                            //                     Colors.transparent,
+                            //                 enableDrag: false,
+                            //                 context: context,
+                            //                 builder: (context) {
+                            //                   return GestureDetector(
+                            //                     onTap: () =>
+                            //                         FocusScope.of(context)
+                            //                             .unfocus(),
+                            //                     child: Padding(
+                            //                       padding:
+                            //                           MediaQuery.viewInsetsOf(
+                            //                               context),
+                            //                       child:
+                            //                           const AddCharactorStory(),
+                            //                     ),
+                            //                   );
+                            //                 },
+                            //               );
+                            //             }),
+
+                            //         // StreamBuilder(
+                            //         //     stream: FirebaseFirestore.instance
+                            //         //         .collection('users')
+                            //         //         .doc(user!.uid)
+                            //         //         .snapshots(),
+                            //         //     builder: (context, snapshot) {
+                            //         //       if (snapshot.connectionState ==
+                            //         //           ConnectionState.waiting) {
+                            //         //         return const Center(
+                            //         //             child:
+                            //         //                 CircularProgressIndicator());
+                            //         //       }
+
+                            //         //       if (snapshot.hasError) {
+                            //         //         return Center(
+                            //         //             child: Text(
+                            //         //                 'Error: ${snapshot.error}'));
+                            //         //       }
+
+                            //         //       if (snapshot.hasData) {
+                            //         //         var userData = snapshot.data!.data()
+                            //         //             as Map<String, dynamic>;
+
+                            //         //         List<dynamic> addyourowns =
+                            //         //             userData['fav_things'] ?? [];
+
+                            //         //         if (addyourowns.isEmpty) {
+                            //         //           return const Center(
+                            //         //               child: Text(
+                            //         //                   'No fav things found.'));
+                            //         //         }
+
+                            //         //         return Wrap(
+                            //         //             children: List<Widget>.generate(
+                            //         //                 addyourowns.length,
+                            //         //                 (int index) {
+                            //         //           var addyourown = addyourowns[index];
+                            //         //           return Padding(
+                            //         //             padding:
+                            //         //                 const EdgeInsets.all(5.0),
+                            //         //             child: SizedBox(
+                            //         //               height: 48,
+                            //         //               child: ChoiceChip(
+                            //         //                 elevation: 3,
+                            //         //                 shadowColor: AppColors
+                            //         //                     .kgreyColor
+                            //         //                     .withOpacity(0.3),
+                            //         //                 label: Text(addyourown,
+                            //         //                     style: theme
+                            //         //                         .textTheme.bodyMedium!
+                            //         //                         .copyWith(
+                            //         //                             fontWeight:
+                            //         //                                 FontWeight
+                            //         //                                     .w400,
+                            //         //                             color: AppColors
+                            //         //                                 .textColorblack)),
+                            //         //                 selected: false,
+                            //         //                 selectedColor:
+                            //         //                     AppColors.kpurple,
+                            //         //                 checkmarkColor:
+                            //         //                     AppColors.kwhiteColor,
+                            //         //                 shape: RoundedRectangleBorder(
+                            //         //                   side: BorderSide.none,
+                            //         //                   borderRadius:
+                            //         //                       BorderRadius.circular(
+                            //         //                           40),
+                            //         //                 ),
+                            //         //               ),
+                            //         //             ),
+                            //         //           );
+                            //         //         }));
+                            //         //       }
+                            //         //       return const Center(
+                            //         //           child: Text('No favthings found.'));
+                            //         //     }),
+                            //         // addbutton(
+                            //         //     title: "Add your own",
+                            //         //     width: 180,
+                            //         //     theme: theme,
+                            //         //     onTap: () async {
+                            //         //       await showModalBottomSheet(
+                            //         //         isScrollControlled: true,
+                            //         //         backgroundColor: Colors.transparent,
+                            //         //         enableDrag: false,
+                            //         //         context: context,
+                            //         //         builder: (context) {
+                            //         //           return const AddFavoritesBottomsheet();
+                            //         //         },
+                            //         //       );
+                            //         //     })
+                            //       ],
+                            //     );
+                            //   },
+                            // ),
+
+                            /**************************************************** */
+
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 25),
+                                  child: Row(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
                                       Container(
@@ -815,7 +780,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                           )),
                                       const SizedBox(width: 5),
                                       customSlider(percent: 0),
-                                      customSlider(percent: 0),
+                                      // customSlider(percent: 0),
                                       customSlider(percent: 1),
                                       const SizedBox(width: 10),
                                       Transform.rotate(
@@ -828,492 +793,439 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                       )
                                     ],
                                   ),
-                                  Expanded(
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Who are ${childdata.name}\'s loved ones?',
-                                            style: theme.textTheme.displaySmall!
-                                                .copyWith(
-                                                    color:
-                                                        AppColors.textColorblue,
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            "We can feature them in stories",
+                                ),
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Who are ${childdata.name}\'s loved ones?',
+                                          style: theme.textTheme.displaySmall!
+                                              .copyWith(
+                                                  color:
+                                                      AppColors.textColorblue,
+                                                  fontWeight: FontWeight.w600),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          "We can feature them in stories",
+                                          style: theme.textTheme.headlineSmall!
+                                              .copyWith(
+                                                  color:
+                                                      AppColors.textColorblack,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w400),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 30.0, bottom: 15.0),
+                                          child: Text(
+                                            "Answer atleast one",
                                             style: theme
                                                 .textTheme.headlineSmall!
                                                 .copyWith(
-                                                    color: AppColors
-                                                        .textColorblack,
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                    color:
+                                                        AppColors.textColorGrey,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 20),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 30.0, bottom: 15.0),
-                                            child: Text(
-                                              "Answer atleast one",
-                                              style: theme
-                                                  .textTheme.headlineSmall!
-                                                  .copyWith(
-                                                      color: AppColors
-                                                          .textColorGrey,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 20),
+                                        ),
+                                        Column(
+                                          children: [
+                                            Relations(
+                                              theme: theme,
+                                              relationName: 'Mother',
+                                              controller: mother,
+                                              onChanged: (mom) {
+                                                setState(() {
+                                                  mother.text = mom;
+                                                  childdata.lovedonce.add(
+                                                      Lovedonces(
+                                                          name: mom,
+                                                          relation: "Mother"));
+                                                });
+                                              },
                                             ),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Relations(
-                                                theme: theme,
-                                                relationName: 'Mother',
-                                                controller: mother,
-                                                onChanged: (mom) {
-                                                  setState(() {
-                                                    mother.text = mom;
-                                                    childdata.lovedonce.add(
-                                                        Lovedonces(
-                                                            name: mom,
-                                                            relation:
-                                                                "Mother"));
-                                                  });
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Relations(
-                                                theme: theme,
-                                                relationName: 'Father',
-                                                controller: father,
-                                                onChanged: (dad) {
-                                                  setState(() {
-                                                    childdata.lovedonce.add(
-                                                        Lovedonces(
-                                                            name: dad,
-                                                            relation:
-                                                                "Father"));
-                                                  });
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Relations(
-                                                theme: theme,
-                                                relationName: 'Grand mother',
-                                                controller: GrandMother,
-                                                onChanged: (GM) {
-                                                  setState(() {
-                                                    childdata.lovedonce.add(
-                                                        Lovedonces(
-                                                            name: GM,
-                                                            relation:
-                                                                "Grand mother"));
-                                                  });
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Relations(
-                                                theme: theme,
-                                                relationName: 'Grand father',
-                                                controller: GrandFather,
-                                                onChanged: (GF) {
-                                                  setState(() {
-                                                    childdata.lovedonce.add(
-                                                        Lovedonces(
-                                                            name: GF,
-                                                            relation:
-                                                                "Grand father"));
-                                                  });
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Relations(
-                                                theme: theme,
-                                                relationName: 'Female friend',
-                                                controller: pet,
-                                                onChanged: (pett) {
-                                                  setState(() {
-                                                    childdata.lovedonce.add(
-                                                        Lovedonces(
-                                                            name: pett,
-                                                            relation:
-                                                                "Female friend"));
-                                                  });
-                                                },
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              StreamBuilder<DocumentSnapshot>(
-                                                stream: FirebaseFirestore
-                                                    .instance
-                                                    .collection('users')
-                                                    .doc(user?.uid)
-                                                    .snapshots(),
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.waiting) {
-                                                    return const Center(
-                                                        child:
-                                                            CircularProgressIndicator());
-                                                  }
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Relations(
+                                              theme: theme,
+                                              relationName: 'Father',
+                                              controller: father,
+                                              onChanged: (dad) {
+                                                setState(() {
+                                                  childdata.lovedonce.add(
+                                                      Lovedonces(
+                                                          name: dad,
+                                                          relation: "Father"));
+                                                });
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Relations(
+                                              theme: theme,
+                                              relationName: 'Grand mother',
+                                              controller: GrandMother,
+                                              onChanged: (GM) {
+                                                setState(() {
+                                                  childdata.lovedonce.add(
+                                                      Lovedonces(
+                                                          name: GM,
+                                                          relation:
+                                                              "Grand mother"));
+                                                });
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Relations(
+                                              theme: theme,
+                                              relationName: 'Grand father',
+                                              controller: GrandFather,
+                                              onChanged: (GF) {
+                                                setState(() {
+                                                  childdata.lovedonce.add(
+                                                      Lovedonces(
+                                                          name: GF,
+                                                          relation:
+                                                              "Grand father"));
+                                                });
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Relations(
+                                              theme: theme,
+                                              relationName: 'Female friend',
+                                              controller: pet,
+                                              onChanged: (pett) {
+                                                setState(() {
+                                                  childdata.lovedonce.add(
+                                                      Lovedonces(
+                                                          name: pett,
+                                                          relation:
+                                                              "Female friend"));
+                                                });
+                                              },
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            StreamBuilder<DocumentSnapshot>(
+                                              stream: FirebaseFirestore.instance
+                                                  .collection('users')
+                                                  .doc(user?.uid)
+                                                  .snapshots(),
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState ==
+                                                    ConnectionState.waiting) {
+                                                  return const Center(
+                                                      child:
+                                                          CircularProgressIndicator());
+                                                }
 
-                                                  if (!snapshot.hasData ||
-                                                      snapshot.data == null) {
-                                                    return const Center(
-                                                        child: Text(
-                                                            "No data found"));
-                                                  }
+                                                if (!snapshot.hasData ||
+                                                    snapshot.data == null) {
+                                                  return const Center(
+                                                      child: Text(
+                                                          "No data found"));
+                                                }
 
-                                                  var data = snapshot.data!
-                                                          .data()
-                                                      as Map<String, dynamic>;
-                                                  var moreLovedOnes =
-                                                      data['moreLovedOnes']
-                                                          as List<dynamic>?;
+                                                var data = snapshot.data!.data()
+                                                    as Map<String, dynamic>;
+                                                var moreLovedOnes =
+                                                    data['moreLovedOnes']
+                                                        as List<dynamic>?;
 
-                                                  if (moreLovedOnes == null ||
-                                                      moreLovedOnes.isEmpty) {
-                                                    return const Center(
-                                                        child: Text(""));
-                                                  }
+                                                if (moreLovedOnes == null ||
+                                                    moreLovedOnes.isEmpty) {
+                                                  return const Center(
+                                                      child: Text(""));
+                                                }
 
-                                                  return Column(
-                                                    children: moreLovedOnes
-                                                        .map((lovedOne) {
-                                                      String relationName =
-                                                          lovedOne[
-                                                                  'relation'] ??
-                                                              '';
-                                                      String name =
-                                                          lovedOne['name'] ??
-                                                              '';
+                                                return Column(
+                                                  children: moreLovedOnes
+                                                      .map((lovedOne) {
+                                                    String relationName =
+                                                        lovedOne['relation'] ??
+                                                            '';
+                                                    String name =
+                                                        lovedOne['name'] ?? '';
 
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                bottom: 20.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              relationName,
-                                                              style: theme
-                                                                  .textTheme
-                                                                  .bodyMedium!
-                                                                  .copyWith(
-                                                                      color: AppColors
-                                                                          .textColorblack,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400,
-                                                                      fontSize:
-                                                                          16),
-                                                            ),
-                                                            Container(
-                                                              padding: EdgeInsets
-                                                                  .only(
-                                                                      left: 10),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8),
-                                                                color: AppColors
-                                                                    .kwhiteColor,
-                                                              ),
-                                                              width:
-                                                                  deviceWidth *
-                                                                      0.5555,
-                                                              height: 48,
-                                                              child: Align(
-                                                                alignment: Alignment
-                                                                    .centerLeft,
-                                                                child: Text(
-                                                                  name,
-                                                                  style: theme
-                                                                      .textTheme
-                                                                      .bodyMedium!
-                                                                      .copyWith(
-                                                                          color: AppColors
-                                                                              .textColorblack,
-                                                                          fontWeight:
-                                                                              FontWeight.w400),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      );
-                                                    }).toList(),
-                                                  );
-                                                },
-                                              ),
-                                              GestureDetector(
-                                                onTap: () async {
-                                                  await showModalBottomSheet(
-                                                    isScrollControlled: true,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    enableDrag: false,
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return const AddLovedOnesBottomSheet();
-                                                    },
-                                                  );
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 10.0),
-                                                  child: Container(
-                                                      width: deviceWidth,
-                                                      height: 47,
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              color: const Color
-                                                                  .fromARGB(
-                                                                  255,
-                                                                  178,
-                                                                  178,
-                                                                  178)),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      40)),
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 20.0),
                                                       child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            const Icon(
-                                                              Icons.add,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            relationName,
+                                                            style: theme
+                                                                .textTheme
+                                                                .bodyMedium!
+                                                                .copyWith(
                                                               color: AppColors
                                                                   .textColorblack,
-                                                              size: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
                                                             ),
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            Text(
-                                                                'Add a loved one',
+                                                          ),
+                                                          Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              color: AppColors
+                                                                  .kwhiteColor,
+                                                            ),
+                                                            width: deviceWidth *
+                                                                0.5555,
+                                                            height: 48,
+                                                            child: Center(
+                                                              child: Text(
+                                                                name,
                                                                 style: theme
                                                                     .textTheme
                                                                     .bodyMedium!
                                                                     .copyWith(
+                                                                        color: AppColors
+                                                                            .textColorblack,
                                                                         fontWeight:
-                                                                            FontWeight.w500)),
-                                                          ])),
-                                                ),
+                                                                            FontWeight.w400),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                );
+                                              },
+                                            ),
+                                            GestureDetector(
+                                              onTap: () async {
+                                                await showModalBottomSheet(
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  enableDrag: false,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return const AddLovedOnesBottomSheet();
+                                                  },
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
+                                                child: Container(
+                                                    width: deviceWidth,
+                                                    height: 47,
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: const Color
+                                                                .fromARGB(255,
+                                                                178, 178, 178)),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(40)),
+                                                    child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          const Icon(
+                                                            Icons.add,
+                                                            color: AppColors
+                                                                .textColorblack,
+                                                            size: 20,
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 10),
+                                                          Text(
+                                                              'Add a loved one',
+                                                              style: theme
+                                                                  .textTheme
+                                                                  .bodyMedium!
+                                                                  .copyWith(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500)),
+                                                        ])),
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 20),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
                                     ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: MediaQuery.sizeOf(context).width * 1.0,
-                    height: 120.0,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12)),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: SizedBox(
-                            width: MediaQuery.sizeOf(context).width * 0.85,
-                            height: 60,
-                            child: ElevatedButton(
-                                onPressed: () async {
-                                  if (currentpage_index == 2) {
-                                    childdata.lovedonce.add(Lovedonces(
-                                        relation: "Mother",
-                                        name: mother.text.isNotEmpty
-                                            ? mother.text
-                                            : "Add Mother Name"));
-                                    childdata.lovedonce.add(Lovedonces(
-                                        relation: "Father",
-                                        name: father.text.isNotEmpty
-                                            ? father.text
-                                            : "Add Father Name"));
-                                    childdata.lovedonce.add(Lovedonces(
-                                        relation: "Grand mother",
-                                        name: GrandMother.text.isNotEmpty
-                                            ? GrandMother.text
-                                            : "Add GrandMother Name"));
-                                    childdata.lovedonce.add(Lovedonces(
-                                        relation: "Grand father",
-                                        name: GrandFather.text.isNotEmpty
-                                            ? GrandFather.text
-                                            : "Add GrandFather Name"));
-                                    childdata.lovedonce.add(Lovedonces(
-                                        relation: "Female friend",
-                                        name: pet.text.isNotEmpty
-                                            ? pet.text
-                                            : "Add Friend Name"));
-                                    List<Map<String, dynamic>> lovedOnceList =
-                                        childdata.lovedonce
-                                            .map((lovedonce) =>
-                                                lovedonce.toMap())
-                                            .toList();
-                                    try {
-                                      // Get the currently authenticated user
-                                      User? user =
-                                          FirebaseAuth.instance.currentUser;
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: SizedBox(
+                        width: MediaQuery.sizeOf(context).width * 0.85,
+                        height: 60,
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              if (currentpage_index == 1) {
+                                childdata.lovedonce.add(Lovedonces(
+                                    relation: "Mother",
+                                    name: mother.text.isNotEmpty
+                                        ? mother.text
+                                        : "Add Mother Name"));
+                                childdata.lovedonce.add(Lovedonces(
+                                    relation: "Father",
+                                    name: father.text.isNotEmpty
+                                        ? father.text
+                                        : "Add Father Name"));
+                                childdata.lovedonce.add(Lovedonces(
+                                    relation: "Grand mother",
+                                    name: GrandMother.text.isNotEmpty
+                                        ? GrandMother.text
+                                        : "Add GrandMother Name"));
+                                childdata.lovedonce.add(Lovedonces(
+                                    relation: "Grand father",
+                                    name: GrandFather.text.isNotEmpty
+                                        ? GrandFather.text
+                                        : "Add GrandFather Name"));
+                                childdata.lovedonce.add(Lovedonces(
+                                    relation: "Female friend",
+                                    name: pet.text.isNotEmpty
+                                        ? pet.text
+                                        : "Add Friend Name"));
+                                List<Map<String, dynamic>> lovedOnceList =
+                                    childdata.lovedonce
+                                        .map((lovedonce) => lovedonce.toMap())
+                                        .toList();
+                                try {
+                                  // Get the currently authenticated user
+                                  User? user =
+                                      FirebaseAuth.instance.currentUser;
 
-                                      if (user != null) {
-                                        String userId =
-                                            user.uid; // Get the user ID
+                                  if (user != null) {
+                                    String userId = user.uid; // Get the user ID
 
-                                        await FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(userId)
-                                            .update({
-                                          'email': user.email,
-                                          'phone': '',
+                                    await FirebaseFirestore.instance
+                                        .collection('users')
+                                        .doc(userId)
+                                        .update({
+                                      'email': user.email,
+                                      'phone': '',
 
-                                          'child_name': childdata.name,
-                                          'gender': childdata.gender ==
-                                                  Gender.he
-                                              ? 'He'
-                                              : childdata.gender == Gender.she
-                                                  ? 'She'
-                                                  : 'Prefer not to say',
-                                          'fav_things': childdata.favthings,
-                                          'dob': childdata.dob,
-                                          'loved_once': lovedOnceList,
+                                      'child_name': childdata.name,
+                                      'gender': childdata.gender == Gender.he
+                                          ? 'He'
+                                          : childdata.gender == Gender.she
+                                              ? 'She'
+                                              : 'Prefer not to say',
+                                      // 'fav_things': childdata.favthings,
+                                      'dob': childdata.dob,
+                                      'loved_once': lovedOnceList,
 
-                                          'displayName':
-                                              "displayName", // Update as needed
-                                          'photoURL':
-                                              "photoURL", // Update as needed
-                                          'newUser': false,
-                                        });
-                                        print("User data updated successfully");
-                                        context.push('/splashScreen');
-                                      } else {
-                                        print(
-                                            "No user is currently signed in.");
-                                      }
-                                    } catch (e) {
-                                      print("Error updating user data: $e");
-                                    }
+                                      'displayName':
+                                          "displayName", // Update as needed
+                                      'photoURL':
+                                          "photoURL", // Update as needed
+                                      'newUser': false,
+                                    });
+                                    print("User data updated successfully");
+                                    context.push('/splashScreen');
                                   } else {
-                                    if (currentpage_index == 0 &&
-                                        childdata.name.trim().isEmpty) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          backgroundColor:
-                                              AppColors.snackBarBackground,
-                                          content: Text(
-                                            "Please enter Child name.",
-                                            style: theme.textTheme.bodyMedium
-                                                ?.copyWith(
-                                                    color:
-                                                        AppColors.textColorblue,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                          ),
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      );
-                                    } else if (currentpage_index == 0 &&
-                                        childdata.gender ==
-                                            Gender.notselected) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          backgroundColor:
-                                              AppColors.snackBarBackground,
-                                          content: Text(
-                                            "Please select gender",
-                                            style: theme.textTheme.bodyMedium
-                                                ?.copyWith(
-                                                    color:
-                                                        AppColors.textColorblue,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                          ),
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      );
-                                    } else {
-                                      await pageViewController?.nextPage(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        curve: Curves.ease,
-                                      );
-                                    }
+                                    print("No user is currently signed in.");
                                   }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  foregroundColor: Colors.white,
-                                  backgroundColor:
-                                      Colors.white, // Text (foreground) color
-                                ),
-                                child: (currentpage_index == 2)
-                                    ? Text("Done",
-                                        style: theme.textTheme.bodyLarge!
-                                            .copyWith(
+                                } catch (e) {
+                                  print("Error updating user data: $e");
+                                }
+                              } else {
+                                if (currentpage_index == 0 &&
+                                    childdata.name.trim().isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor:
+                                          AppColors.snackBarBackground,
+                                      content: Text(
+                                        "Please enter Child name.",
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
                                                 color: AppColors.textColorblue,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w400))
-                                    : Text("Continue",
-                                        style: theme.textTheme.bodyLarge!
-                                            .copyWith(
+                                                fontWeight: FontWeight.w400),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                } else if (currentpage_index == 0 &&
+                                    childdata.gender == Gender.notselected) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor:
+                                          AppColors.snackBarBackground,
+                                      content: Text(
+                                        "Please select gender",
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
                                                 color: AppColors.textColorblue,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w400))),
-                          ),
-                        )
-                      ],
+                                                fontWeight: FontWeight.w400),
+                                      ),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                } else {
+                                  await pageViewController?.nextPage(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.ease,
+                                  );
+                                }
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              foregroundColor: Colors.white,
+                              backgroundColor:
+                                  Colors.white, // Text (foreground) color
+                            ),
+                            child: (currentpage_index == 1)
+                                ? Text("Done",
+                                    style: theme.textTheme.bodyLarge!.copyWith(
+                                        color: AppColors.textColorblue,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400))
+                                : Text("Continue",
+                                    style: theme.textTheme.bodyLarge!.copyWith(
+                                        color: AppColors.textColorblue,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400))),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },
@@ -1444,6 +1356,7 @@ class Relations extends StatelessWidget {
           width: deviceWidth * 0.5555,
           height: 48,
           child: TextField(
+            textCapitalization: TextCapitalization.sentences,
             style: theme.textTheme.bodyMedium,
             controller: controller,
             textAlign: TextAlign.left,
@@ -1465,7 +1378,9 @@ class Relations extends StatelessWidget {
               errorBorder: InputBorder.none,
               focusedErrorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              hintText: 'Type ${relationName.toLowerCase()}\'s name',
+              // hintText: 'Type ${relationName.toLowerCase()}\'s name',
+              hintText: 'Type name here',
+
               hintStyle: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textColorDimGrey,
                 fontWeight: FontWeight.w400,

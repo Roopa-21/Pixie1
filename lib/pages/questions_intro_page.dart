@@ -36,7 +36,7 @@ class QuestionsIntroPage extends StatelessWidget {
                   left: deviceheight * 0.0147,
                   right: deviceheight * 0.0147,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 10.0,
                     ),
                     child: ShaderMask(

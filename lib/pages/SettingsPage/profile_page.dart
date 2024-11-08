@@ -103,6 +103,7 @@ class _ProfilePageState extends State<ProfilePage>
             style: theme.textTheme.bodyMedium,
           ),
           content: TextField(
+            textCapitalization: TextCapitalization.sentences,
             style: theme.textTheme.bodyMedium,
             controller: _nameController,
             cursorColor: AppColors.textColorblue,
@@ -318,6 +319,7 @@ class _ProfilePageState extends State<ProfilePage>
               const Text("Are you sure you want to delete your account?"),
               const SizedBox(height: 10),
               TextField(
+                textCapitalization: TextCapitalization.sentences,
                 maxLines: null,
                 controller: reasonController,
                 decoration: const InputDecoration(
@@ -374,6 +376,7 @@ class _ProfilePageState extends State<ProfilePage>
             style: theme.textTheme.bodyMedium,
           ),
           content: TextField(
+            textCapitalization: TextCapitalization.sentences,
             style: theme.textTheme.bodyMedium,
             cursorColor: AppColors.kpurple,
             controller: _familyController,
@@ -779,6 +782,7 @@ class _ProfilePageState extends State<ProfilePage>
               children: [
                 Expanded(
                   child: TextField(
+                    textCapitalization: TextCapitalization.sentences,
                     controller: TextEditingController(text: detailAnswer),
                     enabled: false,
                     style: theme.textTheme.bodyMedium?.copyWith(

@@ -46,6 +46,7 @@ class _NameCharacterBottomsheetState extends State<NameCharacterBottomsheet> {
             ),
             const SizedBox(height: 16),
             TextField(
+              textCapitalization: TextCapitalization.sentences,
               cursorColor: AppColors.textColorblue,
               decoration: InputDecoration(
                 hintText: 'Character name',

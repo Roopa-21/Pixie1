@@ -20,6 +20,7 @@ class FetchStoryRepository1 {
           'title': doc['title'],
           'storytype': doc['storytype'],
           'audiofile': doc['audiofile'],
+          'genre': doc['genre'],
           'isfav': doc['isfav'],
           'language': doc['language'],
           'createdTime': doc['createdTime'], // Include the createdTime field

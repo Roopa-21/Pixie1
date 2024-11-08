@@ -18,16 +18,19 @@ class _OnboardingPageState extends State<OnboardingPage> {
       "title": "Your personalised\n storyteller",
       "description":
           "Pixie magically creates personalized audio adventures starring your child, tailored to their unique interests and imagination.",
+      "image": "assets/images/1.png"
     },
     {
       "title": "Screen free\n entertainment",
       "description":
           "Worried about your child's screentime? Pixie brings back that love of stories without the screen.",
+      "image": "assets/images/2.png"
     },
     {
       "title": "Supercharge young\n minds",
       "description":
           "Ignite imagination, sharpen focus, and boost memory through magical storytelling.",
+      "image": "assets/images/3.png"
     },
   ];
 
@@ -54,6 +57,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 return OnboardContent(
                   title: onboardData[index]['title']!,
                   description: onboardData[index]['description']!,
+                  image: onboardData[index]['image']!,
                 );
               },
             ),
@@ -133,11 +137,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
 class OnboardContent extends StatelessWidget {
   final String title;
   final String description;
+  final String image;
 
   const OnboardContent({
     super.key,
     required this.title,
     required this.description,
+    required this.image,
   });
 
   @override
@@ -151,7 +157,7 @@ class OnboardContent extends StatelessWidget {
           width: devicewidth,
           height: deviceheight * 0.46,
           child: Image.asset(
-            'assets/images/onboarding_image.png',
+            image,
             fit: BoxFit.cover,
           ),
         ),

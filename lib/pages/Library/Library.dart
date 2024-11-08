@@ -239,6 +239,7 @@ class _LibraryState extends State<Library> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: storylistCard(
+              genre: story['genre'] ?? 'Funny',
               theme: theme,
               title: story['title'],
               storytype: story['storytype'],
@@ -262,6 +263,7 @@ class _LibraryState extends State<Library> {
   }
 
   Widget storylistCard({
+    required String genre,
     required ThemeData theme,
     required String title,
     required String storytype,
@@ -280,7 +282,7 @@ class _LibraryState extends State<Library> {
             Expanded(
               flex: 2,
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 height: 70,
                 width: 100,
                 decoration: BoxDecoration(
@@ -291,11 +293,21 @@ class _LibraryState extends State<Library> {
                       color: AppColors.kgreyColor.withOpacity(0.4),
                       blurRadius: 7,
                       spreadRadius: 0.5,
-                      offset: Offset(0, 5),
+                      offset: const Offset(0, 5),
                     )
                   ],
                 ),
-                child: Image.asset('assets/images/star.png'),
+                child: genre == "Surprise me"
+                    ? Image.asset('assets/images/surpriceme.png')
+                    : genre == "Funny"
+                        ? Image.asset('assets/images/FUNNY.png')
+                        : genre == "Horror"
+                            ? Image.asset('assets/images/HORROR.png')
+                            : genre == "Adventure"
+                                ? Image.asset('assets/images/adventure.png')
+                                : genre == "Action"
+                                    ? Image.asset('assets/images/Action.png')
+                                    : Image.asset('assets/images/ScI-Fi.png'),
               ),
             ),
             const SizedBox(width: 10),

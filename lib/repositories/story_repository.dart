@@ -32,7 +32,7 @@ class StoryRepository {
             'relative_name': relative_name,
             'genre': genre,
             'lessons': lessons,
-            'length': length,
+            'length': 200,
             'language': language,
           },
         ));
