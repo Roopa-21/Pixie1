@@ -26,9 +26,9 @@ class _FeedbackPageState extends State<FeedbackPage> {
   void initState() {
     super.initState();
     User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      context.read<FeedbackBloc>().add(CheckFeedbackEvent(user.uid));
-    }
+    // if (user != null) {
+    //   context.read<FeedbackBloc>().add(CheckFeedbackEvent(user.uid));
+    // }
     currentQuestionsLikedDisliked = _initialQuestions();
   }
 

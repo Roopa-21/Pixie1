@@ -279,36 +279,36 @@ class _LibraryState extends State<Library> {
         color: Colors.transparent,
         child: Row(
           children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                height: 70,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(2),
-                  color: AppColors.kwhiteColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.kgreyColor.withOpacity(0.4),
-                      blurRadius: 7,
-                      spreadRadius: 0.5,
-                      offset: const Offset(0, 5),
-                    )
-                  ],
-                ),
-                child: genre == "Surprise me"
-                    ? Image.asset('assets/images/surpriceme.png')
-                    : genre == "Funny"
-                        ? Image.asset('assets/images/FUNNY.png')
-                        : genre == "Horror"
-                            ? Image.asset('assets/images/HORROR.png')
-                            : genre == "Adventure"
-                                ? Image.asset('assets/images/adventure.png')
-                                : genre == "Action"
-                                    ? Image.asset('assets/images/Action.png')
-                                    : Image.asset('assets/images/ScI-Fi.png'),
+            Container(
+              padding: const EdgeInsets.all(10),
+              height: 80,
+              width: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: AppColors.kwhiteColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.kgreyColor.withOpacity(0.4),
+                    blurRadius: 7,
+                    spreadRadius: 0.5,
+                    offset: const Offset(0, 5),
+                  )
+                ],
               ),
+              child: genre == "Surprise me"
+                  ? Image.asset(
+                      'assets/images/surpriceme.png',
+                      fit: BoxFit.fill,
+                    )
+                  : genre == "Funny"
+                      ? Image.asset('assets/images/FUNNY.png')
+                      : genre == "Horror"
+                          ? Image.asset('assets/images/HORROR.png')
+                          : genre == "Adventure"
+                              ? Image.asset('assets/images/adventure.png')
+                              : genre == "Action"
+                                  ? Image.asset('assets/images/Action.png')
+                                  : Image.asset('assets/images/ScI-Fi.png'),
             ),
             const SizedBox(width: 10),
             Expanded(
