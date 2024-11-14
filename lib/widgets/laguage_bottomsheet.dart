@@ -44,7 +44,7 @@ class _LaguageBottomsheetState extends State<LaguageBottomsheet> {
                       'Language of the story',
                       style: theme.textTheme.displaySmall!.copyWith(
                           color: AppColors.textColorblue,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w700,
                           fontSize: MediaQuery.of(context).size.width * .08),
                     ),
                     const SizedBox(height: 25),

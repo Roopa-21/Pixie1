@@ -80,7 +80,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     profilelistCard(
                       title: 'Profile',
                       ontap: () {
-                        context.push('/profilePage');
+                        // Check if the user is a guest
+                        final authState = context.read<AuthBloc>().state;
+                        if (authState is AuthGuest) {
+                          // If guest, navigate to the login page
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthGuestLoginRequested());
+                          context.push('/CreateAccount');
+                        } else {
+                          // If authenticated, navigate to AddCharacter page
+                          context.push('/profilePage');
+                        }
                       },
                       icon_path: 'assets/images/profile.svg',
                       theme: theme,
@@ -88,7 +99,18 @@ class _SettingsPageState extends State<SettingsPage> {
                     profilelistCard(
                       title: 'Feedback',
                       ontap: () {
-                        context.push('/feedbackPage');
+                        // Check if the user is a guest
+                        final authState = context.read<AuthBloc>().state;
+                        if (authState is AuthGuest) {
+                          // If guest, navigate to the login page
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthGuestLoginRequested());
+                          context.push('/CreateAccount');
+                        } else {
+                          // If authenticated, navigate to AddCharacter page
+                          context.push('/feedbackPage');
+                        }
                       },
                       icon_path: 'assets/images/feedbacak.svg',
                       theme: theme,
@@ -104,21 +126,31 @@ class _SettingsPageState extends State<SettingsPage> {
                     profilelistCard(
                       title: 'Logout',
                       ontap: () async {
-                        await showModalBottomSheet(
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          enableDrag: false,
-                          context: context,
-                          builder: (context) {
-                            return GestureDetector(
-                              onTap: () => FocusScope.of(context).unfocus(),
-                              child: Padding(
-                                padding: MediaQuery.viewInsetsOf(context),
-                                child: const LogoutBottomSheet(),
-                              ),
-                            );
-                          },
-                        );
+                        // Check if the user is a guest
+                        final authState = context.read<AuthBloc>().state;
+                        if (authState is AuthGuest) {
+                          // If guest, navigate to the login page
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthGuestLoginRequested());
+                          context.push('/CreateAccount');
+                        } else {
+                          await showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            enableDrag: false,
+                            context: context,
+                            builder: (context) {
+                              return GestureDetector(
+                                onTap: () => FocusScope.of(context).unfocus(),
+                                child: Padding(
+                                  padding: MediaQuery.viewInsetsOf(context),
+                                  child: const LogoutBottomSheet(),
+                                ),
+                              );
+                            },
+                          );
+                        }
                       },
                       icon_path: 'assets/images/logout.svg',
                       theme: theme,

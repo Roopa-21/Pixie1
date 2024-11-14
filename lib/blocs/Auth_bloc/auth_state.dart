@@ -44,3 +44,8 @@ class PasswordVisibilityState extends AuthState {
 
   PasswordVisibilityState(this.isPasswordVisible);
 }
+
+// New State for Guest Login
+class AuthGuest extends AuthState {}
+
+class AuthGuestcreateaccount extends AuthState {}

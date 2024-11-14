@@ -83,7 +83,8 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                         'Add a loved one',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: AppColors.textColorblue,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 34,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 10),

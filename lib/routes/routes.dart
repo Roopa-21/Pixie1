@@ -33,7 +33,7 @@ import 'package:pixieapp/pages/home/home_page.dart' as home;
 
 bool isUserAuthenticated(BuildContext context) {
   final authState = context.read<AuthBloc>().state;
-  return authState is AuthAuthenticated;
+  return authState is AuthAuthenticated || authState is AuthGuest;
 }
 
 bool isAuthStateChecked(BuildContext context) {
@@ -64,10 +64,12 @@ final GoRouter router = GoRouter(
 
         if (authState is AuthInitial) {
           return const SplashScreen();
-        } else if (authState is AuthAuthenticated) {
-          final userId = authState.userId;
+        } else if (authState is AuthAuthenticated || authState is AuthGuest) {
+          final userId =
+              authState is AuthAuthenticated ? authState.userId : null;
           return FutureBuilder<bool>(
-            future: checkIfNewUser(userId),
+            future:
+                userId != null ? checkIfNewUser(userId) : Future.value(false),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const LoadingWidget();
@@ -134,7 +136,7 @@ final GoRouter router = GoRouter(
         return StoryGeneratePage(
           story: story,
           storytype: storytype!,
-          language: language!,
+          language: language,
         );
       },
     ),
@@ -158,7 +160,7 @@ final GoRouter router = GoRouter(
       path: '/AllStories',
       builder: (context, state) => const AllStories(),
     ),
-      GoRoute(
+    GoRoute(
       path: '/searchPage',
       builder: (context, state) => const SearchPage(),
     ),
@@ -194,7 +196,7 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-     GoRoute(
+    GoRoute(
       path: '/aboutPage',
       builder: (context, state) => const AboutPage(),
     ),
@@ -220,7 +222,7 @@ final GoRouter router = GoRouter(
       return '/';
     }
 
-    final loggedIn = authState is AuthAuthenticated;
+    final loggedIn = authState is AuthAuthenticated || authState is AuthGuest;
     final loggingIn =
         state.uri.toString() == '/' || state.uri.toString() == '/Loginpage';
 

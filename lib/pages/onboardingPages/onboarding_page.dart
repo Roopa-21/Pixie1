@@ -190,17 +190,15 @@ class OnboardContent extends StatelessWidget {
             left: deviceheight * 0.029,
             right: deviceheight * 0.029,
           ),
-          child: Flexible(
-            child: Text(
-              description,
-              style: theme.textTheme.bodyLarge!.copyWith(
-                  color: AppColors.textColorGrey,
-                  fontWeight: FontWeight.w400,
-                  height: devicewidth * 0.0035,
-                  fontSize: 20),
-              textAlign: TextAlign.center,
-              softWrap: true,
-            ),
+          child: Text(
+            description,
+            style: theme.textTheme.bodyLarge!.copyWith(
+                color: AppColors.textColorGrey,
+                fontWeight: FontWeight.w400,
+                height: devicewidth * 0.0035,
+                fontSize: 20),
+            textAlign: TextAlign.center,
+            softWrap: true,
           ),
         ),
       ],

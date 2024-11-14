@@ -88,7 +88,7 @@ class _LoginpageState extends State<Loginpage> {
                     ),
                     const SizedBox(height: 30),
                     TextField(
-                      textCapitalization: TextCapitalization.sentences,
+                      // textCapitalization: TextCapitalization.sentences,
                       style: theme.textTheme.bodyMedium,
                       cursorColor: AppColors.kpurple,
                       controller: _emailController,

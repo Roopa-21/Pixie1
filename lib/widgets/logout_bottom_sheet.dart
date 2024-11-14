@@ -45,7 +45,7 @@ class _LogoutBottomSheetState extends State<LogoutBottomSheet> {
                   style: theme.textTheme.displayMedium?.copyWith(
                       color: AppColors.textColorblue,
                       fontSize: 24,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
             ),
             // const SizedBox(height: 25),
             Expanded(

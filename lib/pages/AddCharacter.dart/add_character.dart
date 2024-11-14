@@ -190,7 +190,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       color: AppColors
                                                           .textColorblue,
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w700,
                                                       fontSize: 34),
                                             ),
                                             const SizedBox(height: 25),
@@ -233,7 +233,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       color: AppColors
                                                           .textColorblue,
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w700,
                                                       fontSize: 34),
                                             ),
                                             const SizedBox(height: 25),
@@ -338,7 +338,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .textColorblue,
                                                       fontSize: 34,
                                                       fontWeight:
-                                                          FontWeight.w400),
+                                                          FontWeight.w700),
                                             ),
                                             Padding(
                                               padding:
@@ -643,7 +643,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                         color: AppColors
                                                             .textColorblue,
                                                         fontWeight:
-                                                            FontWeight.w400,
+                                                            FontWeight.w700,
                                                         fontSize: width * .08),
                                               ),
                                             ),
@@ -768,6 +768,25 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                             .transparent),
                                                                 const SizedBox(
                                                                     width: 5),
+                                                                characterItem ==
+                                                                        'Surprise me'
+                                                                    ? const Image(
+                                                                        width:
+                                                                            25,
+                                                                        height:
+                                                                            25,
+                                                                        image: AssetImage(
+                                                                            'assets/images/surpriceme1.png'),
+                                                                        fit: BoxFit
+                                                                            .fill,
+                                                                      )
+                                                                    : const SizedBox(),
+                                                                characterItem ==
+                                                                        'Surprise me'
+                                                                    ? const SizedBox(
+                                                                        width:
+                                                                            5)
+                                                                    : const SizedBox(),
                                                                 Text(
                                                                   characterItem,
                                                                   style: theme
@@ -1020,7 +1039,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .textColorblue,
                                                       fontSize: 34,
                                                       fontWeight:
-                                                          FontWeight.w400),
+                                                          FontWeight.w700),
                                             ),
                                             Padding(
                                               padding:
@@ -1165,6 +1184,25 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                     const SizedBox(
                                                                         width:
                                                                             5),
+                                                                    lesson ==
+                                                                            'Surprise me'
+                                                                        ? const Image(
+                                                                            width:
+                                                                                25,
+                                                                            height:
+                                                                                25,
+                                                                            image:
+                                                                                AssetImage('assets/images/surpriceme1.png'),
+                                                                            fit:
+                                                                                BoxFit.fill,
+                                                                          )
+                                                                        : const SizedBox(),
+                                                                    lesson ==
+                                                                            'Surprise me'
+                                                                        ? const SizedBox(
+                                                                            width:
+                                                                                5)
+                                                                        : const SizedBox(),
                                                                     Text(
                                                                       lesson
                                                                           .toString(),
@@ -1309,7 +1347,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                                           .textColorblue,
                                                       fontSize: 34,
                                                       fontWeight:
-                                                          FontWeight.w400),
+                                                          FontWeight.w700),
                                             ),
                                             Padding(
                                               padding:
@@ -1702,7 +1740,7 @@ class _AddCharacterState extends State<AddCharacter> {
                   ),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 5,
                   child: Row(
                     children: [
                       Container(

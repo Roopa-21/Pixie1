@@ -21,7 +21,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthCheckStatus>(_onCheckStatus);
     on<AuthCheckAuthState>(_onCheckAuthState);
     on<TogglePasswordVisibilityEvent>(_onAuthShowPassword);
-    // Handle phone number sign-in
     on<SendOtpToPhoneEvent>((event, emit) async {
       emit(AuthLoading());
 
@@ -96,19 +95,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           });
         }
         emit(AuthAuthenticated(userId: userId));
-        // emit(LoginScreenLoadedState());
       } catch (e) {
         emit(LoginScreenErrorState(error: e.toString()));
       }
     });
+
+    // New handler for guest login event
+    on<AuthGuestLoginRequested>((event, emit) {
+      emit(AuthGuest());
+    });
+    on<AuthGuestcreateaccountRequested>((event, emit) {
+      emit(AuthGuestcreateaccount());
+    });
   }
 
-  // Listen to Firebase auth state changes asynchronously
   Future<void> _onCheckAuthState(
       AuthCheckAuthState event, Emitter<AuthState> emit) async {
-    emit(AuthLoading()); // Emit loading state initially
+    emit(AuthLoading());
     try {
-      // Listening to Firebase auth state changes
       _firebaseAuth.authStateChanges().listen((User? user) {
         if (emit.isDone) return;
         if (user != null) {
@@ -125,7 +129,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  // Handle email sign-in
   Future<void> _onEmailSignInRequested(
       AuthEmailSignInRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
@@ -141,19 +144,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  // Handle email sign-up
   Future<void> _onEmailSignUpRequested(
       AuthEmailSignUpRequested event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      // Create user with Firebase Authentication
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: event.email,
         password: event.password,
       );
 
-      // Get user id
       String userId = userCredential.user!.uid;
 
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
@@ -177,7 +177,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           'newUser': true
         });
       }
-      // Emit authenticated state after successful sign-up and Firestore operation
       emit(AuthAuthenticated(userId: userId));
     } catch (e) {
       emit(AuthError(message: e.toString()));
@@ -186,61 +185,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onGoogleSignInRequested(
       AuthGoogleSignInRequested event, Emitter<AuthState> emit) async {
-    emit(AuthLoading()); // Emit loading state
+    emit(AuthLoading());
 
     try {
-      // Create GoogleSignIn instance
       final GoogleSignIn googleSignIn = GoogleSignIn();
-
-      // Try signing in
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
-      // If googleUser is null, sign-in was aborted
       if (googleUser == null) {
         emit(AuthError(message: 'Google sign-in aborted.'));
-        return; // Stop execution here
+        return;
       }
 
-      // Obtain authentication details from the googleUser
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
 
-      // If accessToken or idToken is null, something went wrong
       if (googleAuth.accessToken == null || googleAuth.idToken == null) {
         emit(
             AuthError(message: 'Google authentication failed: missing token.'));
-        return; // Stop execution here
+        return;
       }
 
-      // Create an AuthCredential from googleAuth
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Sign in with the credential to Firebase
       UserCredential userCredential =
           await _firebaseAuth.signInWithCredential(credential);
 
-      // Get the user ID and other user details
       String userId = userCredential.user!.uid;
       String? email = userCredential.user!.email;
       String? displayName = userCredential.user!.displayName;
       String? photoURL = userCredential.user!.photoURL;
 
-      // Check if the user already exists in Firestore
-      // Check if the user already exists in Firestore
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
-      // Check if the user already exists in Firestore
-      // DocumentSnapshot userDoc = await FirebaseFirestore.instance
-      //     .collection('users')
-      //     .doc(userId)
-      //     .get();
-
-      // If the user doesn't exist, create a new document
 
       if (!userDoc.exists) {
         await FirebaseFirestore.instance.collection('users').doc(userId).set({
@@ -260,26 +241,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
       }
 
-      // Emit the Authenticated state with the user's UID
       emit(AuthAuthenticated(userId: userId));
     } on PlatformException catch (e) {
       print(e);
-      // Emit AuthError to stop loading and show the error
       emit(AuthError(message: 'PlatformException: ${e.message}'));
     } catch (e) {
-      // General error handling
       emit(AuthError(message: 'Google Sign-In Failed: ${e.toString()}'));
     }
   }
 
-  // Handle log out
   Future<void> _onLogOutRequested(
       AuthLogOutRequested event, Emitter<AuthState> emit) async {
     await _firebaseAuth.signOut();
     emit(AuthUnauthenticated());
   }
 
-  // Check current authentication status
   Future<void> _onCheckStatus(
       AuthCheckStatus event, Emitter<AuthState> emit) async {
     User? user = _firebaseAuth.currentUser;

@@ -57,7 +57,7 @@ class _LessonBottomsheetState extends State<LessonBottomsheet> {
                 'Add a lesson to the story..',
                 style: theme.textTheme.displayMedium?.copyWith(
                   color: AppColors.textColorblue,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 10),

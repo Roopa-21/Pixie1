@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
 import 'package:pixieapp/const/colors.dart';
@@ -73,7 +76,12 @@ class _HomePageState extends State<HomePage> {
   String formatText(String text, String language) {
     if (language.toLowerCase() == 'hindi') {
       return text.replaceAll(
-          'child_name', 'राम'); // Replace with "राम" in Hindi
+          'child_name', 'रियो'); // Replace with "राम" in Hindi
+    }
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthGuest) {
+      // If guest, default name
+      return text.replaceAll('child_name', 'Rio');
     }
     return text.replaceAll(
         'child_name', childName); // Use fetched child name for other languages
@@ -331,7 +339,20 @@ class _HomePageState extends State<HomePage> {
                   Align(
                     alignment: Alignment.center,
                     child: InkWell(
-                      onTap: () => context.push('/feedbackPage'),
+                      onTap: () {
+                        // Check if the user is a guest
+                        final authState = context.read<AuthBloc>().state;
+                        if (authState is AuthGuest) {
+                          // If guest, navigate to the login page
+                          context
+                              .read<AuthBloc>()
+                              .add(AuthGuestLoginRequested());
+                          context.push('/CreateAccount');
+                        } else {
+                          // If authenticated, navigate to AddCharacter page
+                          context.push('/feedbackPage');
+                        }
+                      },
                       child: Text(
                         'Give feedback',
                         style: theme.textTheme.headlineLarge!.copyWith(
@@ -361,7 +382,18 @@ class _HomePageState extends State<HomePage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: InkWell(
-              onTap: () => context.push('/AddCharacter'),
+              onTap: () {
+                // Check if the user is a guest
+                final authState = context.read<AuthBloc>().state;
+                if (authState is AuthGuest) {
+                  // If guest, navigate to the login page
+                  context.read<AuthBloc>().add(AuthGuestLoginRequested());
+                  context.push('/CreateAccount');
+                } else {
+                  // If authenticated, navigate to AddCharacter page
+                  context.push('/AddCharacter');
+                }
+              },
               child: Container(
                 width: width * .7,
                 height: 68,
