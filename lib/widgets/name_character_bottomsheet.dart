@@ -23,7 +23,7 @@ class _NameCharacterBottomsheetState extends State<NameCharacterBottomsheet> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(18), topRight: Radius.circular(18))),
       child: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -56,7 +56,7 @@ class _NameCharacterBottomsheetState extends State<NameCharacterBottomsheet> {
                 focusColor: AppColors.textColorblue,
                 focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.textColorblue)),
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
             ),
             Padding(

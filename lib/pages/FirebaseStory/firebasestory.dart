@@ -60,7 +60,7 @@ class _FirebasestoryState extends State<Firebasestory> {
         slivers: [
           SliverAppBar(
             automaticallyImplyLeading: false,
-            expandedHeight: deviceHeight * 0.38,
+            expandedHeight: deviceHeight * 0.20,
             leadingWidth: deviceWidth,
             collapsedHeight: deviceHeight * 0.08,
             pinned: true,
@@ -84,7 +84,7 @@ class _FirebasestoryState extends State<Firebasestory> {
                     ),
                   ),
                   background: Image.asset(
-                    'assets/images/appbarbg.jpg',
+                    'assets/images/appbarbg2.jpg',
                     fit: BoxFit.cover,
                   ),
                 );

@@ -61,7 +61,7 @@ class _AddCharactorStoryState extends State<AddCharactorStory> {
               style: theme.textTheme.displayMedium?.copyWith(
                 color: AppColors.textColorblue,
                 fontSize: 34,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 16),

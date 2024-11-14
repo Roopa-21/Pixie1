@@ -57,3 +57,8 @@ class AuthCheckStatus extends AuthEvent {}
 class AuthCheckAuthState extends AuthEvent {}
 
 class TogglePasswordVisibilityEvent extends AuthEvent {}
+
+// New Event for Guest Login
+class AuthGuestLoginRequested extends AuthEvent {}
+
+class AuthGuestcreateaccountRequested extends AuthEvent {}

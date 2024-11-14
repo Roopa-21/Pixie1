@@ -112,12 +112,19 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                               'Pronunciation',
                               'Voice modulation',
                               'Background music',
-                              'User journey'
+                              'User journey',
+                              'Storyline'
                             ])
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: ChoiceChip(
-                                  label: Text(issue),
+                                  label: Text(
+                                    issue,
+                                    style: TextStyle(
+                                        color: state.issues.contains(issue)
+                                            ? AppColors.textColorWhite
+                                            : AppColors.textColorblack),
+                                  ),
                                   selected: state.issues.contains(issue),
                                   onSelected: (selected) {
                                     context
@@ -126,6 +133,7 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                                   },
                                   selectedColor: AppColors.kpurple,
                                   backgroundColor: AppColors.kwhiteColor,
+                                  checkmarkColor: AppColors.textColorWhite,
                                 ),
                               ),
                           ],

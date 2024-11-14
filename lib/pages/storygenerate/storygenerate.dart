@@ -149,7 +149,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
           slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
-              expandedHeight: deviceHeight * 0.38,
+              expandedHeight: deviceHeight * 0.2,
               leadingWidth: deviceWidth,
               collapsedHeight: deviceHeight * 0.08,
               pinned: true,
@@ -173,7 +173,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                       ),
                     ),
                     background: Image.asset(
-                      'assets/images/appbarbg.jpg',
+                      'assets/images/appbarbg2.jpg',
                       fit: BoxFit.cover,
                     ),
                   );

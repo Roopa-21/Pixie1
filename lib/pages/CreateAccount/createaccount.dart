@@ -53,6 +53,8 @@ class _CreateAccountState extends State<CreateAccount> {
         if (state is AuthAuthenticated) {
           Navigator.of(context).pop();
           context.push('/questionIntroPage');
+        } else if (state is AuthGuest) {
+          context.go("/HomePage");
         } else if (state is AuthError) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -392,6 +394,20 @@ class _CreateAccountState extends State<CreateAccount> {
                                   color: AppColors.backgrountdarkpurple),
                             )
                           ])),
+                      const SizedBox(height: 10),
+                      InkWell(
+                        onTap: () => context
+                            .read<AuthBloc>()
+                            .add(AuthGuestLoginRequested()),
+                        child: RichText(
+                            text: TextSpan(
+                          text: 'Continue as guest',
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.backgrountdarkpurple),
+                        )),
+                      ),
                     ],
                   ),
                 ),

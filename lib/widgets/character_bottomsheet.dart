@@ -60,7 +60,7 @@ class _CharacterBottomsheetState extends State<CharacterBottomsheet> {
               Text('Select a Character',
                   style: theme.textTheme.displayMedium?.copyWith(
                       color: AppColors.textColorblue,
-                      fontWeight: FontWeight.w400)),
+                      fontWeight: FontWeight.w700)),
               const SizedBox(height: 10),
               Expanded(
                 child: SingleChildScrollView(

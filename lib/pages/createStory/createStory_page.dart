@@ -496,16 +496,16 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
             width: 5,
           ),
         ),
-        color: const Color.fromARGB(178, 241, 236, 236),
+        color: Colors.white.withOpacity(.4),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromARGB(100, 206, 190, 251),
-            blurRadius: 5,
-            spreadRadius: 1,
-            offset: Offset(0, 5),
-          )
-        ],
+        // boxShadow: const [
+        //   BoxShadow(
+        //     color: Color.fromARGB(100, 206, 190, 251),
+        //     blurRadius: 5,
+        //     spreadRadius: 1,
+        //     offset: Offset(0, 5),
+        //   )
+        // ],
       ),
       child: Row(
         children: [
@@ -516,11 +516,13 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
                 Text(title,
                     style: theme.textTheme.bodyMedium!.copyWith(
                         color: AppColors.kgreyColor,
+                        fontSize: 20,
                         fontWeight: FontWeight.w500)),
                 const SizedBox(height: 4),
                 Text(value,
                     style: theme.textTheme.bodyMedium!.copyWith(
                         color: AppColors.iconColor,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600)),
               ],
             ),

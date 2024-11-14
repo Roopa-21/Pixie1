@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
+import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_state.dart';
@@ -13,6 +16,7 @@ class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 2, right: 2),
       child: Container(
@@ -96,11 +100,20 @@ class NavBar extends StatelessWidget {
         Container(
           child: IconButton(
             onPressed: () {
-              context.read<NavBarBloc>().add(NavBarItemTapped(index));
-              if (index == 1) {
-                context.push(route);
+              // Check if the user is a guest
+              final authState = context.read<AuthBloc>().state;
+              if (authState is AuthGuest && label == 'Create' ||
+                  label == 'Library') {
+                // If guest, navigate to the login page
+                context.read<AuthBloc>().add(AuthGuestLoginRequested());
+                context.push('/CreateAccount');
               } else {
-                context.go(route);
+                context.read<NavBarBloc>().add(NavBarItemTapped(index));
+                if (index == 1) {
+                  context.push(route);
+                } else {
+                  context.go(route);
+                }
               }
             },
             icon: SvgPicture.asset(

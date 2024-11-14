@@ -50,7 +50,7 @@ class _LovedonceBottomsheetState extends State<LovedonceBottomsheet> {
                     Text('Select a loved one',
                         style: theme.textTheme.displayMedium?.copyWith(
                             color: AppColors.textColorblue,
-                            fontWeight: FontWeight.w400)),
+                            fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     Expanded(
                       child: SingleChildScrollView(
