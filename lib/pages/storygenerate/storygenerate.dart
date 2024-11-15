@@ -49,7 +49,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
 
   void _createInitialStoryEntry() async {
     final queryParams = GoRouterState.of(context).uri.queryParameters;
-
+    print('1212$_documentReference');
     if (_documentReference == null) {
       final docRef = await _addStoryToFirebase(
           audiopath: '', // Temporary empty audio path
@@ -61,10 +61,13 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
           language: queryParams['language']!,
           createdTime: DateTime.now(),
           audioRecordUrl: '');
-
-      setState(() {
-        _documentReference = docRef;
-      });
+      if (docRef != null) {
+        setState(() {
+          _documentReference = docRef;
+        });
+      } else {
+        print('Error creating initial story entry.');
+      }
     }
   }
 
@@ -74,30 +77,18 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
   bool ownAudioNavBar = false;
   bool callAppBar = false;
   String? audioUrl = '';
-  final ScrollController _scrollController = ScrollController();
-  Timer? _scrollTimer;
+
+  final DocumentReference documentRef = FirebaseFirestore.instance
+      .collection('fav_stories')
+      .doc('6HipOKbVzSK1sQq5zlnR');
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _startAutoScroll());
-  }
-
-  void _startAutoScroll() {
-    _scrollTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          _scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 50),
-          curve: Curves.easeOut,
-        );
-      }
-    });
   }
 
   @override
   void dispose() {
-    _scrollTimer?.cancel();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -111,20 +102,20 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
       listeners: [
         BlocListener<StoryBloc, StoryState>(
           listener: (context, state) async {
-            if (state is StoryAudioSuccess) {
-              audioFile = state.audioFile;
-              // print(';;;;;;;;;;;//');
-              //  print('Audio File Path: ${audioFile!.path}');
+            // if (state is StoryAudioSuccess) {
+            //   audioFile = state.audioFile;
+            //   // print(';;;;;;;;;;;//');
+            //   //  print('Audio File Path: ${audioFile!.path}');
 
-              audioUrl = await _uploadAudioToStorage(audioFile!);
-              // print('::::');
-              if (audioUrl != null) {
-                setState(() {
-                  audioloaded = true;
-                });
-                // await _updateStoryWithAudioUrl(audioUrl!);
-              }
-            }
+            //   audioUrl = await _uploadAudioToStorage(audioFile!);
+            //   // print('::::');
+            //   if (audioUrl != null) {
+            //     setState(() {
+            //       audioloaded = true;
+            //     });
+            //     // await _updateStoryWithAudioUrl(audioUrl!);
+            //   }
+            // }
           },
         ),
         BlocListener<BottomNavBloc, BottomNavState>(
@@ -145,13 +136,13 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
       child: Scaffold(
         backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
         body: CustomScrollView(
-          controller: _scrollController,
           slivers: [
             SliverAppBar(
               automaticallyImplyLeading: false,
               expandedHeight: deviceHeight * 0.2,
               leadingWidth: deviceWidth,
               collapsedHeight: deviceHeight * 0.08,
+              toolbarHeight: deviceHeight * 0.07,
               pinned: true,
               floating: false,
               backgroundColor: const Color(0xff644a98),
@@ -242,51 +233,27 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ShaderMask(
-                      shaderCallback: (bounds) => LinearGradient(
-                        colors: [
-                          const Color(0xffAC8BEC),
-                          const Color(0XFF9E00FF).withOpacity(0.3),
-                          const Color(0xff00FFF0),
-                          const Color(0x80612ACE),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(
-                        Rect.fromLTWH(0.0, 0.0, bounds.width, bounds.height),
-                      ),
-                      child: AnimatedTextKit(
-                        onFinished: () {
-                          setState(() {
-                            callAppBar = true;
-                            _scrollTimer?.cancel();
-                          });
-                        },
-                        isRepeatingAnimation: false,
-                        pause: const Duration(milliseconds: 100),
-                        animatedTexts: [
-                          TyperAnimatedText(
-                            widget.story["story"] ?? "No data",
-                            textStyle: theme.textTheme.bodyMedium!.copyWith(
-                                color: AppColors.textColorWhite,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w400),
-                            speed: const Duration(milliseconds: 20),
-                          ),
-                        ],
-                        onNext: (index, isLast) {
-                          if (_scrollController.hasClients) {
-                            _scrollController.animateTo(
-                              _scrollController.position.maxScrollExtent,
-                              duration: const Duration(milliseconds: 100),
-                              curve: Curves.easeInOut,
-                            );
-                          }
-                        },
-                        onTap: () {
-                          print("Tap Event");
-                        },
-                      ),
+                    AnimatedTextKit(
+                      onFinished: () {
+                        setState(() {
+                          callAppBar = true;
+                        });
+                      },
+                      isRepeatingAnimation: false,
+                      pause: const Duration(milliseconds: 100),
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          widget.story["story"] ?? "No data",
+                          textStyle: theme.textTheme.bodyMedium!.copyWith(
+                              color: AppColors.textColorblack,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400),
+                          speed: const Duration(milliseconds: 20),
+                        ),
+                      ],
+                      onTap: () {
+                        print("Tap Event");
+                      },
                     ),
                     //
                   ],
@@ -297,8 +264,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         ),
 
         bottomNavigationBar:
-
-            //     audioloaded
+            //audioloaded?
             // ? (apiAudioNavBar
             //     ? NavBar2(
             //         documentReference: _documentReference,
@@ -309,24 +275,26 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
             //         suggestedStories: false,
             //         firebaseStories: false,
             //       )
-            //     : (ownAudioNavBar
-            //         ? const BottomNavRecord()
-            //         : const RecordListenNavbar()))
-            // : const SizedBox.shrink(),
+            //     :
+            _documentReference == null
+                ? const NavBarLoading()
+                : ((ownAudioNavBar
+                    ? BottomNavRecord(documentReference: documentRef)
+                    : const RecordListenNavbar())),
 
-            audioloaded
-                ? (apiAudioNavBar
-                    ? (NavBar2(
-                        documentReference: _documentReference,
-                        audioFile: audioFile!,
-                        story: widget.story['story'] ?? 'No Story available',
-                        title: widget.story['title'] ?? 'No title available',
-                        firebaseAudioPath: audioUrl ?? '',
-                        suggestedStories: false,
-                        firebaseStories: false,
-                      ))
-                    : const RecordListenNavbar())
-                : const SizedBox.shrink(),
+        // audioloaded
+        //     ? (apiAudioNavBar
+        //         ? (NavBar2(
+        //             documentReference: _documentReference,
+        //             audioFile: audioFile!,
+        //             story: widget.story['story'] ?? 'No Story available',
+        //             title: widget.story['title'] ?? 'No title available',
+        //             firebaseAudioPath: audioUrl ?? '',
+        //             suggestedStories: false,
+        //             firebaseStories: false,
+        //           ))
+        //         : const RecordListenNavbar())
+        //     : const SizedBox.shrink(),
 
         // audioloaded
 

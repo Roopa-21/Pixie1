@@ -198,20 +198,24 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                                           audiopath: widget.path,
                                           story: widget.story,
                                           story_title: widget.title));
-                                  context.pop();
+                                  context.read<StoryFeedbackBloc>().add(
+                                      const UpdatedislikeStateEvent(
+                                          isDisliked: true));
                                 } else {
                                   context.read<StoryFeedbackBloc>().add(
                                       StoryFeedbackEvent.SubmitFeedbackEvent(
                                           audiopath: widget.path,
                                           story: widget.story,
                                           story_title: widget.title));
+                                  context.read<StoryFeedbackBloc>().add(
+                                      const UpdatedislikeStateEvent(
+                                          isDisliked: true));
                                   context.pop();
                                 }
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text(
                                             "Thank you for your feedback")));
-                                context.pop();
                               },
                               child: Text(
                                 'Submit',

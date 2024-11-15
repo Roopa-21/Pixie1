@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:pixieapp/const/colors.dart';
 
@@ -27,7 +27,7 @@ class _PlaylistBottomsheetState extends State<PlaylistBottomsheet> {
           Container(
             height: deviceHeight * .1,
             decoration: const BoxDecoration(
-                color: const Color(0xff644a98),
+                color: Color(0xff644a98),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(18),
                     topRight: Radius.circular(18))),
@@ -43,7 +43,7 @@ class _PlaylistBottomsheetState extends State<PlaylistBottomsheet> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close, color: Colors.grey),
+                  icon: const Icon(Icons.close, color: Colors.grey),
                   onPressed: () => Navigator.pop(context),
                 ),
               ],

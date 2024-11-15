@@ -26,7 +26,11 @@ class ToggleIssueEvent extends StoryFeedbackEvent {
   @override
   List<Object?> get props => [issue];
 }
+class UpdatedislikeStateEvent extends StoryFeedbackEvent {
+  final bool isDisliked;
 
+  const UpdatedislikeStateEvent({required this.isDisliked});
+}
 class AddCustomIssueEvent extends StoryFeedbackEvent {
   final String issue;
 

@@ -485,7 +485,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
       {required VoidCallback ontap, required Color color}) {
     final devicewidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
-    return Container(
+    return 
+    Container(
       margin: EdgeInsets.only(bottom: devicewidth * 0.03),
       padding: EdgeInsets.symmetric(
           vertical: devicewidth * 0.07, horizontal: devicewidth * 0.05),

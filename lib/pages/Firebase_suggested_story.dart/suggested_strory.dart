@@ -137,6 +137,7 @@ class _FirebasesuggestedstoryState extends State<Firebasesuggestedstory> {
             expandedHeight: deviceHeight * 0.20,
             leadingWidth: deviceWidth,
             collapsedHeight: deviceHeight * 0.08,
+             toolbarHeight: deviceHeight * 0.07,
             pinned: true,
             floating: false,
             backgroundColor: const Color(0xff644a98).withOpacity(.99),

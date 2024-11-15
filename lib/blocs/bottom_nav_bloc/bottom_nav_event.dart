@@ -1,5 +1,6 @@
-
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 abstract class BottomNavEvent {}
 
@@ -15,13 +16,14 @@ class UpdateReadAndRecordStateEvent extends BottomNavEvent {
   UpdateReadAndRecordStateEvent({required this.isRecording});
 }
 
-
-
 class StartRecordingEvent extends BottomNavEvent {}
 
 class StopRecordingEvent extends BottomNavEvent {}
 
 class UploadRecordingEvent extends BottomNavEvent {
-final String audioPath;
-  UploadRecordingEvent(this.audioPath);
+  final String audioPath;
+  final DocumentReference<Object?>? documentReference;
+
+  UploadRecordingEvent(
+      {required this.audioPath, required this.documentReference});
 }
