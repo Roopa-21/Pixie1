@@ -1,29 +1,29 @@
-import 'dart:io';
+// import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class BottomNavEvent {}
+// abstract class BottomNavEvent {}
 
-class UpdateListenStateEvent extends BottomNavEvent {
-  final bool isListening;
+// class UpdateListenStateEvent extends BottomNavEvent {
+//   final bool isListening;
 
-  UpdateListenStateEvent({required this.isListening});
-}
+//   UpdateListenStateEvent({required this.isListening});
+// }
 
-class UpdateReadAndRecordStateEvent extends BottomNavEvent {
-  final bool isRecording;
+// class UpdateReadAndRecordStateEvent extends BottomNavEvent {
+//   final bool isRecording;
 
-  UpdateReadAndRecordStateEvent({required this.isRecording});
-}
+//   UpdateReadAndRecordStateEvent({required this.isRecording});
+// }
 
-class StartRecordingEvent extends BottomNavEvent {}
+// class StartRecordingEvent extends BottomNavEvent {}
 
-class StopRecordingEvent extends BottomNavEvent {}
+// class StopRecordingEvent extends BottomNavEvent {}
 
-class UploadRecordingEvent extends BottomNavEvent {
-  final String audioPath;
-  final DocumentReference<Object?>? documentReference;
+// class UploadRecordingEvent extends BottomNavEvent {
+//   final String audioPath;
+//   final DocumentReference<Object?>? documentReference;
 
-  UploadRecordingEvent(
-      {required this.audioPath, required this.documentReference});
-}
+//   UploadRecordingEvent(
+//       {required this.audioPath, required this.documentReference});
+// }

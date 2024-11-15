@@ -1,12 +1,12 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_event.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
+
+import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
+import 'package:pixieapp/const/colors.dart';
 
 class BottomNavRecord extends StatefulWidget {
   // final DocumentReference<Object?>? documentReference;
@@ -19,12 +19,15 @@ class BottomNavRecord extends StatefulWidget {
 class _BottomNavRecordState extends State<BottomNavRecord> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<BottomNavBloc, BottomNavState>(
+    return BlocListener<StoryBloc, StoryState>(
       listener: (context, state) {
         if (state is AudioUploaded) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Audio uploaded successfully')),
           );
+        } else if (state is AudioStopped) {
+          context.read<StoryBloc>().add(AddMusicEvent(
+              event: 'bedtime', audiofile: File(state.audioPath)));
         } else if (state is AudioUploadError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error uploading audio: ${state.error}')),
@@ -45,17 +48,17 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<BottomNavBloc, BottomNavState>(
+            BlocBuilder<StoryBloc, StoryState>(
               builder: (context, state) {
                 if (state is AudioRecording) {
                   return ElevatedButton(
                     onPressed: () {
-                      // context.read<BottomNavBloc>().add(StopRecordingEvent());
+                      context.read<StoryBloc>().add(StopRecordingEvent());
                     },
                     child: const Text("Stop Recording"),
                   );
-                } else if (state is AudioRecorded) {
-                  // Options after recording is done
+                }
+                if (state is AudioStopped) {
                   return Column(
                     children: [
                       ElevatedButton(
@@ -68,28 +71,29 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // context.read<BottomNavBloc>().add(UploadRecordingEvent(
-                          //   audioPath: state.audioPath,
-                          //   documentReference: widget.documentReference,
-                          // ));
+                          context.read<StoryBloc>().add(AddMusicEvent(
+                              event: "Bedtime",
+                              audiofile: File(state.audioPath)));
                         },
                         child: const Text("Save Recording"),
                       ),
                     ],
                   );
-                } else if (state is AudioUploading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is AudioUploaded) {
-                  return const Center(
-                    child: Text('Audio Uploaded Successfully!'),
-                  );
                 } else {
                   // Initial state
-                  return ElevatedButton(
-                    onPressed: () {
-                      context.read<BottomNavBloc>().add(StartRecordingEvent());
+
+                  return GestureDetector(
+                    onTap: () {
+                      context.read<StoryBloc>().add(StartRecordingEvent());
                     },
-                    child: const Text("Start Recording"),
+                    child: Container(
+                      height: 80,
+                      width: 80,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.buttonblue,
+                      ),
+                    ),
                   );
                 }
               },
