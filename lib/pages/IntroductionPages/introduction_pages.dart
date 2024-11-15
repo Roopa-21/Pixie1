@@ -56,7 +56,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
   final List<String> pronouns = ['He', 'She', 'Prefer not to say'];
   int currentpage_index = 0;
 
-  DateTime selectedDate = DateTime.now();
+  DateTime? selectedDate;
 
   Widget _buildPronounButton(
       {required String text,
@@ -107,6 +107,62 @@ class _IntroductionPageState extends State<IntroductionPage> {
     }
   }
 
+  void _showDatePicker(BuildContext context) {
+    final theme = Theme.of(context);
+    showModalBottomSheet(
+      backgroundColor: AppColors.bottomSheetBackground,
+      context: context,
+      builder: (BuildContext builder) {
+        return Column(
+          children: [
+            SizedBox(
+              height: 300,
+              child: CupertinoTheme(
+                data: const CupertinoThemeData(
+                  textTheme: CupertinoTextThemeData(
+                    dateTimePickerTextStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.textColorblue,
+                    ),
+                  ),
+                ),
+                child: CupertinoDatePicker(
+                  maximumYear: DateTime.now().year,
+                  minimumYear: DateTime.now().year - 4,
+                  initialDateTime: selectedDate ?? DateTime.now(),
+                  maximumDate: DateTime.now(),
+                  mode: CupertinoDatePickerMode.date,
+                  onDateTimeChanged: (DateTime newDate) {
+                    setState(() {
+                      selectedDate = newDate;
+                    });
+                    context
+                        .read<IntroductionBloc>()
+                        .add(DobChanged(dob: newDate));
+                  },
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.pop();
+              },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  backgroundColor: AppColors.buttonblue),
+              child: Text('Add',
+                  style: theme.textTheme.bodyMedium!
+                      .copyWith(color: AppColors.textColorWhite)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -131,11 +187,11 @@ class _IntroductionPageState extends State<IntroductionPage> {
               childdata.name = state.name;
             }
             if (state is GenderUpdated) {
-              print('ddddddd${state.gender}');
+              // print('ddddddd${state.gender}');
               childdata.gender = state.gender;
             }
             if (state is DobUpdated) {
-              print('ddddddd${state.dob}');
+              //print('ddddddd${state.dob}');
               childdata.dob = state.dob;
             }
             if (state is FavListUpdated) {
@@ -311,7 +367,8 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                               hintStyle: theme
                                                   .textTheme.bodyMedium
                                                   ?.copyWith(
-                                                color: AppColors.textColorGrey,
+                                                color:
+                                                    AppColors.textColorDimGrey,
                                               ),
                                               focusColor:
                                                   AppColors.textColorblue,
@@ -383,7 +440,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                 ? true
                                                 : false),
                                         const SizedBox(height: 20),
-                                        const SizedBox(height: 20),
+
                                         Text(
                                           "Date of Birth",
                                           style: theme.textTheme.headlineSmall!
@@ -392,36 +449,46 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                                       AppColors.textColorblack,
                                                   fontWeight: FontWeight.w500),
                                         ),
-                                        SizedBox(
-                                          height: 300,
-                                          child: CupertinoTheme(
-                                            data: const CupertinoThemeData(
-                                              textTheme: CupertinoTextThemeData(
-                                                  dateTimePickerTextStyle:
-                                                      TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: AppColors
-                                                              .textColorblue)),
+                                        const SizedBox(height: 20),
+                                        GestureDetector(
+                                          onTap: () => _showDatePicker(context),
+                                          child: Container(
+                                            padding:
+                                                EdgeInsets.only(left: 10.0),
+                                            width: deviceWidth,
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.kwhiteColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
                                             ),
-                                            child: CupertinoDatePicker(
-                                              maximumYear: DateTime.now().year,
-                                              minimumYear: 2000,
-                                              initialDateTime: selectedDate,
-                                              maximumDate: selectedDate,
-                                              mode:
-                                                  CupertinoDatePickerMode.date,
-                                              onDateTimeChanged:
-                                                  (DateTime newDate) {
-                                                context
-                                                    .read<IntroductionBloc>()
-                                                    .add(DobChanged(
-                                                        dob: newDate));
-                                              },
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: selectedDate != null
+                                                  ? Text(
+                                                      "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: AppColors
+                                                            .textColorblue,
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "dd/mm/yyyy",
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: AppColors
+                                                            .textColorDimGrey,
+                                                      ),
+                                                    ),
                                             ),
                                           ),
                                         ),
+
                                         // CupertinoButton(
                                         //   child: Text('Done'),
                                         //   onPressed: () =>
@@ -1098,31 +1165,30 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                     relation: "Mother",
                                     name: mother.text.isNotEmpty
                                         ? mother.text
-                                        : "Add Mother Name"));
+                                        : ""));
                                 childdata.lovedonce.add(Lovedonces(
                                     relation: "Father",
                                     name: father.text.isNotEmpty
                                         ? father.text
-                                        : "Add Father Name"));
+                                        : ""));
                                 childdata.lovedonce.add(Lovedonces(
                                     relation: "Grand mother",
                                     name: GrandMother.text.isNotEmpty
                                         ? GrandMother.text
-                                        : "Add GrandMother Name"));
+                                        : ""));
                                 childdata.lovedonce.add(Lovedonces(
                                     relation: "Grand father",
                                     name: GrandFather.text.isNotEmpty
                                         ? GrandFather.text
-                                        : "Add GrandFather Name"));
+                                        : ""));
                                 childdata.lovedonce.add(Lovedonces(
                                     relation: "Female friend",
-                                    name: pet.text.isNotEmpty
-                                        ? pet.text
-                                        : "Add Friend Name"));
+                                    name: pet.text.isNotEmpty ? pet.text : ""));
                                 List<Map<String, dynamic>> lovedOnceList =
                                     childdata.lovedonce
                                         .map((lovedonce) => lovedonce.toMap())
                                         .toList();
+
                                 try {
                                   // Get the currently authenticated user
                                   User? user =
@@ -1208,8 +1274,14 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               foregroundColor: Colors.white,
-                              backgroundColor:
-                                  Colors.white, // Text (foreground) color
+                              backgroundColor: ((currentpage_index == 0 &&
+                                          (childdata.name.trim().isNotEmpty) &&
+                                          !(childdata.gender ==
+                                              Gender.notselected) &&
+                                          (selectedDate != null)) ||
+                                      (currentpage_index == 1))
+                                  ? AppColors.buttonblue
+                                  : AppColors.buttonwhite,
                             ),
                             child: (currentpage_index == 1)
                                 ? Text("Done",
@@ -1219,7 +1291,14 @@ class _IntroductionPageState extends State<IntroductionPage> {
                                         fontWeight: FontWeight.w400))
                                 : Text("Continue",
                                     style: theme.textTheme.bodyLarge!.copyWith(
-                                        color: AppColors.textColorblue,
+                                        color: ((childdata.name
+                                                    .trim()
+                                                    .isNotEmpty) &&
+                                                !(childdata.gender ==
+                                                    Gender.notselected) &&
+                                                (selectedDate != null))
+                                            ? AppColors.textColorWhite
+                                            : AppColors.textColorblack,
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400))),
                       ),

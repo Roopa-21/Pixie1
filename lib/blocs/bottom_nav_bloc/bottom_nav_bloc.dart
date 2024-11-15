@@ -1,74 +1,112 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_event.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
+import 'bottom_nav_event.dart';
+import 'bottom_nav_state.dart';
 
 class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
-  bool isListening = false;
-  bool isRecording = false;
   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
-   String? _audioPath;
-  User? user = FirebaseAuth.instance.currentUser;
+  String? _audioPath;
 
   BottomNavBloc() : super(BottomNavBlocInitial()) {
-     _initializeRecorder();
+    _initializeRecorder();
+    on<UpdateListenStateEvent>((event, emit) {
+      emit(ListenStateUpdated(isListening: event.isListening));
+    });
+    on<UpdateReadAndRecordStateEvent>((event, emit) {
+      emit(ReadAndRecordStateUpdated(isRecording: event.isRecording));
+    });
     on<StartRecordingEvent>((event, emit) async => await _startRecording(emit));
     on<StopRecordingEvent>((event, emit) async => await _stopRecording(emit));
-    on<UploadRecordingEvent>((event, emit) async => await _uploadAudio(event.audioPath, emit));
-
-    on<UpdateListenStateEvent>((event, emit) {
-      isListening = event.isListening;
-      emit(ListenStateUpdated(isListening: isListening));
-    });
-
-    on<UpdateReadAndRecordStateEvent>((event, emit) {
-      isRecording = event.isRecording;
-      emit(ReadAndRecordStateUpdated(isRecording: isRecording));
-    });
-
+    on<UploadRecordingEvent>((event, emit) async => await _uploadRecording(
+        event.audioPath,
+        event.documentReference as DocumentReference<Object?>?,
+        emit));
   }
-   Future<void> _initializeRecorder() async {
+
+  Future<void> _initializeRecorder() async {
     await _recorder.openRecorder();
+    _recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
   }
 
   Future<void> _startRecording(Emitter<BottomNavState> emit) async {
-    final tempDir = await getTemporaryDirectory();
-    _audioPath = '${tempDir.path}/audio.aac';
-    emit(AudioRecording());
-    await _recorder.startRecorder(toFile: _audioPath);
+    try {
+      var status = await Permission.microphone.status;
+      if (status.isDenied || status.isRestricted) {
+        status = await Permission.microphone.request();
+      }
+
+      if (status.isGranted) {
+        final Directory? externalDir = await getExternalStorageDirectory();
+        final String externalPath = '${externalDir?.path}/Music';
+        await Directory(externalPath).create(recursive: true);
+        _audioPath =
+            '$externalPath/audio_${DateTime.now().millisecondsSinceEpoch}.aac';
+
+        emit(AudioRecording());
+        await _recorder.startRecorder(toFile: _audioPath);
+      } else {
+        emit(AudioUploadError(
+            'Microphone permission is required to start recording.'));
+      }
+    } catch (e) {
+      emit(AudioUploadError('Failed to start recording: $e'));
+    }
   }
 
   Future<void> _stopRecording(Emitter<BottomNavState> emit) async {
-    await _recorder.stopRecorder();
-    if (_audioPath != null) {
-      emit(AudioStopped());
-      add(UploadRecordingEvent(_audioPath!));
+    try {
+      await _recorder.stopRecorder();
+      if (_audioPath != null) {
+        emit(AudioStopped(audioPath: _audioPath!));
+      }
+    } catch (e) {
+      emit(AudioUploadError('Failed to stop recording: $e'));
     }
   }
-  Future<void> _uploadAudio(String filePath, Emitter<BottomNavState> emit) async {
-    emit(AudioUploading());
+
+  Future<void> _uploadRecording(
+      String audioPath,
+      DocumentReference<Object?>? documentReference,
+      Emitter<BottomNavState> emit) async {
     try {
-      final file = File(filePath);
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('audio_files/${DateTime.now().millisecondsSinceEpoch}.aac');
-      await ref.putFile(file);
-      final audioUrl = await ref.getDownloadURL();
+      emit(AudioUploading());
 
-      // await FirebaseFirestore.instance
-      //     .collection('events')
-      //     .doc('dFMUJxFz9hQ9qxDXBeCq')
-      //     .update({'audiourl': audioUrl});
+      // Prepare the file and create a multipart request
+      final uri = Uri.parse('http://54.86.247.121:8000/music_addition');
+      final request = http.MultipartRequest('POST', uri)
+        ..fields['event'] = 'bedtime' // Add any additional fields here
+        ..files.add(await http.MultipartFile.fromPath('audiofile', audioPath));
 
-      emit(AudioUploaded(audioUrl));
+      // Send the request and get the response
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Parse the response to get the audio URL
+        final responseBody = await response.stream.bytesToString();
+        final audioUrl = responseBody.trim(); // Ensure it's a valid URL format
+
+        // Update Firestore with the audio URL if documentReference is not null
+        if (documentReference != null && audioUrl.isNotEmpty) {
+          await documentReference.update({
+            'audioRecordUrl': audioUrl,
+          });
+          emit(AudioUploaded(audioUrl));
+        } else {
+          emit(AudioUploadError(
+              'Invalid audio URL received from API or document reference is null.'));
+        }
+      } else {
+        emit(
+            AudioUploadError('Failed to upload audio: ${response.statusCode}'));
+      }
     } catch (e) {
-      emit(AudioUploadError(e.toString()));
+      emit(AudioUploadError('An error occurred during upload: $e'));
     }
   }
 
@@ -78,8 +116,3 @@ class BottomNavBloc extends Bloc<BottomNavEvent, BottomNavState> {
     return super.close();
   }
 }
-
-  
-
-
-  

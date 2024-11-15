@@ -83,8 +83,8 @@ class _HomePageState extends State<HomePage> {
       // If guest, default name
       return text.replaceAll('child_name', 'Rio');
     }
-    return text.replaceAll(
-        'child_name', childName); // Use fetched child name for other languages
+    print(text.replaceAll('child_name', childName));
+    return text.replaceAll('child_name', childName);
   }
 
   @override

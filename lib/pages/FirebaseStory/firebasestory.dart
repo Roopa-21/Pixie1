@@ -61,6 +61,7 @@ class _FirebasestoryState extends State<Firebasestory> {
           SliverAppBar(
             automaticallyImplyLeading: false,
             expandedHeight: deviceHeight * 0.20,
+            toolbarHeight: deviceHeight * 0.07,
             leadingWidth: deviceWidth,
             collapsedHeight: deviceHeight * 0.08,
             pinned: true,

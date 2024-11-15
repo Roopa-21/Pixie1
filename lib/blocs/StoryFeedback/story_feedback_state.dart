@@ -22,3 +22,14 @@ class StoryFeedbackState extends Equatable {
   @override
   List<Object?> get props => [rating, issues];
 }
+class DislikeStateUpdated extends StoryFeedbackState {
+  final bool isDisliked;
+
+  const DislikeStateUpdated({
+    required this.isDisliked,
+    
+  }) : super();
+
+  @override
+  List<Object?> get props => super.props..add(isDisliked);
+}

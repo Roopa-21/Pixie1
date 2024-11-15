@@ -96,6 +96,7 @@ class _CreateAccountWithEmailState extends State<CreateAccountWithEmail> {
                     ),
                     const SizedBox(height: 30),
                     TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       style: theme.textTheme.bodyMedium,
                       cursorColor: AppColors.kpurple,
                       controller: _emailController,

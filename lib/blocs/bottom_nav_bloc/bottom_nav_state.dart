@@ -25,22 +25,29 @@ class ReadAndRecordStateUpdated extends BottomNavState {
 class AudioInitial extends BottomNavState {}
 
 class AudioRecording extends BottomNavState {}
-class AudioStopped extends BottomNavState{}
 
-// class AudioRecorded extends BottomNavState {
-//   final File audioFile;
+class AudioRecorded extends BottomNavState {
+  final String audioPath;
 
-//   AudioRecorded(this.audioFile);
-// }
+  AudioRecorded({required this.audioPath});
+}
+
+class AudioStopped extends BottomNavState {
+  final String audioPath;
+
+  AudioStopped({required this.audioPath});
+}
 
 class AudioUploading extends BottomNavState {}
 
 class AudioUploaded extends BottomNavState {
-  final String audioPath;
+  final String audioUrl;
 
-  AudioUploaded(this.audioPath);
+  AudioUploaded(this.audioUrl);
 }
+
 class AudioUploadError extends BottomNavState {
   final String error;
+
   AudioUploadError(this.error);
 }

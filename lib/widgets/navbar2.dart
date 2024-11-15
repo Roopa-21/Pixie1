@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:pixieapp/blocs/StoryFeedback/story_feedback_bloc.dart';
+import 'package:pixieapp/blocs/StoryFeedback/story_feedback_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
@@ -92,34 +94,7 @@ class _NavBar2State extends State<NavBar2> {
     }
   }
 
-  // // Function to toggle play/pause
-  // Future<void> _togglePlayPause() async {
-  //   print(_isPlaying);
-  //   try {
-  //     if (_isPlaying) {
-  //       await _audioPlayer.pause();
-  //     } else {
-  //       // Ensure the audio is ready before trying to play
-  //       if (_audioPlayer.processingState == ProcessingState.ready ||
-  //           _audioPlayer.processingState == ProcessingState.idle) {
-  //         await _audioPlayer.play();
-  //       }
-  //     }
-  //     setState(() {
-  //       _isPlaying = !_isPlaying; // Toggle the play state
-  //     });
-  //   } catch (e) {
-  //     print("Error playing audio: $e");
-  //   }
-  // }
-
-  // Format the time duration as minutes and seconds
-  // String _formatDuration(Duration duration) {
-  //   String twoDigits(int n) => n.toString().padLeft(2, '0');
-  //   final minutes = twoDigits(duration.inMinutes.remainder(60));
-  //   final seconds = twoDigits(duration.inSeconds.remainder(60));
-  //   return '$minutes:$seconds';
-  // }
+ 
 
   String formatDuration(Duration d) {
     final minutes = d.inMinutes.remainder(60);
@@ -269,33 +244,44 @@ class _NavBar2State extends State<NavBar2> {
                         // ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        await showModalBottomSheet(
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          enableDrag: false,
-                          context: context,
-                          builder: (context) {
-                            return GestureDetector(
-                              onTap: () => FocusScope.of(context).unfocus(),
-                              child: Padding(
-                                padding: MediaQuery.viewInsetsOf(context),
-                                child: StoryFeedback(
-                                  story: widget.story,
-                                  title: widget.title,
-                                  path: widget.firebaseAudioPath,
-                                ),
-                              ),
+                    BlocBuilder<StoryFeedbackBloc, StoryFeedbackState>(
+                      builder: (context, state) {
+                        bool isDisliked = false;
+                        if (state is DislikeStateUpdated) {
+                          isDisliked = state.isDisliked;
+                        }
+
+                        return IconButton(
+                          onPressed: () async {
+                            await showModalBottomSheet(
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              enableDrag: false,
+                              context: context,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () => FocusScope.of(context).unfocus(),
+                                  child: Padding(
+                                    padding: MediaQuery.viewInsetsOf(context),
+                                    child: StoryFeedback(
+                                      story: widget.story,
+                                      title: widget.title,
+                                      path: widget.firebaseAudioPath,
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
+                          icon: SvgPicture.asset(
+                            isDisliked
+                                ? 'assets/images/afterDislike.svg'
+                                : 'assets/images/beforeDislike.svg',
+                            width: 30,
+                            height: 30,
+                          ),
                         );
                       },
-                      icon: SvgPicture.asset(
-                        'assets/images/beforeDislike.svg',
-                        width: 30,
-                        height: 30,
-                      ),
                     ),
                     IconButton(
                       onPressed: () {

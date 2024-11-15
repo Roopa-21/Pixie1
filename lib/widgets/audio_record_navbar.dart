@@ -1,11 +1,16 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_event.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
 
 class BottomNavRecord extends StatefulWidget {
-  const BottomNavRecord({super.key});
+  final DocumentReference<Object?>? documentReference;
+  const BottomNavRecord({super.key, required this.documentReference});
 
   @override
   State<BottomNavRecord> createState() => _BottomNavRecordState();
@@ -18,7 +23,7 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
       listener: (context, state) {
         if (state is AudioUploaded) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Audio uploaded successfully')),
+            const SnackBar(content: Text('Audio uploaded successfully')),
           );
         } else if (state is AudioUploadError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -47,9 +52,10 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
                     onPressed: () {
                       context.read<BottomNavBloc>().add(StopRecordingEvent());
                     },
-                    child: Text("Stop Recording"),
+                    child: const Text("Stop Recording"),
                   );
-                } else if (state is AudioUploaded) {
+                } else if (state is AudioRecorded) {
+                  // Options after recording is done
                   return Column(
                     children: [
                       ElevatedButton(
@@ -58,36 +64,32 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
                               .read<BottomNavBloc>()
                               .add(StartRecordingEvent());
                         },
-                        child: Text("Record Again"),
+                        child: const Text("Record Again"),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          context
-                              .read<BottomNavBloc>()
-                              .add(UploadRecordingEvent(state.audioPath));
+                          context.read<BottomNavBloc>().add(UploadRecordingEvent(
+                            audioPath: state.audioPath,
+                            documentReference: widget.documentReference,
+                          ));
                         },
-                        child: Text("Save Recording"),
+                        child: const Text("Save Recording"),
                       ),
                     ],
                   );
                 } else if (state is AudioUploading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is AudioUploaded) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Audio Uploaded Successfully!'),
-                        Text('URL: ${state.audioPath}'),
-                      ],
-                    ),
+                  return const Center(
+                    child: Text('Audio Uploaded Successfully!'),
                   );
                 } else {
+                  // Initial state
                   return ElevatedButton(
                     onPressed: () {
                       context.read<BottomNavBloc>().add(StartRecordingEvent());
                     },
-                    child: Text("Start Recording"),
+                    child: const Text("Start Recording"),
                   );
                 }
               },

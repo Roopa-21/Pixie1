@@ -11,7 +11,9 @@ class StoryFeedbackBloc extends Bloc<StoryFeedbackEvent, StoryFeedbackState> {
     on<UpdateRatingEvent>((event, emit) {
       emit(state.copyWith(rating: event.rating));
     });
-
+ on<UpdatedislikeStateEvent>((event, emit) {
+      emit(DislikeStateUpdated(isDisliked: event.isDisliked));
+    });
     on<ToggleIssueEvent>((event, emit) {
       final issues = List<String>.from(state.issues);
       if (issues.contains(event.issue)) {
