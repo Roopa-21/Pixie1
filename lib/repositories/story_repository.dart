@@ -8,7 +8,7 @@ import 'dart:io';
 class StoryRepository {
   final String storyApiUrl = 'http://54.86.247.121:8000/story';
   final String audioApiUrl = 'http://54.86.247.121:8000/audio';
-    final String musicAdditionApiUrl = 'http://54.86.247.121:8000/music_addition';
+  final String musicAdditionApiUrl = 'http://54.86.247.121:8000/music_addition';
 
   Future<Map<String, String>> generateStory({
     required String event,
@@ -82,14 +82,17 @@ class StoryRepository {
       throw Exception('Failed to generate audio: ${response.body}');
     }
   }
+
   Future<File> addMusicToAudio({
     required String event,
     required File audioFile,
   }) async {
     // Create a multipart request to upload the audio file along with the event
-    final request = http.MultipartRequest('POST', Uri.parse(musicAdditionApiUrl));
+    final request =
+        http.MultipartRequest('POST', Uri.parse(musicAdditionApiUrl));
     request.fields['event'] = event;
-    request.files.add(await http.MultipartFile.fromPath('audio', audioFile.path));
+    request.files
+        .add(await http.MultipartFile.fromPath('audiofile', audioFile.path));
 
     final response = await request.send();
 
@@ -121,7 +124,8 @@ class StoryRepository {
     }
   }
 
-  Future<void> saveAudioUrlToFirestore(String documentId, String audioUrl) async {
+  Future<void> saveAudioUrlToFirestore(
+      String documentId, String audioUrl) async {
     try {
       await FirebaseFirestore.instance
           .collection('fav_stories')
@@ -141,7 +145,8 @@ class StoryRepository {
     required File localAudioFile,
   }) async {
     // Step 1: Add background music to the audio using the API
-    final musicAddedAudio = await addMusicToAudio(event: event, audioFile: localAudioFile);
+    final musicAddedAudio =
+        await addMusicToAudio(event: event, audioFile: localAudioFile);
 
     // Step 2: Upload the processed audio to Firebase Storage and get its URL
     final audioUrl = await uploadAudioToFirebase(musicAddedAudio);

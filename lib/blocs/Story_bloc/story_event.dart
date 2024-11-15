@@ -91,3 +91,7 @@ class RecordnavbarEvent extends StoryEvent {
 class StartRecordnavbarEvent extends StoryEvent {
   const StartRecordnavbarEvent();
 }
+  class StartRecordingEvent extends StoryEvent {}
+
+class StopRecordingEvent extends StoryEvent {}
+

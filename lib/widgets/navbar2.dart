@@ -105,34 +105,34 @@ class _NavBar2State extends State<NavBar2> {
   void handlePlayPause({required AddCharacterState state}) async {
     if (player.playing) {
       player.pause();
-      if (state.showfeedback) {
-        await showModalBottomSheet(
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          enableDrag: false,
-          context: context,
-          builder: (context) {
-            return GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
-              child: Padding(
-                padding: MediaQuery.viewInsetsOf(context),
-                child: StoryFeedback(
-                  story: widget.story,
-                  title: widget.title,
-                  path: widget.firebaseAudioPath,
-                  textfield: false,
-                ),
-              ),
-            );
-          },
-        );
-      }
-      setState(() {
-        showfeedback = false;
-      });
-      context
-          .read<AddCharacterBloc>()
-          .add(const ShowfeedbackEvent(showfeedback: false));
+      // if (state.showfeedback) {
+      //   await showModalBottomSheet(
+      //     isScrollControlled: true,
+      //     backgroundColor: Colors.transparent,
+      //     enableDrag: false,
+      //     context: context,
+      //     builder: (context) {
+      //       return GestureDetector(
+      //         onTap: () => FocusScope.of(context).unfocus(),
+      //         child: Padding(
+      //           padding: MediaQuery.viewInsetsOf(context),
+      //           child: StoryFeedback(
+      //             story: widget.story,
+      //             title: widget.title,
+      //             path: widget.firebaseAudioPath,
+      //             textfield: false,
+      //           ),
+      //         ),
+      //       );
+      //     },
+      //   );
+      // }
+      // setState(() {
+      //   showfeedback = false;
+      // });
+      // context
+      //     .read<AddCharacterBloc>()
+      //     .add(const ShowfeedbackEvent(showfeedback: false));
     } else {
       player.play();
     }

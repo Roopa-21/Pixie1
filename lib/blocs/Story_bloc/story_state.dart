@@ -63,3 +63,31 @@ class StoryFailure extends StoryState {
   @override
   List<Object?> get props => [error];
 }
+class AudioRecording extends StoryState {}
+
+class AudioRecorded extends StoryState {
+  final String audioPath;
+
+  AudioRecorded({required this.audioPath});
+}
+
+class AudioStopped extends StoryState {
+  final String audioPath;
+
+  AudioStopped({required this.audioPath});
+}
+
+
+class AudioUploading extends StoryState {}
+
+class AudioUploaded extends StoryState {
+  final String audioUrl;
+
+  AudioUploaded(this.audioUrl);
+}
+
+class AudioUploadError extends StoryState {
+  final String error;
+
+  AudioUploadError(this.error);
+}

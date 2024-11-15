@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
@@ -118,20 +119,6 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
             } else if (state is RecordedStoryAudioSuccess) {
               audioFile = state.musicAddedaudioFile;
               audioUrl = await _uploadAudioToStorage(audioFile!);
-            }
-          },
-        ),
-        BlocListener<BottomNavBloc, BottomNavState>(
-          listener: (context, state) {
-            if (state is ListenStateUpdated) {
-              setState(() {
-                apiAudioNavBar = state.isListening;
-              });
-            }
-            if (state is ReadAndRecordStateUpdated) {
-              setState(() {
-                ownAudioNavBar = state.isRecording;
-              });
             }
           },
         ),
@@ -285,7 +272,9 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                         suggestedStories: false,
                         firebaseStories: false,
                       )
-                    : (state is StartRecordaudioScreen)
+                    : (state is StartRecordaudioScreen ||
+                            state is AudioRecording ||
+                            state is AudioStopped)
                         ? const BottomNavRecord()
                         : Container(color: Colors.red, width: 100, height: 100)
 
