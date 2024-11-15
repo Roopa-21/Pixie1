@@ -4,15 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
-import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
-import 'package:pixieapp/blocs/Navbar_Bloc/navbar_event.dart';
-import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
-import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/logout_bottom_sheet.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pixieapp/widgets/story_feedback.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
