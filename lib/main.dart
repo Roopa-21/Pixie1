@@ -7,6 +7,8 @@ import 'package:pixieapp/blocs/Auth_bloc/auth_bloc.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Feedback/feedback_bloc.dart';
 import 'package:pixieapp/blocs/Library_bloc/library_bloc.dart';
+import 'package:pixieapp/blocs/Loading%20Navbar/loadingnavbar_bloc.dart';
+import 'package:pixieapp/blocs/Loading%20Navbar/loadingnavbar_event.dart';
 import 'package:pixieapp/blocs/Navbar_Bloc/navbar_bloc.dart';
 import 'package:pixieapp/blocs/StoryFeedback/story_feedback_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
@@ -85,6 +87,10 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) =>
               StoryFeedbackBloc(), // Pass the AudioPlayer instance
+        ),
+        BlocProvider(
+          create: (context) => LoadingNavbarBloc()
+            ..add(StartLoadingNavbarEvent()), // Pass the AudioPlayer instance
         ),
       ],
       child: MaterialApp.router(
