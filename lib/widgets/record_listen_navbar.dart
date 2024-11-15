@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_event.dart';
 import 'package:pixieapp/const/colors.dart';
 
 class RecordListenNavbar extends StatelessWidget {
-  const RecordListenNavbar({super.key});
+  final String story;
+  final String title;
+  final String language;
+  const RecordListenNavbar(
+      {super.key,
+      required this.story,
+      required this.title,
+      required this.language});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.only(bottom: 40),
+      padding: const EdgeInsets.only(bottom: 40),
       height: 180,
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
@@ -30,9 +39,8 @@ class RecordListenNavbar extends StatelessWidget {
             width: 150,
             child: ElevatedButton(
               onPressed: () {
-                context
-                    .read<BottomNavBloc>()
-                    .add(UpdateReadAndRecordStateEvent(isRecording: true));
+                context.read<StoryBloc>().add(const StartRecordnavbarEvent());
+                print("aaaaa");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.kwhiteColor,
@@ -55,9 +63,8 @@ class RecordListenNavbar extends StatelessWidget {
             width: 150,
             child: ElevatedButton(
               onPressed: () {
-                context
-                    .read<BottomNavBloc>()
-                    .add(UpdateListenStateEvent(isListening: true));
+                context.read<StoryBloc>().add(
+                    SpeechToTextEvent(text: story + title, language: language));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.kwhiteColor,

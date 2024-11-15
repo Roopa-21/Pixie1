@@ -38,6 +38,22 @@ class StoryAudioSuccess extends StoryState {
   List<Object?> get props => [audioFile];
 }
 
+// Recorded audio
+class RecordedStoryAudioSuccess extends StoryState {
+  final File musicAddedaudioFile;
+
+  const RecordedStoryAudioSuccess({required this.musicAddedaudioFile});
+
+  @override
+  List<Object?> get props => [musicAddedaudioFile];
+}
+
+//Record audio navbar
+class RecordaudioScreen extends StoryState {}
+
+// Recording screen
+class StartRecordaudioScreen extends StoryState {}
+
 // State when there is an error
 class StoryFailure extends StoryState {
   final String error;

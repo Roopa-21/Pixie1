@@ -1564,7 +1564,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                         storydata.child_name =
                                             doc['child_name'];
 
-                                        if (state.currentPageIndex == 4) {
+                                        if (state.currentPageIndex == 4 &&
+                                            state.genre != 'surprise me') {
                                           context.push('/CreateStoryPage',
                                               extra: storydata);
                                         } else {
@@ -1647,7 +1648,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                     state.lovedOnce != null) ||
                                                 (state.currentPageIndex == 3 &&
                                                     state.lessons != null) ||
-                                                state.currentPageIndex == 4
+                                                state.currentPageIndex == 4 &&
+                                                    state.genre != 'surprise me'
                                             ? AppColors.textColorblue
                                             : AppColors.textColorWhite,
                                       ),
@@ -1676,7 +1678,9 @@ class _AddCharacterState extends State<AddCharacter> {
                                                   (state.currentPageIndex ==
                                                           3 &&
                                                       state.lessons != null) ||
-                                                  state.currentPageIndex == 4
+                                                  state.currentPageIndex == 4 &&
+                                                      state.genre !=
+                                                          'surprise me'
                                               ? AppColors.textColorWhite
                                               : AppColors.textColorblue,
                                           fontSize: 20,

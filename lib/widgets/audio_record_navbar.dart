@@ -9,8 +9,8 @@ import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_event.dart';
 import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
 
 class BottomNavRecord extends StatefulWidget {
-  final DocumentReference<Object?>? documentReference;
-  const BottomNavRecord({super.key, required this.documentReference});
+  // final DocumentReference<Object?>? documentReference;
+  const BottomNavRecord({super.key});
 
   @override
   State<BottomNavRecord> createState() => _BottomNavRecordState();
@@ -50,7 +50,7 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
                 if (state is AudioRecording) {
                   return ElevatedButton(
                     onPressed: () {
-                      context.read<BottomNavBloc>().add(StopRecordingEvent());
+                      // context.read<BottomNavBloc>().add(StopRecordingEvent());
                     },
                     child: const Text("Stop Recording"),
                   );
@@ -60,18 +60,18 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          context
-                              .read<BottomNavBloc>()
-                              .add(StartRecordingEvent());
+                          // context
+                          //     .read<BottomNavBloc>()
+                          //     .add(StartRecordingEvent());
                         },
                         child: const Text("Record Again"),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          context.read<BottomNavBloc>().add(UploadRecordingEvent(
-                            audioPath: state.audioPath,
-                            documentReference: widget.documentReference,
-                          ));
+                          // context.read<BottomNavBloc>().add(UploadRecordingEvent(
+                          //   audioPath: state.audioPath,
+                          //   documentReference: widget.documentReference,
+                          // ));
                         },
                         child: const Text("Save Recording"),
                       ),

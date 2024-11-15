@@ -12,6 +12,9 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
   StoryBloc({required this.storyRepository}) : super(StoryInitial()) {
     on<GenerateStoryEvent>(_onGenerateStoryEvent);
     on<SpeechToTextEvent>(_onSpeechToTextEvent);
+    // on<AddMusicEvent>(_onAddmusicEvent);
+    on<StartRecordnavbarEvent>(_onStartRecordnavbarEvent);
+    on<AddMusicEvent>((event, emit) => RecordaudioScreen());
   }
 
   // Event handler for GenerateStoryEvent
@@ -34,16 +37,16 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
       );
 
       emit(StorySuccess(story: storyResponse));
-      try {
-        final audioFile = await storyRepository.speechToText(
-          text: storyResponse['title']! + storyResponse['story']!,
-          language: event.language,
-        );
-        emit(StoryAudioSuccess(audioFile: audioFile));
-      } catch (error) {
-        print(error);
-        emit(StoryFailure(error: error.toString()));
-      }
+      // try {
+      //   final audioFile = await storyRepository.speechToText(
+      //     text: storyResponse['title']! + storyResponse['story']!,
+      //     language: event.language,
+      //   );
+      //   emit(StoryAudioSuccess(audioFile: audioFile));
+      // } catch (error) {
+      //   print(error);
+      //   emit(StoryFailure(error: error.toString()));
+      // }
     } catch (error) {
       emit(StoryFailure(error: error.toString()));
     }
@@ -62,5 +65,26 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
     } catch (error) {
       emit(StoryFailure(error: error.toString()));
     }
+  }
+
+  // Event handler for SpeechToTextEvent
+  Future<void> _onAddmusicEvent(
+      AddMusicEvent event, Emitter<StoryState> emit) async {
+    emit(StoryLoading());
+    try {
+      final audioFile = await storyRepository.addMusicToAudio(
+        event: event.event,
+        audioFile: event.audiofile,
+      );
+      emit(RecordedStoryAudioSuccess(musicAddedaudioFile: audioFile));
+    } catch (error) {
+      emit(StoryFailure(error: error.toString()));
+    }
+  }
+
+  // Event handler for StartRecordnavbarEvent
+  void _onStartRecordnavbarEvent(
+      StartRecordnavbarEvent event, Emitter<StoryState> emit) {
+    emit(StartRecordaudioScreen());
   }
 }

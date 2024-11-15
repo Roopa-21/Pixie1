@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 // Abstract base class for all events
@@ -64,4 +66,28 @@ class SpeechToTextEvent extends StoryEvent {
 
   @override
   List<Object?> get props => [text, language];
+}
+
+// Event for converting text to speech
+class AddMusicEvent extends StoryEvent {
+  final String event;
+  final File audiofile;
+
+  const AddMusicEvent({
+    required this.event,
+    required this.audiofile,
+  });
+
+  @override
+  List<Object?> get props => [event, audiofile];
+}
+
+// Event record or leson option
+class RecordnavbarEvent extends StoryEvent {
+  const RecordnavbarEvent();
+}
+
+//  for rocordbutton navbar
+class StartRecordnavbarEvent extends StoryEvent {
+  const StartRecordnavbarEvent();
 }

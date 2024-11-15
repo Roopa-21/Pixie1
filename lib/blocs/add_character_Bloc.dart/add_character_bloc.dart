@@ -13,7 +13,7 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
             selectedindex: -1,
             selectedindexlesson: -1,
             selectedindexcharactor: -1,
-            genre: 'Surprise me',
+            genre: 'surprise me',
             musicAndSpeed: 'notselected',
             fav: false,
             showfeedback: true,
@@ -86,7 +86,7 @@ class AddCharacterBloc extends Bloc<AddCharacterEvent, AddCharacterState> {
           selectedindex: -1,
           selectedindexlesson: -1,
           selectedindexcharactor: -1,
-          genre: 'Surprise me',
+          genre: 'surprise me',
           musicAndSpeed: 'notselected',
           showfeedback: true,
           fav: false));
