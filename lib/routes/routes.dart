@@ -23,8 +23,6 @@ import 'package:pixieapp/pages/SplashScreen/splash_screen.dart';
 import 'package:pixieapp/pages/SplashScreen/story_confirmtion_page.dart';
 import 'package:pixieapp/pages/audioPlay/audioplay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
-import 'package:pixieapp/pages/dummy.dart';
-
 import 'package:pixieapp/pages/error%20page/error_page.dart';
 import 'package:pixieapp/pages/login_page/login_page.dart';
 import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
@@ -102,7 +100,7 @@ final GoRouter router = GoRouter(
         path: '/CreateStoryPage',
         builder: (context, state) {
           final storydata = state.extra as StoryModal;
-          return CreateStoryPage();
+          return const CreateStoryPage();
         }),
     GoRoute(
       path: '/AddCharacter',
@@ -200,7 +198,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/aboutPage',
-      builder: (context, state) => Dummy(),
+      builder: (context, state) => const AboutPage(),
     ),
     GoRoute(
       path: '/Firebasestory',
