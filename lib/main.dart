@@ -71,7 +71,6 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<IntroductionBloc>(
           create: (_) => IntroductionBloc(),
         ),
-    
         BlocProvider(
           create: (context) => FetchStoryBloc(FetchStoryRepository1()),
         ),

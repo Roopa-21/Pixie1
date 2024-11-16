@@ -63,17 +63,15 @@
     <key>GoogleSignInReversedClientId</key>
     <string>com.googleusercontent.apps.245008050907-drcb7ukkf7lqkn66063l7n3p5pmaddat</string>
 
-    <!-- Firebase Phone Authentication - Permissions -->
+    <!-- Permissions -->
     <key>NSMicrophoneUsageDescription</key>
-    <string>We use your microphone to enable voice features, such as audio input or recording, for a more interactive user experience.</string>
-
-    <!-- Required for Firebase Phone Authentication -->
+    <string>This app requires access to your microphone for recording audio.</string>
+    <key>NSMediaLibraryUsageDescription</key>
+    <string>This app needs access to your media library for audio playback.</string>
     <key>NSCameraUsageDescription</key>
     <string>We need access to your camera to scan QR codes and verify your identity during the sign-up process.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We require access to your photo library to upload profile pictures and attachments.</string>
-
-    <!-- Permissions required for phone number verification -->
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We use your location to offer location-based services and verify your phone number.</string>
 
