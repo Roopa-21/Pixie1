@@ -19,6 +19,7 @@ import 'package:pixieapp/widgets/audio_record_navbar.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pixieapp/widgets/navbar_loading_audio.dart';
+import 'package:pixieapp/widgets/progress_nav_bar.dart';
 import 'package:pixieapp/widgets/record_listen_navbar.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
 
@@ -262,7 +263,8 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                     title: widget.story['title']!,
                     language: widget.language,
                   )
-                : (state is StoryAudioSuccess)
+                : (state is StoryAudioSuccess ||
+                        state is RecordedStoryAudioSuccess)
                     ? NavBar2(
                         documentReference: _documentReference,
                         audioFile: audioFile!,
@@ -276,7 +278,13 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                             state is AudioRecording ||
                             state is AudioStopped)
                         ? const BottomNavRecord()
-                        : Container(color: Colors.red, width: 100, height: 100)
+                        : (state is StoryLoading)
+                            ? const ProgressNavBar()
+                            : Container(
+                                height: 100,
+                                width: 200,
+                                color: Colors.red,
+                              )
 
             //audioloaded?
             // ? (apiAudioNavBar

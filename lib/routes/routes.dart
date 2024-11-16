@@ -101,7 +101,7 @@ final GoRouter router = GoRouter(
         path: '/CreateStoryPage',
         builder: (context, state) {
           final storydata = state.extra as StoryModal;
-          return CreateStoryPage();
+          return const CreateStoryPage();
         }),
     GoRoute(
       path: '/AddCharacter',
@@ -199,7 +199,7 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/aboutPage',
-      builder: (context, state) => AboutPage(),
+
     ),
     GoRoute(
       path: '/Firebasestory',
