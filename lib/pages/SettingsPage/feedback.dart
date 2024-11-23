@@ -331,12 +331,22 @@ class _FeedbackPageState extends State<FeedbackPage> {
   }
 }
 
-Future<void> openWhatsAppChat() async {
-  const whatsappUrl = 'https://wa.me/+918547062699';
-  final uri = Uri.parse(whatsappUrl);
+// Future<void> openWhatsAppChat() async {
+//   const whatsappUrl = 'https://wa.me/+918547062699';
+//   final uri = Uri.parse(whatsappUrl);
 
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+//   if (await canLaunchUrl(uri)) {
+//     await launchUrl(uri, mode: LaunchMode.externalApplication);
+//   } else {
+//     throw 'Could not launch WhatsApp';
+//   }
+// }
+Future<void> openWhatsAppChat() async {
+  const url = "https://wa.me/?text=YourTextHere";
+  var uri = Uri.encodeFull(url);
+
+  if (await canLaunchUrl(Uri.parse(uri))) {
+    await launchUrl(Uri.parse(uri), mode: LaunchMode.externalApplication);
   } else {
     throw 'Could not launch WhatsApp';
   }

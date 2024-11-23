@@ -37,7 +37,7 @@ class StoryFeedbackBloc extends Bloc<StoryFeedbackEvent, StoryFeedbackState> {
             FirebaseFirestore.instance.collection('users').doc(user!.uid);
         await _firestore.collection('story_feedback').add({
           'user_ref': userRef,
-          'rating': state.rating ?? 0,
+          'rating': state.rating,
           'issues': state.issues ?? "Not added",
           'created_time': FieldValue.serverTimestamp() ?? DateTime.now(),
           "story_title": event.story_title ?? "Not added",

@@ -8,7 +8,9 @@ abstract class StoryState extends Equatable {
   @override
   List<Object?> get props => [];
 }
-
+class Stopplayingstate extends StoryState {
+  const Stopplayingstate();
+}
 // Initial state, when nothing has happened yet
 class StoryInitial extends StoryState {}
 

@@ -10,6 +10,7 @@ import 'package:pixieapp/blocs/Library_bloc/library_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
 import 'package:pixieapp/widgets/navbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Library extends StatefulWidget {
   const Library({super.key});
@@ -239,6 +240,7 @@ class _LibraryState extends State<Library> {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: storylistCard(
+              story: story['story'] ?? 'story',
               genre: story['genre'] ?? 'Funny',
               theme: theme,
               title: story['title'],
@@ -269,6 +271,7 @@ class _LibraryState extends State<Library> {
     required String storytype,
     required String duration,
     required String image,
+    required String story,
     required DocumentReference storyRef,
     required void Function() ontap,
   }) {
@@ -344,7 +347,10 @@ class _LibraryState extends State<Library> {
             Expanded(
               flex: 1,
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  openWhatsAppChat(
+                      "${title}\n\n${story}\n\n Hey parent! Create personalized audio stories for your child! Introduce them to AI, inspiring them to think beyond. Pixie – their adventure buddy to reduce screentime \n\n For ios app:https://apps.apple.com/in/app/pixie-dream-create-inspire/id6737147663\n\n For Android app : https://play.google.com/store/apps/details?id=com.fabletronic.pixie.");
+                },
                 icon: SvgPicture.asset(
                   'assets/images/share.svg',
                   width: 25,
@@ -380,5 +386,16 @@ String _formatCreatedTime(Timestamp? timestamp) {
     return '1 day ago';
   } else {
     return '${difference.inDays} days ago';
+  }
+}
+
+Future<void> openWhatsAppChat(String text) async {
+  var url = "https://wa.me/?text=$text";
+  var uri = Uri.encodeFull(url);
+
+  if (await canLaunchUrl(Uri.parse(uri))) {
+    await launchUrl(Uri.parse(uri), mode: LaunchMode.externalApplication);
+  } else {
+    throw 'Could not launch WhatsApp';
   }
 }

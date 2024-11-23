@@ -6,6 +6,8 @@ import 'package:pixieapp/blocs/StoryFeedback/story_feedback_event.dart'
 import 'package:pixieapp/blocs/StoryFeedback/story_feedback_bloc.dart';
 import 'package:pixieapp/blocs/StoryFeedback/story_feedback_event.dart';
 import 'package:pixieapp/blocs/StoryFeedback/story_feedback_state.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/const/colors.dart';
 
 class StoryFeedback extends StatefulWidget {
@@ -25,10 +27,16 @@ class StoryFeedback extends StatefulWidget {
 }
 
 class _StoryFeedbackState extends State<StoryFeedback> {
+  TextEditingController textcontroller = TextEditingController();
+  @override
+  void dispose() {
+    textcontroller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    TextEditingController textcontroller = TextEditingController();
 
     return BlocBuilder<StoryFeedbackBloc, StoryFeedbackState>(
       builder: (context, state) {
@@ -141,6 +149,7 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                         const SizedBox(height: 10),
                         widget.textfield
                             ? TextField(
+                                cursorColor: AppColors.kpurple,
                                 textCapitalization:
                                     TextCapitalization.sentences,
                                 controller: textcontroller,
@@ -207,11 +216,16 @@ class _StoryFeedbackState extends State<StoryFeedback> {
                                           audiopath: widget.path,
                                           story: widget.story,
                                           story_title: widget.title));
+
                                   context.read<StoryFeedbackBloc>().add(
                                       const UpdatedislikeStateEvent(
                                           isDisliked: true));
+                                  context
+                                      .read<AddCharacterBloc>()
+                                      .add(UpdatefavbuttonEvent(false));
                                   context.pop();
                                 }
+                                context.pop();
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                         content: Text(

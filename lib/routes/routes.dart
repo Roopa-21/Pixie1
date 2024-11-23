@@ -23,7 +23,6 @@ import 'package:pixieapp/pages/SplashScreen/splash_screen.dart';
 import 'package:pixieapp/pages/SplashScreen/story_confirmtion_page.dart';
 import 'package:pixieapp/pages/audioPlay/audioplay_page.dart';
 import 'package:pixieapp/pages/createStory/createStory_page.dart';
-
 import 'package:pixieapp/pages/error%20page/error_page.dart';
 import 'package:pixieapp/pages/login_page/login_page.dart';
 import 'package:pixieapp/pages/onboardingPages/onboarding_page.dart';
@@ -133,12 +132,13 @@ final GoRouter router = GoRouter(
         final story = state.extra as Map<String, String>;
         final storytype = state.uri.queryParameters['storytype'];
         final language = state.uri.queryParameters['language'] ?? 'English';
+        final genre = state.uri.queryParameters['genre'] ?? 'surprise me';
 
         return StoryGeneratePage(
-          story: story,
-          storytype: storytype!,
-          language: language,
-        );
+            story: story,
+            storytype: storytype!,
+            language: language,
+            genre: genre!);
       },
     ),
     GoRoute(
@@ -223,24 +223,35 @@ final GoRouter router = GoRouter(
       return '/';
     }
 
-    final loggedIn = authState is AuthAuthenticated || authState is AuthGuest;
-    final loggingIn =
-        state.uri.toString() == '/' || state.uri.toString() == '/Loginpage';
+    final isLoggedIn = authState is AuthAuthenticated;
+    final isGuest = authState is AuthGuest;
+    final isOnLoginPage =
+        state.uri.toString() == '/Loginpage' || state.uri.toString() == '/';
 
-    if (loggedIn && loggingIn) {
+    // Allow guests to access login/signup pages
+    if (isGuest && isOnLoginPage) {
+      return null; // No redirection needed
+    }
+
+    // Redirect logged-in users trying to access login/signup pages to the home page
+    if (isLoggedIn && isOnLoginPage) {
       return '/HomePage';
     }
 
+    // Define protected routes that require authentication
     final protectedRoutes = [
-      '/HomePage',
+      // '/HomePage',
       '/Library',
-      '/SettingsPage',
+      '/AddCharacter',
+      "/feedbackPage",
+      '/profilePage'
     ];
 
-    if (!loggedIn && protectedRoutes.contains(state.uri.toString())) {
-      return '/';
+    // Redirect unauthenticated users trying to access protected routes
+    if (!isLoggedIn && protectedRoutes.contains(state.uri.toString())) {
+      return '/Loginpage';
     }
 
-    return null;
+    return null; // No redirection needed
   },
 );

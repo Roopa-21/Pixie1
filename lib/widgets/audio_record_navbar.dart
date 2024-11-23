@@ -9,11 +9,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
+import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/const/colors.dart';
 
 class BottomNavRecord extends StatefulWidget {
+  final String event;
   // final DocumentReference<Object?>? documentReference;
-  const BottomNavRecord({super.key});
+  const BottomNavRecord({super.key, required this.event});
 
   @override
   State<BottomNavRecord> createState() => _BottomNavRecordState();
@@ -22,7 +24,7 @@ class BottomNavRecord extends StatefulWidget {
 class _BottomNavRecordState extends State<BottomNavRecord> {
   @override
   void initState() {
-    // requestpermission();
+    requestpermission();
     super.initState();
   }
 
@@ -30,7 +32,7 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
     try {
       var status = await Permission.microphone.status;
       print('Microphone permission status: $status');
-      print("***********");
+      print("*****");
       // If permission is denied or restricted, request it
       if (status.isDenied || status.isRestricted) {
         print('Microphone permission status before request: $status');
@@ -64,7 +66,7 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.only(bottom: 40),
+        padding: const EdgeInsets.only(bottom: 10),
         height: 200,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
@@ -79,50 +81,128 @@ class _BottomNavRecordState extends State<BottomNavRecord> {
           children: [
             BlocBuilder<StoryBloc, StoryState>(
               builder: (context, state) {
-                if (state is AudioRecording) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      context.read<StoryBloc>().add(StopRecordingEvent());
-                    },
-                    child: const Text("Stop Recording"),
-                  );
-                }
-                if (state is AudioStopped) {
-                  return Column(
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<StoryBloc>().add(StartRecordingEvent());
-                        },
-                        child: const Text("Record Again"),
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                          onPressed: () {
+                            if (state is AudioStopped) {}
+                            context
+                                .read<StoryBloc>()
+                                .add(StartRecordingEvent());
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: (state is AudioStopped)
+                                ? AppColors.buttonblue
+                                : AppColors.buttonblue
+                                    .withOpacity(.4), // Text color
+                            backgroundColor:
+                                Colors.transparent, // Button background color
+                          ),
+                          child: const Text(
+                            "Record Again",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<StoryBloc>().add(AddMusicEvent(
-                              event:'',
-                              audiofile: File(state.audioPath)));
-                        },
-                        child: const Text("Save Recording"),
+                      Expanded(
+                        flex: 1,
+                        child: state is AudioRecording
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<StoryBloc>()
+                                          .add(StopRecordingEvent());
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: const Color(0xff6F6F6F),
+                                              width: 2)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Container(
+                                          height: 40,
+                                          width: 40,
+                                          decoration: const BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(7)),
+                                            color: AppColors.buttonblue,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  context
+                                      .read<StoryBloc>()
+                                      .add(StartRecordingEvent());
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                          color: const Color(0xff6F6F6F),
+                                          width: 2)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Container(
+                                      height: 80,
+                                      width: 80,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: AppColors.buttonblue,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: TextButton(
+                          onPressed: () {
+                            if (state is AudioStopped) {
+                              final addcharacterState =
+                                  context.read<AddCharacterBloc>().state;
+
+                              print(addcharacterState.musicAndSpeed);
+                              context.read<StoryBloc>().add(AddMusicEvent(
+                                  event: widget.event,
+                                  audiofile: File(state.audioPath)));
+                            }
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: (state is AudioStopped)
+                                ? AppColors.buttonblue
+                                : AppColors.buttonblue
+                                    .withOpacity(.4), // Text color
+                            backgroundColor:
+                                Colors.transparent, // Button background color
+                          ),
+                          child: const Text(
+                            "Save Recording",
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
                       ),
                     ],
-                  );
-                } else {
-                  // Initial state
-
-                  return GestureDetector(
-                    onTap: () {
-                      context.read<StoryBloc>().add(StartRecordingEvent());
-                    },
-                    child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.buttonblue,
-                      ),
-                    ),
-                  );
-                }
+                  ),
+                );
               },
             ),
           ],

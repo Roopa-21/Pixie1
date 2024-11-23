@@ -272,7 +272,9 @@ class _CreateAccountState extends State<CreateAccount> {
                             print('.........$countryCode$phoneNumber');
                             BlocProvider.of<AuthBloc>(context).add(
                               SendOtpToPhoneEvent(
-                                phoneNumber: '$countryCode$phoneNumber',
+                                phoneNumber: countryCode.isNotEmpty
+                                    ? '$countryCode$phoneNumber'
+                                    : '+91$phoneNumber',
 
                                 //  phoneNumber: "+918547062699",
                               ),

@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
+import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
 import 'package:pixieapp/widgets/loading_widget.dart';
@@ -102,9 +105,11 @@ class _FirebasestoryState extends State<Firebasestory> {
                     borderRadius: BorderRadius.circular(40.0),
                   ),
                   child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => context.pop(),
-                  ),
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        context.read<StoryBloc>().add(StopplayingEvent());
+                        context.pop();
+                      }),
                 ),
               ),
             ],

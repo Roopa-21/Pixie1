@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +7,6 @@ import 'package:pixieapp/blocs/Auth_bloc/auth_event.dart';
 import 'package:pixieapp/blocs/Auth_bloc/auth_state.dart';
 
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/pages/home/home_page.dart';
 
 class OtpVerification extends StatefulWidget {
   final String
@@ -23,10 +20,12 @@ class OtpVerification extends StatefulWidget {
 
 class _OtpVerificationState extends State<OtpVerification> {
   final TextEditingController _otpController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
     _otpController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -89,21 +88,31 @@ class _OtpVerificationState extends State<OtpVerification> {
 
                       // Updated TextField for OTP input
                       TextField(
-                        controller: _otpController,
-                        decoration: const InputDecoration(
-                          disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.kpurple)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.kpurple)),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.kpurple)),
-                          labelText: 'Enter OTP',
-                          border: OutlineInputBorder(),
-                          hintText: '6-digit code',
-                        ),
-                        keyboardType: TextInputType.number,
-                        maxLength: 6,
-                      ),
+                          cursorColor: AppColors.kpurple,
+                          controller: _otpController,
+                          focusNode: _focusNode,
+                          decoration: const InputDecoration(
+                            disabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.kpurple)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.kpurple)),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.kpurple)),
+                            labelText: 'Enter OTP',
+                            labelStyle: TextStyle(color: AppColors.kpurple),
+                            border: OutlineInputBorder(),
+                            hintText: '6-digit code',
+                          ),
+                          keyboardType: TextInputType.number,
+                          maxLength: 6,
+                          onChanged: (value) {
+                            if (value.length == 6) {
+                              _focusNode.unfocus();
+                            }
+                          }),
 
                       const SizedBox(height: 20),
 

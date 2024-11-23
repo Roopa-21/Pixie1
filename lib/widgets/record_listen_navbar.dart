@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_bloc.dart';
 import 'package:pixieapp/blocs/Story_bloc/story_event.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_event.dart';
+
 import 'package:pixieapp/const/colors.dart';
 
 class RecordListenNavbar extends StatelessWidget {

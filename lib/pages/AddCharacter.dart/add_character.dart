@@ -26,6 +26,7 @@ class _AddCharacterState extends State<AddCharacter> {
   PageController? pageViewController;
   List<Lovedonces> lovedOnceList = [];
   List<String> lessons = [];
+  final FocusNode _focusnode = FocusNode();
 
   int? selectedlovedone;
   StoryModal storydata = StoryModal(
@@ -47,7 +48,7 @@ class _AddCharacterState extends State<AddCharacter> {
   @override
   void initState() {
     super.initState();
-
+    _focusnode.unfocus();
     fetchLovedOnes().then((lovedOnes) {
       setState(() {
         lovedOnceList = lovedOnes;
@@ -67,6 +68,7 @@ class _AddCharacterState extends State<AddCharacter> {
 
   @override
   void dispose() {
+    _focusnode.dispose();
     super.dispose();
   }
 
@@ -384,16 +386,19 @@ class _AddCharacterState extends State<AddCharacter> {
                                                       as Map<String, dynamic>;
 
                                                   // Deserialize the loved ones list
-                                                  List<
-                                                      Lovedonces> lovedonce = userData[
+                                                  List<Lovedonces> lovedonce = userData[
                                                               'loved_once'] !=
                                                           null
                                                       ? List<Lovedonces>.from(
                                                           userData['loved_once']
+                                                              .where((item) =>
+                                                                  Lovedonces.fromMap(
+                                                                          item)
+                                                                      .name
+                                                                      .isNotEmpty)
                                                               .map((item) =>
-                                                                  Lovedonces
-                                                                      .fromMap(
-                                                                          item)))
+                                                                  Lovedonces.fromMap(
+                                                                      item)))
                                                       : [];
 
                                                   if (lovedonce.isEmpty) {
@@ -940,11 +945,12 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                   .size
                                                                   .width *
                                                               .67,
-                                                      child: const TextField(
+                                                      child: TextField(
+                                                        focusNode: _focusnode,
                                                         textCapitalization:
                                                             TextCapitalization
                                                                 .sentences,
-                                                        decoration: InputDecoration(
+                                                        decoration: const InputDecoration(
                                                             hintText:
                                                                 'Enter character name',
                                                             hintStyle: TextStyle(

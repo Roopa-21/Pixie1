@@ -82,6 +82,8 @@ class AddMusicEvent extends StoryEvent {
   List<Object?> get props => [event, audiofile];
 }
 
+class StopplayingEvent extends StoryEvent {}
+
 // Event record or leson option
 class RecordnavbarEvent extends StoryEvent {
   const RecordnavbarEvent();
@@ -91,7 +93,7 @@ class RecordnavbarEvent extends StoryEvent {
 class StartRecordnavbarEvent extends StoryEvent {
   const StartRecordnavbarEvent();
 }
-  class StartRecordingEvent extends StoryEvent {}
+
+class StartRecordingEvent extends StoryEvent {}
 
 class StopRecordingEvent extends StoryEvent {}
-

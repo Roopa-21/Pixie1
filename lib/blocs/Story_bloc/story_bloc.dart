@@ -24,6 +24,7 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
     on<StartRecordnavbarEvent>(_onStartRecordnavbarEvent);
     on<StartRecordingEvent>((event, emit) async => await _startRecording(emit));
     on<StopRecordingEvent>((event, emit) async => await _stopRecording(emit));
+    on<StopplayingEvent>((event, emit) async => await _stopplaying(emit));
   }
 
   // Initialize the recorder
@@ -35,7 +36,9 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
       print('Error initializing recorder: $e');
     }
   }
-
+_stopplaying(Emitter<StoryState> emit) {
+    emit(const Stopplayingstate());
+  }
   // Start recording audio
   Future<void> _startRecording(Emitter<StoryState> emit) async {
     try {

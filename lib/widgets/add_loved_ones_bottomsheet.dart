@@ -21,6 +21,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
   String? selectedRelation;
   bool isExpanded = false;
   bool isSubmitting = false;
+  final FocusNode _focusnode = FocusNode();
 
   final List<String> relations = [
     'Friend',
@@ -31,6 +32,17 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
     'Pet Cat',
   ];
   TextEditingController nameofRelation = TextEditingController();
+  @override
+  void initState() {
+    _focusnode.unfocus();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusnode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +102,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                       const SizedBox(height: 10),
                       GestureDetector(
                         onTap: () {
+                          _focusnode.unfocus();
                           setState(() {
                             isExpanded = !isExpanded;
                           });
@@ -127,6 +140,7 @@ class _AddLovedOnesBottomSheetState extends State<AddLovedOnesBottomSheet> {
                         elevation: 2,
                         borderRadius: BorderRadius.circular(10),
                         child: TextField(
+                          focusNode: _focusnode,
                           textCapitalization: TextCapitalization.sentences,
                           autofocus: false,
                           controller: nameofRelation,

@@ -12,13 +12,11 @@ import 'package:pixieapp/blocs/Story_bloc/story_state.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_bloc.dart';
-import 'package:pixieapp/blocs/bottom_nav_bloc/bottom_nav_state.dart';
 import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/audio_record_navbar.dart';
+import 'package:pixieapp/widgets/errorNavbar.dart';
 import 'package:pixieapp/widgets/navbar2.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pixieapp/widgets/navbar_loading_audio.dart';
 import 'package:pixieapp/widgets/progress_nav_bar.dart';
 import 'package:pixieapp/widgets/record_listen_navbar.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
@@ -27,12 +25,14 @@ class StoryGeneratePage extends StatefulWidget {
   final Map<String, String> story;
   final String storytype;
   final String language;
+  final String genre;
 
   const StoryGeneratePage({
     super.key,
     required this.story,
     required this.storytype,
     required this.language,
+    required this.genre,
   });
 
   @override
@@ -42,52 +42,38 @@ class StoryGeneratePage extends StatefulWidget {
 class _StoryGeneratePageState extends State<StoryGeneratePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   DocumentReference<Object?>? _documentReference;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _createInitialStoryEntry();
-  }
-
-  void _createInitialStoryEntry() async {
-    final queryParams = GoRouterState.of(context).uri.queryParameters;
-    print('1212$_documentReference');
-    if (_documentReference == null) {
-      final docRef = await _addStoryToFirebase(
-          audiopath: '', // Temporary empty audio path
-          fav: false,
-          genre: widget.story["genre"] ?? "Surprise me",
-          story: widget.story["story"] ?? "No data",
-          title: widget.story["title"] ?? "No data",
-          type: queryParams['storytype']!,
-          language: queryParams['language']!,
-          createdTime: DateTime.now(),
-          audioRecordUrl: '');
-      if (docRef != null) {
-        setState(() {
-          _documentReference = docRef;
-        });
-      } else {
-        print('Error creating initial story entry.');
-      }
-    }
-  }
-
-  File? audioFile;
-  bool audioloaded = false;
-  bool apiAudioNavBar = false;
-  bool ownAudioNavBar = false;
-  bool callAppBar = false;
-  String? audioUrl = '';
-
-  final DocumentReference documentRef = FirebaseFirestore.instance
-      .collection('fav_stories')
-      .doc('6HipOKbVzSK1sQq5zlnR');
+  bool isStoryInitialized = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeStory());
   }
+
+  Future<void> _initializeStory() async {
+    if (isStoryInitialized) return;
+    isStoryInitialized = true;
+
+    final queryParams = GoRouterState.of(context).uri.queryParameters;
+    print('widget.story["genre"]');
+    _documentReference = await _addStoryToFirebase(
+      audiopath: '',
+      fav: false,
+      genre: queryParams['genre']! ?? "Surprise me",
+      story: widget.story["story"] ?? "No data",
+      title: widget.story["title"] ?? "No data",
+      type: queryParams['storytype']!,
+      language: queryParams['language']!,
+      createdTime: DateTime.now(),
+      audioRecordUrl: '',
+    );
+    setState(() {});
+  }
+
+  File? audioFile;
+  bool audioloaded = false;
+
+  String? audioUrl = '';
 
   @override
   void dispose() {
@@ -106,20 +92,12 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
           listener: (context, state) async {
             if (state is StoryAudioSuccess) {
               audioFile = state.audioFile;
-              // print(';;;;;;;;;;;//');
-              //  print('Audio File Path: ${audioFile!.path}');
-
               audioUrl = await _uploadAudioToStorage(audioFile!);
-              // print('::::');
-              if (audioUrl != null) {
-                setState(() {
-                  audioloaded = true;
-                });
-                // await _updateStoryWithAudioUrl(audioUrl!);
-              }
+              await _updateStoryWithAudioUrl(audioUrl!);
             } else if (state is RecordedStoryAudioSuccess) {
               audioFile = state.musicAddedaudioFile;
               audioUrl = await _uploadAudioToStorage(audioFile!);
+              await _updateStoryWithAudioUrl(audioUrl!);
             }
           },
         ),
@@ -203,7 +181,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                                   },
                                 );
                               }
-
+                              context.read<StoryBloc>().add(StopplayingEvent());
                               context.read<AddCharacterBloc>().add(
                                   const ShowfeedbackEvent(showfeedback: false));
                               context
@@ -229,15 +207,12 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AnimatedTextKit(
-                          onFinished: () {
-                            setState(() {
-                              callAppBar = true;
-                            });
-                          },
+                          onFinished: () {},
                           isRepeatingAnimation: false,
                           pause: const Duration(milliseconds: 100),
                           animatedTexts: [
                             TyperAnimatedText(
+                              curve: Curves.decelerate,
                               widget.story["story"] ?? "No data",
                               textStyle: theme.textTheme.bodyMedium!.copyWith(
                                   color: AppColors.textColorblack,
@@ -280,48 +255,12 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
                     : (state is StartRecordaudioScreen ||
                             state is AudioRecording ||
                             state is AudioStopped)
-                        ? const BottomNavRecord()
+                        ? BottomNavRecord(
+                            event: widget.storytype,
+                          )
                         : (state is StoryLoading)
                             ? const ProgressNavBar()
-                            : Container(
-                                height: 100,
-                                width: 200,
-                                color: Colors.red,
-                              )
-
-            //audioloaded?
-            // ? (apiAudioNavBar
-            //     ? NavBar2(
-            //         documentReference: _documentReference,
-            //         audioFile: audioFile!,
-            //         story: widget.story['story'] ?? 'No Story available',
-            //         title: widget.story['title'] ?? 'No title available',
-            //         firebaseAudioPath: audioUrl ?? '',
-            //         suggestedStories: false,
-            //         firebaseStories: false,
-            //       )
-            //     :
-            // _documentReference == null
-            //     ? const NavBarLoading()
-            //     : ((ownAudioNavBar
-            //         ? BottomNavRecord(documentReference: documentRef)
-            //         : const RecordListenNavbar())),
-
-            // audioloaded
-            //     ? (apiAudioNavBar
-            //         ? (NavBar2(
-            //             documentReference: _documentReference,
-            //             audioFile: audioFile!,
-            //             story: widget.story['story'] ?? 'No Story available',
-            //             title: widget.story['title'] ?? 'No title available',
-            //             firebaseAudioPath: audioUrl ?? '',
-            //             suggestedStories: false,
-            //             firebaseStories: false,
-            //           ))
-            //         : const RecordListenNavbar())
-            //     : const SizedBox.shrink(),
-
-            // audioloaded
+                            : const Errornavbar()
 
             // NavBar2(
             //     documentReference: _documentReference,
@@ -367,7 +306,7 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         'createdTime': FieldValue.serverTimestamp(),
         'audioRecordUrl': audioRecordUrl
       });
-
+      print('ss$genre');
       print('Story added to favorites');
       return docRef;
     } catch (e) {
@@ -376,16 +315,16 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
     }
   }
 
-  // Future<void> _updateStoryWithAudioUrl(String audioUrl) async {
-  //   if (_documentReference != null) {
-  //     try {
-  //       await _documentReference!.update({'audiofile': audioUrl});
-  //       print('Audio URL updated in Firestore');
-  //     } catch (e) {
-  //       print('Error updating audio URL: $e');
-  //     }
-  //   }
-  // }
+  Future<void> _updateStoryWithAudioUrl(String audioUrl) async {
+    if (_documentReference != null) {
+      try {
+        await _documentReference!.update({'audiofile': audioUrl});
+        print('Audio URL updated in Firestore');
+      } catch (e) {
+        print('Error updating audio URL: $e');
+      }
+    }
+  }
 
   Future<String?> _uploadAudioToStorage(File audioFile) async {
     try {
