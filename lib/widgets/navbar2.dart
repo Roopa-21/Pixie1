@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +14,7 @@ import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_bloc.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_event.dart';
 import 'package:pixieapp/blocs/add_character_Bloc.dart/add_character_state.dart';
 import 'package:pixieapp/const/colors.dart';
-import 'package:pixieapp/widgets/playlist_bottomsheet.dart';
+import 'package:pixieapp/widgets/audio_controller.dart';
 import 'package:pixieapp/widgets/story_feedback.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -43,8 +42,9 @@ class NavBar2 extends StatefulWidget {
 }
 
 class _NavBar2State extends State<NavBar2> {
-  final player = AudioPlayer();
-  late AudioPlayer _audioPlayer;
+  final AudioController _audioController = AudioController();
+  //final player = AudioPlayer();
+  // late AudioPlayer _audioPlayer;
   User? user = FirebaseAuth.instance.currentUser;
   bool _isPlaying = false;
   bool showfeedback = true;
@@ -52,51 +52,71 @@ class _NavBar2State extends State<NavBar2> {
   final GlobalKey _tooltipKey = GlobalKey();
   Duration position = Duration.zero;
   Duration duration = Duration.zero;
+  String? audioUrl;
   @override
   void initState() {
     super.initState();
 
+    print('oooo${widget.audioFile}');
+
     widget.firebaseStories
-        ? player.setUrl(widget.firebaseAudioPath)
-        : player.setFilePath(widget.audioFile!.path);
-    player.positionStream.listen((p) {
+        ? _audioController.audioPlayer.setUrl(widget.firebaseAudioPath)
+        : _audioController.audioPlayer.setFilePath(widget.audioFile!.path);
+    _audioController.audioPlayer.positionStream.listen((p) {
       setState(() {
         position = p;
       });
     });
-    player.durationStream.listen((d) {
+    _audioController.audioPlayer.durationStream.listen((d) {
       setState(() {
         duration = d!;
       });
     });
-    player.playerStateStream.listen((state) async {
+    _audioController.audioPlayer.playerStateStream.listen((state) async {
       if (state.processingState == ProcessingState.completed) {
         setState(() {
           position = Duration.zero;
         });
-        player.pause();
-        player.seek(position);
+        _audioController.audioPlayer.pause();
+        _audioController.audioPlayer.seek(position);
       }
     });
   }
 
+  Future<void> fetchAudioUrl() async {
+    print('ggggg${widget.documentReference}');
+    if (widget.documentReference != null) {
+      try {
+        final documentSnapshot = await widget.documentReference!.get();
+        if (documentSnapshot.exists) {
+          setState(() {
+            audioUrl = documentSnapshot.get('audiofile');
+            print('yy${audioUrl}');
+          });
+        }
+      } catch (e) {
+        print('Error: $e');
+      }
+    }
+  }
+
   @override
   void dispose() {
-    _audioPlayer.dispose();
-    player.dispose();
+    _audioController.stop();
+
     super.dispose();
   }
 
   // Function to set the audio source from the audio file path
-  Future<void> _setAudioSource() async {
-    try {
-      // Use the file path directly
-      await _audioPlayer.setFilePath(widget.audioFile!.path);
-      print("Audio source set successfully.");
-    } catch (e) {
-      print("Error loading audio file: $e");
-    }
-  }
+  // Future<void> _setAudioSource() async {
+  //   try {
+  //     // Use the file path directly
+  //     await _audioController.audioPlayer.setFilePath(widget.audioFile!.path);
+  //     print("Audio source set successfully.");
+  //   } catch (e) {
+  //     print("Error loading audio file: $e");
+  //   }
+  // }
 
   String formatDuration(Duration d) {
     final minutes = d.inMinutes.remainder(60);
@@ -105,21 +125,21 @@ class _NavBar2State extends State<NavBar2> {
   }
 
   void stopplaying() {
-    if (player.playing) {
-      player.pause();
+    if (_audioController.audioPlayer.playing) {
+      _audioController.audioPlayer.pause();
     }
   }
 
   void handlePlayPause({required AddCharacterState state}) async {
-    if (player.playing) {
-      player.pause();
+    if (_audioController.audioPlayer.playing) {
+      _audioController.audioPlayer.pause();
     } else {
-      player.play();
+      _audioController.audioPlayer.play();
     }
   }
 
   void handleSeek(double value) {
-    player.seek(Duration(seconds: value.toInt()));
+    _audioController.audioPlayer.seek(Duration(seconds: value.toInt()));
   }
 
   @override
@@ -283,7 +303,7 @@ class _NavBar2State extends State<NavBar2> {
                         icon: SizedBox(
                           width: 60,
                           height: 60,
-                          child: player.playing
+                          child: _audioController.audioPlayer.playing
                               ? const Icon(
                                   Icons.pause_circle_filled_sharp,
                                   color: AppColors.kpurple,
@@ -322,7 +342,7 @@ class _NavBar2State extends State<NavBar2> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
+                        onPressed: () async {
                           // FirebaseAuth.instance
                           //     .signInAnonymously()
                           //     .then((userCredential) {
@@ -341,8 +361,50 @@ class _NavBar2State extends State<NavBar2> {
                           // }).catchError((error) {
                           //   print("Anonymous sign-in failed: $error");
                           // });
+                          await fetchAudioUrl();
+                          // Future<String> createDynamicLink(
+                          //     String originalUrl) async {
+                          //   print('hjhj$originalUrl');
+                          //   final url = Uri.parse(
+                          //       'https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=AIzaSyDzN_pzKQ1mvvwMUDWOsYnV3EII73ONtLA');
+
+                          //   final response = await http.post(
+                          //     url,
+                          //     headers: {
+                          //       'Content-Type': 'application/json',
+                          //     },
+                          //     body: jsonEncode({
+                          //       "dynamicLinkInfo": {
+                          //         "domainUriPrefix": "https://pixie.page.link",
+                          //         "link": originalUrl,
+                          //         "androidInfo": {
+                          //           "androidPackageName":
+                          //               "com.fabletronic.pixie",
+                          //         },
+                          //         "iosInfo": {
+                          //           "iosBundleId": "com.fabletronic.pixie",
+                          //         }
+                          //       },
+                          //       "suffix": {
+                          //         "option": "SHORT",
+                          //       },
+                          //     }),
+                          //   );
+
+                          //   if (response.statusCode == 200) {
+                          //     final data = jsonDecode(response.body);
+                          //     return data['shortLink'];
+                          //   } else {
+                          //     throw Exception(
+                          //         'Failed to create dynamic link: ${response.body}');
+                          //   }
+                          // }
+
+                          // final shortLink =
+                          //     await createDynamicLink(audioUrl ?? '');
+                          // print('oops$shortLink');
                           openWhatsAppChat(
-                              "${widget.title}\n\n${widget.story}\n\n Hey parent! Create personalized audio stories for your child! Introduce them to AI, inspiring them to think beyond. Pixie – their adventure buddy to reduce screentime \n\n For ios app:https://apps.apple.com/us/app/pixie-dream-create-inspire/id6737147663\n\n For Android app : https://play.google.com/store/apps/details?id=com.fabletronic.pixie.");
+                              '''${widget.title}\n\n${widget.story}\n\n 🎧Hey! Listen to the personalized story I created for my child. You can create such personalized audio stories for your children too! \n $audioUrl \n\nDownload the app now \n For ios app:https://apps.apple.com/us/app/pixie-dream-create-inspire/id6737147663\n\n For Android app : https://play.google.com/store/apps/details?id=com.fabletronic.pixie.''');
                         },
                         icon: SvgPicture.asset(
                           'assets/images/share.svg',
@@ -412,12 +474,23 @@ class _NavBar2State extends State<NavBar2> {
 //     print("Could not launch WhatsApp.");
 //   }
 // }
-Future<void> openWhatsAppChat(String text) async {
-  var url = "https://wa.me/?text=$text";
-  var uri = Uri.encodeFull(url);
+// Future<void> openWhatsAppChat(String text) async {
+//   var url = "https://wa.me/?text=$text";
+//   var uri = Uri.encodeFull(url);
 
-  if (await canLaunchUrl(Uri.parse(uri))) {
-    await launchUrl(Uri.parse(uri), mode: LaunchMode.externalApplication);
+//   if (await canLaunchUrl(Uri.parse(uri))) {
+//     await launchUrl(Uri.parse(uri), mode: LaunchMode.externalApplication);
+//   } else {
+//     throw 'Could not launch WhatsApp';
+//   }
+// }
+Future<void> openWhatsAppChat(String text) async {
+  final encodedText = Uri.encodeComponent(text);
+
+  final url = "https://wa.me/?text=$encodedText";
+
+  if (await canLaunchUrl(Uri.parse(url))) {
+    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   } else {
     throw 'Could not launch WhatsApp';
   }

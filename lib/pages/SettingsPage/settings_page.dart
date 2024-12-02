@@ -8,6 +8,7 @@ import 'package:pixieapp/const/colors.dart';
 import 'package:pixieapp/widgets/logout_bottom_sheet.dart';
 import 'package:pixieapp/widgets/navbar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -119,6 +120,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       theme: theme,
                     ),
                     profilelistCard(
+                      title: 'Invite a friend',
+                      ontap: () {
+                        openWhatsAppChat(
+                            '''Hey parent! Create personalized audio stories for your child! Introduce them to AI, inspiring them to think beyond. Pixie – their adventure buddy to reduce screentime. \n\n For ios app:https://apps.apple.com/us/app/pixie-dream-create-inspire/id6737147663\n\n For Android app : https://play.google.com/store/apps/details?id=com.fabletronic.pixie.''');
+                      },
+                      icon_path: 'assets/images/share.svg',
+                      theme: theme,
+                    ),
+                    profilelistCard(
                       title: 'Logout',
                       ontap: () async {
                         // Check if the user is a guest
@@ -181,6 +191,8 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 SvgPicture.asset(
                   icon_path,
+                  width: 30,
+                  height: 30,
                 ),
                 const SizedBox(width: 10),
                 Text(
@@ -195,5 +207,16 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+}
+
+Future<void> openWhatsAppChat(String text) async {
+  var url = "https://wa.me/?text=$text";
+  var uri = Uri.encodeFull(url);
+
+  if (await canLaunchUrl(Uri.parse(uri))) {
+    await launchUrl(Uri.parse(uri), mode: LaunchMode.externalApplication);
+  } else {
+    throw 'Could not launch WhatsApp';
   }
 }

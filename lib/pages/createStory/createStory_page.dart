@@ -66,6 +66,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
     };
   }
 
+  String randomgener = 'Funny';
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -78,8 +80,8 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
               body: BlocConsumer<StoryBloc, StoryState>(
                 listener: (context, state) {
                   if (state is StorySuccess) {
-                    context.push(
-                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}&genre=${builderstate.genre}',
+                    context.go(
+                      '/StoryGeneratePage?storytype=${builderstate.musicAndSpeed}&language=${builderstate.language.name}&genre=$randomgener',
                       extra: state.story,
                     );
                   } else if (state is StoryFailure) {
@@ -481,6 +483,31 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
             ));
   }
 
+  String generselection({required String gener}) {
+    if (gener == "Surprise me") {
+      List<String> genreList = [
+        'Funny',
+        'Horror',
+        'Adventure',
+        'Action',
+        'Sci-fi'
+      ];
+      // Create an instance of the Random class
+      Random random = Random();
+
+      print(genreList[random.nextInt(genreList.length)]);
+      setState(() {
+        randomgener = genreList[random.nextInt(genreList.length)];
+      });
+      return randomgener;
+    } else {
+      setState(() {
+        randomgener = gener;
+      });
+      return randomgener;
+    }
+  }
+
   Widget cardForOptions(BuildContext context, String title, String value,
       {required VoidCallback ontap, required Color color}) {
     final devicewidth = MediaQuery.of(context).size.width;
@@ -567,24 +594,5 @@ class _CreateStoryPageState extends State<CreateStoryPage> {
         SnackBar(content: Text('Error fetching child details: $e')),
       );
     }
-  }
-}
-
-String generselection({required String gener}) {
-  if (gener == "Surprise me") {
-    List<String> genreList = [
-      'Funny',
-      'Horror',
-      'Adventure',
-      'Action',
-      'Sci-fi'
-    ];
-    // Create an instance of the Random class
-    Random random = Random();
-
-    print(genreList[random.nextInt(genreList.length)]);
-    return genreList[random.nextInt(genreList.length)];
-  } else {
-    return gener;
   }
 }

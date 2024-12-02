@@ -103,177 +103,182 @@ class _StoryGeneratePageState extends State<StoryGeneratePage> {
         ),
       ],
       child: BlocBuilder<StoryBloc, StoryState>(builder: (context, state) {
-        return Scaffold(
-            backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  automaticallyImplyLeading: false,
-                  expandedHeight: deviceHeight * 0.2,
-                  leadingWidth: deviceWidth,
-                  collapsedHeight: deviceHeight * 0.08,
-                  toolbarHeight: deviceHeight * 0.07,
-                  pinned: true,
-                  floating: false,
-                  backgroundColor: const Color(0xff644a98),
-                  flexibleSpace: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      var top = constraints.biggest.height;
-                      bool isCollapsed = top <= kToolbarHeight + 30;
+        return PopScope(
+          canPop: false,
+          child: Scaffold(
+              backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+              body: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    expandedHeight: deviceHeight * 0.2,
+                    leadingWidth: deviceWidth,
+                    collapsedHeight: deviceHeight * 0.08,
+                    toolbarHeight: deviceHeight * 0.07,
+                    pinned: true,
+                    floating: false,
+                    backgroundColor: const Color(0xff644a98),
+                    flexibleSpace: LayoutBuilder(
+                      builder:
+                          (BuildContext context, BoxConstraints constraints) {
+                        var top = constraints.biggest.height;
+                        bool isCollapsed = top <= kToolbarHeight + 30;
 
-                      return FlexibleSpaceBar(
-                        centerTitle: true,
-                        titlePadding: EdgeInsets.only(
-                            left: 16, bottom: 10, right: deviceWidth * 0.13),
-                        title: Text(
-                          widget.story["title"] ?? "No data",
-                          style: theme.textTheme.titleMedium!.copyWith(
-                            color: AppColors.textColorWhite,
-                            fontWeight: FontWeight.bold,
-                            fontSize: isCollapsed ? 15 : 20,
+                        return FlexibleSpaceBar(
+                          centerTitle: true,
+                          titlePadding: EdgeInsets.only(
+                              left: 16, bottom: 10, right: deviceWidth * 0.13),
+                          title: Text(
+                            widget.story["title"] ?? "No data",
+                            style: theme.textTheme.titleMedium!.copyWith(
+                              color: AppColors.textColorWhite,
+                              fontWeight: FontWeight.bold,
+                              fontSize: isCollapsed ? 15 : 20,
+                            ),
                           ),
-                        ),
-                        background: Image.asset(
-                          'assets/images/appbarbg2.jpg',
-                          fit: BoxFit.cover,
-                        ),
-                      );
-                    },
-                  ),
-                  actions: [
-                    Padding(
-                      padding: EdgeInsets.only(right: deviceWidth * 0.01),
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: AppColors.kwhiteColor.withOpacity(0.4),
-                          borderRadius: BorderRadius.circular(40.0),
-                        ),
-                        child: BlocBuilder<AddCharacterBloc, AddCharacterState>(
-                          builder: (context, state) => IconButton(
-                            icon: const Icon(Icons.close),
-                            onPressed: () async {
-                              if (state.showfeedback) {
-                                await showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
-                                  enableDrag: false,
-                                  context: context,
-                                  builder: (context) {
-                                    return GestureDetector(
-                                      onTap: () =>
-                                          FocusScope.of(context).unfocus(),
-                                      child: Padding(
-                                        padding:
-                                            MediaQuery.viewInsetsOf(context),
-                                        child: StoryFeedback(
-                                          story: widget.story['story'] ??
-                                              'No Story available',
-                                          title: widget.story['title'] ??
-                                              'No title available',
-                                          path: audioUrl ?? '',
-                                          textfield: false,
+                          background: Image.asset(
+                            'assets/images/appbarbg2.jpg',
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                    actions: [
+                      Padding(
+                        padding: EdgeInsets.only(right: deviceWidth * 0.01),
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppColors.kwhiteColor.withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(40.0),
+                          ),
+                          child:
+                              BlocBuilder<AddCharacterBloc, AddCharacterState>(
+                            builder: (context, state) => IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () async {
+                                if (state.showfeedback) {
+                                  await showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    backgroundColor: Colors.transparent,
+                                    enableDrag: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return GestureDetector(
+                                        onTap: () =>
+                                            FocusScope.of(context).unfocus(),
+                                        child: Padding(
+                                          padding:
+                                              MediaQuery.viewInsetsOf(context),
+                                          child: StoryFeedback(
+                                            story: widget.story['story'] ??
+                                                'No Story available',
+                                            title: widget.story['title'] ??
+                                                'No title available',
+                                            path: audioUrl ?? '',
+                                            textfield: false,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              }
-                              context.read<StoryBloc>().add(StopplayingEvent());
-                              context.read<AddCharacterBloc>().add(
-                                  const ShowfeedbackEvent(showfeedback: false));
-                              context
-                                  .read<AddCharacterBloc>()
-                                  .add(ResetStateEvent());
-                              context.go('/HomePage');
-                            },
+                                      );
+                                    },
+                                  );
+                                }
+                                context
+                                    .read<StoryBloc>()
+                                    .add(StopplayingEvent());
+                                context.read<AddCharacterBloc>().add(
+                                    const ShowfeedbackEvent(
+                                        showfeedback: false));
+                                context
+                                    .read<AddCharacterBloc>()
+                                    .add(ResetStateEvent());
+                                context.go('/HomePage');
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: 5,
-                      left: deviceHeight * 0.0294,
-                      right: deviceHeight * 0.0294,
-                      bottom: deviceHeight * 0.0294,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AnimatedTextKit(
-                          onFinished: () {},
-                          isRepeatingAnimation: false,
-                          pause: const Duration(milliseconds: 100),
-                          animatedTexts: [
-                            TyperAnimatedText(
-                              curve: Curves.decelerate,
-                              widget.story["story"] ?? "No data",
-                              textStyle: theme.textTheme.bodyMedium!.copyWith(
-                                  color: AppColors.textColorblack,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w400),
-                              speed: const Duration(milliseconds: 20),
-                            ),
-                          ],
-                          onTap: () {
-                            print("Tap Event");
-                          },
-                        ),
-                        //
-                      ],
+                    ],
+                  ),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: 5,
+                        left: deviceHeight * 0.0294,
+                        right: deviceHeight * 0.0294,
+                        bottom: deviceHeight * 0.0294,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AnimatedTextKit(
+                            onFinished: () {},
+                            isRepeatingAnimation: false,
+                            pause: const Duration(milliseconds: 100),
+                            animatedTexts: [
+                              TyperAnimatedText(
+                                curve: Curves.decelerate,
+                                widget.story["story"] ?? "No data",
+                                textStyle: theme.textTheme.bodyMedium!.copyWith(
+                                    color: AppColors.textColorblack,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w400),
+                                speed: const Duration(milliseconds: 20),
+                              ),
+                            ],
+                            onTap: () {
+                              print("Tap Event");
+                            },
+                          ),
+                          //
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            bottomNavigationBar: (state is StorySuccess)
-                ? RecordListenNavbar(
-                    story: widget.story['story']!,
-                    title: widget.story['title']!,
-                    language: widget.language,
-                  )
-                : (state is StoryAudioSuccess ||
-                        state is RecordedStoryAudioSuccess)
-                    ? NavBar2(
-                        documentReference: _documentReference,
-                        audioFile: state is StoryAudioSuccess
-                            ? (state).audioFile
-                            : (state as RecordedStoryAudioSuccess)
-                                .musicAddedaudioFile,
-                        story: widget.story['story'] ?? 'No Story available',
-                        title: widget.story['title'] ?? 'No title available',
-                        firebaseAudioPath: audioUrl ?? '',
-                        suggestedStories: false,
-                        firebaseStories: false,
-                      )
-                    : (state is StartRecordaudioScreen ||
-                            state is AudioRecording ||
-                            state is AudioStopped)
-                        ? BottomNavRecord(
-                            event: widget.storytype,
-                          )
-                        : (state is StoryLoading)
-                            ? const ProgressNavBar()
-                            : const Errornavbar()
+                ],
+              ),
+              bottomNavigationBar: (state is StorySuccess)
+                  ? RecordListenNavbar(
+                      story: widget.story['story']!,
+                      title: widget.story['title']!,
+                      language: widget.language,
+                    )
+                  : (state is StoryAudioSuccess ||
+                          state is RecordedStoryAudioSuccess)
+                      ? NavBar2(
+                          documentReference: _documentReference,
+                          audioFile: state is StoryAudioSuccess
+                              ? (state).audioFile
+                              : (state as RecordedStoryAudioSuccess)
+                                  .musicAddedaudioFile,
+                          story: widget.story['story'] ?? 'No Story available',
+                          title: widget.story['title'] ?? 'No title available',
+                          firebaseAudioPath: audioUrl ?? '',
+                          suggestedStories: false,
+                          firebaseStories: false,
+                        )
+                      : (state is StartRecordaudioScreen ||
+                              state is AudioRecording ||
+                              state is AudioStopped)
+                          ? const BottomNavRecord()
+                          : (state is StoryLoading)
+                              ? const ProgressNavBar()
+                              : const Errornavbar()
 
-            // NavBar2(
-            //     documentReference: _documentReference,
-            //     audioFile: audioFile!,
-            //     story: widget.story['story'] ?? 'No Story available',
-            //     title: widget.story['title'] ?? 'No title available',
-            //     firebaseAudioPath: audioUrl ?? '',
-            //     suggestedStories: false,
-            //     firebaseStories: false,
-            //   )
+              // NavBar2(
+              //     documentReference: _documentReference,
+              //     audioFile: audioFile!,
+              //     story: widget.story['story'] ?? 'No Story available',
+              //     title: widget.story['title'] ?? 'No title available',
+              //     firebaseAudioPath: audioUrl ?? '',
+              //     suggestedStories: false,
+              //     firebaseStories: false,
+              //   )
 
-            // : const NavBarLoading(),
-            );
+              // : const NavBarLoading(),
+              ),
+        );
       }),
     );
   }

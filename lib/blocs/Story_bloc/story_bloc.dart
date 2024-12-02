@@ -1,9 +1,12 @@
 import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pixieapp/widgets/audio_controller.dart';
 import 'story_event.dart';
 import 'story_state.dart';
 import 'package:pixieapp/repositories/story_repository.dart';
@@ -13,6 +16,8 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
   String? _audioPath;
   String? event;
+
+  final AudioController _audioController = AudioController();
 
   StoryBloc({required this.storyRepository}) : super(StoryInitial()) {
     _initializeRecorder();
@@ -36,9 +41,13 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
       print('Error initializing recorder: $e');
     }
   }
-_stopplaying(Emitter<StoryState> emit) {
+
+  _stopplaying(Emitter<StoryState> emit) async {
+    _audioController.stop();
+
     emit(const Stopplayingstate());
   }
+
   // Start recording audio
   Future<void> _startRecording(Emitter<StoryState> emit) async {
     try {

@@ -502,7 +502,8 @@ class _AddCharacterState extends State<AddCharacter> {
                                                                               lovedOne.relation == "Father" ||
                                                                               lovedOne.relation == "Grand father" ||
                                                                               lovedOne.relation == "Grand mother" ||
-                                                                              lovedOne.relation == 'Female friend')
+                                                                              lovedOne.relation == 'Maternal Grandfather' ||
+                                                                              lovedOne.relation == 'Maternal Grandmother')
                                                                           ? lovedOne.relation
                                                                           : lovedOne.name,
                                                                       style: theme
@@ -1592,6 +1593,7 @@ class _AddCharacterState extends State<AddCharacter> {
                                           } else if (state.currentPageIndex ==
                                                   2 &&
                                               state.charactorname != null) {
+                                            FocusScope.of(context).unfocus();
                                             pageViewController?.nextPage(
                                               duration: const Duration(
                                                   milliseconds: 300),
